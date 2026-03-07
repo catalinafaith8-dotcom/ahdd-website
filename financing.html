@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dental Financing | Agoura Hills Dental Designs | $99/mo Plans Available</title>
+  <meta name="description" content="Flexible dental financing at Agoura Hills Dental Designs. Apply for CareCredit, Alphaeon Credit, or LendingClub Patient Solutions. Financing from $99/mo with 0% interest options."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1b2b41;
+      --navy-light: rgba(27,43,65,0.06);
+      --navy-border: rgba(27,43,65,0.1);
+      --white: #ffffff;
+      --off: #f8f9fb;
+      --text: #0f1923;
+      --muted: #5c6b7a;
+      --shadow: 0 4px 24px rgba(27,43,65,0.07);
+      --shadow-md: 0 8px 40px rgba(27,43,65,0.11);
+      --r: 18px;
+      --r-lg: 26px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
+
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 0% 0%, rgba(27,43,65,0.03) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 100% 0%, rgba(27,43,65,0.025) 0%, transparent 50%),
+        #ffffff;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 68px; padding: 0 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(30px) saturate(1.5);
+      -webkit-backdrop-filter: blur(30px) saturate(1.5);
+      border-bottom: 1px solid rgba(27,43,65,0.07);
+      box-shadow: 0 1px 16px rgba(27,43,65,0.05);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+    .nav-stack { display: flex; flex-direction: column; line-height: 1.1; }
+    .nav-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: var(--navy); }
+    .nav-sub { font-size: 9px; font-weight: 600; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 13.5px; font-weight: 500; color: var(--navy); opacity: 0.7; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-tel { font-size: 13px; font-weight: 500; color: var(--navy); opacity: 0.65; text-decoration: none; transition: opacity 0.2s; }
+    .nav-tel:hover { opacity: 1; }
+    .btn-nav {
+      padding: 9px 22px; background: var(--navy); color: white; border: none;
+      border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.25s;
+    }
+    .btn-nav:hover { background: #263f5e; box-shadow: 0 6px 20px rgba(27,43,65,0.22); transform: translateY(-1px); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 130px 52px 72px;
+      background: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 50% 0%, rgba(27,43,65,0.04), transparent 65%);
+      pointer-events: none;
+    }
+    .stag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--navy); opacity: 0.5; margin-bottom: 14px;
+    }
+    .stag::before { content: ''; width: 20px; height: 1.5px; background: var(--navy); opacity: 0.4; }
+    .page-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(44px, 5vw, 72px); font-weight: 400; color: var(--navy);
+      line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 20px;
+    }
+    .page-hero h1 em { font-style: italic; opacity: 0.5; }
+    .page-hero p {
+      font-size: 17px; color: var(--muted); line-height: 1.72;
+      max-width: 600px; margin: 0 auto 36px;
+    }
+    .hero-pills { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .pill {
+      padding: 8px 18px; border-radius: 100px; font-size: 13px; font-weight: 500;
+      background: white; border: 1px solid var(--navy-border); color: var(--navy);
+      box-shadow: 0 2px 12px rgba(27,43,65,0.06);
+    }
+
+    /* ── MAIN CONTENT ── */
+    main { max-width: 1200px; margin: 0 auto; padding: 0 52px 100px; }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { padding: 72px 0 60px; }
+    .section-label {
+      font-size: 10.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--navy); opacity: 0.5; margin-bottom: 14px; display: block;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 3vw, 46px); font-weight: 400; color: var(--navy);
+      line-height: 1.1; letter-spacing: -0.5px; margin-bottom: 14px;
+    }
+    .section-title em { font-style: italic; opacity: 0.5; }
+    .section-sub { font-size: 15.5px; color: var(--muted); line-height: 1.7; max-width: 540px; }
+
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 44px; }
+    .step-card {
+      background: white; border: 1px solid rgba(27,43,65,0.08);
+      border-radius: var(--r-lg); padding: 28px 24px;
+      box-shadow: var(--shadow); position: relative;
+      transition: all 0.3s;
+    }
+    .step-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px; font-weight: 300; color: var(--navy); opacity: 0.1;
+      line-height: 1; margin-bottom: 12px;
+    }
+    .step-icon { font-size: 26px; margin-bottom: 14px; display: block; }
+    .step-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--navy); margin-bottom: 8px; }
+    .step-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+    /* ── LENDER CARDS ── */
+    .lenders-section { padding: 20px 0 60px; }
+    .lenders-grid { display: flex; flex-direction: column; gap: 24px; margin-top: 44px; }
+
+    .lender-card {
+      background: white; border: 1px solid rgba(27,43,65,0.08);
+      border-radius: var(--r-lg); overflow: hidden;
+      box-shadow: var(--shadow); transition: all 0.3s;
+    }
+    .lender-card:hover { box-shadow: var(--shadow-md); }
+
+    .lender-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+
+    .lender-info { padding: 44px 44px; display: flex; flex-direction: column; justify-content: space-between; }
+    .lender-header { margin-bottom: 20px; }
+
+    .lender-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 13px; border-radius: 100px; font-size: 10px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      background: var(--navy-light); color: var(--navy); margin-bottom: 16px;
+    }
+    .lender-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px; font-weight: 400; color: var(--navy);
+      line-height: 1.05; margin-bottom: 12px; letter-spacing: -0.5px;
+    }
+    .lender-desc { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+
+    .lender-features { display: flex; flex-direction: column; gap: 9px; margin: 20px 0 24px; }
+    .lender-feature {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13.5px; color: var(--text);
+    }
+    .lender-feature-check {
+      width: 20px; height: 20px; background: var(--navy-light);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 10px; flex-shrink: 0; margin-top: 1px; color: var(--navy);
+    }
+
+    .lender-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; background: var(--navy); color: white; border: none;
+      border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: all 0.25s;
+    }
+    .btn-primary:hover { background: #263f5e; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(27,43,65,0.22); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; background: transparent; color: var(--navy);
+      border: 1.5px solid var(--navy-border); border-radius: 100px;
+      font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--navy); background: var(--navy-light); }
+
+    /* Lender embed panel */
+    .lender-embed {
+      background: var(--off); border-left: 1px solid rgba(27,43,65,0.07);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 36px 32px; gap: 16px;
+    }
+    .lender-embed-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 4px; text-align: center;
+    }
+    .embed-wrapper {
+      background: white; border-radius: var(--r); padding: 20px;
+      border: 1px solid rgba(27,43,65,0.08); box-shadow: var(--shadow);
+      width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .embed-wrapper iframe { display: block; max-width: 100%; }
+
+    /* Apply button full width in embed panel */
+    .embed-apply-btn {
+      display: block; width: 100%; padding: 14px 20px;
+      background: var(--navy); color: white; border: none; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none; text-align: center; transition: all 0.25s;
+    }
+    .embed-apply-btn:hover { background: #263f5e; box-shadow: 0 8px 24px rgba(27,43,65,0.2); transform: translateY(-1px); }
+
+    .embed-note { font-size: 11.5px; color: var(--muted); text-align: center; line-height: 1.5; }
+
+    /* LendingClub — different layout, no widget, just info + apply */
+    .lender-card.lc .lender-inner { grid-template-columns: 1fr 1fr; }
+    .lender-card.lc .lender-embed { background: var(--navy); border-left: none; }
+    .lender-card.lc .lender-embed-label { color: rgba(255,255,255,0.5); }
+    .lender-card.lc .embed-note { color: rgba(255,255,255,0.5); }
+
+    .lc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
+    .lc-stat {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--r); padding: 20px 16px; text-align: center;
+    }
+    .lc-stat-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400;
+      color: white; line-height: 1; margin-bottom: 4px;
+    }
+    .lc-stat-label { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 500; letter-spacing: 0.5px; }
+
+    .lc-apply-btn {
+      display: block; width: 100%; padding: 14px 20px;
+      background: white; color: var(--navy); border: none; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none; text-align: center; transition: all 0.25s;
+    }
+    .lc-apply-btn:hover { background: #eef0f4; box-shadow: 0 8px 24px rgba(255,255,255,0.15); transform: translateY(-1px); }
+
+    /* ── FAQ STRIP ── */
+    .faq-section { padding: 20px 0 60px; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 44px; }
+    .faq-card {
+      background: white; border: 1px solid rgba(27,43,65,0.08);
+      border-radius: var(--r); padding: 26px 28px; box-shadow: var(--shadow);
+    }
+    .faq-q { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; color: var(--navy); margin-bottom: 10px; }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      border-radius: var(--r-lg); padding: 60px 56px;
+      background: var(--navy); position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1fr auto; gap: 44px; align-items: center;
+      box-shadow: 0 16px 56px rgba(27,43,65,0.18); margin: 20px 0 0;
+    }
+    .cta-band::before {
+      content: ''; position: absolute; right: -60px; top: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 65%);
+      pointer-events: none;
+    }
+    .cta-band h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px,3vw,44px); font-weight: 400; color: white; line-height: 1.1; margin-bottom: 12px; }
+    .cta-band h2 em { font-style: italic; opacity: 0.6; }
+    .cta-band p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.65; max-width: 440px; }
+    .cta-actions { display: flex; flex-direction: column; gap: 11px; min-width: 200px; }
+    .btn-white { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; background: white; color: var(--navy); border: none; border-radius: 100px; font-size: 14.5px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.25s; }
+    .btn-white:hover { background: #eef0f4; transform: translateY(-1px); }
+    .btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; background: transparent; color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.18); border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.25s; }
+    .btn-ghost:hover { color: white; border-color: rgba(255,255,255,0.4); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); padding: 60px 52px 28px; }
+    .ft-inner { max-width: 1200px; margin: 0 auto; }
+    .ft-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 44px; margin-bottom: 44px; }
+    .ft-logo { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+    .ft-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 500; color: white; }
+    .ft-sub-lbl { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; text-transform: uppercase; }
+    .ft-desc { font-size: 13px; color: rgba(255,255,255,0.38); line-height: 1.7; margin-bottom: 14px; }
+    .ft-col h4 { font-size: 10.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
+    .ft-col a { display: block; font-size: 13.5px; color: rgba(255,255,255,0.55); text-decoration: none; margin-bottom: 9px; transition: color 0.2s; }
+    .ft-col a:hover { color: rgba(255,255,255,0.85); }
+    .ft-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; }
+    .ft-bottom p { font-size: 12px; color: rgba(255,255,255,0.28); }
+    .ft-bottom a { color: rgba(255,255,255,0.28); text-decoration: none; margin-left: 18px; font-size: 12px; transition: color 0.2s; }
+    .ft-bottom a:hover { color: rgba(255,255,255,0.55); }
+
+    /* CHATBOT */
+    .cb-fab { position: fixed; bottom: 26px; right: 26px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .cb-btn { width: 56px; height: 56px; background: var(--navy); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 23px; box-shadow: 0 8px 28px rgba(27,43,65,0.28); transition: all 0.25s; }
+    .cb-btn:hover { background: #263f5e; transform: scale(1.07); }
+    .cb-panel { position: fixed; bottom: 94px; right: 26px; width: 370px; z-index: 9998; border-radius: var(--r-lg); overflow: hidden; display: none; flex-direction: column; box-shadow: 0 20px 64px rgba(27,43,65,0.22); max-height: 510px; background: white; border: 1px solid rgba(27,43,65,0.08); }
+    .cb-panel.open { display: flex; }
+    .cb-hd { background: var(--navy); padding: 18px 22px; display: flex; align-items: center; gap: 11px; }
+    .cb-av { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .cb-hd-name { font-weight: 600; color: white; font-size: 14px; }
+    .cb-hd-status { font-size: 11px; color: rgba(255,255,255,0.48); }
+    .cb-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .cm { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; }
+    .cm.bot { background: var(--off); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .cm.user { background: var(--navy); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .cb-input-row { padding: 13px 16px; border-top: 1px solid rgba(27,43,65,0.07); display: flex; gap: 9px; align-items: center; }
+    .cb-input { flex: 1; padding: 9px 14px; border-radius: 100px; border: 1px solid rgba(27,43,65,0.12); background: var(--off); font-family: 'DM Sans', sans-serif; font-size: 13.5px; outline: none; color: var(--text); }
+    .cb-send { width: 33px; height: 33px; background: var(--navy); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; color: white; transition: all 0.2s; }
+    .cb-send:hover { background: #263f5e; }
+
+    /* MODAL */
+    .overlay { position: fixed; inset: 0; z-index: 10000; background: rgba(15,25,35,0.4); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 20px; }
+    .overlay.open { display: flex; }
+    .bk-modal { background: white; border-radius: var(--r-lg); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 28px 72px rgba(27,43,65,0.2); }
+    .bk-hd { padding: 28px 32px 20px; border-bottom: 1px solid rgba(27,43,65,0.07); display: flex; justify-content: space-between; align-items: flex-start; }
+    .bk-hd h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: var(--navy); }
+    .bk-hd p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .bk-x { width: 32px; height: 32px; border: none; background: var(--off); border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+    .bk-x:hover { background: var(--navy-light); }
+    .bk-body { padding: 24px 32px 32px; }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .fg { margin-bottom: 14px; }
+    .fl { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); opacity: 0.65; margin-bottom: 7px; }
+    .fi, .fs, .ft { width: 100%; padding: 12px 14px; border-radius: 11px; border: 1px solid rgba(27,43,65,0.12); background: white; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; transition: all 0.2s; }
+    .fi:focus, .fs:focus, .ft:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,43,65,0.06); }
+    .ft { resize: none; height: 88px; }
+    .btn-submit { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.25s; margin-top: 6px; }
+    .btn-submit:hover { background: #263f5e; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(27,43,65,0.22); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.vis { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media(max-width: 1024px) {
+      .lender-inner { grid-template-columns: 1fr; }
+      .lender-embed { border-left: none; border-top: 1px solid rgba(27,43,65,0.07); }
+      .lender-card.lc .lender-embed { border-top: none; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .cta-band { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links, .nav-tel { display: none; }
+      main { padding: 0 20px 80px; }
+      .page-hero { padding: 100px 20px 56px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .lc-stats { grid-template-columns: 1fr 1fr; }
+      .cta-band { padding: 36px 24px; }
+      .ft-top { grid-template-columns: 1fr; }
+      footer { padding: 48px 20px 24px; }
+      .cb-panel { right: 10px; left: 10px; width: auto; bottom: 82px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="Logo__1_.png" alt="Agoura Hills Dental Designs" style="width:44px;height:44px;object-fit:contain;">
+    <div class="nav-stack">
+      <span class="nav-name">Agoura Hills Dental Designs</span>
+      <span class="nav-sub">Premium Dental Care</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/about">About Us</a></li>
+    <li><a href="/services">Services</a></li>
+    <li><a href="/technology">Technology</a></li>
+    <li><a href="/financing" class="active">Financing</a></li>
+    <li><a href="/faq">FAQ</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="tel:8187066077" class="nav-tel">📞 (818) 706-6077</a>
+    <button class="btn-nav" onclick="openModal()">Book Appointment</button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="stag">Flexible Payment Plans</div>
+  <h1>Your Dream Smile<br><em>Shouldn't Wait</em></h1>
+  <p>We believe exceptional dental care should be accessible to everyone. Choose from three flexible financing options — apply in minutes, get approved fast, and start your treatment today.</p>
+  <div class="hero-pills">
+    <span class="pill">✦ 0% Interest Options Available</span>
+    <span class="pill">✦ Plans from $99/mo</span>
+    <span class="pill">✦ Approvals in Minutes</span>
+    <span class="pill">✦ No Prepayment Penalties</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="reveal">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title">Start Treatment in <em>4 Simple Steps</em></h2>
+      <p class="section-sub">From application to chair — the entire financing process takes minutes, not days.</p>
+    </div>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <span class="step-icon">📋</span>
+        <div class="step-title">Choose a Lender</div>
+        <div class="step-desc">Select the financing partner that best fits your needs — CareCredit, Alphaeon, or LendingClub. Each offers different benefits and approval criteria.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <span class="step-icon">⚡</span>
+        <div class="step-title">Apply Online</div>
+        <div class="step-desc">Complete a secure application in under 5 minutes. Soft credit checks available — no hard inquiry just to check your rate.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <span class="step-icon">✅</span>
+        <div class="step-title">Get Approved</div>
+        <div class="step-desc">Most patients receive an instant decision. Once approved, your credit line is ready to use for any treatment at our office.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <span class="step-icon">😁</span>
+        <div class="step-title">Start Your Treatment</div>
+        <div class="step-desc">Book your appointment and begin the journey to your new smile. Pay over time with manageable monthly payments that fit your budget.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LENDERS -->
+  <div class="lenders-section">
+    <div class="reveal">
+      <span class="section-label">Our Financing Partners</span>
+      <h2 class="section-title">Three Ways to <em>Invest in Your Smile</em></h2>
+      <p class="section-sub">We've partnered with the top dental financing companies to give you maximum flexibility and the best chance of approval.</p>
+    </div>
+
+    <div class="lenders-grid">
+
+      <!-- ── CARECREDIT ── -->
+      <div class="lender-card reveal">
+        <div class="lender-inner">
+          <div class="lender-info">
+            <div>
+              <div class="lender-header">
+                <div class="lender-badge">✦ Most Popular</div>
+                <div class="lender-name">CareCredit</div>
+                <div class="lender-desc">The nation's leading healthcare credit card. Use it for any treatment at our office — cosmetic, restorative, or preventive. Accepted at over 260,000 healthcare providers nationwide.</div>
+              </div>
+              <div class="lender-features">
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>0% interest for 6, 12, 18 or 24 months (promotional periods)</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Extended plans up to 60 months for larger treatments</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Instant approval decisions online</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>No annual fee — use it for the whole family</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Accepted for all dental treatments including cosmetic</span></div>
+              </div>
+            </div>
+            <div class="lender-actions">
+              <a href="https://www.carecredit.com/go/HNK886/" target="_blank" rel="noopener" class="btn-primary">Apply for CareCredit →</a>
+              <a href="tel:8187066077" class="btn-outline">Call Us First</a>
+            </div>
+          </div>
+          <div class="lender-embed">
+            <div class="lender-embed-label">Estimate Your Monthly Payment</div>
+            <div class="embed-wrapper">
+              <iframe
+                width="420"
+                height="183"
+                class="assetIframe"
+                style="border:0;max-width:100%;"
+                src="https://www.carecredit.com/providercenter/getassetcalculator/?size=420x183&color=1b2b41&plate=HNK886"
+                title="CareCredit Payment Calculator"
+                loading="lazy">
+              </iframe>
+            </div>
+            <a href="https://www.carecredit.com/go/HNK886/" target="_blank" rel="noopener" class="embed-apply-btn">Apply Now — Instant Decision</a>
+            <p class="embed-note">Subject to credit approval. Minimum monthly payments required.<br>See carecredit.com for full terms.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ALPHAEON ── -->
+      <div class="lender-card reveal">
+        <div class="lender-inner">
+          <div class="lender-info">
+            <div>
+              <div class="lender-header">
+                <div class="lender-badge">✦ Premium Option</div>
+                <div class="lender-name">Alphaeon Credit</div>
+                <div class="lender-desc">Designed specifically for aesthetic and elective medical treatments. Alphaeon often approves patients who may not qualify elsewhere, with higher credit limits and flexible repayment terms.</div>
+              </div>
+              <div class="lender-features">
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Higher approval rates for cosmetic procedures</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Credit limits up to $25,000</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>0% interest promotional financing available</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Flexible repayment plans from 6 to 60 months</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Ideal for veneers, implants, and full smile makeovers</span></div>
+              </div>
+            </div>
+            <div class="lender-actions">
+              <a href="https://go.alphaeoncredit.com/credit-portal/apply/eds/intro?locationId=14414" target="_blank" rel="noopener" class="btn-primary">Apply for Alphaeon →</a>
+              <a href="tel:8187066077" class="btn-outline">Call Us First</a>
+            </div>
+          </div>
+          <div class="lender-embed" style="background:var(--navy);">
+            <div class="lender-embed-label" style="color:rgba(255,255,255,0.5);">Why Choose Alphaeon?</div>
+            <div style="width:100%;display:flex;flex-direction:column;gap:14px;">
+              <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);padding:20px 18px;text-align:center;">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:400;color:white;line-height:1;">$25K</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;font-weight:500;letter-spacing:0.5px;">Maximum Credit Limit</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);padding:16px;text-align:center;">
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:white;line-height:1;">0%</div>
+                  <div style="font-size:10.5px;color:rgba(255,255,255,0.5);margin-top:4px;">Promo APR</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);padding:16px;text-align:center;">
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:white;line-height:1;">60</div>
+                  <div style="font-size:10.5px;color:rgba(255,255,255,0.5);margin-top:4px;">Month Plans</div>
+                </div>
+              </div>
+              <a href="https://go.alphaeoncredit.com/credit-portal/apply/eds/intro?locationId=14414" target="_blank" rel="noopener" class="lc-apply-btn">Apply Now — Takes 5 Minutes</a>
+              <p style="font-size:11.5px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.5;">Subject to credit approval. See alphaeoncredit.com for full terms.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LENDINGCLUB ── -->
+      <div class="lender-card lc reveal">
+        <div class="lender-inner">
+          <div class="lender-info">
+            <div>
+              <div class="lender-header">
+                <div class="lender-badge">✦ Best for Larger Treatments</div>
+                <div class="lender-name">LendingClub<br>Patient Solutions</div>
+                <div class="lender-desc">A personal loan solution for larger dental investments. LendingClub offers fixed monthly payments, no prepayment penalties, and competitive rates — ideal for full mouth reconstructions, implant cases, or complete smile makeovers.</div>
+              </div>
+              <div class="lender-features">
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Fixed rates — your payment never changes</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Loan amounts up to $50,000</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Check your rate with no impact to credit score</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>No prepayment penalties — pay off early anytime</span></div>
+                <div class="lender-feature"><div class="lender-feature-check">✓</div><span>Terms from 24 to 84 months</span></div>
+              </div>
+            </div>
+            <div class="lender-actions">
+              <a href="https://www.lendingclub.com/patientsolutions/app/check-your-rate?user=applicant&clientid=344751" target="_blank" rel="noopener" class="btn-primary">Check Your Rate →</a>
+              <a href="tel:8187066077" class="btn-outline">Call Us First</a>
+            </div>
+          </div>
+          <div class="lender-embed" style="background:var(--navy);border-left:none;">
+            <div class="lender-embed-label" style="color:rgba(255,255,255,0.5);">LendingClub at a Glance</div>
+            <div class="lc-stats">
+              <div class="lc-stat">
+                <div class="lc-stat-num">$50K</div>
+                <div class="lc-stat-label">Max Loan</div>
+              </div>
+              <div class="lc-stat">
+                <div class="lc-stat-num">84</div>
+                <div class="lc-stat-label">Month Terms</div>
+              </div>
+              <div class="lc-stat">
+                <div class="lc-stat-num">0</div>
+                <div class="lc-stat-label">Prepay Penalty</div>
+              </div>
+              <div class="lc-stat">
+                <div class="lc-stat-num">5<span style="font-size:18px;">min</span></div>
+                <div class="lc-stat-label">To Apply</div>
+              </div>
+            </div>
+            <a href="https://www.lendingclub.com/patientsolutions/app/check-your-rate?user=applicant&clientid=344751" target="_blank" rel="noopener" class="lc-apply-btn" style="margin-top:4px;">Check Rate — No Credit Impact</a>
+            <p style="font-size:11.5px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.5;margin-top:4px;">Subject to credit approval. See lendingclub.com for full terms.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="reveal">
+      <span class="section-label">Common Questions</span>
+      <h2 class="section-title">Financing <em>FAQ</em></h2>
+    </div>
+    <div class="faq-grid reveal">
+      <div class="faq-card">
+        <div class="faq-q">Which financing option is best for me?</div>
+        <div class="faq-a">It depends on your treatment cost and credit profile. CareCredit is best for flexible everyday use, Alphaeon excels for larger cosmetic cases with higher approval rates, and LendingClub is ideal for major restorations with fixed monthly payments. Our team can help you choose during your consultation.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">Will applying affect my credit score?</div>
+        <div class="faq-a">LendingClub lets you check your rate with only a soft inquiry — no credit score impact. CareCredit and Alphaeon do a hard pull when you formally apply, but checking rates beforehand does not affect your score.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">Can I use financing for cosmetic procedures?</div>
+        <div class="faq-a">Yes. All three of our financing partners cover cosmetic dental treatments including veneers, teeth whitening, Invisalign, and full smile makeovers. Alphaeon is specifically designed for elective aesthetic procedures.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">What if I'm not approved by one lender?</div>
+        <div class="faq-a">Don't worry — each lender has different approval criteria. We encourage patients to try multiple options. Alphaeon in particular has higher approval rates for cosmetic procedures. Our team is also happy to help structure your treatment plan into phases.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">How quickly can I start treatment after approval?</div>
+        <div class="faq-a">Immediately. Once approved, your credit line is active and we can schedule your first appointment the same day or next available opening. Same-day appointments are often available for urgent needs.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">Do you accept insurance as well?</div>
+        <div class="faq-a">Absolutely. We accept most PPO insurance plans and can combine your insurance benefits with financing to minimize your out-of-pocket costs. Use our Insurance Checker on the homepage or call us to verify your coverage before your visit.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band reveal">
+    <div>
+      <h2>Ready to Get Started?<br><em>Book Your Free Consultation</em></h2>
+      <p>Come in, discuss your goals, and we'll help you find the financing plan that makes your new smile possible — with zero pressure and zero commitment.</p>
+    </div>
+    <div class="cta-actions">
+      <button class="btn-white" onclick="openModal()">Book Free Consultation →</button>
+      <a href="tel:8187066077" class="btn-ghost">📞 (818) 706-6077</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div>
+        <div class="ft-logo">
+          <img src="Logo__1_.png" alt="Agoura Hills Dental Designs" style="width:42px;height:42px;object-fit:contain;">
+          <div><div class="ft-name">Agoura Hills Dental Designs</div><div class="ft-sub-lbl">Premium Dental Care</div></div>
+        </div>
+        <p class="ft-desc">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry to the Conejo Valley since 2003.</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);">📍 28632 Roadside Dr #270, Agoura Hills, CA 91301</p>
+      </div>
+      <div class="ft-col"><h4>Services</h4><a href="/services/cosmetic-dentistry">Cosmetic Dentistry</a><a href="/services/dental-veneers">Dental Veneers</a><a href="/services/dental-implants">Dental Implants</a><a href="/services/invisalign">Invisalign</a><a href="/services/teeth-whitening">Teeth Whitening</a><a href="/services/emergency-dentistry">Emergency Dentistry</a></div>
+      <div class="ft-col"><h4>Practice</h4><a href="/about">About Us</a><a href="/team">Meet the Doctors</a><a href="/technology">Our Technology</a><a href="/financing">Financing</a><a href="/faq">FAQ</a><a href="/contact">Contact</a></div>
+      <div class="ft-col"><h4>Financing</h4><a href="https://www.carecredit.com/go/HNK886/" target="_blank">Apply — CareCredit</a><a href="https://go.alphaeoncredit.com/credit-portal/apply/eds/intro?locationId=14414" target="_blank">Apply — Alphaeon</a><a href="https://www.lendingclub.com/patientsolutions/app/check-your-rate?user=applicant&clientid=344751" target="_blank">Apply — LendingClub</a><a href="tel:8187066077">(818) 706-6077</a></div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 Agoura Hills Dental Designs. All rights reserved.</p>
+      <div><a href="/privacy">Privacy Policy</a><a href="/terms">Terms</a><a href="/sitemap">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<div class="cb-panel" id="cbPanel">
+  <div class="cb-hd">
+    <div class="cb-av">🦷</div>
+    <div><div class="cb-hd-name">AHDD Concierge</div><div class="cb-hd-status">● Online · Powered by AI</div></div>
+    <button onclick="toggleChat()" style="margin-left:auto;background:rgba(255,255,255,0.1);border:none;color:white;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;">✕</button>
+  </div>
+  <div class="cb-msgs" id="cbMsgs">
+    <div class="cm bot">Hi! Questions about financing? I can help explain your options or check if we take your insurance. What would you like to know?</div>
+  </div>
+  <div class="cb-input-row">
+    <input type="text" class="cb-input" id="cbInput" placeholder="Ask about financing..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="cb-send" onclick="sendChat()">↑</button>
+  </div>
+</div>
+<div class="cb-fab">
+  <button class="cb-btn" onclick="toggleChat()">🦷</button>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="bk-modal">
+    <div class="bk-hd">
+      <div><h2>Book Your Appointment</h2><p>Free consultations · Same-day availability</p></div>
+      <button class="bk-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="bk-body">
+      <div class="f-row">
+        <div class="fg"><label class="fl">First Name</label><input type="text" class="fi" placeholder="Jane"></div>
+        <div class="fg"><label class="fl">Last Name</label><input type="text" class="fi" placeholder="Smith"></div>
+      </div>
+      <div class="f-row">
+        <div class="fg"><label class="fl">Phone</label><input type="tel" class="fi" placeholder="(818) 000-0000"></div>
+        <div class="fg"><label class="fl">Email</label><input type="email" class="fi" placeholder="jane@email.com"></div>
+      </div>
+      <div class="fg"><label class="fl">Service</label>
+        <select class="fs"><option value="">Select a service...</option><option>Free Consultation</option><option>Cosmetic Dentistry</option><option>Dental Veneers</option><option>Dental Implants</option><option>Invisalign</option><option>Teeth Whitening</option><option>Emergency Appointment</option><option>General Checkup & Cleaning</option></select>
+      </div>
+      <div class="f-row">
+        <div class="fg"><label class="fl">Preferred Date</label><input type="date" class="fi"></div>
+        <div class="fg"><label class="fl">Preferred Time</label><select class="fs"><option>Morning (8am–12pm)</option><option>Afternoon (12pm–5pm)</option><option>Any time</option></select></div>
+      </div>
+      <div class="fg"><label class="fl">Notes (optional)</label><textarea class="ft" placeholder="Tell us anything that would help us prepare..."></textarea></div>
+      <button class="btn-submit" onclick="submitBooking()">Request Appointment →</button>
+      <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px;">We'll confirm within 1 business hour · (818) 706-6077</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // REVEAL
+  const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); }), {threshold: 0.08});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // MODAL
+  function openModal(){ document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(){ document.getElementById('modal').classList.remove('open'); document.body.style.overflow=''; }
+  function submitBooking(){ alert("Thank you! We'll confirm your appointment within 1 business hour.\n\nYou can also call us at (818) 706-6077."); closeModal(); }
+
+  // CHATBOT
+  let chatOpen = false, chatHist = [];
+  function toggleChat(){
+    chatOpen = !chatOpen;
+    document.getElementById('cbPanel').classList.toggle('open', chatOpen);
+    if(chatOpen) document.getElementById('cbInput').focus();
+  }
+  async function sendChat(){
+    const inp = document.getElementById('cbInput'), msg = inp.value.trim();
+    if(!msg) return;
+    inp.value = '';
+    addMsg(msg, 'user'); chatHist.push({role:'user', content:msg});
+    const t = addMsg('...', 'bot');
+    try{
+      const r = await fetch('/api/chatbot', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({messages: chatHist})});
+      const d = await r.json();
+      t.textContent = d.reply || 'Please call us at (818) 706-6077.';
+      chatHist.push({role:'assistant', content: d.reply});
+    } catch { t.textContent = "I'm having trouble connecting. Please call (818) 706-6077."; }
+  }
+  function addMsg(text, type){
+    const m = document.getElementById('cbMsgs'), d = document.createElement('div');
+    d.className = `cm ${type}`; d.textContent = text; m.appendChild(d); m.scrollTop = m.scrollHeight; return d;
+  }
+</script>
+</body>
+</html>
