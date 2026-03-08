@@ -96,99 +96,108 @@
 
     /* ── HERO ── */
     .hero {
-      min-height: 100vh; padding: 110px 52px 80px;
-      display: flex; align-items: center; position: relative; overflow: hidden;
-      background: white;
+      height: 100vh; min-height: 640px;
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end;
     }
 
-    /* Soft navy orbs — very subtle on white */
-    .orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
-    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(27,43,65,0.055), transparent 70%); top: -200px; right: -120px; }
-    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(27,43,65,0.04), transparent 70%); bottom: -100px; left: -80px; }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('Header_Photo_Dr_David_and_Shawn_Matian.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
+    /* No overlay — photo shows fully */
+    .hero-bg::after { display: none; }
 
     .hero-inner {
-      max-width: 1200px; margin: 0 auto; width: 100%;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+      position: relative; z-index: 2;
+      width: 100%; max-width: 1200px; margin: 0 auto;
+      padding: 0 52px 72px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 40px;
+    }
+
+    /* Left overlay card — text block */
+    .hero-card {
+      max-width: 520px;
     }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 7px 16px; border-radius: 100px; margin-bottom: 28px;
-      background: var(--navy-light); border: 1px solid var(--navy-border);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 20px;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.9);
       color: var(--navy); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
     }
-    .badge-dot { width: 6px; height: 6px; background: var(--navy); border-radius: 50%; opacity: 0.6; animation: pulse 2.5s infinite; }
+    .badge-dot { width: 6px; height: 6px; background: var(--navy); border-radius: 50%; opacity: 0.7; animation: pulse 2.5s infinite; }
     @keyframes pulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
 
     .hero-h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(52px, 5.5vw, 82px);
+      font-size: clamp(48px, 5vw, 76px);
       font-weight: 400; line-height: 1.0; color: var(--navy);
-      margin-bottom: 22px; letter-spacing: -1.5px;
+      margin-bottom: 16px; letter-spacing: -1.5px;
     }
-    .hero-h1 em { font-style: italic; color: var(--navy); opacity: 0.55; }
+    .hero-h1 em { font-style: italic; opacity: 0.6; }
 
-    .hero-p { font-size: 16px; line-height: 1.75; color: var(--muted); margin-bottom: 36px; max-width: 460px; }
+    .hero-p { font-size: 15.5px; line-height: 1.72; color: var(--navy); opacity: 0.75; margin-bottom: 28px; max-width: 440px; }
 
-    .hero-pills { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 40px; }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
     .pill {
-      padding: 7px 16px; border-radius: 100px; font-size: 13px; font-weight: 500;
-      background: white; border: 1px solid var(--navy-border); color: var(--navy);
-      box-shadow: var(--shadow);
+      padding: 6px 14px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.9); color: var(--navy);
     }
 
-    .hero-btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .hero-btns { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 14px 30px; background: var(--navy); color: white; border: none;
-      border-radius: 100px; font-size: 14.5px; font-weight: 600; cursor: pointer;
+      border-radius: 100px; font-size: 14.5px; font-weight: 700; cursor: pointer;
       text-decoration: none; transition: all 0.28s; letter-spacing: 0.2px;
     }
-    .btn-primary:hover { background: #263f5e; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(27,43,65,0.28); }
+    .btn-primary:hover { background: #263f5e; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(27,43,65,0.35); }
 
     .btn-outline {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 26px; background: transparent; color: var(--navy);
-      border: 1.5px solid var(--navy-border); border-radius: 100px;
+      padding: 13px 24px; background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+      color: var(--navy); border: 1.5px solid rgba(255,255,255,0.9); border-radius: 100px;
       font-size: 14.5px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.25s;
     }
-    .btn-outline:hover { border-color: var(--navy); background: var(--navy-light); }
+    .btn-outline:hover { background: white; box-shadow: 0 6px 20px rgba(27,43,65,0.15); }
 
-    /* ── HERO CARDS RIGHT ── */
-    .hero-right { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    /* Right side — floating stat cards */
+    .hero-stats {
+      display: flex; flex-direction: column; gap: 12px; min-width: 210px; align-self: flex-end;
+    }
 
     .hc {
-      border-radius: var(--r-lg); padding: 26px 22px;
-      background: white; border: 1px solid rgba(27,43,65,0.08);
-      box-shadow: var(--shadow); display: flex; flex-direction: column;
-      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: var(--r); padding: 18px 22px;
+      background: rgba(255,255,255,0.78); backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      border: 1px solid rgba(255,255,255,0.95);
+      box-shadow: 0 8px 32px rgba(27,43,65,0.12);
+      text-align: center;
     }
-    .hc:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .hc-num { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 400; color: var(--navy); line-height: 1; }
+    .hc-num sup { font-size: 20px; opacity: 0.5; }
+    .hc-lbl { font-size: 10.5px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 4px; }
 
-    .hc-wide {
-      grid-column: span 2; flex-direction: row; align-items: center;
-      gap: 18px; padding: 20px 24px;
+    .hc-ai {
+      border-radius: var(--r); padding: 16px 18px;
       background: var(--navy);
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 12px 40px rgba(27,43,65,0.18);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(27,43,65,0.25);
+      display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.25s;
     }
-    .hc-wide:hover { transform: translateY(-3px); box-shadow: 0 18px 48px rgba(27,43,65,0.22); }
-
-    .hc-icon {
-      width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 13px;
-      display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
-    }
-    .hc-wide-text h3 {
-      font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; color: white; margin-bottom: 3px;
-    }
-    .hc-wide-text p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; }
-    .hc-wide .btn-nav { margin-left: auto; flex-shrink: 0; font-size: 12px; padding: 8px 18px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); }
-    .hc-wide .btn-nav:hover { background: rgba(255,255,255,0.22); box-shadow: none; }
-
-    .hc-num { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 400; color: var(--navy); line-height: 1; }
-    .hc-num sup { font-size: 22px; opacity: 0.45; }
-    .hc-lbl { font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 5px; }
+    .hc-ai:hover { background: #263f5e; transform: translateY(-2px); }
+    .hc-ai-icon { font-size: 20px; flex-shrink: 0; }
+    .hc-ai-text h4 { font-size: 13px; font-weight: 600; color: white; margin-bottom: 2px; }
+    .hc-ai-text p { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.3; }
 
     /* ── STATS BAR ── */
     .stats-wrap { padding: 0 52px 60px; }
@@ -500,24 +509,32 @@
     .ft-bottom a { color:rgba(255,255,255,0.28); text-decoration:none; margin-left:18px; font-size:12px; transition:color 0.2s; }
     .ft-bottom a:hover { color:rgba(255,255,255,0.55); }
 
-    /* REVEAL */
+    @keyframes wordFade {
+      0%   { opacity: 0; transform: translateY(10px); }
+      15%  { opacity: 1; transform: translateY(0); }
+      85%  { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    #heroWord { display: inline-block; animation: wordFade 2.8s ease infinite; }
     .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.65s ease, transform 0.65s ease; }
     .reveal.vis { opacity:1; transform:none; }
 
     /* RESPONSIVE */
     @media(max-width:1024px){
-      .hero-inner,.map-inner { grid-template-columns:1fr; }
-      .hero-right { grid-template-columns:1fr 1fr; }
+      .map-inner { grid-template-columns:1fr; }
       .svc-grid { grid-template-columns:1fr 1fr; }
       .svc-card.feat { grid-row:auto; }
       .tech-grid { grid-template-columns:1fr 1fr; }
       .ft-top { grid-template-columns:1fr 1fr; gap:32px; }
+      .hero-stats { display: none; }
     }
     @media(max-width:768px){
       nav { padding:0 20px; }
       .nav-links,.nav-tel { display:none; }
       section { padding:56px 20px; }
-      .hero { padding:92px 20px 56px; }
+      .hero { align-items: center; }
+      .hero-inner { padding: 0 20px 56px; flex-direction: column; justify-content: flex-end; }
+      .hero-stats { display: none; }
       .stats-wrap,.cta-wrap,.map-wrap { padding-left:20px; padding-right:20px; }
       .stats-bar { grid-template-columns:1fr 1fr; padding:20px; }
       .stat:nth-child(2)::after { display:none; }
@@ -555,12 +572,12 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
+  <div class="hero-bg"></div>
   <div class="hero-inner">
-    <div>
+    <!-- Left: text overlay -->
+    <div class="hero-card">
       <div class="hero-badge"><span class="badge-dot"></span>331+ Five-Star Google Reviews</div>
-      <h1 class="hero-h1">We Build<br><em>Beautiful</em><br>Smiles</h1>
+      <h1 class="hero-h1">We Build<br><em><span id="heroWord">Healthy</span></em><br>Smiles</h1>
       <p class="hero-p">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
       <div class="hero-pills">
         <span class="pill">✦ Free Consultations</span>
@@ -572,32 +589,19 @@
         <a href="tel:8187066077" class="btn-outline">📞 (818) 706-6077</a>
       </div>
     </div>
-    <div class="hero-right">
-      <!-- Wide dark card -->
-      <div class="hc hc-wide">
-        <div class="hc-icon">🦷</div>
-        <div class="hc-wide-text">
-          <h3>AI Smile Analysis</h3>
-          <p>Upload your photo for an instant personalized treatment recommendation</p>
+
+    <!-- Right: floating stat cards -->
+    <div class="hero-stats">
+      <div class="hc-ai" onclick="scrollToSmile()">
+        <div class="hc-ai-icon">🦷</div>
+        <div class="hc-ai-text">
+          <h4>AI Smile Analysis</h4>
+          <p>Upload a photo for instant<br>treatment recommendations</p>
         </div>
-        <button class="btn-nav" onclick="scrollToSmile()">Try Free →</button>
       </div>
-      <div class="hc">
-        <div class="hc-num">331<sup>+</sup></div>
-        <div class="hc-lbl">5-Star Reviews</div>
-      </div>
-      <div class="hc">
-        <div class="hc-num">20<sup>+</sup></div>
-        <div class="hc-lbl">Years Experience</div>
-      </div>
-      <div class="hc">
-        <div class="hc-num">15K<sup>+</sup></div>
-        <div class="hc-lbl">Patients Served</div>
-      </div>
-      <div class="hc">
-        <div class="hc-num">99<sup>%</sup></div>
-        <div class="hc-lbl">Satisfaction Rate</div>
-      </div>
+      <div class="hc"><div class="hc-num">331<sup>+</sup></div><div class="hc-lbl">5-Star Reviews</div></div>
+      <div class="hc"><div class="hc-num">15K<sup>+</sup></div><div class="hc-lbl">Patients Served</div></div>
+      <div class="hc"><div class="hc-num">99<sup>%</sup></div><div class="hc-lbl">Satisfaction Rate</div></div>
     </div>
   </div>
 </section>
@@ -1004,6 +1008,18 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ROTATING HERO WORDS
+  const heroWords = ['Healthy', 'Beautiful', 'Radiant', 'Happy'];
+  let wordIdx = 0;
+  const wordEl = document.getElementById('heroWord');
+  setInterval(() => {
+    wordIdx = (wordIdx + 1) % heroWords.length;
+    wordEl.style.animation = 'none';
+    wordEl.offsetHeight; // reflow
+    wordEl.textContent = heroWords[wordIdx];
+    wordEl.style.animation = 'wordFade 2.8s ease infinite';
+  }, 2800);
+
   // REVEAL
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
