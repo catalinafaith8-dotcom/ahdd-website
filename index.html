@@ -102,34 +102,45 @@
     }
 
     .hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('Header_Photo_Dr_David_and_Shawn_Matian.jpg');
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
+      position: absolute; inset: 0; overflow: hidden;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+      /* Force GPU layer + max rendering quality */
+      transform: translateZ(0);
+      will-change: transform;
+      image-rendering: high-quality;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* No overlay — photo shows fully */
     .hero-bg::after { display: none; }
 
     .hero-inner {
-      position: relative; z-index: 2;
-      width: 100%; max-width: 1200px; margin: 0 auto;
-      padding: 0 52px 72px;
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      max-width: 100%;
+      padding: 28px 52px 36px;
       display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 40px;
+      gap: 32px;
+      /* Frosted bottom bar */
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(24px) saturate(1.5);
+      -webkit-backdrop-filter: blur(24px) saturate(1.5);
+      border-top: 1px solid rgba(255,255,255,0.9);
     }
 
     /* Left overlay card — text block */
     .hero-card {
-      max-width: 520px;
+      flex: 1; max-width: 600px;
     }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 14px; border-radius: 100px; margin-bottom: 20px;
-      background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.9);
+      padding: 5px 13px; border-radius: 100px; margin-bottom: 10px;
+      background: rgba(27,43,65,0.07);
+      border: 1px solid rgba(27,43,65,0.1);
       color: var(--navy); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
     }
     .badge-dot { width: 6px; height: 6px; background: var(--navy); border-radius: 50%; opacity: 0.7; animation: pulse 2.5s infinite; }
@@ -137,22 +148,23 @@
 
     .hero-h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(48px, 5vw, 76px);
-      font-weight: 400; line-height: 1.0; color: var(--navy);
-      margin-bottom: 16px; letter-spacing: -1.5px;
+      font-size: clamp(36px, 4.2vw, 64px);
+      font-weight: 400; line-height: 1; color: var(--navy);
+      margin-bottom: 12px; letter-spacing: -1px;
+      white-space: nowrap;
     }
-    .hero-h1 em { font-style: italic; opacity: 0.6; }
+    .hero-h1 em { font-style: italic; opacity: 0.55; }
 
-    .hero-p { font-size: 15.5px; line-height: 1.72; color: var(--navy); opacity: 0.75; margin-bottom: 28px; max-width: 440px; }
+    .hero-p { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin-bottom: 14px; max-width: 480px; }
 
-    .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
     .pill {
-      padding: 6px 14px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
-      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.9); color: var(--navy);
+      padding: 5px 13px; border-radius: 100px; font-size: 12px; font-weight: 500;
+      background: rgba(27,43,65,0.06);
+      border: 1px solid rgba(27,43,65,0.1); color: var(--navy);
     }
 
-    .hero-btns { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .hero-btns { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
@@ -170,34 +182,34 @@
     }
     .btn-outline:hover { background: white; box-shadow: 0 6px 20px rgba(27,43,65,0.15); }
 
-    /* Right side — floating stat cards */
+    /* Right side — stat cards horizontal in bottom bar */
     .hero-stats {
-      display: flex; flex-direction: column; gap: 12px; min-width: 210px; align-self: flex-end;
+      display: flex; flex-direction: row; gap: 10px; align-items: stretch; flex-shrink: 0;
     }
 
     .hc {
-      border-radius: var(--r); padding: 18px 22px;
-      background: rgba(255,255,255,0.78); backdrop-filter: blur(20px) saturate(1.4);
-      -webkit-backdrop-filter: blur(20px) saturate(1.4);
-      border: 1px solid rgba(255,255,255,0.95);
-      box-shadow: 0 8px 32px rgba(27,43,65,0.12);
-      text-align: center;
+      border-radius: var(--r); padding: 14px 18px;
+      background: rgba(27,43,65,0.06);
+      border: 1px solid rgba(27,43,65,0.1);
+      box-shadow: none;
+      text-align: center; min-width: 90px;
     }
-    .hc-num { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 400; color: var(--navy); line-height: 1; }
-    .hc-num sup { font-size: 20px; opacity: 0.5; }
-    .hc-lbl { font-size: 10.5px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 4px; }
+    .hc-num { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; color: var(--navy); line-height: 1; }
+    .hc-num sup { font-size: 16px; opacity: 0.5; }
+    .hc-lbl { font-size: 9.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 3px; }
 
     .hc-ai {
-      border-radius: var(--r); padding: 16px 18px;
+      border-radius: var(--r); padding: 14px 16px;
       background: var(--navy);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 8px 32px rgba(27,43,65,0.25);
-      display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.25s;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 16px rgba(27,43,65,0.2);
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      transition: all 0.25s; flex-shrink: 0;
     }
     .hc-ai:hover { background: #263f5e; transform: translateY(-2px); }
-    .hc-ai-icon { font-size: 20px; flex-shrink: 0; }
-    .hc-ai-text h4 { font-size: 13px; font-weight: 600; color: white; margin-bottom: 2px; }
-    .hc-ai-text p { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.3; }
+    .hc-ai-icon { font-size: 18px; flex-shrink: 0; }
+    .hc-ai-text h4 { font-size: 12px; font-weight: 600; color: white; margin-bottom: 1px; white-space: nowrap; }
+    .hc-ai-text p { font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.3; white-space: nowrap; }
 
     /* ── STATS BAR ── */
     .stats-wrap { padding: 0 52px 60px; }
@@ -532,8 +544,7 @@
       nav { padding:0 20px; }
       .nav-links,.nav-tel { display:none; }
       section { padding:56px 20px; }
-      .hero { align-items: center; }
-      .hero-inner { padding: 0 20px 56px; flex-direction: column; justify-content: flex-end; }
+      .hero-inner { padding: 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
       .hero-stats { display: none; }
       .stats-wrap,.cta-wrap,.map-wrap { padding-left:20px; padding-right:20px; }
       .stats-bar { grid-template-columns:1fr 1fr; padding:20px; }
@@ -572,12 +583,19 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <img
+      src="Header_Photo_Dr_David_and_Shawn_Matian.jpg"
+      alt="Drs. David and Shawn Matian — Agoura Hills Dental Designs"
+      fetchpriority="high"
+      decoding="sync"
+    >
+  </div>
   <div class="hero-inner">
     <!-- Left: text overlay -->
     <div class="hero-card">
       <div class="hero-badge"><span class="badge-dot"></span>331+ Five-Star Google Reviews</div>
-      <h1 class="hero-h1">We Build<br><em><span id="heroWord">Healthy</span></em><br>Smiles</h1>
+      <h1 class="hero-h1">We Build <em><span id="heroWord">Healthy</span></em> Smiles</h1>
       <p class="hero-p">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
       <div class="hero-pills">
         <span class="pill">✦ Free Consultations</span>
