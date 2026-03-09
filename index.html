@@ -226,36 +226,21 @@
   }
 
   /* ══════════════════════════════════════
-     SERVICES SECTION
+     SERVICES SECTION — white bg, uniform cards
   ══════════════════════════════════════ */
   .services-section {
-    background: linear-gradient(160deg, #0B1628 0%, #122040 50%, #0d1e38 100%);
+    background: #ffffff;
     padding: 96px 48px;
     position: relative;
     overflow: hidden;
   }
-
-  /* Subtle background texture */
   .services-section::before {
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(74,159,212,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 80% 80%, rgba(74,159,212,0.05) 0%, transparent 70%);
+    background: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(74,159,212,0.05) 0%, transparent 70%);
     pointer-events: none;
   }
-
-  /* Grid dot pattern */
-  .services-section::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
-    background-size: 32px 32px;
-    pointer-events: none;
-  }
-
   .services-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -271,7 +256,6 @@
     margin-bottom: 56px;
     gap: 32px;
   }
-  .services-header-left {}
   .services-eyebrow {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 10px;
@@ -287,16 +271,15 @@
   .services-eyebrow::before {
     content: '';
     display: block;
-    width: 28px;
-    height: 1px;
+    width: 28px; height: 1px;
     background: #4A9FD4;
-    opacity: 0.7;
+    opacity: 0.6;
   }
   .services-title {
     font-family: 'Outfit', sans-serif;
     font-size: clamp(32px, 4vw, 52px);
     font-weight: 700;
-    color: #fff;
+    color: var(--navy);
     line-height: 1.05;
     letter-spacing: -0.02em;
   }
@@ -311,242 +294,162 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    background: rgba(74,159,212,0.08);
-    border: 1px solid rgba(74,159,212,0.2);
+    background: #f0f8ff;
+    border: 1px solid rgba(74,159,212,0.25);
     border-radius: 14px;
     padding: 16px 22px;
     max-width: 320px;
     flex-shrink: 0;
   }
   .inhouse-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(74,159,212,0.15);
+    width: 40px; height: 40px;
+    background: rgba(74,159,212,0.12);
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
   }
-  .inhouse-text {}
   .inhouse-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 2px;
+    font-size: 13px; font-weight: 600;
+    color: var(--navy); margin-bottom: 3px;
   }
   .inhouse-sub {
-    font-size: 11px;
-    font-weight: 400;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.5;
+    font-size: 11px; font-weight: 400;
+    color: var(--g600); line-height: 1.5;
   }
 
-  /* Cards grid */
+  /* ── UNIFORM GRID: 4 cols, all equal height ── */
   .services-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
     gap: 16px;
   }
 
-  /* Glass card */
+  /* Glass card — white with subtle border + shadow */
   .svc-card {
     position: relative;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.09);
-    border-radius: 18px;
-    padding: 28px 24px 24px;
+    background: #ffffff;
+    border: 1px solid var(--g200);
+    border-radius: 16px;
+    padding: 28px 24px;
     cursor: pointer;
     overflow: hidden;
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   .svc-card.visible {
-    animation: cardReveal 0.5s ease forwards;
+    animation: cardReveal 0.45s ease forwards;
   }
   @keyframes cardReveal {
     to { opacity: 1; transform: translateY(0); }
   }
-
-  /* Glow on hover */
-  .svc-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,159,212,0.12) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    border-radius: 18px;
-  }
   .svc-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(74,159,212,0.35);
-    background: rgba(255,255,255,0.07);
+    transform: translateY(-4px);
+    border-color: rgba(74,159,212,0.4);
+    box-shadow: 0 8px 32px rgba(74,159,212,0.12), 0 2px 8px rgba(0,0,0,0.06);
   }
-  .svc-card:hover::before { opacity: 1; }
 
-  /* Top accent line */
+  /* Top accent shimmer on hover */
   .svc-card::after {
     content: '';
     position: absolute;
-    top: 0; left: 24px; right: 24px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(74,159,212,0.5), transparent);
+    top: 0; left: 20px; right: 20px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #4A9FD4, transparent);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.35s ease;
+    border-radius: 0 0 2px 2px;
   }
   .svc-card:hover::after { opacity: 1; }
 
-  /* Featured card (spans 2 cols, row 2) */
-  .svc-card.featured {
-    grid-column: span 2;
-    background: rgba(74,159,212,0.08);
-    border-color: rgba(74,159,212,0.2);
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 28px 32px;
-  }
-  .svc-card.featured:hover {
-    background: rgba(74,159,212,0.13);
-    border-color: rgba(74,159,212,0.45);
-  }
-
+  /* Icon */
   .svc-icon-wrap {
-    width: 48px;
-    height: 48px;
+    width: 46px; height: 46px;
     border-radius: 12px;
-    background: rgba(74,159,212,0.12);
+    background: #f0f8ff;
     border: 1px solid rgba(74,159,212,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
     margin-bottom: 16px;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    flex-shrink: 0;
+    transition: background 0.3s ease;
   }
   .svc-card:hover .svc-icon-wrap {
-    background: rgba(74,159,212,0.22);
-    border-color: rgba(74,159,212,0.45);
-  }
-  .svc-card.featured .svc-icon-wrap {
-    width: 56px;
-    height: 56px;
-    font-size: 26px;
-    margin-bottom: 0;
+    background: rgba(74,159,212,0.15);
   }
 
-  .svc-content {}
+  .svc-content { flex: 1; display: flex; flex-direction: column; }
   .svc-name {
     font-family: 'Outfit', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 6px;
+    font-size: 16px; font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
     letter-spacing: -0.01em;
   }
-  .svc-card.featured .svc-name {
-    font-size: 19px;
-    margin-bottom: 6px;
-  }
   .svc-desc {
-    font-size: 12.5px;
-    font-weight: 400;
-    color: rgba(255,255,255,0.5);
+    font-size: 12.5px; font-weight: 400;
+    color: var(--g600);
     line-height: 1.65;
+    flex: 1;
   }
-  .svc-card.featured .svc-desc {
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-  }
-
   .svc-arrow {
     margin-top: 18px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
     color: #4A9FD4;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    opacity: 0; transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .svc-card.featured .svc-arrow {
-    margin-top: 10px;
-  }
-  .svc-card:hover .svc-arrow {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  .svc-card:hover .svc-arrow { opacity: 1; transform: translateX(0); }
   .svc-arrow svg {
     width: 12px; height: 12px;
     transition: transform 0.2s ease;
   }
-  .svc-card:hover .svc-arrow svg {
-    transform: translateX(3px);
-  }
+  .svc-card:hover .svc-arrow svg { transform: translateX(3px); }
 
-  /* CTA row at bottom */
+  /* CTA */
   .services-cta {
     margin-top: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
+    display: flex; align-items: center;
+    justify-content: center; gap: 16px;
   }
   .services-cta-primary {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #0B1628;
-    background: #fff;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: #fff; background: var(--navy);
+    border: none; padding: 14px 32px;
+    border-radius: 9px; cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .services-cta-primary:hover {
-    background: #e8f4fc;
-    transform: translateY(-2px);
-  }
+  .services-cta-primary:hover { opacity: .88; transform: translateY(-2px); }
   .services-cta-secondary {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.6);
+    font-size: 13px; font-weight: 500;
+    color: var(--g600);
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.15);
-    padding: 14px 28px;
-    border-radius: 9px;
-    cursor: pointer;
+    border: 1px solid var(--g200);
+    padding: 14px 28px; border-radius: 9px; cursor: pointer;
     transition: border-color 0.2s ease, color 0.2s ease;
   }
-  .services-cta-secondary:hover {
-    border-color: rgba(255,255,255,0.35);
-    color: #fff;
-  }
+  .services-cta-secondary:hover { border-color: #4A9FD4; color: var(--navy); }
 
   @media (max-width: 1024px) {
-    .services-grid { grid-template-columns: repeat(2, 1fr); }
-    .svc-card.featured { grid-column: span 2; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; }
     .services-header { flex-direction: column; align-items: flex-start; }
+    .inhouse-badge { max-width: 100%; }
   }
   @media (max-width: 640px) {
     .services-section { padding: 64px 20px; }
-    .services-grid { grid-template-columns: 1fr; }
-    .svc-card.featured { grid-column: span 1; flex-direction: column; align-items: flex-start; }
+    .services-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
   }
 
 </style>
@@ -688,7 +591,7 @@
         <div class="svc-icon-wrap">🦷</div>
         <div class="svc-content">
           <div class="svc-name">Restorative Dentistry</div>
-          <div class="svc-desc">Crowns, bridges, fillings, and full-mouth rebuilds to restore function and beauty.</div>
+          <div class="svc-desc">Crowns, bridges, fillings, and full-mouth rebuilds to restore function and natural beauty.</div>
           <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </div>
       </div>
@@ -697,7 +600,7 @@
         <div class="svc-icon-wrap">✨</div>
         <div class="svc-content">
           <div class="svc-name">Veneers</div>
-          <div class="svc-desc">Porcelain veneers custom-crafted for a flawless, natural-looking smile transformation.</div>
+          <div class="svc-desc">Custom porcelain veneers crafted for a flawless, natural-looking smile transformation.</div>
           <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </div>
       </div>
@@ -706,7 +609,7 @@
         <div class="svc-icon-wrap">🔩</div>
         <div class="svc-content">
           <div class="svc-name">Implants</div>
-          <div class="svc-desc">Permanent tooth replacements that look, feel, and function just like natural teeth.</div>
+          <div class="svc-desc">Permanent tooth replacements that look, feel, and function just like your natural teeth.</div>
           <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </div>
       </div>
@@ -720,41 +623,31 @@
         </div>
       </div>
 
-      <!-- Featured card — spans 2 cols -->
-      <div class="svc-card featured" style="animation-delay:240ms">
+      <div class="svc-card" style="animation-delay:240ms">
         <div class="svc-icon-wrap">🌟</div>
         <div class="svc-content">
           <div class="svc-name">Teeth Whitening</div>
-          <div class="svc-desc">Professional in-office whitening that delivers results up to 8 shades brighter in a single visit — no sensitivity, no waiting.</div>
+          <div class="svc-desc">Professional in-office whitening up to 8 shades brighter in a single visit — no sensitivity.</div>
           <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </div>
       </div>
 
-      <div class="svc-card featured" style="animation-delay:300ms">
+      <div class="svc-card" style="animation-delay:300ms">
         <div class="svc-icon-wrap">🚨</div>
         <div class="svc-content">
           <div class="svc-name">Emergency Dentistry</div>
-          <div class="svc-desc">Same-day emergency appointments available. Tooth pain, cracked teeth, lost restorations — we see you fast.</div>
+          <div class="svc-desc">Same-day emergency appointments available for tooth pain, cracked teeth, and lost restorations.</div>
           <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </div>
       </div>
 
-      <div class="svc-card" style="animation-delay:360ms; grid-column: span 4;">
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-          <div class="svc-icon-wrap" style="margin-bottom:0;flex-shrink:0;">😴</div>
-          <div style="flex:1;min-width:200px;">
-            <div class="svc-name" style="font-size:18px;">Sedation Dentistry</div>
-            <div class="svc-desc" style="max-width:520px;">Dental anxiety? We offer nitrous oxide and oral sedation so every visit feels calm, comfortable, and stress-free — even for the most complex procedures.</div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
-            <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#4A9FD4;opacity:0.85;">Anxiety-Free Care</div>
-            <div style="width:1px;height:20px;background:rgba(255,255,255,0.12);"></div>
-            <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#4A9FD4;opacity:0.85;">All Ages Welcome</div>
-            <div style="width:1px;height:20px;background:rgba(255,255,255,0.12);"></div>
-            <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#4A9FD4;opacity:0.85;">Safe & Monitored</div>
-          </div>
+      <div class="svc-card" style="animation-delay:360ms">
+        <div class="svc-icon-wrap">😴</div>
+        <div class="svc-content">
+          <div class="svc-name">Sedation Dentistry</div>
+          <div class="svc-desc">Nitrous oxide and oral sedation for a calm, stress-free visit — even for complex procedures.</div>
+          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </div>
-        <div class="svc-arrow" style="margin-top:16px;">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
 
     </div>
