@@ -10,13 +10,13 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --navy:  #0B1628;
-    --blue:  #2dbff8;
-    --white: #FFFFFF;
-    --g100:  #F5F5F3;
-    --g200:  #E4E4E0;
-    --g400:  #ADADAA;
-    --g600:  #6B6B66;
+    --navy:   #0B1628;
+    --orange: #CC5801;
+    --white:  #FFFFFF;
+    --g100:   #F5F5F3;
+    --g200:   #E4E4E0;
+    --g400:   #ADADAA;
+    --g600:   #6B6B66;
   }
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -50,16 +50,13 @@
   }
   .nav-btn:hover { opacity: .85; }
 
-  /* ══════════════════════════════════════
-     HERO — full bleed photo
-  ══════════════════════════════════════ */
+  /* ── HERO ── */
   .hero {
     position: relative;
     width: 100%;
     height: 500px;
     overflow: hidden;
   }
-
   .hero-photo {
     width: 100%;
     height: 100%;
@@ -68,10 +65,12 @@
     display: block;
   }
 
-  /* ── TOP RIGHT: review badge ── */
+  /* ── TOP LEFT: review badge ── */
   .review-badge {
     position: absolute;
-    top: 24px; left: 48px;
+    top: 24px;
+    left: 48px;
+    z-index: 5;
     display: inline-flex; align-items: center; gap: 7px;
     background: rgba(255,255,255,0.92);
     border: 1px solid rgba(255,255,255,0.95);
@@ -80,30 +79,34 @@
     box-shadow: 0 2px 12px rgba(0,0,0,0.12);
   }
   .review-badge-stars { color: #F59E0B; font-size: 11px; letter-spacing: 1px; }
-  .review-badge span {
+  .review-badge-text {
     font-size: 10.5px; font-weight: 600;
     letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--navy);
   }
 
-  /* ── LEFT SIDE: title + sub + pills ── */
-  .hero-left {
+  /* ── RIGHT SIDE: title + sub + pills ── */
+  .hero-right {
     position: absolute;
-    top: 0; right: 0; bottom: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     width: 50%;
+    z-index: 4;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    padding: 36px 48px 36px 32px;
+    padding: 36px 52px 36px 28px;
     background: linear-gradient(
       to left,
-      rgba(11,22,40,0.68) 0%,
-      rgba(11,22,40,0.45) 65%,
+      rgba(11,22,40,0.74) 0%,
+      rgba(11,22,40,0.50) 60%,
       transparent 100%
     );
   }
 
-  /* Headline — bold, tight */
+  /* Headline */
   .hero-h1 {
     font-family: 'Outfit', sans-serif;
     font-size: clamp(26px, 3vw, 38px);
@@ -117,15 +120,14 @@
   .rotating-word {
     font-style: italic;
     font-weight: 700;
-    color: #CC5801;
+    color: var(--orange);
     display: inline-block;
+    margin-right: 5px;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    margin-right: 6px;
   }
   .rotating-word.fade-out { opacity: 0; transform: translateY(-6px); }
   .rotating-word.fade-in  { opacity: 1; transform: translateY(0); }
 
-  /* Sub text */
   .hero-sub {
     font-size: 13px; font-weight: 300;
     color: rgba(255,255,255,0.78);
@@ -195,7 +197,7 @@
     position: absolute; bottom: 0; left: 50%;
     transform: translateX(-50%) scaleX(0);
     width: 32px; height: 2px;
-    background: var(--blue);
+    background: var(--orange);
     transition: transform .3s ease;
   }
   .stat-item:hover::after { transform: translateX(-50%) scaleX(1); }
@@ -203,13 +205,18 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 1024px) {
     .nav-links { display: none; }
-    .hero-left { width: 60%; }
+    .hero-right { width: 60%; }
   }
   @media (max-width: 768px) {
     .nav { padding: 0 20px; }
     .nav-btn { display: none; }
     .hero { height: 420px; }
-    .hero-left { width: 100%; background: linear-gradient(to top, rgba(11,22,40,0.75) 0%, transparent 55%); justify-content: flex-end; padding: 0 20px 28px; }
+    .hero-right {
+      width: 100%;
+      background: linear-gradient(to top, rgba(11,22,40,0.78) 0%, transparent 55%);
+      justify-content: flex-end;
+      padding: 0 20px 28px;
+    }
     .review-badge { top: 16px; left: 16px; }
     .stat-bar-inner { grid-template-columns: repeat(2, 1fr); }
     .stat-item:nth-child(2) { border-right: none; }
@@ -244,14 +251,14 @@
     alt="Dr. David Matian and Dr. Shawn Matian — Agoura Hills Dental Designs"
   />
 
-  <!-- TOP RIGHT: review badge -->
+  <!-- TOP LEFT: review badge -->
   <div class="review-badge">
     <span class="review-badge-stars">★★★★★</span>
-    <span>331+ Five-Star Google Reviews</span>
+    <span class="review-badge-text">331+ Five-Star Google Reviews</span>
   </div>
 
-  <!-- LEFT: title + sub + pills -->
-  <div class="hero-left">
+  <!-- RIGHT SIDE: headline + sub + pills -->
+  <div class="hero-right">
     <h1 class="hero-h1">We Build <span class="rotating-word fade-in" id="heroWord">Healthy</span> Smiles</h1>
     <p class="hero-sub">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
     <div class="trust-pills" id="trustPills">
@@ -286,7 +293,6 @@
 </div>
 
 <script>
-  // Rotating word
   const words = ['Healthy','Happy','Radiant','Beautiful'];
   let idx = 0;
   const el = document.getElementById('heroWord');
@@ -301,14 +307,12 @@
     }, 320);
   }, 2600);
 
-  // Pills on load
   window.addEventListener('load', () => {
     document.querySelectorAll('.trust-pill').forEach((p, i) => {
       setTimeout(() => p.classList.add('visible'), 500 + i * 110);
     });
   });
 
-  // Stat count-up
   function countUp(el) {
     const max = parseInt(el.dataset.target);
     const sfx = el.dataset.suffix || '';
