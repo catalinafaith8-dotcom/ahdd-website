@@ -1,334 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hallier Dentistry — Trust Bar</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hallier Dentistry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy:       #0B1628;
-    --navy-soft:  #1C2E4A;
-    --gold:       #B8965A;
-    --gold-light: #D4AE78;
-    --gold-pale:  #F5ECD8;
-    --white:      #FFFFFF;
-    --off-white:  #FAFAF8;
-    --gray-100:   #F4F4F2;
-    --gray-200:   #E6E6E2;
-    --gray-400:   #ABABAA;
-    --gray-500:   #8A8A82;
-    --gray-700:   #4A4A44;
-    --border:     rgba(184,150,90,0.22);
+    --navy:   #0B1628;
+    --gold:   #C5973F;
+    --white:  #FFFFFF;
+    --g200:   #E4E4E0;
+    --g400:   #ADADAA;
+    --g700:   #444440;
   }
 
-  body { background: var(--white); font-family: 'DM Sans', sans-serif; }
-
-  /* ─── NAV ─── */
-  nav {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     background: var(--white);
-    border-bottom: 1px solid var(--gray-200);
-    padding: 0 48px;
-    height: 72px;
-    display: flex; align-items: center; justify-content: space-between;
+    -webkit-font-smoothing: antialiased;
   }
-  .logo-wrap { display: flex; align-items: center; gap: 12px; }
-  .logo-circle {
+
+  /* ── NAV ── */
+  .nav {
+    height: 68px; background: var(--white);
+    border-bottom: 1px solid var(--g200);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+  }
+  .logo { display: flex; align-items: center; gap: 11px; }
+  .logo-ring {
     width: 42px; height: 42px; border-radius: 50%;
-    border: 1.5px solid var(--navy);
+    border: 2px solid var(--navy);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px; font-weight: 600;
-    color: var(--navy); letter-spacing: -0.02em;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 700; color: var(--navy);
   }
   .logo-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px; font-weight: 400;
-    color: var(--navy); letter-spacing: 0.06em;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px; font-weight: 600; color: var(--navy);
   }
   .logo-loc {
-    font-size: 9px; font-weight: 400;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); margin-top: 1px;
+    font-size: 9px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
   }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
   .nav-links a {
-    font-size: 13px; font-weight: 400;
-    color: var(--gray-700); text-decoration: none;
-    letter-spacing: 0.04em; transition: color 0.2s;
+    font-size: 13.5px; font-weight: 400; color: var(--g700);
+    text-decoration: none; transition: color .15s;
   }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-book {
-    font-size: 12px; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
+  .nav-links a:hover { color: var(--navy); }
+  .nav-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--white); background: var(--navy);
-    border: none; padding: 10px 22px;
-    border-radius: 100px; cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
+    border: none; padding: 10px 22px; border-radius: 8px; cursor: pointer;
+    transition: opacity .15s;
   }
-  .nav-book:hover { background: var(--navy-soft); transform: translateY(-1px); }
+  .nav-btn:hover { opacity: .85; }
 
-  /* ─── HERO STUB ─── */
+  /* ── HERO ── */
   .hero {
-    background: var(--white);
-    padding: 64px 48px 72px;
-    display: flex; align-items: center; gap: 80px;
-    max-width: 1400px; margin: 0 auto;
+    position: relative;
+    width: 100%; height: 560px; overflow: hidden;
+    background: #C4BDB5;
   }
-  .hero-left { flex: 1; }
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg,
+      rgba(11,22,40,0.70) 0%,
+      rgba(11,22,40,0.35) 50%,
+      transparent 100%
+    );
+  }
+  .hero-content {
+    position: absolute;
+    top: 50%; left: 64px;
+    transform: translateY(-50%);
+    max-width: 500px;
+  }
   .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--gold-pale); border-radius: 100px;
-    padding: 5px 14px; margin-bottom: 22px;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 6px; padding: 5px 13px;
+    margin-bottom: 16px;
   }
-  .badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--gold);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%,100% { opacity:1; transform:scale(1); }
-    50%      { opacity:0.35; transform:scale(0.7); }
-  }
+  .badge-stars { color: #FFD166; font-size: 10px; letter-spacing: 1px; }
   .hero-badge span {
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold);
+    font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: rgba(255,255,255,0.88);
   }
   .hero-h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(40px, 4.5vw, 60px);
-    font-weight: 300; line-height: 1.08;
-    color: var(--navy); letter-spacing: -0.01em; margin-bottom: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 300; line-height: 1.1;
+    color: #fff; letter-spacing: -0.01em;
+    margin-bottom: 12px;
   }
-  .hero-h1 em { font-style: italic; color: var(--gold); }
+  .hero-h1 .accent { font-weight: 500; font-style: italic; color: #FFE0A0; }
   .hero-sub {
-    font-size: 15px; font-weight: 300;
-    color: var(--gray-500); line-height: 1.7;
-    max-width: 460px; margin-bottom: 30px;
+    font-size: 14.5px; font-weight: 300;
+    color: rgba(255,255,255,0.68);
+    line-height: 1.65; max-width: 380px;
+    margin-bottom: 28px;
   }
-  .pills { display: flex; gap: 10px; flex-wrap: wrap; }
-  .pill {
-    font-size: 12px; font-weight: 400;
-    color: var(--navy); letter-spacing: 0.03em;
-    border: 1px solid var(--gray-200);
-    border-radius: 100px; padding: 7px 16px;
-    background: var(--off-white);
-    transition: border-color 0.2s, background 0.2s; cursor: default;
+  .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 8px; padding: 9px 16px;
+    transition: background .2s, transform .2s;
+    cursor: default;
+    opacity: 0; transform: translateY(6px);
   }
-  .pill:hover { border-color: var(--gold); background: var(--gold-pale); }
-  .hero-img {
-    width: 400px; height: 280px;
-    background: var(--gray-100); border-radius: 20px;
-    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  }
-  .hero-img span {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px; font-weight: 300;
-    color: var(--gray-400); letter-spacing: 0.08em; text-align: center;
+  .hero-pill.in { animation: pillIn .4s ease forwards; }
+  @keyframes pillIn { to { opacity:1; transform:translateY(0); } }
+  .hero-pill:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
+  .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .pill-text {
+    font-size: 12.5px; font-weight: 500;
+    color: rgba(255,255,255,0.92); white-space: nowrap;
   }
 
-  /* ══════════════════════════════════════════
-     TRUST BAR
-  ══════════════════════════════════════════ */
-  .trust-wrap {
-    border-top: 1px solid var(--gray-200);
-    border-bottom: 1px solid var(--gray-200);
+  /* ══════════════════════════════════════════════
+     STAT BAR — exact match to screenshot
+     White bg · bold numbers · vertical dividers
+  ══════════════════════════════════════════════ */
+  .stat-bar {
     background: var(--white);
-    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--g200);
+    box-shadow: 0 4px 24px rgba(11,22,40,0.07);
   }
 
-  /* Centered gold top accent */
-  .trust-wrap::after {
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 200px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  }
-
-  .trust-inner {
-    max-width: 1400px; margin: 0 auto;
-    padding: 60px 48px 52px; position: relative;
-  }
-
-  /* Eyebrow header */
-  .trust-header {
-    text-align: center; margin-bottom: 44px;
-  }
-  .eyebrow-row {
-    display: flex; align-items: center;
-    justify-content: center; gap: 14px; margin-bottom: 10px;
-  }
-  .rule {
-    height: 1px; width: 44px;
-    background: linear-gradient(90deg, transparent, var(--gold));
-  }
-  .rule.r { background: linear-gradient(90deg, var(--gold), transparent); }
-  .eyebrow-text {
-    font-size: 10px; font-weight: 500;
-    letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold);
-  }
-  .trust-h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 2.8vw, 29px);
-    font-weight: 300; color: var(--navy);
-    letter-spacing: 0.02em;
-  }
-
-  /* 6-column grid */
-  .trust-grid {
+  .stat-bar-inner {
+    max-width: 1280px; margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    border-radius: 18px; overflow: hidden;
-    border: 1px solid var(--gray-200);
-    box-shadow:
-      0 1px 3px rgba(11,22,40,0.04),
-      0 4px 20px rgba(11,22,40,0.06);
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .trust-card {
-    position: relative;
-    background: var(--white);
-    padding: 34px 16px 30px;
+  .stat-item {
     display: flex; flex-direction: column;
-    align-items: center; text-align: center;
-    gap: 9px; overflow: hidden; cursor: default;
-    transition: background 0.22s ease;
-    border-right: 1px solid var(--gray-200);
-    /* entrance: start hidden */
-    opacity: 0; transform: translateY(12px);
+    align-items: center; justify-content: center;
+    padding: 36px 24px;
+    border-right: 1px solid var(--g200);
+    position: relative;
+    opacity: 0; transform: translateY(10px);
+    transition: background .2s;
+    cursor: default;
   }
-  .trust-card:last-child { border-right: none; }
-  .trust-card:hover { background: var(--off-white); }
-  .trust-card.visible {
-    animation: riseIn 0.48s ease forwards;
-  }
-  @keyframes riseIn {
-    to { opacity:1; transform:translateY(0); }
-  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: #FAFAF8; }
+  .stat-item.visible { animation: statIn .5s ease forwards; }
+  @keyframes statIn { to { opacity:1; transform:translateY(0); } }
 
-  /* Top color bar */
-  .c-bar {
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--gold-pale), var(--gold), var(--gold-pale));
-    transform: scaleX(0); transform-origin: center;
-    transition: transform 0.32s cubic-bezier(.4,0,.2,1);
-  }
-  .trust-card:hover .c-bar { transform: scaleX(1); }
-
-  /* Icon circle */
-  .ic {
-    width: 52px; height: 52px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--gold);
-    background: var(--off-white);
-    border: 1px solid var(--gray-200);
-    transition: background 0.25s, border-color 0.25s, transform 0.25s;
-    position: relative; z-index: 1;
-  }
-  .trust-card:hover .ic {
-    background: var(--gold-pale);
-    border-color: var(--border);
-    transform: scale(1.08);
-  }
-
-  /* Stats */
-  .s-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 38px; font-weight: 600;
+  /* Matching the screenshot: VERY bold large number */
+  .stat-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 52px; font-weight: 800;
     color: var(--navy); line-height: 1;
-    letter-spacing: -0.01em;
-  }
-  .s-label {
-    font-size: 11px; font-weight: 500;
-    color: var(--navy-soft);
-    letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.3;
-  }
-  .s-sub {
-    font-size: 10.5px; font-weight: 300;
-    color: var(--gray-500);
-    letter-spacing: 0.02em; line-height: 1.5; margin-top: 1px;
+    letter-spacing: -0.02em;
   }
 
-  /* Shimmer */
-  .shim {
-    position: absolute; inset: 0;
-    background: linear-gradient(120deg, transparent 30%, rgba(184,150,90,0.06) 50%, transparent 70%);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease; pointer-events: none;
+  /* Small caps label under — exactly like screenshot */
+  .stat-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--g400); margin-top: 8px;
   }
-  .trust-card:hover .shim { transform: translateX(100%); }
 
-  /* CTA row */
-  .trust-cta {
-    display: flex; align-items: center; justify-content: center;
-    gap: 16px; margin-top: 40px; flex-wrap: wrap;
+  /* Gold underline accent on hover */
+  .stat-item::after {
+    content: '';
+    position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 40px; height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: transform .3s ease;
   }
-  .cta-msg {
-    font-size: 13px; font-weight: 300; font-style: italic;
-    color: var(--gray-500); letter-spacing: 0.03em;
-  }
-  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-200); }
-  .btn-primary {
-    font-size: 11.5px; font-weight: 500;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--white); background: var(--navy);
-    border: none; padding: 12px 32px; border-radius: 100px; cursor: pointer;
-    box-shadow: 0 4px 16px rgba(11,22,40,0.16);
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-primary:hover {
-    background: var(--navy-soft); transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(11,22,40,0.2);
-  }
-  .btn-secondary {
-    font-size: 11.5px; font-weight: 400; letter-spacing: 0.1em;
-    color: var(--gold); background: transparent;
-    border: 1.5px solid var(--border); padding: 11px 26px;
-    border-radius: 100px; cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-secondary:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .stat-item:hover::after { transform: translateX(-50%) scaleX(1); }
 
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 1100px) {
-    .trust-grid { grid-template-columns: repeat(3, 1fr); }
-    .trust-card:nth-child(3) { border-right: none; }
-    .trust-card:nth-child(4),
-    .trust-card:nth-child(5),
-    .trust-card:nth-child(6) { border-top: 1px solid var(--gray-200); }
-    .nav-links { display: none; }
-    .hero { gap: 40px; }
-    .hero-img { width: 320px; }
-  }
+  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    .trust-grid { grid-template-columns: repeat(2, 1fr); }
-    .trust-card { border-right: 1px solid var(--gray-200); }
-    .trust-card:nth-child(2n) { border-right: none; }
-    .trust-card:nth-child(n+3) { border-top: 1px solid var(--gray-200); }
-    .trust-inner { padding: 44px 20px 40px; }
-    .hero { flex-direction: column; padding: 48px 20px; gap: 32px; }
-    .hero-img { width: 100%; height: 200px; }
-  }
-  @media (max-width: 480px) {
-    nav { padding: 0 20px; }
-    .nav-book { display: none; }
+    .nav { padding: 0 20px; }
+    .nav-links, .nav-btn { display: none; }
+    .hero-content { left: 24px; right: 24px; max-width: 100%; }
+    .stat-bar-inner { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(3), .stat-item:nth-child(4) { border-top: 1px solid var(--g200); }
+    .stat-num { font-size: 40px; }
   }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <div class="logo-wrap">
-    <div class="logo-circle">HH</div>
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-ring">HH</div>
     <div>
       <div class="logo-name">Hallier Dentistry</div>
-      <div class="logo-loc">Agoura Hills, California</div>
+      <div class="logo-loc">Agoura Hills, CA</div>
     </div>
   </div>
   <ul class="nav-links">
@@ -339,174 +220,92 @@
     <li><a href="#">Contact</a></li>
     <li><a href="#">FAQ</a></li>
   </ul>
-  <button class="nav-book">Book Online</button>
+  <button class="nav-btn">Book Online</button>
 </nav>
 
 <!-- HERO -->
-<div style="border-bottom:1px solid #E6E6E2;">
-  <div class="hero">
-    <div class="hero-left">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        <span>331+ Five-Star Google Reviews</span>
+<section class="hero">
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-stars">★★★★★</span>
+      <span>331+ Five-Star Google Reviews</span>
+    </div>
+    <h1 class="hero-h1">We Build <span class="accent">Healthy</span> Smiles</h1>
+    <p class="hero-sub">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
+    <div class="hero-pills">
+      <div class="hero-pill" style="animation-delay:0ms">
+        <span class="pill-dot"></span><span class="pill-text">Financing from $99/mo</span>
       </div>
-      <h1 class="hero-h1">We Build <em>Healthy</em> Smiles</h1>
-      <p class="hero-sub">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
-      <div class="pills">
-        <span class="pill">Financing from $99/mo</span>
-        <span class="pill">Same-Day Appointments</span>
-        <span class="pill">Free Consultations</span>
+      <div class="hero-pill" style="animation-delay:100ms">
+        <span class="pill-dot"></span><span class="pill-text">Same-Day Appointments</span>
+      </div>
+      <div class="hero-pill" style="animation-delay:200ms">
+        <span class="pill-dot"></span><span class="pill-text">Free Consultations</span>
       </div>
     </div>
-    <div class="hero-img">
-      <span>Practice Photo<br><span style="font-size:11px;color:#BCBCB8;">Hallier &amp; Hallier, D.D.S.</span></span>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════ TRUST BAR ══════════════ -->
-<section class="trust-wrap" id="trust-bar">
-  <div class="trust-inner">
-
-    <div class="trust-header">
-      <div class="eyebrow-row">
-        <span class="rule"></span>
-        <span class="eyebrow-text">Why Patients Choose Us</span>
-        <span class="rule r"></span>
-      </div>
-      <h2 class="trust-h2">A Practice Built on Trust, Technology &amp; Results</h2>
-    </div>
-
-    <div class="trust-grid" id="trustGrid">
-
-      <!-- 1 · Reviews -->
-      <div class="trust-card">
-        <div class="c-bar"></div>
-        <div class="ic">
-          <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-            <path d="M20 8L22.8 16.4H31.8L24.5 21.4L27.2 29.8L20 24.8L12.8 29.8L15.5 21.4L8.2 16.4H17.2Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <span class="s-num" data-target="331" data-suffix="+">0+</span>
-        <span class="s-label">Five-Star Reviews</span>
-        <span class="s-sub">Most Reviewed Practice<br>in Agoura Hills</span>
-        <div class="shim"></div>
-      </div>
-
-      <!-- 2 · Legacy -->
-      <div class="trust-card">
-        <div class="c-bar"></div>
-        <div class="ic">
-          <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-            <path d="M20 10C20 10 12 14 12 21C12 24.866 15.582 28 20 28V10Z" fill="currentColor"/>
-            <path d="M20 10C28 14 28 21 28 21C28 24.866 24.418 28 20 28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="s-num">3<span style="font-size:20px;font-weight:300">rd</span></span>
-        <span class="s-label">Generation Legacy</span>
-        <span class="s-sub">Family of Dentists<br>Since 1972</span>
-        <div class="shim"></div>
-      </div>
-
-      <!-- 3 · Financing -->
-      <div class="trust-card">
-        <div class="c-bar"></div>
-        <div class="ic">
-          <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-            <rect x="10" y="15" width="20" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M14 15V13C14 12.448 14.448 12 15 12H25C25.552 12 26 12.448 26 13V15" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M15 21.5H25M20 18.5V24.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="s-num">$99<span style="font-size:18px;font-weight:300">/mo</span></span>
-        <span class="s-label">Financing Available</span>
-        <span class="s-sub">0% APR Options<br>No Credit Check</span>
-        <div class="shim"></div>
-      </div>
-
-      <!-- 4 · Same Day -->
-      <div class="trust-card">
-        <div class="c-bar"></div>
-        <div class="ic">
-          <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-            <circle cx="20" cy="20" r="10" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M20 13V20L25 25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="s-num" style="font-size:22px;letter-spacing:0;line-height:1.15">Same<br>Day</span>
-        <span class="s-label">Emergency Care</span>
-        <span class="s-sub">Walk-Ins Welcome<br>Open 6 Days</span>
-        <div class="shim"></div>
-      </div>
-
-      <!-- 5 · Free Consult -->
-      <div class="trust-card">
-        <div class="c-bar"></div>
-        <div class="ic">
-          <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-            <path d="M20 11C20 11 13 14.5 13 20.5C13 24 16.1 27 20 27C23.9 27 27 24 27 20.5C27 14.5 20 11 20 11Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M16.5 22C17.2 23.8 18.6 25 20 25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="s-num">Free</span>
-        <span class="s-label">Smile Consults</span>
-        <span class="s-sub">No Obligation<br>Results-Driven</span>
-        <div class="shim"></div>
-      </div>
-
-      <!-- 6 · Insurance -->
-      <div class="trust-card">
-        <div class="c-bar"></div>
-        <div class="ic">
-          <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
-            <path d="M20 10L28 13.5V21C28 25.418 24.418 29 20 29C15.582 29 12 25.418 12 21V13.5L20 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M15.5 21L18.5 24L24.5 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="s-num" data-target="200" data-suffix="+">0+</span>
-        <span class="s-label">Insurance Plans</span>
-        <span class="s-sub">Delta · Cigna · Aetna<br>&amp; Most Major Plans</span>
-        <div class="shim"></div>
-      </div>
-
-    </div><!-- /grid -->
-
-    <!-- CTA Strip -->
-    <div class="trust-cta">
-      <span class="cta-msg">Ready to experience the difference?</span>
-      <span class="dot"></span>
-      <button class="btn-primary">Book a Free Consultation</button>
-      <span class="dot"></span>
-      <button class="btn-secondary">(818) 706-6077</button>
-    </div>
-
   </div>
 </section>
 
+<!-- ══════════════ STAT BAR ══════════════ -->
+<div class="stat-bar" id="statBar">
+  <div class="stat-bar-inner">
+
+    <div class="stat-item" style="animation-delay:0ms">
+      <span class="stat-num" data-target="331" data-suffix="+">0+</span>
+      <span class="stat-label">5-Star Reviews</span>
+    </div>
+
+    <div class="stat-item" style="animation-delay:80ms">
+      <span class="stat-num" data-target="20" data-suffix="+">0+</span>
+      <span class="stat-label">Years Experience</span>
+    </div>
+
+    <div class="stat-item" style="animation-delay:160ms">
+      <span class="stat-num">15K+</span>
+      <span class="stat-label">Smiles Created</span>
+    </div>
+
+    <div class="stat-item" style="animation-delay:240ms">
+      <span class="stat-num" data-target="99" data-suffix="%">0%</span>
+      <span class="stat-label">Satisfaction Rate</span>
+    </div>
+
+  </div>
+</div>
+
 <script>
-  const cards    = document.querySelectorAll('.trust-card');
+  // Pills animate on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.hero-pill').forEach((el, i) => {
+      setTimeout(() => el.classList.add('in'), 400 + i * 100);
+    });
+  });
+
+  // Stat bar: animate + count up on scroll into view
+  const items    = document.querySelectorAll('.stat-item');
   const counters = document.querySelectorAll('[data-target]');
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      cards.forEach((c, i) => setTimeout(() => c.classList.add('visible'), i * 70));
-      counters.forEach(el => {
-        const max    = parseInt(el.dataset.target);
-        const suffix = el.dataset.suffix || '';
-        let val = 0;
-        const step = max / (1300 / 16);
-        const t = setInterval(() => {
-          val += step;
-          if (val >= max) { el.textContent = max + suffix; clearInterval(t); }
-          else el.textContent = Math.floor(val) + suffix;
-        }, 16);
-      });
-      io.disconnect();
-    });
-  }, { threshold: 0.2 });
+  function countUp(el) {
+    const max = parseInt(el.dataset.target);
+    const sfx = el.dataset.suffix || '';
+    let v = 0;
+    const step = max / (900 / 16);
+    const t = setInterval(() => {
+      v += step;
+      if (v >= max) { el.textContent = max + sfx; clearInterval(t); }
+      else el.textContent = Math.floor(v) + sfx;
+    }, 16);
+  }
 
-  io.observe(document.getElementById('trust-bar'));
+  const io = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) return;
+    items.forEach((el, i) => setTimeout(() => el.classList.add('visible'), i * 80));
+    counters.forEach(countUp);
+    io.disconnect();
+  }, { threshold: 0.4 });
+
+  io.observe(document.getElementById('statBar'));
 </script>
 </body>
 </html>
