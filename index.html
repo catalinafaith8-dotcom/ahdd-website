@@ -54,14 +54,14 @@
   .hero {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: 560px;
     overflow: hidden;
   }
   .hero-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 55% 20%;
+    object-position: 50% 30%;
     display: block;
   }
 
@@ -85,20 +85,22 @@
     color: var(--navy);
   }
 
-  /* ── LEFT SIDE: title + sub + pills ── */
+  /* ── RIGHT SIDE: title + sub + pills ── */
   .hero-right {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     bottom: 0;
-    width: 48%;
+    width: 44%;
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 36px 32px 36px 48px;
-    background: none;
+    padding: 36px 52px 36px 40px;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 
   /* Headline */
@@ -107,11 +109,10 @@
     font-size: clamp(26px, 3vw, 38px);
     font-weight: 700;
     line-height: 1.1;
-    color: #fff;
+    color: var(--navy);
     letter-spacing: -0.01em;
     margin-bottom: 14px;
     white-space: nowrap;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3);
   }
   .rotating-word {
     font-style: italic;
@@ -126,18 +127,17 @@
 
   .hero-sub {
     font-size: 13px; font-weight: 300;
-    color: rgba(255,255,255,0.92);
+    color: var(--g600);
     line-height: 1.7; margin-bottom: 20px;
     max-width: 360px;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
 
   /* Trust pills */
   .trust-pills { display: flex; gap: 8px; flex-wrap: wrap; }
   .trust-pill {
     display: inline-flex; align-items: center;
-    background: rgba(255,255,255,0.90);
-    border: 1px solid rgba(255,255,255,0.95);
+    background: #f0f8ff;
+    border: 1px solid rgba(74,159,212,0.3);
     border-radius: 7px; padding: 7px 14px;
     font-size: 11.5px; font-weight: 500;
     color: var(--navy);
@@ -207,10 +207,11 @@
   @media (max-width: 768px) {
     .nav { padding: 0 20px; }
     .nav-btn { display: none; }
-    .hero { height: 420px; }
+    .hero { height: 560px; }
     .hero-right {
       width: 100%;
-      background: none;
+      right: 0;
+      background: rgba(255,255,255,0.80);
       justify-content: flex-end;
       padding: 0 20px 28px;
     }
