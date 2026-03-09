@@ -61,10 +61,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 55% 15%;
+    object-position: 55% 20%;
     display: block;
-    transform: scale(0.88);
-    transform-origin: center 20%;
   }
 
   /* ── TOP LEFT: review badge ── */
@@ -87,7 +85,7 @@
     color: var(--navy);
   }
 
-  /* ── RIGHT SIDE: title + sub + pills ── */
+  /* ── LEFT SIDE: title + sub + pills ── */
   .hero-right {
     position: absolute;
     top: 0;
@@ -100,12 +98,7 @@
     align-items: flex-start;
     justify-content: center;
     padding: 36px 32px 36px 48px;
-    background: linear-gradient(
-      to right,
-      rgba(11,22,40,0.78) 0%,
-      rgba(11,22,40,0.52) 65%,
-      transparent 100%
-    );
+    background: none;
   }
 
   /* Headline */
@@ -118,6 +111,7 @@
     letter-spacing: -0.01em;
     margin-bottom: 14px;
     white-space: nowrap;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3);
   }
   .rotating-word {
     font-style: italic;
@@ -132,9 +126,10 @@
 
   .hero-sub {
     font-size: 13px; font-weight: 300;
-    color: rgba(255,255,255,0.78);
+    color: rgba(255,255,255,0.92);
     line-height: 1.7; margin-bottom: 20px;
     max-width: 360px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
 
   /* Trust pills */
@@ -215,7 +210,7 @@
     .hero { height: 420px; }
     .hero-right {
       width: 100%;
-      background: linear-gradient(to top, rgba(11,22,40,0.78) 0%, transparent 55%);
+      background: none;
       justify-content: flex-end;
       padding: 0 20px 28px;
     }
