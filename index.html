@@ -92,7 +92,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    left: 62%;
+    left: 55%;
     z-index: 4;
     display: flex;
     flex-direction: column;
@@ -102,7 +102,7 @@
     background: none;
   }
 
-  /* Headline — line1 never wraps, Smiles always line2 via <br> */
+  /* Headline */
   .hero-h1 {
     font-family: 'Outfit', sans-serif;
     font-size: clamp(28px, 2.8vw, 40px);
@@ -111,6 +111,14 @@
     color: var(--navy);
     letter-spacing: -0.02em;
     margin-bottom: 16px;
+    white-space: normal;
+  }
+  .hero-h1-top {
+    display: block;
+    white-space: nowrap;
+  }
+  .hero-h1-bottom {
+    display: block;
     white-space: nowrap;
   }
 
@@ -501,7 +509,7 @@
 
   <!-- RIGHT SIDE: headline + sub + pills -->
   <div class="hero-right">
-    <h1 class="hero-h1">We Build&nbsp;<span class="rotating-word" id="heroWord"></span><br>Smiles</h1>
+    <h1 class="hero-h1"><span class="hero-h1-top">We Build&nbsp;<span class="rotating-word" id="heroWord"></span></span><span class="hero-h1-bottom">Smiles</span></h1>
     <p class="hero-sub">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
     <div class="trust-pills" id="trustPills">
       <div class="trust-pill" style="animation-delay:0ms">Financing from $99/mo</div>
