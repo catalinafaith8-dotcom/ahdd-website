@@ -86,49 +86,51 @@
     color: var(--navy);
   }
 
-  /* RIGHT SIDE: title + sub + pills — no bg, shadow only */
+  /* RIGHT SIDE: firmly in right open-wall zone */
   .hero-right {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 36%;
+    left: 62%;
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 0 48px 0 20px;
+    padding: 0 40px;
     background: none;
   }
 
-  /* Headline */
+  /* Headline — line1 never wraps, Smiles always line2 via <br> */
   .hero-h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: clamp(38px, 3.8vw, 56px);
+    font-size: clamp(28px, 2.8vw, 40px);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.2;
     color: var(--navy);
     letter-spacing: -0.02em;
     margin-bottom: 16px;
-  }
-  .hero-h1-line1 {
-    display: block;
     white-space: nowrap;
   }
-  .hero-h1-line2 {
-    display: block;
-  }
+
   .rotating-word {
     font-style: italic;
     font-weight: 700;
     color: #4A9FD4;
-    display: inline;
-    border-right: 2px solid #4A9FD4;
-    padding-right: 2px;
+    display: inline-block;
+    vertical-align: baseline;
+    border-right: 3px solid #4A9FD4;
+    padding-right: 1px;
+    animation: blink 0.75s step-end infinite;
   }
   .rotating-word.cursor-off {
     border-right-color: transparent;
+    animation: none;
+  }
+  @keyframes blink {
+    0%, 100% { border-right-color: #4A9FD4; }
+    50%       { border-right-color: transparent; }
   }
 
   .hero-sub {
@@ -219,7 +221,7 @@
     .nav-btn { display: none; }
     .hero { height: 560px; }
     .hero-right {
-      width: 100%;
+      left: 0;
       justify-content: flex-end;
       padding: 0 20px 32px;
     }
@@ -499,7 +501,7 @@
 
   <!-- RIGHT SIDE: headline + sub + pills -->
   <div class="hero-right">
-    <h1 class="hero-h1"><span class="hero-h1-line1">We Build <span class="rotating-word" id="heroWord"></span></span><span class="hero-h1-line2">Smiles</span></h1>
+    <h1 class="hero-h1">We Build&nbsp;<span class="rotating-word" id="heroWord"></span><br>Smiles</h1>
     <p class="hero-sub">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
     <div class="trust-pills" id="trustPills">
       <div class="trust-pill" style="animation-delay:0ms">Financing from $99/mo</div>
