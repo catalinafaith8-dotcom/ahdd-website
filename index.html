@@ -86,40 +86,40 @@
     color: var(--navy);
   }
 
-  /* RIGHT SIDE: firmly in right open-wall zone */
+  /* ── HERO RIGHT PANEL ── */
   .hero-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 55%;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 60% !important;
+    width: auto !important;
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 0 40px;
+    padding: 0 44px;
     background: none;
   }
 
   /* Headline */
   .hero-h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: clamp(28px, 2.8vw, 40px);
+    font-size: clamp(26px, 2.6vw, 38px);
     font-weight: 700;
     line-height: 1.2;
     color: var(--navy);
     letter-spacing: -0.02em;
-    margin-bottom: 16px;
-    white-space: normal;
+    margin-bottom: 14px;
   }
   .hero-h1-top {
-    display: block;
-    white-space: nowrap;
+    display: block !important;
+    white-space: nowrap !important;
   }
   .hero-h1-bottom {
-    display: block;
-    white-space: nowrap;
+    display: block !important;
+    white-space: nowrap !important;
   }
 
   .rotating-word {
