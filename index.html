@@ -92,29 +92,29 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: 38%;
+    width: 36%;
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 0 48px 0 24px;
+    padding: 0 48px 0 20px;
     background: none;
   }
 
   /* Headline */
   .hero-h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: clamp(30px, 3.2vw, 48px);
+    font-size: clamp(38px, 3.8vw, 56px);
     font-weight: 700;
-    line-height: 1.15;
+    line-height: 1.1;
     color: var(--navy);
     letter-spacing: -0.02em;
     margin-bottom: 16px;
-    white-space: normal;
   }
   .hero-h1-line1 {
     display: block;
+    white-space: nowrap;
   }
   .hero-h1-line2 {
     display: block;
@@ -213,7 +213,6 @@
   /*  RESPONSIVE  */
   @media (max-width: 1024px) {
     .nav-links { display: none; }
-    .hero-right { width: 60%; }
   }
   @media (max-width: 768px) {
     .nav { padding: 0 20px; }
