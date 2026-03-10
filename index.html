@@ -54,26 +54,15 @@
   .hero {
     position: relative;
     width: 100%;
-<<<<<<< HEAD
-=======
-    height: 684px;
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
     overflow: hidden;
     background: #f8f7f5;
   }
   .hero-photo {
     width: 100%;
-<<<<<<< HEAD
     height: auto;
     display: block;
     object-fit: unset;
     /* Full image, no crop, no zoom */
-=======
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: 50% 50%;
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
   }
 
   /*  TOP LEFT: review badge  */
@@ -96,7 +85,6 @@
     color: var(--navy);
   }
 
-<<<<<<< HEAD
   /* RIGHT SIDE: title + sub + pills — no bg, text-shadow only */
   .hero-right {
     position: absolute;
@@ -104,16 +92,6 @@
     right: 0;
     bottom: 0;
     left: 60%;
-=======
-  /* ── HERO RIGHT PANEL ── */
-  .hero-right {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 60% !important;
-    width: auto !important;
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
     z-index: 4;
     display: flex;
     flex-direction: column;
@@ -134,7 +112,6 @@
     margin-bottom: 14px;
   }
   .hero-h1-top {
-<<<<<<< HEAD
     display: block;
     white-space: nowrap;
   }
@@ -142,16 +119,6 @@
     display: block;
     white-space: nowrap;
   }
-=======
-    display: block !important;
-    white-space: nowrap !important;
-  }
-  .hero-h1-bottom {
-    display: block !important;
-    white-space: nowrap !important;
-  }
-
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
   .rotating-word {
     font-style: italic;
     font-weight: 700;
@@ -173,39 +140,22 @@
 
   .hero-sub {
     font-size: 14px; font-weight: 400;
-<<<<<<< HEAD
     color: #333;
     line-height: 1.7; margin-bottom: 20px;
     max-width: 360px;
     text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-=======
-    color: #444;
-    line-height: 1.65; margin-bottom: 22px;
-    max-width: 380px;
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
   }
 
   /* Trust pills */
   .trust-pills { display: flex; gap: 8px; flex-wrap: wrap; }
   .trust-pill {
     display: inline-flex; align-items: center;
-<<<<<<< HEAD
     background: rgba(255,255,255,0.88);
     border: 1px solid rgba(255,255,255,0.7);
     border-radius: 7px; padding: 7px 14px;
     font-size: 11.5px; font-weight: 500;
     color: var(--navy);
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-=======
-    background: rgba(255,255,255,0.72);
-    border: 1px solid rgba(200,210,220,0.8);
-    border-radius: 7px; padding: 8px 16px;
-    font-size: 12px; font-weight: 500;
-    color: var(--navy);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
     backdrop-filter: blur(6px);
     box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     white-space: nowrap;
@@ -221,17 +171,9 @@
 
   /*  STAT BAR  */
   .stat-bar {
-<<<<<<< HEAD
     background: var(--white);
     border-top: 1px solid var(--g200);
     border-bottom: 1px solid var(--g200);
-=======
-    background: #ffffff;
-    border-top: 1px solid var(--g200);
-    border-bottom: 1px solid var(--g200);
-    position: relative;
-    z-index: 2;
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
   }
   .stat-bar-inner {
     display: grid;
@@ -281,15 +223,9 @@
     .nav-btn { display: none; }
     .hero { height: 560px; }
     .hero-right {
-<<<<<<< HEAD
       width: 100%;
       bottom: 24px;
       padding: 0 20px;
-=======
-      left: 0;
-      justify-content: flex-end;
-      padding: 0 20px 32px;
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
     }
     .review-badge { top: 16px; left: 16px; }
     .stat-bar-inner { grid-template-columns: repeat(2, 1fr); }
@@ -614,10 +550,6 @@
       i++;
       if (i === word.length) {
         clearInterval(typeInterval);
-<<<<<<< HEAD
-=======
-        // Pause fully typed, then erase
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
         setTimeout(() => eraseWord(callback), 1800);
       }
     }, 80);
@@ -641,10 +573,6 @@
     typeWord(words[wordIdx], cycleWords);
   }
 
-<<<<<<< HEAD
-=======
-  // Start
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
   typeWord(words[wordIdx], cycleWords);
 
   window.addEventListener('load', () => {
@@ -785,8 +713,4 @@
 </script>
 
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 927a445a8ed25926882fc66ee92e8ed282986aa5
