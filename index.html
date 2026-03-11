@@ -910,5 +910,363 @@
   </div>
 </section>
 
+
+
+
+
+<!-- ===== REVIEWS CAROUSEL ===== -->
+<style>
+  .reviews-section {
+    background: #f8f9fb;
+    padding: 80px 0 72px;
+    border-top: 1px solid #E4E4E0;
+    overflow: hidden;
+  }
+  .reviews-header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding: 0 48px;
+  }
+  .reviews-eyebrow {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #4A9FD4;
+    margin-bottom: 12px;
+  }
+  .reviews-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(26px, 2.6vw, 38px);
+    font-weight: 700;
+    color: #0B1628;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .reviews-heading em { font-style: italic; color: #4A9FD4; }
+  .reviews-subhead {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    color: #6B6B66;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .reviews-stars-header { color: #F5A623; font-size: 18px; letter-spacing: 2px; }
+
+  .reviews-track-outer {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+  .reviews-track-outer::before,
+  .reviews-track-outer::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .reviews-track-outer::before { left: 0; background: linear-gradient(to right, #f8f9fb 40%, transparent); }
+  .reviews-track-outer::after  { right: 0; background: linear-gradient(to left, #f8f9fb 40%, transparent); }
+
+  .reviews-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: scrollReviews 65s linear infinite;
+    padding: 8px 0 16px;
+  }
+  .reviews-track:hover { animation-play-state: paused; }
+
+  @keyframes scrollReviews {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .review-card {
+    background: #ffffff;
+    border: 1px solid #E4E4E0;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s;
+  }
+  .review-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.10); }
+  .review-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .review-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .review-avatar-initial {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .review-meta { flex: 1; min-width: 0; }
+  .review-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0B1628;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .review-date {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    color: #ADADAA;
+    margin-top: 2px;
+  }
+  .review-g-logo {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .review-stars { color: #F5A623; font-size: 15px; letter-spacing: 1px; line-height: 1; }
+  .review-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.72;
+    color: #444;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .reviews-cta-row {
+    text-align: center;
+    margin-top: 44px;
+    padding: 0 48px;
+  }
+  .reviews-cta-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    background: #0B1628;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 32px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .reviews-cta-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+</style>
+
+<section class="reviews-section" id="reviews">
+  <div class="reviews-header">
+    <div class="reviews-eyebrow">Patient Reviews</div>
+    <h2 class="reviews-heading">Don't Take Our Word for It —<br><em>Take Theirs</em></h2>
+    <div class="reviews-subhead">
+      <span class="reviews-stars-header">★★★★★</span>
+      331+ Five-Star Google Reviews
+    </div>
+  </div>
+
+  <div class="reviews-track-outer">
+    <div class="reviews-track" id="reviewsTrack">
+
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#E53935;">P</div>
+          <div class="review-meta">
+            <div class="review-name">Peter Hanes</div>
+            <div class="review-date">21 hours ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Dentist was great, staff were great. I was treated well — they were efficient and effective at removing my tooth. I felt no pain and they were done in less than 10 minutes.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#5C6BC0;">A</div>
+          <div class="review-meta">
+            <div class="review-name">Amanda Clarke</div>
+            <div class="review-date">4 weeks ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Dr. Matian is a breath of fresh air! Gregarious, energetic, empathetic and attentive, Dr. Matian put me at ease within seconds of my first appointment. His confident reassurance reduced my discomfort so much that I was absolutely shocked when he said that he was finished. I absolutely recommend Dr. Matian.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#43A047;">E</div>
+          <div class="review-meta">
+            <div class="review-name">Eva Sotere</div>
+            <div class="review-date">1 month ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Dr Matian is the best dentist!! My teeth have never looked better!! He is honest, caring and takes the time to explain everything in detail so you feel comfortable and confident about your treatment. The entire staff is great too — very friendly and warm. Eric is also amazing and very caring.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <img class="review-avatar" src="data:image/png;base64,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" alt="reviewer" />
+          <div class="review-meta">
+            <div class="review-name">Stephanie Ashford</div>
+            <div class="review-date">1 month ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">The care here is truly exceptional. From the moment I walked in I was made to feel welcome and at ease. Highly recommend this practice to anyone looking for a dentist who genuinely cares about their patients.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <img class="review-avatar" src="data:image/png;base64,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" alt="reviewer" />
+          <div class="review-meta">
+            <div class="review-name">Charles Williams</div>
+            <div class="review-date">8 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">My family has been patients of Agoura Hills Dental Designs for decades. The professionalism shown by the doctors and staff is unmatched. We recommend this facility highly!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#00897B;">S</div>
+          <div class="review-meta">
+            <div class="review-name">Simran Malik</div>
+            <div class="review-date">3 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">I had a terrible dental experience a few years ago and found this office afterward — and I've LOVED coming to the dentist ever since. Dr. Matian kindly fit me in right away, made the whole experience so smooth. I had pain for weeks after my old fillings, but this time I feel perfectly fine just a few hours later.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#7B1FA2;">M</div>
+          <div class="review-meta">
+            <div class="review-name">Mar Zi</div>
+            <div class="review-date">4 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Had a dental cleaning session here with Heidi and it was a great experience — one of the best dental cleaning experiences I ever had. Absolutely recommend her and this place to anyone who is looking for quality work.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#8E24AA;">E</div>
+          <div class="review-meta">
+            <div class="review-name">Erfan Safaripoor</div>
+            <div class="review-date">4 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">I've been seeing Dr. Matian for my dental care, and I couldn't be happier. He is extremely professional, caring, and takes the time to explain everything clearly. The entire team makes you feel comfortable from the moment you walk in, and the office is modern, clean, and welcoming.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#00ACC1;">S</div>
+          <div class="review-meta">
+            <div class="review-name">Seandiz Shadkhast</div>
+            <div class="review-date">5 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">From cleaning and check up to cavity fillings, Dr. David Matian and his entire team will go above and beyond to make sure you are comfortable and taken care of. No more dentist anxiety!!!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#3949AB;">E</div>
+          <div class="review-meta">
+            <div class="review-name">Edmond Sasooness</div>
+            <div class="review-date">5 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">I had the pleasure of working with Dr. David Matian and his staff and I never had a better experience in a dental office. Everything was organized, clean and everyone was very helpful. I usually can not stand going to the dentist but this made me feel so much better. Thank you Dr. Matian and his team!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#546E7A;">M</div>
+          <div class="review-meta">
+            <div class="review-name">Millad R.</div>
+            <div class="review-date">October 2025</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Dr. Matian is the best dentist I've ever had! The office is welcoming, the staff is friendly, and the care is always gentle and thorough. I actually look forward to my appointments now — highly recommend!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#F57C00;">A</div>
+          <div class="review-meta">
+            <div class="review-name">Ariel Termechi</div>
+            <div class="review-date">3 months ago</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">I came to Dr. Matian's office for an implant consult and had an awesome experience! The staff was super friendly, and the office is modern with a brand new CT machine, so I didn't have to go anywhere else for scans. Dr. Matian explained everything clearly and made me feel really comfortable. Highly recommend!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-card-top">
+          <div class="review-avatar-initial" style="background:#F9A825;">Z</div>
+          <div class="review-meta">
+            <div class="review-name">Verified Patient</div>
+            <div class="review-date">November 2025</div>
+          </div>
+          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">I've been putting off dental work due to bad past experiences, but Dr. Matian completely changed my idea of a dentist. No rushing, no judgment. He walked me through the treatment plan with visuals on a screen. During the procedure he checked in multiple times to make sure I was comfortable. I actually don't dread my follow-up appointment — which says everything.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-cta-row">
+    <button class="reviews-cta-btn" onclick="window.open('https://g.page/r/agoura-hills-dental-designs/review','_blank')">Read All 331+ Reviews on Google</button>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const track = document.getElementById('reviewsTrack');
+    if (track) {
+      // Duplicate all cards for seamless infinite loop
+      track.innerHTML += track.innerHTML;
+    }
+  })();
+</script>
+
 </body>
 </html>
