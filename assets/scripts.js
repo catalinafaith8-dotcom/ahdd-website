@@ -1,4 +1,3 @@
-
   const words = ['Healthy','Happy','Radiant','Beautiful'];
   let wordIdx = 0;
   const el = document.getElementById('heroWord');
@@ -64,9 +63,6 @@
   }, { threshold: 0.4 });
   io.observe(document.getElementById('statBar'));
 
-
-
-  // Services card reveal on scroll
   const svcObserver = new IntersectionObserver(entries => {
     if (!entries[0].isIntersecting) return;
     document.querySelectorAll('.svc-card').forEach((card, i) => {
@@ -77,12 +73,9 @@
   const svcGrid = document.getElementById('svcGrid');
   if (svcGrid) svcObserver.observe(svcGrid);
 
-
-
   (function() {
     const track = document.getElementById('reviewsTrack');
     if (track) {
-      // Duplicate all cards for seamless infinite loop
       track.innerHTML += track.innerHTML;
     }
   })();
