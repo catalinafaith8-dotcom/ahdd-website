@@ -599,7 +599,10 @@
   border-radius: 18px;
   padding: 28px 26px 24px;
   box-shadow: 0 4px 24px rgba(0,0,0,.07);
-  position: relative; overflow: hidden;
+  position: relative; overflow: visible;
+}
+.ins-card2::before {
+  border-radius: 18px 18px 0 0;
 }
 .ins-card2::before {
   content: '';
@@ -1407,7 +1410,7 @@
   });
 
   /* ── CHATBOT ── */
-  var API_URL = 'https://www.agourahillsdentaldesigns.com/_functions/chatbot';
+  var API_URL = '/api/chatbot';
   var PROMPT_ID = 'pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1';
   var PROMPT_VER = '6';
   var chatHistory = [], isSending = false, chatInited = false;
