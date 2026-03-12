@@ -1082,7 +1082,7 @@
 </section>
 
 <!-- ===== CHATBOT ===== -->
-<button id="ahdd-chat-toggle" title="Chat with us">
+<button id="ahdd-chat-toggle" title="Chat with us" onclick="ahddChatOpen()">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="#fff" opacity=".9"/>
     <circle cx="8.5" cy="11" r="1.2" fill="#0B1628"/>
@@ -1107,18 +1107,18 @@
       </div>
     </div>
     <div class="chat-header-btns">
-      <button class="chat-hbtn" id="chat-min" title="Minimize">
+      <button class="chat-hbtn" id="chat-min" title="Minimize" onclick="ahddChatClose()">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
-      <button class="chat-hbtn" id="chat-close" title="Close">
+      <button class="chat-hbtn" id="chat-close" title="Close" onclick="ahddChatClose()">
         <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1L10 10M10 1L1 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
     </div>
   </div>
   <div id="chat-msgs"></div>
   <div id="chat-input-area">
-    <input type="text" id="chat-input" placeholder="Type a message…" autocomplete="off"/>
-    <button id="chat-send">
+    <input type="text" id="chat-input" placeholder="Type a message…" autocomplete="off" onkeypress="if(event.key==='Enter')ahddChatSend()"/>
+    <button id="chat-send" onclick="ahddChatSend()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
@@ -1410,34 +1410,18 @@
   var API_URL = 'https://www.agourahillsdentaldesigns.com/_functions/chatbot';
   var PROMPT_ID = 'pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1';
   var PROMPT_VER = '6';
-
   var chatHistory = [], isSending = false, chatInited = false;
 
   var QUICK = [
-    {
-      label: 'Schedule a Visit',
-      icon: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>',
-      msg: 'I would like to schedule an appointment'
-    },
-    {
-      label: 'Ask a Question',
-      icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>',
-      msg: 'I have a question about dental services'
-    },
-    {
-      label: 'Insurance Info',
-      icon: '<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>',
-      msg: 'I have a question about insurance and coverage'
-    },
-    {
-      label: 'Hours & Location',
-      icon: '<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>',
-      msg: 'What are your office hours and location?'
-    }
+    { label: 'Schedule a Visit', icon: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>', msg: 'I would like to schedule an appointment' },
+    { label: 'Ask a Question', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>', msg: 'I have a question about dental services' },
+    { label: 'Insurance Info', icon: '<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>', msg: 'I have a question about insurance and coverage' },
+    { label: 'Hours & Location', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>', msg: 'What are your office hours and location?' }
   ];
 
-  function chatAddMsg(text, isBot) {
+  function _chatAddMsg(text, isBot) {
     var msgs = document.getElementById('chat-msgs');
+    if (!msgs) return;
     var d = document.createElement('div');
     d.className = 'chat-msg ' + (isBot ? 'bot' : 'user');
     d.textContent = text;
@@ -1445,11 +1429,11 @@
     msgs.scrollTop = msgs.scrollHeight;
   }
 
-  function chatAddQuick() {
+  function _chatAddQuick() {
     var msgs = document.getElementById('chat-msgs');
+    if (!msgs) return;
     var grid = document.createElement('div');
-    grid.className = 'chat-quick-grid';
-    grid.id = 'chat-quick';
+    grid.className = 'chat-quick-grid'; grid.id = 'chat-quick';
     QUICK.forEach(function(q) {
       var btn = document.createElement('button');
       btn.className = 'chat-qbtn';
@@ -1457,7 +1441,7 @@
       btn.onclick = function() {
         var g = document.getElementById('chat-quick');
         if (g) g.remove();
-        chatSend(q.msg);
+        window.ahddChatSend(q.msg);
       };
       grid.appendChild(btn);
     });
@@ -1465,60 +1449,64 @@
     msgs.scrollTop = msgs.scrollHeight;
   }
 
-  function chatAddTyping() {
+  function _chatAddTyping() {
     var msgs = document.getElementById('chat-msgs');
+    if (!msgs) return;
     var d = document.createElement('div');
     d.className = 'chat-typing'; d.id = 'chat-typing';
     d.innerHTML = '<span></span><span></span><span></span>';
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
   }
 
-  function chatRemoveTyping() {
+  function _chatRemoveTyping() {
     var el = document.getElementById('chat-typing');
     if (el) el.remove();
   }
 
-  function chatWelcome() {
+  function _chatWelcome() {
     if (chatInited) return;
     chatInited = true;
     var msgs = document.getElementById('chat-msgs');
+    if (!msgs) return;
     while (msgs.firstChild) msgs.removeChild(msgs.firstChild);
-    chatAddTyping();
+    _chatAddTyping();
     setTimeout(function() {
-      chatRemoveTyping();
-      chatAddMsg("Hi! I'm your Patient Concierge. How can I help you today?", true);
-      chatAddQuick();
+      _chatRemoveTyping();
+      _chatAddMsg("Hi! I'm your Patient Concierge. How can I help you today?", true);
+      _chatAddQuick();
     }, 550);
   }
 
-  function chatOpen() {
+  window.ahddChatOpen = function() {
     var w = document.getElementById('ahdd-chat-widget');
     var t = document.getElementById('ahdd-chat-toggle');
+    if (!w || !t) return;
     w.classList.add('open');
     t.classList.add('hidden');
-    chatWelcome();
-    setTimeout(function() { document.getElementById('chat-input').focus(); }, 300);
-  }
+    _chatWelcome();
+    setTimeout(function() { var i = document.getElementById('chat-input'); if(i) i.focus(); }, 300);
+  };
 
-  function chatClose() {
-    document.getElementById('ahdd-chat-widget').classList.remove('open');
-    document.getElementById('ahdd-chat-toggle').classList.remove('hidden');
-  }
+  window.ahddChatClose = function() {
+    var w = document.getElementById('ahdd-chat-widget');
+    var t = document.getElementById('ahdd-chat-toggle');
+    if (w) w.classList.remove('open');
+    if (t) t.classList.remove('hidden');
+  };
 
-  function chatSend(overrideText) {
+  window.ahddChatSend = function(overrideText) {
     var input = document.getElementById('chat-input');
-    var text = overrideText || input.value.trim();
+    var text = (typeof overrideText === 'string') ? overrideText : (input ? input.value.trim() : '');
     if (!text || isSending) return;
     var qg = document.getElementById('chat-quick');
     if (qg) qg.remove();
     isSending = true;
-    document.getElementById('chat-send').disabled = true;
-    input.value = '';
-    chatAddMsg(text, false);
+    var sendBtn = document.getElementById('chat-send');
+    if (sendBtn) sendBtn.disabled = true;
+    if (input) input.value = '';
+    _chatAddMsg(text, false);
     chatHistory.push({ role: 'user', content: [{ type: 'input_text', text: text }] });
-    chatAddTyping();
-
+    _chatAddTyping();
     fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1526,42 +1514,20 @@
     })
     .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
     .then(function(d) {
-      chatRemoveTyping();
-      var reply = d.reply || 'Please call us at (818) 706-6077 and we'll be happy to help.';
-      chatAddMsg(reply, true);
+      _chatRemoveTyping();
+      var reply = d.reply || "Please call us at (818) 706-6077 and we'll be happy to help.";
+      _chatAddMsg(reply, true);
       chatHistory.push({ role: 'assistant', content: [{ type: 'output_text', text: reply }] });
     })
     .catch(function() {
-      chatRemoveTyping();
-      chatAddMsg('Having trouble connecting. Please call (818) 706-6077.', true);
+      _chatRemoveTyping();
+      _chatAddMsg('Having trouble connecting. Please call (818) 706-6077.', true);
     })
     .finally(function() {
       isSending = false;
-      document.getElementById('chat-send').disabled = false;
+      if (sendBtn) sendBtn.disabled = false;
     });
-  }
-
-  function bindChat() {
-    var toggle = document.getElementById('ahdd-chat-toggle');
-    var closeBtn = document.getElementById('chat-close');
-    var minBtn = document.getElementById('chat-min');
-    var sendBtn = document.getElementById('chat-send');
-    var inputEl = document.getElementById('chat-input');
-    if (!toggle) return;
-    toggle.onclick = chatOpen;
-    closeBtn.onclick = chatClose;
-    minBtn.onclick = chatClose;
-    sendBtn.onclick = function() { chatSend(); };
-    inputEl.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') chatSend();
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bindChat);
-  } else {
-    bindChat();
-  }
+  };
 
 })();
 </script>
