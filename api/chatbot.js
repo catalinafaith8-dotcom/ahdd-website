@@ -1,10 +1,16 @@
-// API: POST /api/chatbot
-// AI Patient Concierge (OpenAI)
-
-const OPENAI_PROMPT_ID = 'pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1';
-const OPENAI_PROMPT_VERSION = '6';
-
 export const config = { runtime: 'edge' };
+
+const SYSTEM_PROMPT = `You are a friendly Patient Concierge for Agoura Hills Dental Designs, a premium dental practice in Agoura Hills, CA run by Drs. Shawn and David Matian.
+
+Your role is to help patients with:
+- Scheduling appointments (direct them to call (818) 706-6077 or book online)
+- Questions about dental services (Invisalign, veneers, implants, whitening, cleanings, emergency care, cosmetic and general dentistry)
+- Insurance questions (they accept most PPO plans through Careington and Connection Dental networks, Delta Dental PPO, Delta Dental Premier, United Concordia TRICARE)
+- Office hours: Monday–Friday 8am–5pm, Saturday by appointment
+- Location: 30320 Canwood St Suite 5, Agoura Hills, CA 91301
+- Technology: 3D CBCT imaging, VideaAI, iTero scanner, digital X-rays
+
+Always be warm, professional, and concise. If you don't know something specific, offer to connect them with the team by calling (818) 706-6077. Never make up clinical information. Encourage booking a free consultation for treatment questions.`;
 
 export default async function handler(req) {
   const headers = {
@@ -26,62 +32,58 @@ export default async function handler(req) {
     const body = await req.json();
 
     if (!body.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
-      return new Response(JSON.stringify({ error: 'Messages array is required' }), { status: 400, headers });
+      return new Response(JSON.stringify({ error: 'Messages required' }), { status: 400, headers });
     }
 
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-      console.error('OPENAI_API_KEY not set');
-      return new Response(JSON.stringify({ error: 'API configuration error', reply: 'I apologize, but I\'m having trouble connecting right now. Please call us at (818) 706-6077 for immediate assistance.' }), { status: 500, headers });
+      return new Response(JSON.stringify({
+        reply: "I'm having trouble connecting right now. Please call us at (818) 706-6077 for assistance."
+      }), { status: 200, headers });
     }
 
-    const promptId = body.promptId || OPENAI_PROMPT_ID;
-    const promptVersion = body.promptVersion || OPENAI_PROMPT_VERSION;
+    // Convert message history to OpenAI chat format
+    const messages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...body.messages.map(m => ({
+        role: m.role,
+        content: Array.isArray(m.content)
+          ? m.content.map(c => c.text || '').join('')
+          : m.content
+      }))
+    ];
 
-    const openaiResponse = await fetch('https://api.openai.com/v1/responses', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: { id: promptId, version: promptVersion },
-        input: body.messages,
-        text: { format: { type: 'text' } },
-        store: true,
+        model: 'gpt-4o-mini',
+        messages,
+        max_tokens: 300,
+        temperature: 0.7,
       }),
     });
 
-    if (!openaiResponse.ok) {
-      const errorData = await openaiResponse.json();
-      console.error('OpenAI API error:', JSON.stringify(errorData));
-      return new Response(JSON.stringify({ error: 'AI service error', reply: 'I apologize, but I\'m having trouble connecting right now. Please call us at (818) 706-6077 for immediate assistance.' }), { status: 500, headers });
+    if (!response.ok) {
+      const err = await response.json();
+      console.error('OpenAI error:', JSON.stringify(err));
+      return new Response(JSON.stringify({
+        reply: "I'm having trouble right now. Please call (818) 706-6077 for assistance."
+      }), { status: 200, headers });
     }
 
-    const openaiData = await openaiResponse.json();
+    const data = await response.json();
+    const reply = data.choices?.[0]?.message?.content || "How can I help you? Feel free to call us at (818) 706-6077.";
 
-    let replyText = '';
-    if (openaiData.output && Array.isArray(openaiData.output)) {
-      for (const outputItem of openaiData.output) {
-        if (outputItem.content && Array.isArray(outputItem.content)) {
-          for (const contentItem of outputItem.content) {
-            if (contentItem.type === 'output_text' && contentItem.text) {
-              replyText = contentItem.text;
-              break;
-            }
-          }
-        }
-        if (replyText) break;
-      }
-    }
+    return new Response(JSON.stringify({ reply }), { status: 200, headers });
 
-    if (!replyText) {
-      replyText = 'I\'m here to help! Could you please rephrase your question?';
-    }
-
-    return new Response(JSON.stringify({ reply: replyText }), { status: 200, headers });
   } catch (error) {
     console.error('Chatbot error:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error', reply: 'I apologize, but something went wrong. Please call us at (818) 706-6077 for assistance.' }), { status: 500, headers });
+    return new Response(JSON.stringify({
+      reply: "Something went wrong. Please call (818) 706-6077 for assistance."
+    }), { status: 200, headers });
   }
 }
