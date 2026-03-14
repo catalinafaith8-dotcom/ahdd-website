@@ -7,55 +7,36 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/styles.css">
-  <style>
-    /* ── TECH GRID: 4 cards single row ── */
-    .tech-section { padding: 72px 48px 68px; }
-    .tech-inner { max-width: 1280px; }
-    .tech-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr) !important;
-      grid-template-rows: auto !important;
-      gap: 14px;
-    }
-    .tech-card { border-radius: 14px; }
-    .tech-card-media { height: 150px !important; }
-    .tech-card-body { padding: 13px 16px 15px; }
-    .tech-card-category { font-size: 8.5px; }
-    .tech-card-title { font-size: 15px; margin-bottom: 0; }
-    .tech-card:hover .tech-card-title { margin-bottom: 8px; }
-    .tech-card-desc { font-size: 11.5px; max-height: 0; opacity: 0;
-      transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease 0.05s; }
-    .tech-card:hover .tech-card-desc { max-height: 140px; opacity: 1; }
-    .tech-tag { top: 10px; left: 10px; padding: 3px 9px; font-size: 8.5px; }
-    /* Smile widget scaled down */
-    .smile-upload-widget {
-      width: calc(100% - 28px);
-      max-width: 200px;
-      padding: 12px 12px 10px;
-      border-radius: 12px;
-    }
-    .smile-widget-icon-ring { width: 34px; height: 34px; margin-bottom: 7px; }
-    .smile-widget-title { font-size: 10px; margin-bottom: 3px; }
-    .smile-widget-sub { font-size: 9px; margin-bottom: 8px; }
-    .smile-widget-btn { padding: 6px 3px; font-size: 9px; border-radius: 7px; }
-    .smile-widget-privacy { font-size: 8px; margin-top: 7px; }
-    /* Responsive */
-    @media (max-width: 960px) {
-      .tech-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    }
-    @media (max-width: 560px) {
-      .tech-grid { grid-template-columns: 1fr !important; }
-      .tech-section { padding: 60px 24px; }
-    }
-  </style>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  .tech-section { padding: 72px 48px 68px; }
+  .tech-inner { max-width: 1280px; }
+  .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr) !important; grid-template-rows: auto !important; gap: 14px; }
+  .tech-card { border-radius: 14px; }
+  .tech-card-media { height: 150px !important; }
+  .tech-card-body { padding: 13px 16px 15px; }
+  .tech-card-category { font-size: 8.5px; }
+  .tech-card-title { font-size: 15px; margin-bottom: 0; }
+  .tech-card:hover .tech-card-title { margin-bottom: 8px; }
+  .tech-card-desc { font-size: 11.5px; max-height: 0; opacity: 0; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease 0.05s; }
+  .tech-card:hover .tech-card-desc { max-height: 140px; opacity: 1; }
+  .tech-tag { top: 10px; left: 10px; padding: 3px 9px; font-size: 8.5px; }
+  .smile-upload-widget { width: calc(100% - 28px); max-width: 200px; padding: 12px 12px 10px; border-radius: 12px; }
+  .smile-widget-icon-ring { width: 34px; height: 34px; margin-bottom: 7px; }
+  .smile-widget-title { font-size: 10px; margin-bottom: 3px; }
+  .smile-widget-sub { font-size: 9px; margin-bottom: 8px; }
+  .smile-widget-btn { padding: 6px 3px; font-size: 9px; border-radius: 7px; }
+  .smile-widget-privacy { font-size: 8px; margin-top: 7px; }
+  @media (max-width: 960px) { .tech-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+  @media (max-width: 560px) { .tech-grid { grid-template-columns: 1fr !important; } .tech-section { padding: 60px 24px; } }
+</style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
   <div class="logo">
-    <img src="assets/logo.png" alt="Agoura Hills Dental Designs"/>
+    <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Logo.png" alt="Agoura Hills Dental Designs"/>
   </div>
   <ul class="nav-links">
     <li><a href="#">About Us</a></li>
@@ -70,20 +51,15 @@
 
 <!-- HERO -->
 <section class="hero">
-
   <img
     class="hero-photo"
-    src="assets/hero-photo.jpg"
+    src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Header_Photo_Dr_David_and_Shawn_Matian.jpg"
     alt="Dr. David Matian and Dr. Shawn Matian — Agoura Hills Dental Designs"
   />
-
-  <!-- TOP LEFT: review badge -->
   <div class="review-badge">
     <span class="review-badge-stars"></span>
     <span class="review-badge-text">331+ Five-Star Google Reviews</span>
   </div>
-
-  <!-- RIGHT SIDE: headline + sub + pills -->
   <div class="hero-right">
     <h1 class="hero-h1"><span class="hero-h1-top">We Build&nbsp;<span class="rotating-word" id="heroWord"></span></span><span class="hero-h1-bottom">Smiles</span></h1>
     <p class="hero-sub">Third-generation dentists delivering premium cosmetic, restorative, and family dentistry in Agoura Hills, CA.</p>
@@ -93,36 +69,21 @@
       <div class="trust-pill" style="animation-delay:200ms">Free Consultations</div>
     </div>
   </div>
-
 </section>
 
 <!-- STAT BAR -->
 <div class="stat-bar" id="statBar">
   <div class="stat-bar-inner">
-    <div class="stat-item" style="animation-delay:0ms">
-      <div class="stat-num" data-target="331" data-suffix="+">0+</div>
-      <div class="stat-label">5-Star Reviews</div>
-    </div>
-    <div class="stat-item" style="animation-delay:80ms">
-      <div class="stat-num" data-target="20" data-suffix="+">0+</div>
-      <div class="stat-label">Years Experience</div>
-    </div>
-    <div class="stat-item" style="animation-delay:160ms">
-      <div class="stat-num">15K+</div>
-      <div class="stat-label">Smiles Created</div>
-    </div>
-    <div class="stat-item" style="animation-delay:240ms">
-      <div class="stat-num" data-target="99" data-suffix="%">0%</div>
-      <div class="stat-label">Satisfaction Rate</div>
-    </div>
+    <div class="stat-item" style="animation-delay:0ms"><div class="stat-num" data-target="331" data-suffix="+">0+</div><div class="stat-label">5-Star Reviews</div></div>
+    <div class="stat-item" style="animation-delay:80ms"><div class="stat-num" data-target="20" data-suffix="+">0+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat-item" style="animation-delay:160ms"><div class="stat-num">15K+</div><div class="stat-label">Smiles Created</div></div>
+    <div class="stat-item" style="animation-delay:240ms"><div class="stat-num" data-target="99" data-suffix="%">0%</div><div class="stat-label">Satisfaction Rate</div></div>
   </div>
 </div>
 
 <!-- SERVICES SECTION -->
 <section class="services-section" id="servicesSection">
   <div class="services-inner">
-
-    <!-- Header -->
     <div class="services-header">
       <div class="services-header-left">
         <div class="services-eyebrow">Our Services</div>
@@ -136,120 +97,43 @@
         </div>
       </div>
     </div>
-
-    <!-- Cards Grid -->
     <div class="services-grid" id="svcGrid">
-
-      <div class="svc-card" style="animation-delay:0ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C9 2 6 4 6 7c0 2 .5 4 1 6l1 7h2l1-4 1 4h2l1-7c.5-2 1-4 1-6 0-3-3-5-6-5z"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Restorative Dentistry</div>
-          <div class="svc-desc">Crowns, bridges, fillings, and full-mouth rebuilds to restore function and natural beauty.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
-      <div class="svc-card" style="animation-delay:60ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 5h5l-4 3 1.5 5L12 13l-4.5 3L9 11 5 8h5z"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Veneers</div>
-          <div class="svc-desc">Custom porcelain veneers crafted for a flawless, natural-looking smile transformation.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
-      <div class="svc-card" style="animation-delay:120ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="14"/><circle cx="12" cy="17" r="3"/><path d="M9 6H8a2 2 0 00-2 2v1M15 6h1a2 2 0 012 2v1"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Implants</div>
-          <div class="svc-desc">Permanent tooth replacements that look, feel, and function just like your natural teeth.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
-      <div class="svc-card" style="animation-delay:180ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9c0-1.1.9-2 2-2h12a2 2 0 012 2v2a8 8 0 01-16 0V9z"/><path d="M8 7V6a4 4 0 018 0v1"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Invisalign</div>
-          <div class="svc-desc">Clear aligner therapy for straighter teeth — discreet, comfortable, and effective.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
-      <div class="svc-card" style="animation-delay:240ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Teeth Whitening</div>
-          <div class="svc-desc">Professional in-office whitening up to 8 shades brighter in a single visit — no sensitivity.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
-      <div class="svc-card" style="animation-delay:300ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Emergency Dentistry</div>
-          <div class="svc-desc">Same-day emergency appointments available for tooth pain, cracked teeth, and lost restorations.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
-      <div class="svc-card" style="animation-delay:360ms">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
-        <div class="svc-content">
-          <div class="svc-name">Sedation Dentistry</div>
-          <div class="svc-desc">Nitrous oxide and oral sedation for a calm, stress-free visit — even for complex procedures.</div>
-          <div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </div>
-      </div>
-
+      <div class="svc-card" style="animation-delay:0ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C9 2 6 4 6 7c0 2 .5 4 1 6l1 7h2l1-4 1 4h2l1-7c.5-2 1-4 1-6 0-3-3-5-6-5z"/></svg></div><div class="svc-content"><div class="svc-name">Restorative Dentistry</div><div class="svc-desc">Crowns, bridges, fillings, and full-mouth rebuilds to restore function and natural beauty.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
+      <div class="svc-card" style="animation-delay:60ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 5h5l-4 3 1.5 5L12 13l-4.5 3L9 11 5 8h5z"/></svg></div><div class="svc-content"><div class="svc-name">Veneers</div><div class="svc-desc">Custom porcelain veneers crafted for a flawless, natural-looking smile transformation.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
+      <div class="svc-card" style="animation-delay:120ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="14"/><circle cx="12" cy="17" r="3"/><path d="M9 6H8a2 2 0 00-2 2v1M15 6h1a2 2 0 012 2v1"/></svg></div><div class="svc-content"><div class="svc-name">Implants</div><div class="svc-desc">Permanent tooth replacements that look, feel, and function just like your natural teeth.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
+      <div class="svc-card" style="animation-delay:180ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9c0-1.1.9-2 2-2h12a2 2 0 012 2v2a8 8 0 01-16 0V9z"/><path d="M8 7V6a4 4 0 018 0v1"/></svg></div><div class="svc-content"><div class="svc-name">Invisalign</div><div class="svc-desc">Clear aligner therapy for straighter teeth — discreet, comfortable, and effective.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
+      <div class="svc-card" style="animation-delay:240ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><div class="svc-content"><div class="svc-name">Teeth Whitening</div><div class="svc-desc">Professional in-office whitening up to 8 shades brighter in a single visit — no sensitivity.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
+      <div class="svc-card" style="animation-delay:300ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="svc-content"><div class="svc-name">Emergency Dentistry</div><div class="svc-desc">Same-day emergency appointments available for tooth pain, cracked teeth, and lost restorations.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
+      <div class="svc-card" style="animation-delay:360ms"><div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div><div class="svc-content"><div class="svc-name">Sedation Dentistry</div><div class="svc-desc">Nitrous oxide and oral sedation for a calm, stress-free visit — even for complex procedures.</div><div class="svc-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></div>
     </div>
-
-    <!-- CTA -->
     <div class="services-cta">
       <button class="services-cta-primary">Book a Free Consultation</button>
       <button class="services-cta-secondary">View All Services</button>
     </div>
-
   </div>
 </section>
 
-
-<!-- ===== MEET THE DOCTORS SECTION ===== -->
-
+<!-- MEET THE DOCTORS -->
 <section class="doctors-section" id="meetTheDoctors">
   <div class="doctors-inner">
-
     <div class="doctors-photo-wrap">
-      <img src="assets/doctors-sign.png" alt="Dr. Shawn Matian and Dr. David Matian — Agoura Hills Dental Designs" />
-      
+      <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/doctors-sign.png" alt="Dr. Shawn Matian and Dr. David Matian — Agoura Hills Dental Designs" />
     </div>
-
     <div class="doctors-content">
       <div class="doctors-eyebrow">Meet Your Doctors</div>
       <h2 class="doctors-heading">The Last Dentist<br><em>You'll Ever Need to Find</em></h2>
       <p class="doctors-subhead">Drs. Shawn &amp; David Matian &nbsp;·&nbsp; Agoura Hills, CA</p>
       <p class="doctors-body">Most people don't love going to the dentist. We get it — and we built this practice specifically to change that. Whether you haven't been in years, are nervous about a procedure, or just want a smile you're genuinely proud of, we meet you exactly where you are.</p>
       <p class="doctors-body">As third-generation dentists with over 20 years of experience and 15,000+ patients treated, we have seen almost everything. More importantly, we know how to make you feel comfortable, informed, and confident in your care — from the first call to the final result.</p>
-
-      
-
       <div class="doctors-cta-row">
         <button class="doctors-cta-primary">Book a Free Consultation</button>
         <button class="doctors-cta-secondary">Meet the Full Team</button>
       </div>
     </div>
-
   </div>
 </section>
 
-
-
-
-
-
-<!-- ===== TECHNOLOGY SECTION ===== -->
-
+<!-- TECHNOLOGY SECTION -->
 <section class="tech-section" id="technology">
   <div class="tech-inner">
     <div class="tech-header">
@@ -263,10 +147,8 @@
         <div class="tech-badge-text">Digital Scan + AI Analysis<br>for Every New Patient</div>
       </div>
     </div>
-
     <div class="tech-grid">
-
-      <!-- Card 1: 3D CBCT Imaging (VIDEO) -->
+      <!-- Card 1: 3D CBCT — VIDEO ✅ already on R2 -->
       <div class="tech-card">
         <div class="tech-card-media">
           <div class="tech-tag"><span class="tech-tag-dot"></span>3D Imaging</div>
@@ -280,8 +162,7 @@
           <div class="tech-card-desc">Our in-house cone beam CT delivers a full 3D view of your teeth, bone, and nerves — no referrals, no extra appointments. Pinpoint precision for implants, extractions, and complex cases.</div>
         </div>
       </div>
-
-      <!-- Card 2: VideaAI (STATIC IMAGE) -->
+      <!-- Card 2: VideaAI — IMAGE ✅ already on R2 -->
       <div class="tech-card">
         <div class="tech-card-media" style="background:#0a1628;">
           <div class="tech-tag"><span class="tech-tag-dot green"></span>Live AI Analysis</div>
@@ -293,8 +174,7 @@
           <div class="tech-card-desc">AI-powered X-ray analysis that detects cavities, bone loss, and hidden issues with a higher accuracy rate than traditional review alone — giving you a more complete picture of your oral health.</div>
         </div>
       </div>
-
-      <!-- Card 3: iTero Outcome Simulator (VIDEO) -->
+      <!-- Card 3: iTero Outcome Simulator — VIDEO ✅ already on R2 -->
       <div class="tech-card">
         <div class="tech-card-media">
           <div class="tech-tag"><span class="tech-tag-dot gold"></span>Digital Impressions</div>
@@ -308,24 +188,18 @@
           <div class="tech-card-desc">See your new smile before committing to a single tray. Our iTero digital scanner creates a precise 3D model of your teeth and simulates your Invisalign results in real time — right in the chair.</div>
         </div>
       </div>
-
-      <!-- Card 4: AI Smile Analysis (GLASS UPLOAD WIDGET) -->
+      <!-- Card 4: AI Smile Analysis — GLASS UPLOAD WIDGET -->
       <div class="tech-card tech-card-smile">
         <div class="tech-card-media">
           <div class="tech-tag"><span class="tech-tag-dot"></span>Complimentary Tool</div>
-
-          <!-- Floating accent dots -->
           <div class="smile-accent-dots">
             <div class="smile-dot" style="width:120px;height:120px;top:-30px;right:-20px;"></div>
             <div class="smile-dot" style="width:80px;height:80px;bottom:10px;left:-15px;"></div>
             <div class="smile-dot" style="width:50px;height:50px;bottom:30px;right:60px;background:rgba(74,159,212,0.08);"></div>
           </div>
-
-          <!-- Glass Upload Widget -->
           <div class="smile-upload-widget">
             <div class="smile-widget-icon-ring">
-              <!-- Camera + sparkle SVG -->
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
                 <path d="M10.5 5.25L9.1 7H5.25A2.25 2.25 0 003 9.25v11.5A2.25 2.25 0 005.25 23h17.5A2.25 2.25 0 0025 20.75V9.25A2.25 2.25 0 0022.75 7H18.9l-1.4-1.75H10.5z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
                 <circle cx="14" cy="15" r="4" stroke="white" stroke-width="1.6"/>
                 <path d="M21 8.5l.6 1.2 1.2.6-1.2.6-.6 1.2-.6-1.2-1.2-.6 1.2-.6.6-1.2z" fill="white"/>
@@ -334,19 +208,10 @@
             <div class="smile-widget-title">Discover What Your<br>Best Smile Looks Like</div>
             <div class="smile-widget-sub">Upload a photo and our AI will analyze your smile, identify opportunities for improvement, and recommend treatments.</div>
             <div class="smile-widget-btns">
-              <button class="smile-widget-btn primary">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M6.5 1L4 3.5M6.5 1L9 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 10.5h11" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-                Upload Photo
-              </button>
-              <button class="smile-widget-btn secondary">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#0B1628" stroke-width="1.3"/><circle cx="6.5" cy="6.5" r="2" fill="#4A9FD4"/></svg>
-                Take Photo
-              </button>
+              <button class="smile-widget-btn primary"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M6.5 1L4 3.5M6.5 1L9 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 10.5h11" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>Upload Photo</button>
+              <button class="smile-widget-btn secondary"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#0B1628" stroke-width="1.3"/><circle cx="6.5" cy="6.5" r="2" fill="#4A9FD4"/></svg>Take Photo</button>
             </div>
-            <div class="smile-widget-privacy">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L2 2.5v3C2 7.5 3.5 9 5 9.5 6.5 9 8 7.5 8 5.5v-3L5 1z" stroke="#ADADAA" stroke-width="1"/></svg>
-              Private &amp; secure · Results in seconds
-            </div>
+            <div class="smile-widget-privacy"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L2 2.5v3C2 7.5 3.5 9 5 9.5 6.5 9 8 7.5 8 5.5v-3L5 1z" stroke="#ADADAA" stroke-width="1"/></svg>Private &amp; secure · Results in seconds</div>
           </div>
         </div>
         <div class="tech-card-body">
@@ -355,621 +220,163 @@
           <div class="tech-card-desc">Upload a photo of your smile and our AI instantly identifies cosmetic and restorative opportunities — veneers, whitening, alignment, and more. Free, private, and no appointment needed.</div>
         </div>
       </div>
-
-    </div><!-- end .tech-grid -->
-  </div><!-- end .tech-inner -->
+    </div>
+  </div>
 </section>
 
-
-
-
-
-<!-- ===== REVIEWS CAROUSEL ===== -->
-
+<!-- REVIEWS CAROUSEL -->
 <section class="reviews-section" id="reviews">
   <div class="reviews-header">
     <div class="reviews-eyebrow">Patient Reviews</div>
     <h2 class="reviews-heading">Don't Take Our Word for It —<br><em>Take Theirs</em></h2>
-    <div class="reviews-subhead">
-      <span class="reviews-stars-header">★★★★★</span>
-      331+ Five-Star Google Reviews
-    </div>
+    <div class="reviews-subhead"><span class="reviews-stars-header">★★★★★</span> 331+ Five-Star Google Reviews</div>
   </div>
-
   <div class="reviews-track-outer">
     <div class="reviews-track" id="reviewsTrack">
-
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#E53935;">P</div>
-          <div class="review-meta">
-            <div class="review-name">Peter Hanes</div>
-            <div class="review-date">21 hours ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">Dentist was great, staff were great. I was treated well — they were efficient and effective at removing my tooth. I felt no pain and they were done in less than 10 minutes.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#5C6BC0;">A</div>
-          <div class="review-meta">
-            <div class="review-name">Amanda Clarke</div>
-            <div class="review-date">4 weeks ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">Dr. Matian is a breath of fresh air! Gregarious, energetic, empathetic and attentive, Dr. Matian put me at ease within seconds of my first appointment. His confident reassurance reduced my discomfort so much that I was absolutely shocked when he said that he was finished. I absolutely recommend Dr. Matian.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#43A047;">E</div>
-          <div class="review-meta">
-            <div class="review-name">Eva Sotere</div>
-            <div class="review-date">1 month ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">Dr Matian is the best dentist!! My teeth have never looked better!! He is honest, caring and takes the time to explain everything in detail so you feel comfortable and confident about your treatment. The entire staff is great too — very friendly and warm. Eric is also amazing and very caring.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <img class="review-avatar" src="assets/avatar-stephanie.png" alt="reviewer" />
-          <div class="review-meta">
-            <div class="review-name">Stephanie Ashford</div>
-            <div class="review-date">1 month ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">The care here is truly exceptional. From the moment I walked in I was made to feel welcome and at ease. Highly recommend this practice to anyone looking for a dentist who genuinely cares about their patients.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <img class="review-avatar" src="assets/avatar-charles.png" alt="reviewer" />
-          <div class="review-meta">
-            <div class="review-name">Charles Williams</div>
-            <div class="review-date">8 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">My family has been patients of Agoura Hills Dental Designs for decades. The professionalism shown by the doctors and staff is unmatched. We recommend this facility highly!</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#00897B;">S</div>
-          <div class="review-meta">
-            <div class="review-name">Simran Malik</div>
-            <div class="review-date">3 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">I had a terrible dental experience a few years ago and found this office afterward — and I've LOVED coming to the dentist ever since. Dr. Matian kindly fit me in right away, made the whole experience so smooth. I had pain for weeks after my old fillings, but this time I feel perfectly fine just a few hours later.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#7B1FA2;">M</div>
-          <div class="review-meta">
-            <div class="review-name">Mar Zi</div>
-            <div class="review-date">4 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">Had a dental cleaning session here with Heidi and it was a great experience — one of the best dental cleaning experiences I ever had. Absolutely recommend her and this place to anyone who is looking for quality work.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#8E24AA;">E</div>
-          <div class="review-meta">
-            <div class="review-name">Erfan Safaripoor</div>
-            <div class="review-date">4 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">I've been seeing Dr. Matian for my dental care, and I couldn't be happier. He is extremely professional, caring, and takes the time to explain everything clearly. The entire team makes you feel comfortable from the moment you walk in, and the office is modern, clean, and welcoming.</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#00ACC1;">S</div>
-          <div class="review-meta">
-            <div class="review-name">Seandiz Shadkhast</div>
-            <div class="review-date">5 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">From cleaning and check up to cavity fillings, Dr. David Matian and his entire team will go above and beyond to make sure you are comfortable and taken care of. No more dentist anxiety!!!</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#3949AB;">E</div>
-          <div class="review-meta">
-            <div class="review-name">Edmond Sasooness</div>
-            <div class="review-date">5 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">I had the pleasure of working with Dr. David Matian and his staff and I never had a better experience in a dental office. Everything was organized, clean and everyone was very helpful. I usually can not stand going to the dentist but this made me feel so much better. Thank you Dr. Matian and his team!</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#546E7A;">M</div>
-          <div class="review-meta">
-            <div class="review-name">Millad R.</div>
-            <div class="review-date">October 2025</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">Dr. Matian is the best dentist I've ever had! The office is welcoming, the staff is friendly, and the care is always gentle and thorough. I actually look forward to my appointments now — highly recommend!</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#F57C00;">A</div>
-          <div class="review-meta">
-            <div class="review-name">Ariel Termechi</div>
-            <div class="review-date">3 months ago</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">I came to Dr. Matian's office for an implant consult and had an awesome experience! The staff was super friendly, and the office is modern with a brand new CT machine, so I didn't have to go anywhere else for scans. Dr. Matian explained everything clearly and made me feel really comfortable. Highly recommend!</div>
-      </div>
-      <div class="review-card">
-        <div class="review-card-top">
-          <div class="review-avatar-initial" style="background:#F9A825;">Z</div>
-          <div class="review-meta">
-            <div class="review-name">Verified Patient</div>
-            <div class="review-date">November 2025</div>
-          </div>
-          <svg class="review-g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">I've been putting off dental work due to bad past experiences, but Dr. Matian completely changed my idea of a dentist. No rushing, no judgment. He walked me through the treatment plan with visuals on a screen. During the procedure he checked in multiple times to make sure I was comfortable. I actually don't dread my follow-up appointment — which says everything.</div>
-      </div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#E53935;">P</div><div class="review-meta"><div class="review-name">Peter Hanes</div><div class="review-date">21 hours ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">Dentist was great, staff were great. I was treated well — they were efficient and effective at removing my tooth. I felt no pain and they were done in less than 10 minutes.</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#5C6BC0;">A</div><div class="review-meta"><div class="review-name">Amanda Clarke</div><div class="review-date">4 weeks ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">Dr. Matian is a breath of fresh air! Gregarious, energetic, empathetic and attentive, Dr. Matian put me at ease within seconds of my first appointment. His confident reassurance reduced my discomfort so much that I was absolutely shocked when he said that he was finished. I absolutely recommend Dr. Matian.</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#43A047;">E</div><div class="review-meta"><div class="review-name">Eva Sotere</div><div class="review-date">1 month ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">Dr Matian is the best dentist!! My teeth have never looked better!! He is honest, caring and takes the time to explain everything in detail so you feel comfortable and confident about your treatment. The entire staff is great too — very friendly and warm. Eric is also amazing and very caring.</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#00897B;">S</div><div class="review-meta"><div class="review-name">Simran Malik</div><div class="review-date">3 months ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">I had a terrible dental experience a few years ago and found this office afterward — and I've LOVED coming to the dentist ever since. Dr. Matian kindly fit me in right away, made the whole experience so smooth. I had pain for weeks after my old fillings, but this time I feel perfectly fine just a few hours later.</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#7B1FA2;">M</div><div class="review-meta"><div class="review-name">Mar Zi</div><div class="review-date">4 months ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">Had a dental cleaning session here with Heidi and it was a great experience — one of the best dental cleaning experiences I ever had. Absolutely recommend her and this place to anyone who is looking for quality work.</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#8E24AA;">E</div><div class="review-meta"><div class="review-name">Erfan Safaripoor</div><div class="review-date">4 months ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">I've been seeing Dr. Matian for my dental care, and I couldn't be happier. He is extremely professional, caring, and takes the time to explain everything clearly. The entire team makes you feel comfortable from the moment you walk in, and the office is modern, clean, and welcoming.</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#00ACC1;">S</div><div class="review-meta"><div class="review-name">Seandiz Shadkhast</div><div class="review-date">5 months ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">From cleaning and check up to cavity fillings, Dr. David Matian and his entire team will go above and beyond to make sure you are comfortable and taken care of. No more dentist anxiety!!!</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#3949AB;">E</div><div class="review-meta"><div class="review-name">Edmond Sasooness</div><div class="review-date">5 months ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">I had the pleasure of working with Dr. David Matian and his staff and I never had a better experience in a dental office. Everything was organized, clean and everyone was very helpful. I usually can not stand going to the dentist but this made me feel so much better. Thank you Dr. Matian and his team!</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#546E7A;">M</div><div class="review-meta"><div class="review-name">Millad R.</div><div class="review-date">October 2025</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">Dr. Matian is the best dentist I've ever had! The office is welcoming, the staff is friendly, and the care is always gentle and thorough. I actually look forward to my appointments now — highly recommend!</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#F57C00;">A</div><div class="review-meta"><div class="review-name">Ariel Termechi</div><div class="review-date">3 months ago</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">I came to Dr. Matian's office for an implant consult and had an awesome experience! The staff was super friendly, and the office is modern with a brand new CT machine, so I didn't have to go anywhere else for scans. Dr. Matian explained everything clearly and made me feel really comfortable. Highly recommend!</div></div>
+      <div class="review-card"><div class="review-card-top"><div class="review-avatar-initial" style="background:#F9A825;">Z</div><div class="review-meta"><div class="review-name">Verified Patient</div><div class="review-date">November 2025</div></div><svg class="review-g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div><div class="review-stars">★★★★★</div><div class="review-text">I've been putting off dental work due to bad past experiences, but Dr. Matian completely changed my idea of a dentist. No rushing, no judgment. He walked me through the treatment plan with visuals on a screen. During the procedure he checked in multiple times to make sure I was comfortable. I actually don't dread my follow-up appointment — which says everything.</div></div>
     </div>
   </div>
-
   <div class="reviews-cta-row">
     <button class="reviews-cta-btn" onclick="window.open('https://g.page/r/agoura-hills-dental-designs/review','_blank')">Read All 331+ Reviews on Google</button>
   </div>
 </section>
 
-  <script src="assets/scripts.js" defer></script>
+<script src="assets/scripts.js" defer></script>
 
-<!-- ===== INSURANCE CHECKER ===== -->
+<!-- INSURANCE CHECKER -->
 <style>
-/* ── Insurance Section ── */
-.ins-wrap {
-  background: #f8f9fb;
-  padding: 72px 48px;
-  border-top: 1px solid #E4E4E0;
-}
-.ins-inner2 {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1.45fr;
-  gap: 56px;
-  align-items: center;
-}
-.ins-eyebrow2 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 10.5px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: #4A9FD4; margin-bottom: 12px;
-}
-.ins-h2 {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(22px, 2.4vw, 30px);
-  font-weight: 700; color: #0B1628;
-  letter-spacing: -.02em; line-height: 1.2;
-  margin-bottom: 12px;
-}
-.ins-h2 em { font-style: italic; color: #4A9FD4; font-weight: 300; }
-.ins-sub2 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; color: #6B6B66; line-height: 1.75;
-  margin-bottom: 20px; max-width: 360px;
-}
-.ins-badges {
-  display: flex; flex-wrap: wrap; gap: 7px;
-}
-.ins-badge2 {
-  background: #fff; border: 1px solid #E4E4E0;
-  border-radius: 20px; padding: 4px 12px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 10.5px; font-weight: 600; color: #0B1628;
-  display: flex; align-items: center; gap: 5px;
-}
-.ins-dot { width: 6px; height: 6px; border-radius: 50%; background: #34C759; flex-shrink: 0; }
+.ins-wrap{background:#f8f9fb;padding:72px 48px;border-top:1px solid #E4E4E0}
+.ins-inner2{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1.45fr;gap:56px;align-items:center}
+.ins-eyebrow2{font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#4A9FD4;margin-bottom:12px}
+.ins-h2{font-family:'Outfit',sans-serif;font-size:clamp(22px,2.4vw,30px);font-weight:700;color:#0B1628;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px}
+.ins-h2 em{font-style:italic;color:#4A9FD4;font-weight:300}
+.ins-sub2{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:#6B6B66;line-height:1.75;margin-bottom:20px;max-width:360px}
+.ins-badges{display:flex;flex-wrap:wrap;gap:7px}
+.ins-badge2{background:#fff;border:1px solid #E4E4E0;border-radius:20px;padding:4px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;font-weight:600;color:#0B1628;display:flex;align-items:center;gap:5px}
+.ins-dot{width:6px;height:6px;border-radius:50%;background:#34C759;flex-shrink:0}
+.ins-card2{background:#fff;border:1px solid #E4E4E0;border-radius:18px;padding:28px 26px 24px;box-shadow:0 4px 24px rgba(0,0,0,.07);position:relative;overflow:visible}
+.ins-card2::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4A9FD4,#2dd4bf);border-radius:18px 18px 0 0}
+.ins-steps2{display:flex;align-items:center;margin-bottom:20px}
+.ins-s{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ins-sdot{width:28px;height:28px;border-radius:50%;border:1.5px solid #CBD5E1;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .2s}
+.ins-sdot span{font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:700;color:#94A3B8;transition:all .2s}
+.ins-s.active .ins-sdot{background:#4A9FD4;border-color:#4A9FD4;box-shadow:0 0 10px rgba(74,159,212,.28)}
+.ins-s.active .ins-sdot span{color:#fff}
+.ins-s.done .ins-sdot{background:#eef6fc;border-color:#4A9FD4}
+.ins-s.done .ins-sdot span{color:#4A9FD4}
+.ins-slabel{font-family:'Plus Jakarta Sans',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#ADADAA;white-space:nowrap;transition:color .2s}
+.ins-s.active .ins-slabel,.ins-s.done .ins-slabel{color:#4A9FD4}
+.ins-sline{flex:1;height:1px;background:#E4E4E0;margin:0 8px 14px;min-width:28px}
+.ins-panel2{display:none;animation:ipIn .22s ease}
+.ins-panel2.active{display:block}
+@keyframes ipIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.ins-inst{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:#6B6B66;margin-bottom:14px}
+.ins-pbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ins-pbtn{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px 12px;background:#f8f9fb;border:1.5px solid #E4E4E0;border-radius:12px;cursor:pointer;transition:all .18s;color:#6B6B66;font-family:'Outfit',sans-serif;text-align:center}
+.ins-pbtn:hover{border-color:#4A9FD4;background:#eef6fc;transform:translateY(-2px)}
+.ins-pbtn.sel{border-color:#4A9FD4;background:#eef6fc;box-shadow:0 3px 12px rgba(74,159,212,.14)}
+.ins-pname{font-size:18px;font-weight:800;color:#0B1628;transition:color .18s}
+.ins-pbtn:hover .ins-pname,.ins-pbtn.sel .ins-pname{color:#2b7db5}
+.ins-pdesc{font-family:'Plus Jakarta Sans',sans-serif;font-size:9px;color:#ADADAA;line-height:1.3}
+.ins-pcheck{position:absolute;top:7px;right:7px;color:#4A9FD4;opacity:0;transition:opacity .18s}
+.ins-pbtn.sel .ins-pcheck{opacity:1}
+.ins-back2{display:inline-flex;align-items:center;gap:4px;background:none;border:none;color:#ADADAA;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px;transition:color .18s}
+.ins-back2:hover{color:#4A9FD4}
+.ins-search-wrap{position:relative;margin-bottom:7px}
+.ins-search{width:100%;padding:11px 36px 11px 14px;background:#fff;border:1.5px solid #E4E4E0;border-radius:10px;color:#0B1628;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;transition:border-color .18s,box-shadow .18s}
+.ins-search:focus{border-color:#4A9FD4;box-shadow:0 0 0 3px rgba(74,159,212,.1)}
+.ins-search::placeholder{color:#ADADAA}
+.ins-search-icon{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:#ADADAA;pointer-events:none}
+.ins-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #E4E4E0;border-top:none;border-radius:0 0 10px 10px;max-height:180px;overflow-y:auto;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.1);display:none}
+.ins-dropdown.open{display:block}
+.ins-dropdown-item{padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:#0B1628;cursor:pointer;transition:background .12s;border-bottom:1px solid #f0f0f0}
+.ins-dropdown-item:last-child{border-bottom:none}
+.ins-dropdown-item:hover{background:#eef6fc;color:#2b7db5}
+.ins-dropdown-item mark{background:none;color:#4A9FD4;font-weight:700}
+.ins-dropdown-empty{padding:12px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:#ADADAA;text-align:center}
+.ins-selected-carrier{display:none;align-items:center;justify-content:space-between;background:#eef6fc;border:1.5px solid #4A9FD4;border-radius:10px;padding:10px 14px;margin-bottom:7px}
+.ins-selected-carrier.show{display:flex}
+.ins-selected-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:600;color:#2b7db5}
+.ins-clear-btn{background:none;border:none;color:#ADADAA;cursor:pointer;font-size:16px;line-height:1;padding:0;transition:color .18s}
+.ins-clear-btn:hover{color:#0B1628}
+.ins-notlisted{font-size:10.5px;color:#ADADAA;margin-bottom:14px}
+.ins-linkbtn{background:none;border:none;color:#4A9FD4;font-family:inherit;font-size:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
+.ins-chkbtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px 18px;background:#0B1628;color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;letter-spacing:.02em}
+.ins-chkbtn:hover:not(:disabled){background:#1a2d4a;transform:translateY(-1px)}
+.ins-chkbtn:disabled{opacity:.28;cursor:not-allowed}
+.ins-result2{display:none;border-radius:12px;padding:18px 16px 16px;margin-bottom:10px;border:1px solid transparent;opacity:0;transform:translateY(6px);transition:opacity .28s ease,transform .28s ease}
+.ins-result2.show{opacity:1;transform:translateY(0)}
+.ins-rpos{background:#f0fdf4;border-color:#bbf7d0}
+.ins-rwarm{background:#f0f9ff;border-color:#bae0fb}
+.ins-rbadge{display:inline-flex;align-items:center;gap:4px;font-family:'Outfit',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:100px;padding:3px 9px;margin-bottom:8px}
+.ins-rbg{background:#dcfce7;color:#15803d}
+.ins-rbb{background:#dbeafe;color:#1d6fa4}
+.ins-rh{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0B1628;margin-bottom:5px;letter-spacing:-.01em}
+.ins-rm{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:#475569;line-height:1.7;margin-bottom:14px}
+.ins-rm strong{color:#0B1628}
+.ins-ctas{display:flex;flex-direction:column;gap:7px}
+.ins-cta1,.ins-cta2{display:flex;align-items:center;justify-content:center;gap:5px;padding:10px 14px;border-radius:9px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;text-decoration:none;transition:all .18s;cursor:pointer;text-align:center}
+.ins-cta1{background:#4A9FD4;color:#fff;box-shadow:0 3px 8px rgba(74,159,212,.25)}
+.ins-cta1:hover{background:#3a8fc4;transform:translateY(-1px)}
+.ins-cta2{background:#fff;color:#0B1628;border:1.5px solid #E4E4E0}
+.ins-cta2:hover{border-color:#4A9FD4;color:#4A9FD4}
+.ins-disc{font-family:'Plus Jakarta Sans',sans-serif;font-size:9.5px;color:#ADADAA;text-align:center;margin-top:14px;line-height:1.6}
+@media(max-width:720px){.ins-inner2{grid-template-columns:1fr;gap:28px}.ins-wrap{padding:52px 20px}.ins-sub2{max-width:100%}}
 
-/* Card */
-.ins-card2 {
-  background: #fff;
-  border: 1px solid #E4E4E0;
-  border-radius: 18px;
-  padding: 28px 26px 24px;
-  box-shadow: 0 4px 24px rgba(0,0,0,.07);
-  position: relative; overflow: visible;
-}
-.ins-card2::before {
-  border-radius: 18px 18px 0 0;
-}
-.ins-card2::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, #4A9FD4, #2dd4bf);
-}
-
-/* Steps */
-.ins-steps2 { display: flex; align-items: center; margin-bottom: 20px; }
-.ins-s { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.ins-sdot {
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 1.5px solid #CBD5E1;
-  display: flex; align-items: center; justify-content: center;
-  background: #fff; transition: all .2s;
-}
-.ins-sdot span {
-  font-family: 'Outfit', sans-serif;
-  font-size: 10.5px; font-weight: 700; color: #94A3B8; transition: all .2s;
-}
-.ins-s.active .ins-sdot { background: #4A9FD4; border-color: #4A9FD4; box-shadow: 0 0 10px rgba(74,159,212,.28); }
-.ins-s.active .ins-sdot span { color: #fff; }
-.ins-s.done .ins-sdot { background: #eef6fc; border-color: #4A9FD4; }
-.ins-s.done .ins-sdot span { color: #4A9FD4; }
-.ins-slabel {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 8.5px; font-weight: 700;
-  letter-spacing: .07em; text-transform: uppercase;
-  color: #ADADAA; white-space: nowrap; transition: color .2s;
-}
-.ins-s.active .ins-slabel, .ins-s.done .ins-slabel { color: #4A9FD4; }
-.ins-sline { flex: 1; height: 1px; background: #E4E4E0; margin: 0 8px 14px; min-width: 28px; }
-
-/* Panels */
-.ins-panel2 { display: none; animation: ipIn .22s ease; }
-.ins-panel2.active { display: block; }
-@keyframes ipIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-.ins-inst {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px; color: #6B6B66; margin-bottom: 14px;
-}
-
-/* Plan buttons */
-.ins-pbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.ins-pbtn {
-  position: relative; display: flex; flex-direction: column;
-  align-items: center; gap: 6px; padding: 16px 10px 12px;
-  background: #f8f9fb; border: 1.5px solid #E4E4E0;
-  border-radius: 12px; cursor: pointer; transition: all .18s;
-  color: #6B6B66; font-family: 'Outfit', sans-serif; text-align: center;
-}
-.ins-pbtn:hover { border-color: #4A9FD4; background: #eef6fc; transform: translateY(-2px); }
-.ins-pbtn.sel { border-color: #4A9FD4; background: #eef6fc; box-shadow: 0 3px 12px rgba(74,159,212,.14); }
-.ins-pname { font-size: 18px; font-weight: 800; color: #0B1628; transition: color .18s; }
-.ins-pbtn:hover .ins-pname, .ins-pbtn.sel .ins-pname { color: #2b7db5; }
-.ins-pdesc { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 9px; color: #ADADAA; line-height: 1.3; }
-.ins-pcheck { position: absolute; top: 7px; right: 7px; color: #4A9FD4; opacity: 0; transition: opacity .18s; }
-.ins-pbtn.sel .ins-pcheck { opacity: 1; }
-
-/* Back */
-.ins-back2 {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: none; border: none; color: #ADADAA;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 11px; font-weight: 600; cursor: pointer;
-  padding: 0; margin-bottom: 14px; transition: color .18s;
-}
-.ins-back2:hover { color: #4A9FD4; }
-
-/* Typeahead search */
-.ins-search-wrap { position: relative; margin-bottom: 7px; }
-.ins-search {
-  width: 100%; padding: 11px 36px 11px 14px;
-  background: #fff; border: 1.5px solid #E4E4E0;
-  border-radius: 10px; color: #0B1628;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; outline: none;
-  transition: border-color .18s, box-shadow .18s;
-}
-.ins-search:focus { border-color: #4A9FD4; box-shadow: 0 0 0 3px rgba(74,159,212,.1); }
-.ins-search::placeholder { color: #ADADAA; }
-.ins-search-icon {
-  position: absolute; right: 11px; top: 50%;
-  transform: translateY(-50%); color: #ADADAA; pointer-events: none;
-}
-.ins-dropdown {
-  position: absolute; top: 100%; left: 0; right: 0;
-  background: #fff; border: 1.5px solid #E4E4E0;
-  border-top: none; border-radius: 0 0 10px 10px;
-  max-height: 180px; overflow-y: auto;
-  z-index: 99; box-shadow: 0 8px 24px rgba(0,0,0,.1);
-  display: none;
-}
-.ins-dropdown.open { display: block; }
-.ins-dropdown-item {
-  padding: 10px 14px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12.5px; color: #0B1628; cursor: pointer;
-  transition: background .12s;
-  border-bottom: 1px solid #f0f0f0;
-}
-.ins-dropdown-item:last-child { border-bottom: none; }
-.ins-dropdown-item:hover { background: #eef6fc; color: #2b7db5; }
-.ins-dropdown-item mark {
-  background: none; color: #4A9FD4; font-weight: 700;
-}
-.ins-dropdown-empty {
-  padding: 12px 14px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px; color: #ADADAA; text-align: center;
-}
-.ins-selected-carrier {
-  display: none; align-items: center; justify-content: space-between;
-  background: #eef6fc; border: 1.5px solid #4A9FD4;
-  border-radius: 10px; padding: 10px 14px;
-  margin-bottom: 7px;
-}
-.ins-selected-carrier.show { display: flex; }
-.ins-selected-name {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12.5px; font-weight: 600; color: #2b7db5;
-}
-.ins-clear-btn {
-  background: none; border: none; color: #ADADAA;
-  cursor: pointer; font-size: 16px; line-height: 1;
-  padding: 0; transition: color .18s;
-}
-.ins-clear-btn:hover { color: #0B1628; }
-
-.ins-notlisted { font-size: 10.5px; color: #ADADAA; margin-bottom: 14px; }
-.ins-linkbtn {
-  background: none; border: none; color: #4A9FD4;
-  font-family: inherit; font-size: inherit;
-  cursor: pointer; text-decoration: underline;
-  text-underline-offset: 2px; padding: 0;
-}
-
-.ins-chkbtn {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  width: 100%; padding: 11px 18px;
-  background: #0B1628; color: #fff; border: none;
-  border-radius: 10px; font-family: 'Outfit', sans-serif;
-  font-size: 13px; font-weight: 700; cursor: pointer;
-  transition: all .18s; letter-spacing: .02em;
-}
-.ins-chkbtn:hover:not(:disabled) { background: #1a2d4a; transform: translateY(-1px); }
-.ins-chkbtn:disabled { opacity: .28; cursor: not-allowed; }
-
-/* Results */
-.ins-result2 {
-  display: none; border-radius: 12px; padding: 18px 16px 16px;
-  margin-bottom: 10px; border: 1px solid transparent;
-  opacity: 0; transform: translateY(6px);
-  transition: opacity .28s ease, transform .28s ease;
-}
-.ins-result2.show { opacity: 1; transform: translateY(0); }
-.ins-rpos { background: #f0fdf4; border-color: #bbf7d0; }
-.ins-rwarm { background: #f0f9ff; border-color: #bae0fb; }
-.ins-rbadge {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-family: 'Outfit', sans-serif; font-size: 8.5px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  border-radius: 100px; padding: 3px 9px; margin-bottom: 8px;
-}
-.ins-rbg { background: #dcfce7; color: #15803d; }
-.ins-rbb { background: #dbeafe; color: #1d6fa4; }
-.ins-rh {
-  font-family: 'Outfit', sans-serif; font-size: 15px;
-  font-weight: 700; color: #0B1628; margin-bottom: 5px; letter-spacing: -.01em;
-}
-.ins-rm {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px; color: #475569; line-height: 1.7; margin-bottom: 14px;
-}
-.ins-rm strong { color: #0B1628; }
-.ins-ctas { display: flex; flex-direction: column; gap: 7px; }
-.ins-cta1, .ins-cta2 {
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  padding: 10px 14px; border-radius: 9px;
-  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
-  text-decoration: none; transition: all .18s; cursor: pointer; text-align: center;
-}
-.ins-cta1 { background: #4A9FD4; color: #fff; box-shadow: 0 3px 8px rgba(74,159,212,.25); }
-.ins-cta1:hover { background: #3a8fc4; transform: translateY(-1px); }
-.ins-cta2 { background: #fff; color: #0B1628; border: 1.5px solid #E4E4E0; }
-.ins-cta2:hover { border-color: #4A9FD4; color: #4A9FD4; }
-.ins-disc {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 9.5px; color: #ADADAA; text-align: center;
-  margin-top: 14px; line-height: 1.6;
-}
-
-@media (max-width: 720px) {
-  .ins-inner2 { grid-template-columns: 1fr; gap: 28px; }
-  .ins-wrap { padding: 52px 20px; }
-  .ins-sub2 { max-width: 100%; }
-}
-
-/* ── Chatbot ── */
-#ahdd-chat-toggle {
-  position: fixed; bottom: 22px; right: 22px;
-  width: 52px; height: 52px;
-  background: #0B1628;
-  border: none; border-radius: 50%;
-  box-shadow: 0 4px 18px rgba(11,22,40,.28);
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 999998; transition: all .25s;
-}
-#ahdd-chat-toggle:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(11,22,40,.35); }
-#ahdd-chat-toggle.hidden { display: none; }
-#ahdd-chat-toggle svg { flex-shrink: 0; }
-
-#ahdd-chat-widget {
-  position: fixed; bottom: 22px; right: 22px;
-  width: 330px; max-width: calc(100vw - 28px);
-  height: 460px; max-height: calc(100vh - 90px);
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(11,22,40,.18), 0 2px 8px rgba(11,22,40,.08);
-  display: none; flex-direction: column; overflow: hidden;
-  z-index: 999999;
-  animation: chatUp .28s cubic-bezier(.4,0,.2,1);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-@keyframes chatUp {
-  from { opacity: 0; transform: translateY(14px) scale(.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-#ahdd-chat-widget.open { display: flex; }
-
-/* Header */
-#chat-header {
-  background: #0B1628;
-  padding: 12px 14px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
-}
-.chat-header-left { display: flex; align-items: center; gap: 10px; }
-.chat-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, #4A9FD4, #2dd4bf);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.chat-title-wrap { display: flex; flex-direction: column; gap: 2px; }
-.chat-title {
-  font-family: 'Outfit', sans-serif;
-  color: #fff; font-size: 14px; font-weight: 700; letter-spacing: -.01em;
-}
-.chat-subtitle {
-  font-size: 10.5px; color: rgba(255,255,255,.55); font-weight: 500;
-  display: flex; align-items: center; gap: 4px;
-}
-.chat-online-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #4ade80; flex-shrink: 0;
-}
-.chat-header-btns { display: flex; gap: 5px; }
-.chat-hbtn {
-  width: 26px; height: 26px;
-  background: rgba(255,255,255,.1); border: none; border-radius: 7px;
-  color: rgba(255,255,255,.75); cursor: pointer; font-size: 15px; line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .18s;
-}
-.chat-hbtn:hover { background: rgba(255,255,255,.2); color: #fff; }
-
-/* Messages */
-#chat-msgs {
-  flex: 1; overflow-y: auto; padding: 14px 12px;
-  display: flex; flex-direction: column; gap: 9px;
-  background: #f8f9fb;
-}
-#chat-msgs::-webkit-scrollbar { width: 3px; }
-#chat-msgs::-webkit-scrollbar-thumb { background: #E4E4E0; border-radius: 3px; }
-
-.chat-msg {
-  max-width: 86%; padding: 9px 13px;
-  border-radius: 14px; font-size: 12.5px; line-height: 1.5;
-  animation: msgIn .22s ease; word-wrap: break-word;
-}
-@keyframes msgIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.chat-msg.bot {
-  background: #fff; color: #0B1628;
-  align-self: flex-start;
-  border-radius: 14px 14px 14px 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.07);
-}
-.chat-msg.user {
-  background: #0B1628; color: #fff;
-  align-self: flex-end;
-  border-radius: 14px 14px 4px 14px;
-}
-
-/* Quick picks */
-.chat-quick-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 7px; margin-top: 8px;
-}
-.chat-qbtn {
-  background: #fff; border: 1px solid #E4E4E0;
-  border-radius: 10px; padding: 9px 8px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 11.5px; color: #0B1628; cursor: pointer;
-  transition: all .18s; display: flex; align-items: center;
-  gap: 7px; box-shadow: 0 1px 3px rgba(0,0,0,.04);
-  text-align: left;
-}
-.chat-qbtn:hover {
-  border-color: #4A9FD4; background: #eef6fc; color: #2b7db5;
-  transform: translateY(-1px); box-shadow: 0 3px 8px rgba(74,159,212,.12);
-}
-.chat-qbtn svg { width: 15px; height: 15px; fill: #4A9FD4; flex-shrink: 0; }
-
-/* Typing */
-.chat-typing {
-  display: flex; gap: 4px; padding: 10px 13px;
-  align-items: center; background: #fff;
-  border-radius: 14px 14px 14px 4px;
-  align-self: flex-start;
-  box-shadow: 0 1px 4px rgba(0,0,0,.07);
-}
-.chat-typing span {
-  width: 5px; height: 5px; background: #ADADAA; border-radius: 50%;
-  animation: typBounce 1.3s infinite;
-}
-.chat-typing span:nth-child(2) { animation-delay: .18s; }
-.chat-typing span:nth-child(3) { animation-delay: .36s; }
-@keyframes typBounce {
-  0%,80%,100% { transform: scale(.5); opacity: .35; }
-  40% { transform: scale(1); opacity: 1; }
-}
-
-/* Input */
-#chat-input-area {
-  padding: 10px 12px 12px;
-  background: #fff; border-top: 1px solid #E4E4E0;
-  display: flex; gap: 8px; align-items: center; flex-shrink: 0;
-}
-#chat-input {
-  flex: 1; border: 1px solid #E4E4E0; border-radius: 20px;
-  padding: 9px 13px; font-size: 12.5px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  outline: none; color: #0B1628; background: #f8f9fb;
-  transition: all .18s;
-}
-#chat-input:focus {
-  border-color: #4A9FD4; background: #fff;
-  box-shadow: 0 0 0 3px rgba(74,159,212,.1);
-}
-#chat-input::placeholder { color: #ADADAA; }
-#chat-send {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: #0B1628; border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .18s; flex-shrink: 0;
-}
-#chat-send:hover { background: #1a2d4a; transform: scale(1.05); }
-#chat-send:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+/* CHATBOT */
+#ahdd-chat-toggle{position:fixed;bottom:22px;right:22px;width:52px;height:52px;background:#0B1628;border:none;border-radius:50%;box-shadow:0 4px 18px rgba(11,22,40,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999998;transition:all .25s}
+#ahdd-chat-toggle:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(11,22,40,.35)}
+#ahdd-chat-toggle.hidden{display:none}
+#ahdd-chat-widget{position:fixed;bottom:22px;right:22px;width:330px;max-width:calc(100vw - 28px);height:460px;max-height:calc(100vh - 90px);background:#fff;border-radius:18px;box-shadow:0 12px 40px rgba(11,22,40,.18),0 2px 8px rgba(11,22,40,.08);display:none;flex-direction:column;overflow:hidden;z-index:999999;animation:chatUp .28s cubic-bezier(.4,0,.2,1);font-family:'Plus Jakarta Sans',sans-serif}
+@keyframes chatUp{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+#ahdd-chat-widget.open{display:flex}
+#chat-header{background:#0B1628;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-header-left{display:flex;align-items:center;gap:10px}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4A9FD4,#2dd4bf);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-title-wrap{display:flex;flex-direction:column;gap:2px}
+.chat-title{font-family:'Outfit',sans-serif;color:#fff;font-size:14px;font-weight:700;letter-spacing:-.01em}
+.chat-subtitle{font-size:10.5px;color:rgba(255,255,255,.55);font-weight:500;display:flex;align-items:center;gap:4px}
+.chat-online-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0}
+.chat-header-btns{display:flex;gap:5px}
+.chat-hbtn{width:26px;height:26px;background:rgba(255,255,255,.1);border:none;border-radius:7px;color:rgba(255,255,255,.75);cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.chat-hbtn:hover{background:rgba(255,255,255,.2);color:#fff}
+#chat-msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:9px;background:#f8f9fb}
+#chat-msgs::-webkit-scrollbar{width:3px}
+#chat-msgs::-webkit-scrollbar-thumb{background:#E4E4E0;border-radius:3px}
+.chat-msg{max-width:86%;padding:9px 13px;border-radius:14px;font-size:12.5px;line-height:1.5;animation:msgIn .22s ease;word-wrap:break-word}
+@keyframes msgIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.chat-msg.bot{background:#fff;color:#0B1628;align-self:flex-start;border-radius:14px 14px 14px 4px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.chat-msg.user{background:#0B1628;color:#fff;align-self:flex-end;border-radius:14px 14px 4px 14px}
+.chat-quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.chat-qbtn{background:#fff;border:1px solid #E4E4E0;border-radius:10px;padding:9px 8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:11.5px;color:#0B1628;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:7px;box-shadow:0 1px 3px rgba(0,0,0,.04);text-align:left}
+.chat-qbtn:hover{border-color:#4A9FD4;background:#eef6fc;color:#2b7db5;transform:translateY(-1px);box-shadow:0 3px 8px rgba(74,159,212,.12)}
+.chat-qbtn svg{width:15px;height:15px;fill:#4A9FD4;flex-shrink:0}
+.chat-typing{display:flex;gap:4px;padding:10px 13px;align-items:center;background:#fff;border-radius:14px 14px 14px 4px;align-self:flex-start;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.chat-typing span{width:5px;height:5px;background:#ADADAA;border-radius:50%;animation:typBounce 1.3s infinite}
+.chat-typing span:nth-child(2){animation-delay:.18s}
+.chat-typing span:nth-child(3){animation-delay:.36s}
+@keyframes typBounce{0%,80%,100%{transform:scale(.5);opacity:.35}40%{transform:scale(1);opacity:1}}
+#chat-input-area{padding:10px 12px 12px;background:#fff;border-top:1px solid #E4E4E0;display:flex;gap:8px;align-items:center;flex-shrink:0}
+#chat-input{flex:1;border:1px solid #E4E4E0;border-radius:20px;padding:9px 13px;font-size:12.5px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;color:#0B1628;background:#f8f9fb;transition:all .18s}
+#chat-input:focus{border-color:#4A9FD4;background:#fff;box-shadow:0 0 0 3px rgba(74,159,212,.1)}
+#chat-input::placeholder{color:#ADADAA}
+#chat-send{width:36px;height:36px;border-radius:50%;background:#0B1628;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
+#chat-send:hover{background:#1a2d4a;transform:scale(1.05)}
+#chat-send:disabled{opacity:.35;cursor:not-allowed;transform:none}
 </style>
 
 <section class="ins-wrap" id="insuranceChecker">
   <div class="ins-inner2">
-
     <div>
       <div class="ins-eyebrow2">Insurance &amp; Coverage</div>
       <h2 class="ins-h2">Check Your Insurance<br><em>in Seconds</em></h2>
@@ -982,7 +389,6 @@
         <div class="ins-badge2"><span class="ins-dot"></span>United Concordia TRICARE</div>
       </div>
     </div>
-
     <div class="ins-card2">
       <div class="ins-steps2" id="insSteps">
         <div class="ins-s active" data-step="1"><div class="ins-sdot"><span>1</span></div><div class="ins-slabel">Plan Type</div></div>
@@ -991,547 +397,79 @@
         <div class="ins-sline"></div>
         <div class="ins-s" data-step="3"><div class="ins-sdot"><span>3</span></div><div class="ins-slabel">Results</div></div>
       </div>
-
-      <!-- Panel 1 -->
       <div class="ins-panel2 active" id="insP1">
         <p class="ins-inst">What type of dental insurance do you have?</p>
         <div class="ins-pbtns">
-          <button class="ins-pbtn" data-type="PPO" onclick="insType('PPO')">
-            <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/><path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/><path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/></svg>
-            <div class="ins-pname">PPO</div>
-            <div class="ins-pdesc">Preferred Provider Organization</div>
-            <div class="ins-pcheck"><svg width="14" height="14" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          </button>
-          <button class="ins-pbtn" data-type="HMO" onclick="insType('HMO')">
-            <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/><path d="M16 9V23M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-            <div class="ins-pname">HMO</div>
-            <div class="ins-pdesc">Health Maintenance Organization</div>
-            <div class="ins-pcheck"><svg width="14" height="14" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          </button>
+          <button class="ins-pbtn" data-type="PPO" onclick="insType('PPO')"><svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/><path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/><path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/></svg><div class="ins-pname">PPO</div><div class="ins-pdesc">Preferred Provider Organization</div><div class="ins-pcheck"><svg width="14" height="14" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+          <button class="ins-pbtn" data-type="HMO" onclick="insType('HMO')"><svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/><path d="M16 9V23M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg><div class="ins-pname">HMO</div><div class="ins-pdesc">Health Maintenance Organization</div><div class="ins-pcheck"><svg width="14" height="14" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
         </div>
       </div>
-
-      <!-- Panel 2 -->
       <div class="ins-panel2" id="insP2">
         <button class="ins-back2" onclick="insBack(1)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</button>
         <p class="ins-inst">Type your insurance carrier name to search.</p>
-
-        <div class="ins-selected-carrier" id="insSelectedDisplay">
-          <span class="ins-selected-name" id="insSelectedName"></span>
-          <button class="ins-clear-btn" onclick="insClearCarrier()">&#x2715;</button>
-        </div>
-
+        <div class="ins-selected-carrier" id="insSelectedDisplay"><span class="ins-selected-name" id="insSelectedName"></span><button class="ins-clear-btn" onclick="insClearCarrier()">&#x2715;</button></div>
         <div class="ins-search-wrap" id="insSearchWrap">
-          <input
-            type="text"
-            class="ins-search"
-            id="insSearchInput"
-            placeholder="e.g. Aetna, Cigna, MetLife..."
-            autocomplete="off"
-            oninput="insOnInput(this.value)"
-            onfocus="insOnInput(this.value)"
-          />
-          <div class="ins-search-icon">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6.5" stroke="#ADADAA" stroke-width="1.6"/><path d="M14 14L18 18" stroke="#ADADAA" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </div>
+          <input type="text" class="ins-search" id="insSearchInput" placeholder="e.g. Aetna, Cigna, MetLife..." autocomplete="off" oninput="insOnInput(this.value)" onfocus="insOnInput(this.value)"/>
+          <div class="ins-search-icon"><svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6.5" stroke="#ADADAA" stroke-width="1.6"/><path d="M14 14L18 18" stroke="#ADADAA" stroke-width="1.6" stroke-linecap="round"/></svg></div>
           <div class="ins-dropdown" id="insDropdown"></div>
         </div>
-
         <div class="ins-notlisted">Can't find yours? <button class="ins-linkbtn" onclick="insNotListed()">Continue anyway</button></div>
-        <button class="ins-chkbtn" id="insChkBtn" onclick="insCheck()" disabled>
-          Check My Coverage
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <button class="ins-chkbtn" id="insChkBtn" onclick="insCheck()" disabled>Check My Coverage <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
-
-      <!-- Panel 3 -->
       <div class="ins-panel2" id="insP3">
         <button class="ins-back2" onclick="insBack(1)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Check Another Plan</button>
-
-        <div class="ins-result2 ins-rpos" id="insRin">
-          <div class="ins-rbadge ins-rbg"><svg width="10" height="10" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> In Network</div>
-          <h3 class="ins-rh">Great News — You're Covered!</h3>
-          <p class="ins-rm">We are <strong>in network with your PPO plan.</strong> Our team will verify your benefits before your visit so there are no surprises.</p>
-          <div class="ins-ctas">
-            <a href="tel:+18187066077" class="ins-cta1"><svg width="12" height="12" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Book Your Appointment</a>
-            <a href="tel:+18187066077" class="ins-cta2"><svg width="12" height="12" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Call (818) 706-6077</a>
-          </div>
-        </div>
-
-        <div class="ins-result2 ins-rwarm" id="insRout">
-          <div class="ins-rbadge ins-rbb"><svg width="10" height="10" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r="0.65" fill="currentColor"/></svg> Let's Verify</div>
-          <h3 class="ins-rh">You May Still Have Benefits Here</h3>
-          <p class="ins-rm">We may not be directly contracted with this plan, but <strong>many patients still receive significant coverage.</strong> Our team will check your benefits at no cost.</p>
-          <div class="ins-ctas">
-            <a href="tel:+18187066077" class="ins-cta1"><svg width="12" height="12" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Have Us Verify Your Benefits</a>
-            <a href="tel:+18187066077" class="ins-cta2"><svg width="12" height="12" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Schedule a Consultation</a>
-          </div>
-        </div>
-
-        <div class="ins-result2 ins-rwarm" id="insRhmo">
-          <div class="ins-rbadge ins-rbb"><svg width="10" height="10" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r="0.65" fill="currentColor"/></svg> Let's Take a Look</div>
-          <h3 class="ins-rh">HMO Plans — Don't Count Yourself Out</h3>
-          <p class="ins-rm">We're not currently in network with HMO plans, but <strong>don't let that stop you.</strong> Many HMO patients still have benefits in our office. Let our team verify — free, fast, no obligation.</p>
-          <div class="ins-ctas">
-            <a href="tel:+18187066077" class="ins-cta1"><svg width="12" height="12" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Have Our Team Verify My Benefits</a>
-            <a href="tel:+18187066077" class="ins-cta2"><svg width="12" height="12" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Request a Consultation</a>
-          </div>
-        </div>
+        <div class="ins-result2 ins-rpos" id="insRin"><div class="ins-rbadge ins-rbg"><svg width="10" height="10" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> In Network</div><h3 class="ins-rh">Great News — You're Covered!</h3><p class="ins-rm">We are <strong>in network with your PPO plan.</strong> Our team will verify your benefits before your visit so there are no surprises.</p><div class="ins-ctas"><a href="tel:+18187066077" class="ins-cta1">Book Your Appointment</a><a href="tel:+18187066077" class="ins-cta2">Call (818) 706-6077</a></div></div>
+        <div class="ins-result2 ins-rwarm" id="insRout"><div class="ins-rbadge ins-rbb"><svg width="10" height="10" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r="0.65" fill="currentColor"/></svg> Let's Verify</div><h3 class="ins-rh">You May Still Have Benefits Here</h3><p class="ins-rm">We may not be directly contracted with this plan, but <strong>many patients still receive significant coverage.</strong> Our team will check your benefits at no cost.</p><div class="ins-ctas"><a href="tel:+18187066077" class="ins-cta1">Have Us Verify Your Benefits</a><a href="tel:+18187066077" class="ins-cta2">Schedule a Consultation</a></div></div>
+        <div class="ins-result2 ins-rwarm" id="insRhmo"><div class="ins-rbadge ins-rbb"><svg width="10" height="10" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r="0.65" fill="currentColor"/></svg> Let's Take a Look</div><h3 class="ins-rh">HMO Plans — Don't Count Yourself Out</h3><p class="ins-rm">We're not currently in network with HMO plans, but <strong>don't let that stop you.</strong> Many HMO patients still have benefits in our office. Let our team verify — free, fast, no obligation.</p><div class="ins-ctas"><a href="tel:+18187066077" class="ins-cta1">Have Our Team Verify My Benefits</a><a href="tel:+18187066077" class="ins-cta2">Request a Consultation</a></div></div>
       </div>
-
       <p class="ins-disc">Coverage varies by employer group and plan. Our team verifies benefits for every new patient before their visit.</p>
     </div>
   </div>
 </section>
 
-<!-- ===== CHATBOT ===== -->
+<!-- CHATBOT -->
 <button id="ahdd-chat-toggle" title="Chat with us" onclick="ahddChatOpen()">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="#fff" opacity=".9"/>
-    <circle cx="8.5" cy="11" r="1.2" fill="#0B1628"/>
-    <circle cx="12" cy="11" r="1.2" fill="#0B1628"/>
-    <circle cx="15.5" cy="11" r="1.2" fill="#0B1628"/>
-  </svg>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="#fff" opacity=".9"/><circle cx="8.5" cy="11" r="1.2" fill="#0B1628"/><circle cx="12" cy="11" r="1.2" fill="#0B1628"/><circle cx="15.5" cy="11" r="1.2" fill="#0B1628"/></svg>
 </button>
-
 <div id="ahdd-chat-widget">
   <div id="chat-header">
-    <div class="chat-header-left">
-      <div class="chat-avatar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.87-3.13-7-7-7z" fill="white" opacity=".85"/>
-          <path d="M9 21h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M10 21v1h4v-1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="chat-title-wrap">
-        <div class="chat-title">Patient Concierge</div>
-        <div class="chat-subtitle"><span class="chat-online-dot"></span>Online now</div>
-      </div>
-    </div>
-    <div class="chat-header-btns">
-      <button class="chat-hbtn" id="chat-min" title="Minimize" onclick="ahddChatClose()">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-      <button class="chat-hbtn" id="chat-close" title="Close" onclick="ahddChatClose()">
-        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1L10 10M10 1L1 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-    </div>
+    <div class="chat-header-left"><div class="chat-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.87-3.13-7-7-7z" fill="white" opacity=".85"/><path d="M9 21h6" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M10 21v1h4v-1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="chat-title-wrap"><div class="chat-title">Patient Concierge</div><div class="chat-subtitle"><span class="chat-online-dot"></span>Online now</div></div></div>
+    <div class="chat-header-btns"><button class="chat-hbtn" onclick="ahddChatClose()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><button class="chat-hbtn" onclick="ahddChatClose()"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1L10 10M10 1L1 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
   </div>
   <div id="chat-msgs"></div>
   <div id="chat-input-area">
     <input type="text" id="chat-input" placeholder="Type a message…" autocomplete="off" onkeypress="if(event.key==='Enter')ahddChatSend()"/>
-    <button id="chat-send" onclick="ahddChatSend()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-    </button>
+    <button id="chat-send" onclick="ahddChatSend()"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
   </div>
 </div>
 
 <script>
-(function() {
-  "use strict";
+(function(){"use strict";
+var NET=["90 Degree Benefits","Administrative Services Only (ASO)","Aegis Administrative Services","Aetna","Aetna Commercial","Aetna Medicare","Aflac PPO Dental","Alacrity / DocsHealth","Alignment","Altus Dental","AlwaysCare","AmeriBen Solutions","AmeriHealth New Jersey","American Public Life Insurance","Ameritas","Anthem","Anthem Blue Cross","Anthem Blue Cross Blue Shield","BEST Health Plans","Beam Dental","Best Life and Health Insurance","Blackhawk - Array Health","Blue Cross Blue Shield of Alabama","Blue Cross Blue Shield of Arizona","Blue Cross Blue Shield of Illinois","Blue Cross Blue Shield of Michigan","Blue Cross Blue Shield of Montana","Blue Cross Blue Shield of New Mexico","Blue Cross Blue Shield of Oklahoma","Blue Cross Blue Shield of Texas","Blue Shield of California","Boon Administrative Services","BrightBenefits","CHUBB","Capital BlueCross","CareFirst","CareFirst Blue Cross Blue Shield","Centene / HealthNet of CA","Century Healthcare","Chesapeake Life Insurance","Cigna","Cigna DVH / Cigna Flex","Citizens Security Life","Colonial Life","Companion Life","Corporate Benefit Services","Cypress - DenteMax Plus","DNOA - Blue Cross Blue Shield","DNOA - Dearborn National","DNOA - LineCo","Delta Dental Medicare Advantage","Delta Dental PPO","Delta Dental Premier","Delta Health Systems","DentaQuest","Dental Benefit Providers","Dental Care Plus Group","DenteMax","DocsHealth (Reservists)","Dominion National","Electrical Components International","Emblem Health / GHI","Encore Dental / Stonebridge Life","Enterprise Life Insurance","Equitable","Equitable Financial Life","FBG Holding","FCE Benefit Administrators","Fidelio Dental Insurance","First Continental Life","Free Market Administrators","Freedom Life","GEHA","GEHA Connection Dental Federal","GEHA Connection Dental Plus","GEHA Solution","Group Administrators","Guardian","HRI","HRI Dental & Vision","Harrington / Colonial Life","Health Resources","HealthNet of California","Healthgram","Healthplex","Healthscope Benefits","Healthy Choice Plan Administrators","Humana","Humana Dental PPO","Humana Federal Advantage","Humana One","Imperial","Independence Blue Cross","Kaiser Permanente","Kansas City Life Insurance","Kemper Benefits","Key Benefit Administrators","LifeShield","Lincoln Financial","Local 786 Building Material Welfare Fund","Luminare Health","Management Benefit Fund","Manhattan Life","Medical Mutual","Merchants Benefit Administrators","MetLife","Mid-West National Life","Morgan White","Multiflex Dental","Mutual of Omaha","My WellSpent","National Foundation Life","National General Accident and Health","National Guardian Life","National Rural Electric Cooperative (NRECA)","Nationwide Insurance","NetCare Life & Health","New Era Life","Nippon Life","NovaNet","Pacific Life","Peoples Benefit Life","Pequot Plus Health Benefit Services","Personify Health","Physicians Mutual","Pinnacle Peak Administrators","Point C / Mid America Benefits","Preferred Insurance Specialist","PrimeCare Benefits","Principal Financial Group","Printing Specialties","Prudential","Reliance Standard Life","Renaissance","Reserve National Insurance","Roofers Union Welfare Trust Fund","SISCO","Self Insured Services","SkyGen","Solstice Benefits","Staff Benefits Management","Standard Insurance Company","Starmount","Strategic Limited Partners","Suffolk County Employee Benefit Plan","Sun Life Financial","Superior Dental Care","SureBridge","The Guardian Life Insurance Company","Trans America","TransDental","TransSmile","TransWestern Insurance Administrators","TriStar Benefit Administrators","TruAssure","Tuckpointers Local 52","Tufts Health Plan","UHC Optum Dental","UMR","Unimerica Dental","United Concordia","United Concordia TRICARE","United Group Programs","UnitedHealthcare","Unum"];
+var _sel=null;
+function insGoStep(n){document.querySelectorAll(".ins-s").forEach(function(d){var s=parseInt(d.dataset.step);d.classList.toggle("active",s===n);d.classList.toggle("done",s<n)});document.querySelectorAll(".ins-panel2").forEach(function(p,i){p.classList.toggle("active",i+1===n)})}
+function insShowRes(id){["insRin","insRout","insRhmo"].forEach(function(r){var el=document.getElementById(r);el.style.display="none";el.classList.remove("show")});var el=document.getElementById(id);el.style.display="block";requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("show")})})}
+function insHideResults(){["insRin","insRout","insRhmo"].forEach(function(r){var el=document.getElementById(r);el.style.display="none";el.classList.remove("show")})}
+window.insType=function(t){document.querySelectorAll(".ins-pbtn").forEach(function(b){b.classList.toggle("sel",b.dataset.type===t)});if(t==="HMO"){insGoStep(3);insShowRes("insRhmo");return}_sel=null;document.getElementById("insSearchInput").value="";document.getElementById("insDropdown").classList.remove("open");document.getElementById("insDropdown").innerHTML="";document.getElementById("insSelectedDisplay").classList.remove("show");document.getElementById("insSearchWrap").style.display="";document.getElementById("insChkBtn").disabled=true;setTimeout(function(){insGoStep(2)},160)};
+window.insOnInput=function(val){var dd=document.getElementById("insDropdown");if(!val||val.length<1){dd.classList.remove("open");dd.innerHTML="";return}var q=val.toLowerCase();var matches=NET.filter(function(c){return c.toLowerCase().indexOf(q)>=0}).slice(0,10);if(matches.length===0){dd.innerHTML='<div class="ins-dropdown-empty">No match — <button class="ins-linkbtn" onclick="insNotListed()" style="font-size:12px">continue anyway</button></div>'}else{dd.innerHTML=matches.map(function(c){var h=c.replace(new RegExp("("+val.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>");return'<div class="ins-dropdown-item" onclick="insSelectCarrier(\''+c.replace(/'/g,"\\'")+"')\">"+h+"</div>"}).join("")}dd.classList.add("open")};
+window.insSelectCarrier=function(name){_sel=name;document.getElementById("insSearchInput").value="";document.getElementById("insDropdown").classList.remove("open");document.getElementById("insDropdown").innerHTML="";document.getElementById("insSearchWrap").style.display="none";document.getElementById("insSelectedName").textContent=name;document.getElementById("insSelectedDisplay").classList.add("show");document.getElementById("insChkBtn").disabled=false};
+window.insClearCarrier=function(){_sel=null;document.getElementById("insSelectedDisplay").classList.remove("show");document.getElementById("insSearchWrap").style.display="";document.getElementById("insChkBtn").disabled=true;document.getElementById("insSearchInput").focus()};
+window.insCheck=function(){if(!_sel)return;var inNet=NET.indexOf(_sel)>=0;insGoStep(3);insShowRes(inNet?"insRin":"insRout")};
+window.insNotListed=function(){insGoStep(3);insShowRes("insRout")};
+window.insBack=function(n){document.querySelectorAll(".ins-pbtn").forEach(function(b){b.classList.remove("sel")});_sel=null;document.getElementById("insSelectedDisplay").classList.remove("show");document.getElementById("insSearchWrap").style.display="";document.getElementById("insSearchInput").value="";document.getElementById("insDropdown").classList.remove("open");insHideResults();insGoStep(n)};
+document.addEventListener("click",function(e){if(!e.target.closest(".ins-search-wrap")){var dd=document.getElementById("insDropdown");if(dd)dd.classList.remove("open")}});
 
-  /* ── INSURANCE TYPEAHEAD ── */
-  var NET = [
-    "90 Degree Benefits",
-    "Administrative Services Only (ASO)",
-    "Aegis Administrative Services",
-    "Aetna",
-    "Aetna Commercial",
-    "Aetna Medicare",
-    "Aflac PPO Dental",
-    "Alacrity / DocsHealth",
-    "Alignment",
-    "Altus Dental",
-    "AlwaysCare",
-    "AmeriBen Solutions",
-    "AmeriHealth New Jersey",
-    "American Public Life Insurance",
-    "Ameritas",
-    "Anthem",
-    "Anthem Blue Cross",
-    "Anthem Blue Cross Blue Shield",
-    "BEST Health Plans",
-    "Beam Dental",
-    "Best Life and Health Insurance",
-    "Blackhawk - Array Health",
-    "Blue Cross Blue Shield of Alabama",
-    "Blue Cross Blue Shield of Arizona",
-    "Blue Cross Blue Shield of Illinois",
-    "Blue Cross Blue Shield of Michigan",
-    "Blue Cross Blue Shield of Montana",
-    "Blue Cross Blue Shield of New Mexico",
-    "Blue Cross Blue Shield of Oklahoma",
-    "Blue Cross Blue Shield of Texas",
-    "Blue Shield of California",
-    "Boon Administrative Services",
-    "BrightBenefits",
-    "CHUBB",
-    "Capital BlueCross",
-    "CareFirst",
-    "CareFirst Blue Cross Blue Shield",
-    "Centene / HealthNet of CA",
-    "Century Healthcare",
-    "Chesapeake Life Insurance",
-    "Cigna",
-    "Cigna DVH / Cigna Flex",
-    "Citizens Security Life",
-    "Colonial Life",
-    "Companion Life",
-    "Corporate Benefit Services",
-    "Cypress - DenteMax Plus",
-    "DNOA - Blue Cross Blue Shield",
-    "DNOA - Dearborn National",
-    "DNOA - LineCo",
-    "Delta Dental Medicare Advantage",
-    "Delta Dental PPO",
-    "Delta Dental Premier",
-    "Delta Health Systems",
-    "DentaQuest",
-    "Dental Benefit Providers",
-    "Dental Care Plus Group",
-    "DenteMax",
-    "DocsHealth (Reservists)",
-    "Dominion National",
-    "Electrical Components International",
-    "Emblem Health / GHI",
-    "Encore Dental / Stonebridge Life",
-    "Enterprise Life Insurance",
-    "Equitable",
-    "Equitable Financial Life",
-    "FBG Holding",
-    "FCE Benefit Administrators",
-    "Fidelio Dental Insurance",
-    "First Continental Life",
-    "Free Market Administrators",
-    "Freedom Life",
-    "GEHA",
-    "GEHA Connection Dental Federal",
-    "GEHA Connection Dental Plus",
-    "GEHA Solution",
-    "Group Administrators",
-    "Guardian",
-    "HRI",
-    "HRI Dental & Vision",
-    "Harrington / Colonial Life",
-    "Health Resources",
-    "HealthNet of California",
-    "Healthgram",
-    "Healthplex",
-    "Healthscope Benefits",
-    "Healthy Choice Plan Administrators",
-    "Humana",
-    "Humana Dental PPO",
-    "Humana Federal Advantage",
-    "Humana One",
-    "Imperial",
-    "Independence Blue Cross",
-    "Kaiser Permanente",
-    "Kansas City Life Insurance",
-    "Kemper Benefits",
-    "Key Benefit Administrators",
-    "LifeShield",
-    "Lincoln Financial",
-    "Local 786 Building Material Welfare Fund",
-    "Luminare Health",
-    "Management Benefit Fund",
-    "Manhattan Life",
-    "Medical Mutual",
-    "Merchants Benefit Administrators",
-    "MetLife",
-    "Mid-West National Life",
-    "Morgan White",
-    "Multiflex Dental",
-    "Mutual of Omaha",
-    "My WellSpent",
-    "National Foundation Life",
-    "National General Accident and Health",
-    "National Guardian Life",
-    "National Rural Electric Cooperative (NRECA)",
-    "Nationwide Insurance",
-    "NetCare Life & Health",
-    "New Era Life",
-    "Nippon Life",
-    "NovaNet",
-    "Pacific Life",
-    "Peoples Benefit Life",
-    "Pequot Plus Health Benefit Services",
-    "Personify Health",
-    "Physicians Mutual",
-    "Pinnacle Peak Administrators",
-    "Point C / Mid America Benefits",
-    "Preferred Insurance Specialist",
-    "PrimeCare Benefits",
-    "Principal Financial Group",
-    "Printing Specialties",
-    "Prudential",
-    "Reliance Standard Life",
-    "Renaissance",
-    "Reserve National Insurance",
-    "Roofers Union Welfare Trust Fund",
-    "SISCO",
-    "Self Insured Services",
-    "SkyGen",
-    "Solstice Benefits",
-    "Staff Benefits Management",
-    "Standard Insurance Company",
-    "Starmount",
-    "Strategic Limited Partners",
-    "Suffolk County Employee Benefit Plan",
-    "Sun Life Financial",
-    "Superior Dental Care",
-    "SureBridge",
-    "The Guardian Life Insurance Company",
-    "Trans America",
-    "TransDental",
-    "TransSmile",
-    "TransWestern Insurance Administrators",
-    "TriStar Benefit Administrators",
-    "TruAssure",
-    "Tuckpointers Local 52",
-    "Tufts Health Plan",
-    "UHC Optum Dental",
-    "UMR",
-    "Unimerica Dental",
-    "United Concordia",
-    "United Concordia TRICARE",
-    "United Group Programs",
-    "UnitedHealthcare",
-    "Unum"
-  ];
-  var _selCarrier = null;
-
-  function insGoStep(n) {
-    document.querySelectorAll(".ins-s").forEach(function(d) {
-      var s = parseInt(d.dataset.step);
-      d.classList.toggle("active", s === n);
-      d.classList.toggle("done", s < n);
-    });
-    document.querySelectorAll(".ins-panel2").forEach(function(p, i) {
-      p.classList.toggle("active", i + 1 === n);
-    });
-  }
-  function insShowRes(id) {
-    ["insRin","insRout","insRhmo"].forEach(function(r) {
-      var el = document.getElementById(r);
-      el.style.display = "none"; el.classList.remove("show");
-    });
-    var el = document.getElementById(id);
-    el.style.display = "block";
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() { el.classList.add("show"); });
-    });
-  }
-  function insHideResults() {
-    ["insRin","insRout","insRhmo"].forEach(function(r) {
-      var el = document.getElementById(r);
-      el.style.display = "none"; el.classList.remove("show");
-    });
-  }
-
-  window.insType = function(t) {
-    document.querySelectorAll(".ins-pbtn").forEach(function(b) {
-      b.classList.toggle("sel", b.dataset.type === t);
-    });
-    if (t === "HMO") { insGoStep(3); insShowRes("insRhmo"); return; }
-    _selCarrier = null;
-    document.getElementById("insSearchInput").value = "";
-    document.getElementById("insDropdown").classList.remove("open");
-    document.getElementById("insDropdown").innerHTML = "";
-    document.getElementById("insSelectedDisplay").classList.remove("show");
-    document.getElementById("insSearchWrap").style.display = "";
-    document.getElementById("insChkBtn").disabled = true;
-    setTimeout(function() { insGoStep(2); }, 160);
-  };
-
-  window.insOnInput = function(val) {
-    var dd = document.getElementById("insDropdown");
-    if (!val || val.length < 1) { dd.classList.remove("open"); dd.innerHTML = ""; return; }
-    var q = val.toLowerCase();
-    var matches = NET.filter(function(c) { return c.toLowerCase().indexOf(q) >= 0; }).slice(0, 10);
-    if (matches.length === 0) {
-      dd.innerHTML = '<div class="ins-dropdown-empty">No match — try a shorter term or <button class="ins-linkbtn" onclick="insNotListed()" style="font-size:12px">continue anyway</button></div>';
-    } else {
-      dd.innerHTML = matches.map(function(c) {
-        var highlighted = c.replace(new RegExp('(' + val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>');
-        return '<div class="ins-dropdown-item" onclick="insSelectCarrier(\'' + c.replace(/'/g, "\\'") + '\')">' + highlighted + '</div>';
-      }).join('');
-    }
-    dd.classList.add("open");
-  };
-
-  window.insSelectCarrier = function(name) {
-    _selCarrier = name;
-    document.getElementById("insSearchInput").value = "";
-    document.getElementById("insDropdown").classList.remove("open");
-    document.getElementById("insDropdown").innerHTML = "";
-    document.getElementById("insSearchWrap").style.display = "none";
-    document.getElementById("insSelectedName").textContent = name;
-    document.getElementById("insSelectedDisplay").classList.add("show");
-    document.getElementById("insChkBtn").disabled = false;
-  };
-
-  window.insClearCarrier = function() {
-    _selCarrier = null;
-    document.getElementById("insSelectedDisplay").classList.remove("show");
-    document.getElementById("insSearchWrap").style.display = "";
-    document.getElementById("insChkBtn").disabled = true;
-    document.getElementById("insSearchInput").focus();
-  };
-
-  window.insCheck = function() {
-    if (!_selCarrier) return;
-    var inNet = NET.indexOf(_selCarrier) >= 0;
-    insGoStep(3);
-    insShowRes(inNet ? "insRin" : "insRout");
-  };
-
-  window.insNotListed = function() {
-    insGoStep(3); insShowRes("insRout");
-  };
-
-  window.insBack = function(n) {
-    document.querySelectorAll(".ins-pbtn").forEach(function(b) { b.classList.remove("sel"); });
-    _selCarrier = null;
-    document.getElementById("insSelectedDisplay").classList.remove("show");
-    document.getElementById("insSearchWrap").style.display = "";
-    document.getElementById("insSearchInput").value = "";
-    document.getElementById("insDropdown").classList.remove("open");
-    insHideResults();
-    insGoStep(n);
-  };
-
-  // Close dropdown on outside click
-  document.addEventListener("click", function(e) {
-    if (!e.target.closest(".ins-search-wrap")) {
-      var dd = document.getElementById("insDropdown");
-      if (dd) dd.classList.remove("open");
-    }
-  });
-
-  /* ── CHATBOT ── */
-  var API_URL = '/api/chatbot';
-  var PROMPT_ID = 'pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1';
-  var PROMPT_VER = '6';
-  var chatHistory = [], isSending = false, chatInited = false;
-
-  var QUICK = [
-    { label: 'Schedule a Visit', icon: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>', msg: 'I would like to schedule an appointment' },
-    { label: 'Ask a Question', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>', msg: 'I have a question about dental services' },
-    { label: 'Insurance Info', icon: '<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>', msg: 'I have a question about insurance and coverage' },
-    { label: 'Hours & Location', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>', msg: 'What are your office hours and location?' }
-  ];
-
-  function _chatAddMsg(text, isBot) {
-    var msgs = document.getElementById('chat-msgs');
-    if (!msgs) return;
-    var d = document.createElement('div');
-    d.className = 'chat-msg ' + (isBot ? 'bot' : 'user');
-    d.textContent = text;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function _chatAddQuick() {
-    var msgs = document.getElementById('chat-msgs');
-    if (!msgs) return;
-    var grid = document.createElement('div');
-    grid.className = 'chat-quick-grid'; grid.id = 'chat-quick';
-    QUICK.forEach(function(q) {
-      var btn = document.createElement('button');
-      btn.className = 'chat-qbtn';
-      btn.innerHTML = q.icon + '<span>' + q.label + '</span>';
-      btn.onclick = function() {
-        var g = document.getElementById('chat-quick');
-        if (g) g.remove();
-        window.ahddChatSend(q.msg);
-      };
-      grid.appendChild(btn);
-    });
-    msgs.appendChild(grid);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function _chatAddTyping() {
-    var msgs = document.getElementById('chat-msgs');
-    if (!msgs) return;
-    var d = document.createElement('div');
-    d.className = 'chat-typing'; d.id = 'chat-typing';
-    d.innerHTML = '<span></span><span></span><span></span>';
-    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function _chatRemoveTyping() {
-    var el = document.getElementById('chat-typing');
-    if (el) el.remove();
-  }
-
-  function _chatWelcome() {
-    if (chatInited) return;
-    chatInited = true;
-    var msgs = document.getElementById('chat-msgs');
-    if (!msgs) return;
-    while (msgs.firstChild) msgs.removeChild(msgs.firstChild);
-    _chatAddTyping();
-    setTimeout(function() {
-      _chatRemoveTyping();
-      _chatAddMsg("Hi! I'm your Patient Concierge. How can I help you today?", true);
-      _chatAddQuick();
-    }, 550);
-  }
-
-  window.ahddChatOpen = function() {
-    var w = document.getElementById('ahdd-chat-widget');
-    var t = document.getElementById('ahdd-chat-toggle');
-    if (!w || !t) return;
-    w.classList.add('open');
-    t.classList.add('hidden');
-    _chatWelcome();
-    setTimeout(function() { var i = document.getElementById('chat-input'); if(i) i.focus(); }, 300);
-  };
-
-  window.ahddChatClose = function() {
-    var w = document.getElementById('ahdd-chat-widget');
-    var t = document.getElementById('ahdd-chat-toggle');
-    if (w) w.classList.remove('open');
-    if (t) t.classList.remove('hidden');
-  };
-
-  window.ahddChatSend = function(overrideText) {
-    var input = document.getElementById('chat-input');
-    var text = (typeof overrideText === 'string') ? overrideText : (input ? input.value.trim() : '');
-    if (!text || isSending) return;
-    var qg = document.getElementById('chat-quick');
-    if (qg) qg.remove();
-    isSending = true;
-    var sendBtn = document.getElementById('chat-send');
-    if (sendBtn) sendBtn.disabled = true;
-    if (input) input.value = '';
-    _chatAddMsg(text, false);
-    chatHistory.push({ role: 'user', content: [{ type: 'input_text', text: text }] });
-    _chatAddTyping();
-    fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ promptId: PROMPT_ID, promptVersion: PROMPT_VER, messages: chatHistory })
-    })
-    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
-    .then(function(d) {
-      _chatRemoveTyping();
-      var reply = d.reply || "Please call us at (818) 706-6077 and we'll be happy to help.";
-      _chatAddMsg(reply, true);
-      chatHistory.push({ role: 'assistant', content: [{ type: 'output_text', text: reply }] });
-    })
-    .catch(function() {
-      _chatRemoveTyping();
-      _chatAddMsg('Having trouble connecting. Please call (818) 706-6077.', true);
-    })
-    .finally(function() {
-      isSending = false;
-      if (sendBtn) sendBtn.disabled = false;
-    });
-  };
-
+/* CHATBOT */
+var API_URL='/api/chatbot',PROMPT_ID='pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1',PROMPT_VER='6',chatHistory=[],isSending=false,chatInited=false;
+var QUICK=[{label:'Schedule a Visit',icon:'<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>',msg:'I would like to schedule an appointment'},{label:'Ask a Question',icon:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>',msg:'I have a question about dental services'},{label:'Insurance Info',icon:'<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>',msg:'I have a question about insurance and coverage'},{label:'Hours & Location',icon:'<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>',msg:'What are your office hours and location?'}];
+function _addMsg(text,isBot){var msgs=document.getElementById('chat-msgs');if(!msgs)return;var d=document.createElement('div');d.className='chat-msg '+(isBot?'bot':'user');d.textContent=text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function _addQuick(){var msgs=document.getElementById('chat-msgs');if(!msgs)return;var grid=document.createElement('div');grid.className='chat-quick-grid';grid.id='chat-quick';QUICK.forEach(function(q){var btn=document.createElement('button');btn.className='chat-qbtn';btn.innerHTML=q.icon+'<span>'+q.label+'</span>';btn.onclick=function(){var g=document.getElementById('chat-quick');if(g)g.remove();window.ahddChatSend(q.msg)};grid.appendChild(btn)});msgs.appendChild(grid);msgs.scrollTop=msgs.scrollHeight}
+function _addTyping(){var msgs=document.getElementById('chat-msgs');if(!msgs)return;var d=document.createElement('div');d.className='chat-typing';d.id='chat-typing';d.innerHTML='<span></span><span></span><span></span>';msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function _removeTyping(){var el=document.getElementById('chat-typing');if(el)el.remove()}
+function _welcome(){if(chatInited)return;chatInited=true;var msgs=document.getElementById('chat-msgs');if(!msgs)return;while(msgs.firstChild)msgs.removeChild(msgs.firstChild);_addTyping();setTimeout(function(){_removeTyping();_addMsg("Hi! I'm your Patient Concierge. How can I help you today?",true);_addQuick()},550)}
+window.ahddChatOpen=function(){var w=document.getElementById('ahdd-chat-widget'),t=document.getElementById('ahdd-chat-toggle');if(!w||!t)return;w.classList.add('open');t.classList.add('hidden');_welcome();setTimeout(function(){var i=document.getElementById('chat-input');if(i)i.focus()},300)};
+window.ahddChatClose=function(){var w=document.getElementById('ahdd-chat-widget'),t=document.getElementById('ahdd-chat-toggle');if(w)w.classList.remove('open');if(t)t.classList.remove('hidden')};
+window.ahddChatSend=function(override){var input=document.getElementById('chat-input');var text=(typeof override==='string')?override:(input?input.value.trim():'');if(!text||isSending)return;var qg=document.getElementById('chat-quick');if(qg)qg.remove();isSending=true;var sendBtn=document.getElementById('chat-send');if(sendBtn)sendBtn.disabled=true;if(input)input.value='';_addMsg(text,false);chatHistory.push({role:'user',content:[{type:'input_text',text:text}]});_addTyping();fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({promptId:PROMPT_ID,promptVersion:PROMPT_VER,messages:chatHistory})}).then(function(r){if(!r.ok)throw new Error();return r.json()}).then(function(d){_removeTyping();var reply=d.reply||"Please call us at (818) 706-6077 and we'll be happy to help.";_addMsg(reply,true);chatHistory.push({role:'assistant',content:[{type:'output_text',text:reply}]})}).catch(function(){_removeTyping();_addMsg('Having trouble connecting. Please call (818) 706-6077.',true)}).finally(function(){isSending=false;if(sendBtn)sendBtn.disabled=false})};
 })();
 </script>
 
