@@ -427,6 +427,178 @@
   </div>
 </section>
 
+<!-- GOOGLE MAPS -->
+<section class="map-section">
+  <div class="map-section-inner">
+    <div class="map-left">
+      <div class="map-eyebrow">Find Us</div>
+      <h2 class="map-heading">Visit Our Office</h2>
+      <p class="map-address">28632 Roadside Dr, Suite 270B<br>Agoura Hills, CA 91301</p>
+      <div class="map-details">
+        <div class="map-detail-item">
+          <div class="map-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          </div>
+          <div>
+            <div class="map-detail-label">Office Hours</div>
+            <div class="map-detail-value">Mon–Thu 8:00am – 5:00pm</div>
+            <div class="map-detail-value">Fri 8:00am – 4:00pm</div>
+            <div class="map-detail-value" style="color:#ADADAA;">Sat–Sun Closed</div>
+          </div>
+        </div>
+        <div class="map-detail-item">
+          <div class="map-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="map-detail-label">Phone</div>
+            <a href="tel:8187066077" class="map-detail-value map-phone">(818) 706-6077</a>
+          </div>
+        </div>
+        <div class="map-detail-item">
+          <div class="map-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4A9FD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="map-detail-label">Neighborhood</div>
+            <div class="map-detail-value">Agoura Hills · Westlake Village</div>
+            <div class="map-detail-value">Thousand Oaks · Calabasas</div>
+          </div>
+        </div>
+      </div>
+      <a
+        href="https://www.google.com/maps/dir/?api=1&destination=28632+Roadside+Dr+Suite+270B+Agoura+Hills+CA+91301"
+        target="_blank"
+        rel="noopener"
+        class="map-directions-btn"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polygon points="3,11 22,2 13,21 11,13 3,11"/></svg>
+        Get Directions
+      </a>
+    </div>
+    <div class="map-right">
+      <div class="map-embed-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.4!2d-118.7615!3d34.1536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e8230b5f2a1111%3A0x1234567890abcdef!2s28632%20Roadside%20Dr%20%23270B%2C%20Agoura%20Hills%2C%20CA%2091301!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Agoura Hills Dental Designs — 28632 Roadside Dr Suite 270B, Agoura Hills CA 91301"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.map-section {
+  background: #fff;
+  border-top: 1px solid #E4E4E0;
+  padding: 72px 48px;
+}
+.map-section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 56px;
+  align-items: stretch;
+}
+.map-eyebrow {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: #4A9FD4; margin-bottom: 12px;
+}
+.map-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700; color: #0B1628;
+  letter-spacing: -.02em; line-height: 1.2;
+  margin-bottom: 10px;
+}
+.map-address {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; color: #6B6B66;
+  line-height: 1.65; margin-bottom: 28px;
+}
+.map-details {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.map-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.map-detail-icon {
+  width: 36px; height: 36px;
+  background: #eef6fc;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.map-detail-icon svg { width: 16px; height: 16px; }
+.map-detail-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: #ADADAA; margin-bottom: 3px;
+}
+.map-detail-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; color: #0B1628;
+  line-height: 1.55;
+}
+a.map-phone {
+  color: #0B1628; font-weight: 600;
+  text-decoration: none; transition: color .18s;
+}
+a.map-phone:hover { color: #4A9FD4; }
+.map-directions-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px;
+  background: #0B1628; color: #fff;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  transition: all .18s;
+  box-shadow: 0 4px 14px rgba(11,22,40,.15);
+}
+.map-directions-btn:hover {
+  background: #1a2d4a;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(11,22,40,.22);
+}
+.map-right {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.1);
+  border: 1px solid #E4E4E0;
+  min-height: 420px;
+}
+.map-embed-wrap {
+  width: 100%; height: 100%; min-height: 420px;
+}
+.map-embed-wrap iframe {
+  display: block;
+  width: 100%; height: 100%; min-height: 420px;
+}
+@media (max-width: 860px) {
+  .map-section-inner { grid-template-columns: 1fr; gap: 28px; }
+  .map-section { padding: 52px 20px; }
+  .map-right { min-height: 300px; }
+  .map-embed-wrap, .map-embed-wrap iframe { min-height: 300px; }
+}
+</style>
+
 <!-- CHATBOT -->
 <button id="ahdd-chat-toggle" title="Chat with us" onclick="ahddChatOpen()">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="#fff" opacity=".9"/><circle cx="8.5" cy="11" r="1.2" fill="#0B1628"/><circle cx="12" cy="11" r="1.2" fill="#0B1628"/><circle cx="15.5" cy="11" r="1.2" fill="#0B1628"/></svg>
