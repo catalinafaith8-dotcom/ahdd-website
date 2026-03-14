@@ -141,6 +141,34 @@
       <h2 class="team-heading">The People Behind<br><em>Your Experience</em></h2>
       <p class="team-subhead">Every visit is shaped by this team — trained, passionate, and genuinely happy to see you.</p>
     </div>
+    <!-- DOCTORS ROW -->
+    <div class="team-doctors-row">
+
+      <div class="team-card team-card--doctor">
+        <div class="team-photo-wrap team-photo-wrap--doctor">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Dr%20David%20headshot.jpeg" alt="Dr. David Matian, DDS" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. David Matian</div>
+          <div class="team-role">Cosmetic &amp; Restorative Dentist</div>
+        </div>
+      </div>
+
+      <div class="team-card team-card--doctor">
+        <div class="team-photo-wrap team-photo-wrap--doctor">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Dr%20Shawn%20headshot.JPG" alt="Dr. Shawn Matian, DDS" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. Shawn Matian</div>
+          <div class="team-role">Lead Cosmetic Dentist</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="team-divider"><span>Support Team</span></div>
+
+    <!-- STAFF GRID -->
     <div class="team-grid">
 
       <div class="team-card">
@@ -206,6 +234,41 @@
     </div>
   </div>
 </section>
+
+<style>
+/* Doctor row — 2 larger centered cards */
+.team-doctors-row {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.team-card--doctor { max-width: 220px; width: 100%; }
+.team-photo-wrap--doctor {
+  aspect-ratio: 3 / 4;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(74,159,212,.15) !important;
+  border: 2px solid rgba(74,159,212,.2);
+}
+/* Divider between doctors and staff */
+.team-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 36px;
+}
+.team-divider::before, .team-divider::after {
+  content: ''; flex: 1; height: 1px; background: #E4E4E0;
+}
+.team-divider span {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: #ADADAA; white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .team-doctors-row { gap: 16px; }
+  .team-card--doctor { max-width: 160px; }
+}
+</style>
 
 <style>
 .team-section {
