@@ -133,6 +133,160 @@
   </div>
 </section>
 
+<!-- MEET THE TEAM -->
+<section class="team-section" id="meetTheTeam">
+  <div class="team-inner">
+    <div class="team-header">
+      <div class="team-eyebrow">Our Team</div>
+      <h2 class="team-heading">The People Behind<br><em>Your Experience</em></h2>
+      <p class="team-subhead">Every visit is shaped by this team — trained, passionate, and genuinely happy to see you.</p>
+    </div>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Catalina%20Operations%20Manager.jpeg" alt="Catalina — Operations Manager" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Catalina</div>
+          <div class="team-role">Operations Manager</div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Stacey%20Patient%20Care%20Coordinator.jpeg" alt="Stacey — Patient Care Coordinator" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Stacey</div>
+          <div class="team-role">Patient Care Coordinator</div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Erik%20Lead%20Assistant.jpeg" alt="Erik — Lead Dental Assistant" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Erik</div>
+          <div class="team-role">Lead Assistant</div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Derek%20Dental%20Assistant.jpg" alt="Derek — Dental Assistant" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Derek</div>
+          <div class="team-role">Dental Assistant</div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Gely%20Hygienist%20headshot.jpg" alt="Gely — Dental Hygienist" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Gely</div>
+          <div class="team-role">Hygienist</div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Heidi%20Hygienist%20headshot.jpeg" alt="Heidi — Dental Hygienist" loading="lazy"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Heidi</div>
+          <div class="team-role">Hygienist</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.team-section {
+  background: #f8f9fb;
+  padding: 72px 48px;
+  border-top: 1px solid #E4E4E0;
+}
+.team-inner { max-width: 1100px; margin: 0 auto; }
+.team-header { text-align: center; margin-bottom: 52px; }
+.team-eyebrow {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: #4A9FD4; margin-bottom: 12px;
+}
+.team-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 700; color: #0B1628;
+  letter-spacing: -.02em; line-height: 1.2;
+  margin-bottom: 14px;
+}
+.team-heading em { font-style: italic; color: #4A9FD4; font-weight: 300; }
+.team-subhead {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; color: #6B6B66;
+  line-height: 1.7; max-width: 480px; margin: 0 auto;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+.team-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform .25s ease;
+}
+.team-card:hover { transform: translateY(-6px); }
+.team-photo-wrap {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #E4E4E0;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+  transition: box-shadow .25s ease;
+}
+.team-card:hover .team-photo-wrap {
+  box-shadow: 0 12px 36px rgba(74,159,212,.18);
+}
+.team-photo-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+  transition: transform .4s ease;
+}
+.team-card:hover .team-photo-wrap img { transform: scale(1.04); }
+.team-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px; font-weight: 700;
+  color: #0B1628; margin-bottom: 3px;
+}
+.team-role {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: #4A9FD4;
+}
+@media (max-width: 960px) {
+  .team-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+}
+@media (max-width: 560px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .team-section { padding: 52px 20px; }
+}
+</style>
+
 <!-- TECHNOLOGY SECTION -->
 <section class="tech-section" id="technology">
   <div class="tech-inner">
