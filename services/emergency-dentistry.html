@@ -58,25 +58,20 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 #mobile-nav a{display:block;padding:13px 0;font-size:16px;color:var(--graphite);border-bottom:1px solid #f0f0f0}
 .mob-ctas{padding-top:18px;display:flex;flex-direction:column;gap:10px}
 .mob-book{display:block;text-align:center;padding:13px;border-radius:100px;background:var(--navy);color:#fff;font-size:15px;font-weight:500}
+.nav-links li{position:relative}
+.nav-dropdown{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(-4px);background:#fff;border-radius:4px;padding:12px 0;min-width:210px;z-index:2000;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,transform .18s ease,visibility .18s;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.nav-links li:hover .nav-dropdown{opacity:1;visibility:visible;pointer-events:all;transform:translateX(-50%) translateY(0)}
+.nav-dropdown a{display:block;padding:11px 24px;font-size:14px;font-weight:400;color:#333;transition:color .15s;white-space:nowrap}
+.nav-dropdown a:hover{color:var(--navy)}
+.nav-dropdown a.dd-active{color:var(--navy);font-weight:500}
+.nav-dropdown a::after{display:none!important}
 
-/* SERVICE HERO — split layout */
-.svc-hero{
-  padding-top:64px;
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:580px;align-items:stretch;overflow:hidden;
-}
-.svc-hero-text{
-  background:#fff;
-  padding:72px 60px 72px 80px;
-  display:flex;flex-direction:column;justify-content:center;
-}
-.svc-breadcrumb{
-  display:flex;align-items:center;gap:8px;
-  font-size:12px;color:var(--slate);margin-bottom:20px;
-}
+/* HERO */
+.svc-hero{padding-top:64px;display:grid;grid-template-columns:1fr 1fr;min-height:580px;align-items:stretch;overflow:hidden}
+.svc-hero-text{background:#fff;padding:72px 60px 72px 80px;display:flex;flex-direction:column;justify-content:center}
+.svc-breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--slate);margin-bottom:20px}
 .svc-breadcrumb a{color:var(--slate);transition:color .2s}
 .svc-breadcrumb a:hover{color:var(--navy)}
-.svc-breadcrumb span{color:var(--slate)}
 .svc-eyebrow{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
 .svc-hero-h1{font-family:var(--serif);font-size:clamp(32px,3.8vw,52px);font-weight:600;color:var(--graphite);line-height:1.08;letter-spacing:-.01em;margin-bottom:20px}
 .svc-hero-p{font-size:16px;line-height:1.75;color:var(--slate);margin-bottom:32px;max-width:480px}
@@ -85,43 +80,21 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .btn-primary:hover{background:var(--steel);transform:translateY(-2px)}
 .btn-secondary{padding:14px 32px;border-radius:100px;background:transparent;color:var(--navy);border:1.5px solid var(--navy);font-size:15px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;cursor:pointer;text-decoration:none}
 .btn-secondary:hover{background:var(--navy);color:#fff;transform:translateY(-2px)}
-/* Hero image — right side, full bleed */
-.svc-hero-img{
-  position:relative;overflow:hidden;background:linear-gradient(135deg,#ddf0fb,#88c2e8);
-}
-.svc-hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-.svc-hero-badge{
-  position:absolute;bottom:24px;left:24px;
-  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
-  border-radius:14px;padding:14px 18px;
-  box-shadow:0 4px 20px rgba(29,62,92,.12);
-}
+.svc-hero-img{position:relative;overflow:hidden;background:linear-gradient(135deg,#ddf0fb,#88c2e8)}
+.svc-hero-badge{position:absolute;bottom:24px;left:24px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-radius:14px;padding:14px 18px;box-shadow:0 4px 20px rgba(29,62,92,.12)}
 .svc-hero-badge-num{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--navy);line-height:1}
 .svc-hero-badge-lbl{font-size:11px;color:var(--slate);margin-top:3px}
 
-/* overview removed */
-
-/* PROCESS STEPS */
+/* PROCESS */
 .svc-process{background:#fff;padding:80px 0}
 .section-header{text-align:center;margin-bottom:56px}
 .sec-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:10px}
 .sec-title{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:400;color:var(--graphite);line-height:1.15}
 .sec-title em{font-style:italic;color:var(--steel)}
 .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.step-card{
-  background:var(--cloud);border-radius:18px;
-  padding:32px 24px;position:relative;
-  border:1px solid rgba(29,62,92,.07);
-  transition:transform .26s,box-shadow .26s;
-}
+.step-card{background:var(--cloud);border-radius:18px;padding:32px 24px;border:1px solid rgba(29,62,92,.07);transition:transform .26s,box-shadow .26s}
 .step-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(29,62,92,.10)}
-.step-num{
-  width:44px;height:44px;border-radius:50%;
-  background:var(--navy);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:18px;font-weight:600;
-  margin-bottom:18px;
-}
+.step-num{width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:18px}
 .step-title{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--graphite);margin-bottom:10px;line-height:1.3}
 .step-desc{font-size:13.5px;line-height:1.68;color:var(--slate)}
 
@@ -132,34 +105,102 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .fin-h2{font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:400;color:#fff;line-height:1.15;margin-bottom:16px}
 .fin-p{font-size:15px;line-height:1.75;color:rgba(255,255,255,.72);margin-bottom:28px}
 .fin-cards{display:flex;flex-direction:column;gap:14px}
-.fin-card{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
-  border-radius:14px;padding:20px 22px;
-  display:flex;align-items:center;gap:16px;
-}
-.fin-card-icon{
-  width:44px;height:44px;border-radius:12px;
-  background:rgba(255,255,255,.10);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
+.fin-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:16px}
+.fin-card-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.10);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .fin-card-icon svg{width:22px;height:22px;stroke:var(--amber);fill:none;stroke-width:1.75}
 .fin-card-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:3px}
 .fin-card-desc{font-size:13px;color:rgba(255,255,255,.62)}
 
-/* FAQs */
+/* ═══════════════════════════════════════
+   AI SMILE ANALYSIS — Apple × Dental
+   Single column · centered · 560px max
+═══════════════════════════════════════ */
+.svc-ai{background:#f2f2f7;padding:96px 0}
+.ai-wrap{max-width:560px;margin:0 auto;padding:0 24px}
+.ai-header{text-align:center;margin-bottom:40px}
+.ai-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--steel);margin-bottom:14px}
+.ai-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--copper)}
+.ai-title{font-family:var(--serif);font-size:clamp(26px,3.5vw,36px);font-weight:400;color:var(--graphite);line-height:1.15;margin-bottom:10px}
+.ai-title em{font-style:italic;color:var(--steel)}
+.ai-subtitle{font-size:15px;color:var(--slate);line-height:1.65}
+.ai-card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06),0 8px 32px rgba(29,62,92,.08)}
+
+/* Upload */
+.ai-upload{padding:40px 32px 32px;border-bottom:1px solid rgba(29,62,92,.06)}
+.ai-dropzone{border:1.5px dashed rgba(29,62,92,.2);border-radius:16px;padding:36px 24px;text-align:center;cursor:pointer;transition:all .22s;background:#f9f9fb;position:relative;margin-bottom:16px}
+.ai-dropzone:hover,.ai-dropzone.drag{border-color:var(--steel);background:var(--sky)}
+.ai-dropzone.has-file{border-style:solid;border-color:var(--steel);background:#eef4fb}
+.ai-dropzone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ai-drop-icon{width:40px;height:40px;margin:0 auto 12px;background:var(--sky);border-radius:12px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.ai-dropzone:hover .ai-drop-icon,.ai-dropzone.has-file .ai-drop-icon{background:rgba(42,90,130,.12)}
+.ai-drop-icon svg{width:20px;height:20px;stroke:var(--steel);fill:none;stroke-width:1.75}
+.ai-drop-title{font-size:14px;font-weight:600;color:var(--graphite);margin-bottom:4px}
+.ai-drop-sub{font-size:12px;color:#94a3b8}
+.ai-preview{display:none;align-items:center;gap:12px;background:#eef4fb;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.ai-preview.show{display:flex}
+.ai-preview-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1.5px solid rgba(42,90,130,.15);flex-shrink:0}
+.ai-preview-info{flex:1;min-width:0}
+.ai-preview-name{font-size:13px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-preview-meta{font-size:11px;color:var(--slate);margin-top:2px}
+.ai-preview-remove{background:none;border:none;cursor:pointer;color:#94a3b8;padding:4px;flex-shrink:0;transition:color .2s;border-radius:6px}
+.ai-preview-remove:hover{color:#ef4444}
+.ai-analyze-btn{width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .22s;letter-spacing:.01em}
+.ai-analyze-btn:hover:not(:disabled){background:var(--steel);transform:translateY(-1px);box-shadow:0 6px 20px rgba(29,62,92,.25)}
+.ai-analyze-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Loading */
+.ai-loading-row{display:none;align-items:center;justify-content:center;gap:12px;padding:20px 32px;border-top:1px solid rgba(29,62,92,.06)}
+.ai-loading-row.show{display:flex}
+.ai-spinner{width:20px;height:20px;border:2px solid rgba(29,62,92,.12);border-top-color:var(--navy);border-radius:50%;animation:aiSpin .75s linear infinite;flex-shrink:0}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+.ai-loading-text{font-size:13px;color:var(--slate)}
+
+/* Standard result */
+.ai-result-body{display:none;animation:aiFade .35s ease}
+.ai-result-body.show{display:block}
+@keyframes aiFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ai-result-analysis{padding:28px 32px 0}
+.ai-result-label{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--steel);margin-bottom:10px}
+.ai-result-text{font-size:15px;line-height:1.7;color:var(--graphite)}
+.ai-chips{display:flex;flex-wrap:wrap;gap:8px;padding:20px 32px 0}
+.ai-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;font-size:13px;font-weight:500;background:var(--cloud);color:var(--navy);border:1.5px solid rgba(29,62,92,.12);cursor:pointer;transition:all .18s}
+.ai-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,62,92,.18)}
+.ai-chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ai-deepdive{display:none;margin:16px 32px 0;background:var(--sky);border-radius:14px;padding:18px 20px;font-size:14px;color:var(--slate);line-height:1.72;animation:aiFade .25s ease}
+.ai-deepdive.show{display:block}
+.ai-deepdive p+p{margin-top:10px}
+.ai-cta-wrap{padding:24px 32px 32px}
+.ai-cta-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--copper),#b85e28);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.01em}
+.ai-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,106,46,.32)}
+
+/* Emergency result */
+.ai-emergency-body{display:none;animation:aiFade .35s ease}
+.ai-emergency-body.show{display:block}
+.ai-emergency-banner{background:linear-gradient(135deg,#450a0a,#7f1d1d);padding:28px 32px;display:flex;gap:16px;align-items:flex-start}
+.ai-emergency-icon{font-size:28px;flex-shrink:0;line-height:1;margin-top:2px}
+.ai-emergency-label{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#fca5a5;margin-bottom:8px}
+.ai-emergency-text{font-size:15px;color:#fee2e2;line-height:1.65}
+.ai-emergency-cta{padding:24px 32px 32px}
+.ai-emergency-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;background:#dc2626;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .22s}
+.ai-emergency-btn:hover{background:#b91c1c;transform:translateY(-2px);box-shadow:0 8px 24px rgba(220,38,38,.32)}
+
+/* Footer row */
+.ai-footer-row{text-align:center;padding:0 32px 20px}
+.ai-reset-btn{background:none;border:none;font-size:12px;color:#94a3b8;cursor:pointer;transition:color .2s;padding:4px 8px}
+.ai-reset-btn:hover{color:var(--steel)}
+.ai-privacy{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:#94a3b8;padding-bottom:24px;padding-top:4px}
+
+/* FAQ */
 .svc-faq{background:#fff;padding:80px 0}
-.faq-grid{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.faq-grid{max-width:760px;margin:0 auto;display:flex;flex-direction:column}
 .faq-item{border-bottom:1px solid rgba(29,62,92,.09)}
-.faq-q{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 0;cursor:pointer;gap:16px;
-}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;gap:16px}
 .faq-q-text{font-size:15px;font-weight:500;color:var(--graphite);line-height:1.4}
 .faq-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(29,62,92,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s}
 .faq-icon svg{width:13px;height:13px;stroke:var(--navy);fill:none;stroke-width:2;transition:transform .22s}
 .faq-item.open .faq-icon{background:var(--navy);border-color:var(--navy)}
 .faq-item.open .faq-icon svg{stroke:#fff;transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
 .faq-a-inner{font-size:14.5px;line-height:1.75;color:var(--slate);padding-bottom:18px}
 .faq-item.open .faq-a{max-height:300px}
 
@@ -177,7 +218,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 /* FOOTER */
 #footer{background:#f8f7f4;border-top:1px solid rgba(29,62,92,.08);padding:56px 0 28px}
 .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
-.foot-brand{font-family:var(--sans);font-size:13.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite);margin-bottom:14px}
+.foot-brand{font-size:13.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite);margin-bottom:14px}
 .foot-brand span{color:var(--copper)}
 .foot-desc{font-size:13.5px;line-height:1.7;color:var(--slate);margin-bottom:12px;max-width:250px}
 .foot-ph{font-size:13.5px;font-weight:500;color:var(--navy);transition:color .2s}
@@ -249,113 +290,20 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   .svc-hero{grid-template-columns:1fr}
   .svc-hero-text{padding:56px 24px 40px}
   .svc-hero-img{min-height:280px}
-  .overview-grid{grid-template-columns:1fr}
   .steps-grid{grid-template-columns:repeat(2,1fr)}
   .financing-inner{grid-template-columns:1fr}
-  .ai-top{grid-template-columns:1fr}
-  .ai-visual{display:none}
   .footer-grid{grid-template-columns:1fr 1fr;gap:22px}
   .footer-brand-col{grid-column:1/-1}
   .cta-btns{flex-direction:column;align-items:center}
+  .ai-upload{padding:28px 20px 24px}
+  .ai-result-analysis,.ai-cta-wrap,.ai-emergency-cta,.ai-footer-row{padding-left:20px;padding-right:20px}
+  .ai-chips{padding:16px 20px 0}
+  .ai-deepdive{margin:14px 20px 0}
+  .ai-emergency-banner{padding:24px 20px}
 }
 @media(max-width:480px){
   .steps-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
-}
-
-/* Services dropdown — minimal clean style */
-.nav-links li{position:relative}
-.nav-dropdown{
-  position:absolute;
-  top:calc(100% + 16px);
-  left:50%;
-  transform:translateX(-50%) translateY(-4px);
-  background:#fff;
-  border-radius:4px;
-  padding:12px 0;
-  min-width:210px;
-  z-index:2000;
-  opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .18s ease,transform .18s ease,visibility .18s;
-  box-shadow:0 4px 24px rgba(0,0,0,.08);
-}
-.nav-links li:hover .nav-dropdown{
-  opacity:1;visibility:visible;pointer-events:all;
-  transform:translateX(-50%) translateY(0);
-}
-.nav-dropdown a{
-  display:block;
-  padding:11px 24px;
-  font-size:14px;
-  font-weight:400;
-  color:#333;
-  transition:color .15s;
-  white-space:nowrap;
-}
-.nav-dropdown a:hover{color:var(--navy)}
-.nav-dropdown a.dd-active{color:var(--navy);font-weight:500}
-.nav-dropdown a::after{display:none!important}
-
-
-/* ── AI SMILE ANALYSIS ─────────────────────────────── */
-.svc-ai{background:var(--cloud);padding:80px 0}
-.ai-inner{background:#fff;border-radius:24px;border:1px solid rgba(29,62,92,.09);box-shadow:0 8px 40px rgba(29,62,92,.08);overflow:hidden}
-.ai-top{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
-.ai-text{padding:52px 52px 52px 56px;display:flex;flex-direction:column;gap:0}
-.ai-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
-.ai-h2{font-family:var(--serif);font-size:clamp(22px,2.6vw,32px);font-weight:400;color:var(--graphite);line-height:1.2;margin-bottom:12px}
-.ai-p{font-size:14.5px;line-height:1.72;color:var(--slate);margin-bottom:22px}
-.ai-upload-area{border:2px dashed rgba(29,62,92,.18);border-radius:16px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .22s;background:var(--cloud);position:relative;margin-bottom:14px}
-.ai-upload-area:hover,.ai-upload-area.drag{border-color:var(--steel);background:var(--sky)}
-.ai-upload-area.has-file{border-color:var(--green);background:#f0fdf4}
-.ai-upload-icon{width:48px;height:48px;border-radius:12px;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.ai-upload-title{font-size:14px;font-weight:600;color:var(--graphite);margin-bottom:5px}
-.ai-upload-sub{font-size:12px;color:var(--slate)}
-.ai-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.ai-btn{width:100%;padding:13px;border-radius:12px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
-.ai-btn:hover:not(:disabled){background:var(--steel);transform:translateY(-1px)}
-.ai-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
-.ai-loading{display:none;text-align:center;padding:14px;align-items:center;justify-content:center;gap:10px}
-.ai-loading.show{display:flex}
-.ai-spinner{width:28px;height:28px;border:2.5px solid rgba(29,62,92,.15);border-top-color:var(--navy);border-radius:50%;animation:aiSpin .8s linear infinite;flex-shrink:0}
-@keyframes aiSpin{to{transform:rotate(360deg)}}
-/* Result panel */
-.ai-result{display:none;background:var(--sky);border:1px solid rgba(29,62,92,.10);border-radius:14px;padding:20px;margin-bottom:14px}
-.ai-result.show{display:block;animation:aiFadeIn .3s ease}
-@keyframes aiFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.ai-result-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
-.ai-result-text{font-size:13.5px;line-height:1.72;color:var(--slate);white-space:pre-line;margin-bottom:16px}
-/* Treatment chips */
-.ai-treatments{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.ai-treatment-chip{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:7px 13px;border-radius:100px;
-  font-size:12px;font-weight:500;
-  background:#fff;color:var(--navy);
-  border:1.5px solid rgba(29,62,92,.18);
-  cursor:pointer;transition:all .2s;
-}
-.ai-treatment-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-.ai-treatment-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.ai-treatment-chip svg{width:12px;height:12px;flex-shrink:0}
-/* Deep dive */
-.ai-deepdive{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid rgba(29,62,92,.08)}
-.ai-deepdive-text{font-size:13.5px;line-height:1.72;color:var(--slate);white-space:pre-line}
-/* CTA */
-.ai-result-cta{width:100%;padding:12px;border-radius:10px;background:var(--copper);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background .2s;margin-top:4px}
-.ai-result-cta:hover{background:#b85e28}
-.ai-reset{background:none;border:none;color:var(--slate);font-size:13px;cursor:pointer;padding:0;text-decoration:underline;transition:color .2s}
-.ai-reset:hover{color:var(--navy)}
-/* Visual right panel */
-.ai-visual{background:linear-gradient(135deg,var(--navy) 0%,var(--steel) 100%);display:flex;align-items:center;justify-content:center;padding:48px;min-height:400px}
-.ai-visual-content{text-align:center;color:#fff}
-.ai-visual-icon{font-size:60px;margin-bottom:16px}
-.ai-visual-title{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:10px;line-height:1.3}
-.ai-visual-sub{font-size:13px;color:rgba(255,255,255,.62);line-height:1.65}
-@media(max-width:768px){
-  .ai-top{grid-template-columns:1fr}
-  .ai-text{padding:32px 24px}
-  .ai-visual{display:none}
 }
 </style>
 </head>
@@ -374,7 +322,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <a href="/services/veneers">Porcelain Veneers</a>
           <a href="/services/dental-implants">Dental Implants</a>
           <a href="/services/teeth-whitening">Teeth Whitening</a>
-          <a href="/services/emergency-dentistry" class="dd-active" class="dd-active">Emergency &amp; Sedation</a>
+          <a href="/services/emergency-dentistry" class="dd-active">Emergency &amp; Sedation</a>
           <a href="/services/restorative-dentistry">Restorative Dentistry</a>
         </div>
       </li>
@@ -389,8 +337,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
     <button class="hamburger" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
+
 <nav id="mobile-nav">
-  <a href="/">Home</a><a href="/about">About Us</a>  <a href="/services">Services</a>
+  <a href="/">Home</a>
+  <a href="/about">About Us</a>
+  <a href="/services">Services</a>
   <div style="padding-left:16px;border-left:2px solid var(--sky);margin-left:8px;display:flex;flex-direction:column;">
     <a href="/services/invisalign" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Invisalign</a>
     <a href="/services/veneers" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Porcelain Veneers</a>
@@ -398,7 +349,9 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
     <a href="/services/teeth-whitening" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Teeth Whitening</a>
     <a href="/services/emergency-dentistry" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Emergency &amp; Sedation</a>
     <a href="/services/restorative-dentistry" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Restorative Dentistry</a>
-  </div><a href="/financing">Financing</a><a href="/technology">Technology</a>
+  </div>
+  <a href="/financing">Financing</a>
+  <a href="/technology">Technology</a>
   <div class="mob-ctas">
     <a href="tel:+18187066077" style="font-size:16px;font-weight:500;color:var(--navy)">(818) 706-6077</a>
     <a href="#" class="mob-book" onclick="doBook(event)">Book Online</a>
@@ -434,7 +387,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   </div>
 </section>
 
-<!-- PROCESS STEPS -->
+<!-- PROCESS -->
 <section class="svc-process">
   <div class="wrap">
     <div class="section-header reveal">
@@ -442,26 +395,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       <h2 class="sec-title">The Process, <em>Step by Step</em></h2>
     </div>
     <div class="steps-grid">
-      <div class="step-card reveal">
-        <div class="step-num">1</div>
-        <div class="step-title">Call Us Immediately</div>
-        <div class="step-desc">Call (818) 706-6077. Tell us your symptoms and we'll get you seen as quickly as possible — often the same day.</div>
-      </div>
-      <div class="step-card reveal d1">
-        <div class="step-num">2</div>
-        <div class="step-title">Emergency Examination</div>
-        <div class="step-desc">We use digital X-rays and 3D imaging to precisely diagnose the issue and determine the fastest, most effective treatment path.</div>
-      </div>
-      <div class="step-card reveal d2">
-        <div class="step-num">3</div>
-        <div class="step-title">Immediate Pain Relief</div>
-        <div class="step-desc">Our first priority is getting you comfortable. We'll address the source of your pain directly and explain your full treatment options clearly.</div>
-      </div>
-      <div class="step-card reveal d3">
-        <div class="step-num">4</div>
-        <div class="step-title">Complete Treatment Plan</div>
-        <div class="step-desc">Once the emergency is resolved, we outline any follow-up care needed to fully restore your tooth and prevent future problems.</div>
-      </div>
+      <div class="step-card reveal"><div class="step-num">1</div><div class="step-title">Call Us Immediately</div><div class="step-desc">Call (818) 706-6077. Tell us your symptoms and we'll get you seen as quickly as possible — often the same day.</div></div>
+      <div class="step-card reveal d1"><div class="step-num">2</div><div class="step-title">Emergency Examination</div><div class="step-desc">We use digital X-rays and 3D imaging to precisely diagnose the issue and determine the fastest, most effective treatment path.</div></div>
+      <div class="step-card reveal d2"><div class="step-num">3</div><div class="step-title">Immediate Pain Relief</div><div class="step-desc">Our first priority is getting you comfortable. We'll address the source of your pain directly and explain your full treatment options clearly.</div></div>
+      <div class="step-card reveal d3"><div class="step-num">4</div><div class="step-title">Complete Treatment Plan</div><div class="step-desc">Once the emergency is resolved, we outline any follow-up care needed to fully restore your tooth and prevent future problems.</div></div>
     </div>
   </div>
 </section>
@@ -477,18 +414,9 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         <a href="/financing" class="btn-primary" style="display:inline-flex;text-decoration:none">Explore Financing Options →</a>
       </div>
       <div class="fin-cards reveal d2">
-        <div class="fin-card">
-          <div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg></div>
-          <div><div class="fin-card-title">From $99/month</div><div class="fin-card-desc">Low monthly payments with approved credit through CareCredit &amp; Sunbit</div></div>
-        </div>
-        <div class="fin-card">
-          <div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-          <div><div class="fin-card-title">Insurance Accepted</div><div class="fin-card-desc">We work with most PPO plans — our team verifies your benefits before you start</div></div>
-        </div>
-        <div class="fin-card">
-          <div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
-          <div><div class="fin-card-title">Free Consultation</div><div class="fin-card-desc">No cost, no commitment — get your full treatment plan and pricing upfront</div></div>
-        </div>
+        <div class="fin-card"><div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg></div><div><div class="fin-card-title">From $99/month</div><div class="fin-card-desc">Low monthly payments with approved credit through CareCredit &amp; Sunbit</div></div></div>
+        <div class="fin-card"><div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><div class="fin-card-title">Insurance Accepted</div><div class="fin-card-desc">We work with most PPO plans — our team verifies your benefits before you start</div></div></div>
+        <div class="fin-card"><div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><div class="fin-card-title">Free Consultation</div><div class="fin-card-desc">No cost, no commitment — get your full treatment plan and pricing upfront</div></div></div>
       </div>
     </div>
   </div>
@@ -496,69 +424,84 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 
 <!-- AI SMILE ANALYSIS -->
 <section class="svc-ai">
-  <div class="wrap">
-    <div class="ai-inner reveal">
-      <div class="ai-top">
-        <div class="ai-text">
-          <span class="ai-label">AI-Powered Smile Analysis</span>
-          <h2 class="ai-h2" id="aiH2">Not Sure If This Treatment Is Right for You?</h2>
-          <p class="ai-p">Upload a photo of your smile and our AI will analyze your teeth — evaluating shade, alignment, spacing, and more — then give you personalized treatment recommendations in seconds. Completely private, no sign-up required.</p>
+  <div class="ai-wrap">
+    <div class="ai-header reveal">
+      <div class="ai-eyebrow"><span class="ai-eyebrow-dot"></span>AI-Powered · Free · Private</div>
+      <h2 class="ai-title">Not Sure What Your<br><em>Smile Needs?</em></h2>
+      <p class="ai-subtitle">Upload a photo and our AI analyzes your teeth in seconds. No sign-up required.</p>
+    </div>
+    <div class="ai-card reveal d1">
 
-          <!-- Upload zone -->
-          <div class="ai-upload-area" id="aiDropzone">
-            <input type="file" class="ai-upload-input" id="aiFile" accept="image/*"/>
-            <div class="ai-upload-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.75"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            </div>
-            <div class="ai-upload-title">Upload Your Smile Photo</div>
-            <div class="ai-upload-sub">JPG or PNG &middot; Your photo is never stored or shared</div>
+      <!-- Upload -->
+      <div class="ai-upload">
+        <div class="ai-dropzone" id="aiDropzone">
+          <input type="file" id="aiFile" accept="image/jpeg,image/png,image/webp"/>
+          <div class="ai-drop-icon">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
           </div>
-
-          <button class="ai-btn" id="aiAnalyzeBtn" disabled>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            Analyze My Smile
-          </button>
-
-          <!-- Loading -->
-          <div class="ai-loading" id="aiLoading">
-            <div class="ai-spinner"></div>
-            <div style="font-size:13px;color:var(--slate)">Analyzing your smile&hellip;</div>
+          <div class="ai-drop-title" id="aiDropTitle">Drop your smile photo here</div>
+          <div class="ai-drop-sub">JPG or PNG · Never stored or shared</div>
+        </div>
+        <div class="ai-preview" id="aiPreview">
+          <img class="ai-preview-thumb" id="aiThumb" src="" alt=""/>
+          <div class="ai-preview-info">
+            <div class="ai-preview-name" id="aiFileName"></div>
+            <div class="ai-preview-meta">Ready to analyze</div>
           </div>
-
-          <!-- Analysis result -->
-          <div class="ai-result" id="aiResult">
-            <div class="ai-result-title">Your AI Smile Assessment</div>
-            <div class="ai-result-text" id="aiResultText"></div>
-
-            <!-- Treatment chips -->
-            <div class="ai-treatments" id="aiTreatments"></div>
-
-            <!-- Deep-dive panel -->
-            <div class="ai-deepdive" id="aiDeepdive" style="display:none">
-              <div class="ai-deepdive-loading" id="aiDdLoading" style="display:none">
-                <div class="ai-spinner" style="width:22px;height:22px;border-width:2px"></div>
-                <span style="font-size:12px;color:var(--slate);margin-left:8px">Getting details&hellip;</span>
-              </div>
-              <div class="ai-deepdive-text" id="aiDdText"></div>
-            </div>
-
-            <button class="ai-result-cta" onclick="doBook(event)">Book Your Free Consultation &rarr;</button>
-          </div>
-
-          <!-- Reset -->
-          <button class="ai-reset" id="aiReset" style="display:none" onclick="aiReset()">
-            &larr; Analyze another photo
+          <button class="ai-preview-remove" id="aiRemove" title="Remove">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
+        <button class="ai-analyze-btn" id="aiBtn" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+          Analyze My Smile
+        </button>
+      </div>
 
-        <div class="ai-visual">
-          <div class="ai-visual-content">
-            <div class="ai-visual-icon">&#129302;</div>
-            <div class="ai-visual-title">AI Smile<br/>Analysis</div>
-            <div class="ai-visual-sub">Powered by Claude AI &amp; trained on dental science.<br/>Results in under 30 seconds.<br/>100% private &mdash; never stored.</div>
-          </div>
+      <!-- Loading -->
+      <div class="ai-loading-row" id="aiLoading">
+        <div class="ai-spinner"></div>
+        <span class="ai-loading-text">Analyzing your smile…</span>
+      </div>
+
+      <!-- Standard result -->
+      <div class="ai-result-body" id="aiResultBody">
+        <div class="ai-result-analysis">
+          <div class="ai-result-label">Your AI Smile Assessment</div>
+          <div class="ai-result-text" id="aiResultText"></div>
+        </div>
+        <div class="ai-chips" id="aiChips"></div>
+        <div class="ai-deepdive" id="aiDeepdive"></div>
+        <div class="ai-cta-wrap">
+          <button class="ai-cta-btn" onclick="doBook(event)">Book Your Free Consultation →</button>
         </div>
       </div>
+
+      <!-- Emergency result -->
+      <div class="ai-emergency-body" id="aiEmergencyBody">
+        <div class="ai-emergency-banner">
+          <div class="ai-emergency-icon">⚠️</div>
+          <div>
+            <div class="ai-emergency-label">Urgent Attention Recommended</div>
+            <div class="ai-emergency-text" id="aiEmergencyText"></div>
+          </div>
+        </div>
+        <div class="ai-emergency-cta">
+          <a href="tel:8187066077" class="ai-emergency-btn">📞 Call Now: (818) 706-6077</a>
+        </div>
+      </div>
+
+      <!-- Reset -->
+      <div class="ai-footer-row" id="aiFooter" style="display:none">
+        <button class="ai-reset-btn" id="aiReset">← Analyze a different photo</button>
+      </div>
+
+      <!-- Privacy -->
+      <div class="ai-privacy">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Your photo is never stored, saved, or shared
+      </div>
+
     </div>
   </div>
 </section>
@@ -571,30 +514,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       <h2 class="sec-title">Emergency Dentistry <em>FAQ</em></h2>
     </div>
     <div class="faq-grid reveal">
-      <div class="faq-item">
-        <div class="faq-q"><span class="faq-q-text">What counts as a dental emergency?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">Severe toothache, broken or cracked tooth, knocked-out tooth, lost crown or filling, abscess or swelling, and dental trauma from an injury all require same-day care. When in doubt, call us.</div></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span class="faq-q-text">What should I do if a tooth is knocked out?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">Keep it moist — place it in milk or hold it between your cheek and gum. Call us immediately. Reimplantation is most successful within 30–60 minutes.</div></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span class="faq-q-text">Do you offer sedation for emergency visits?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">Yes. If you're in pain and anxious, we offer oral conscious sedation and nitrous oxide to make your emergency visit as comfortable as possible.</div></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span class="faq-q-text">What if my emergency happens after hours?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">Call our main number (818) 706-6077 for after-hours guidance. We do our best to accommodate true emergencies as soon as possible.</div></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span class="faq-q-text">How quickly can I get seen?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">We prioritize emergency cases and typically see patients the same day they call. Call as early as possible for the best chance of a morning appointment.</div></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span class="faq-q-text">Will my insurance cover emergency treatment?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">Most PPO dental plans cover emergency exams and many emergency procedures. Our team verifies your coverage at check-in and discusses any costs upfront.</div></div>
-      </div>
+      <div class="faq-item"><div class="faq-q"><span class="faq-q-text">What counts as a dental emergency?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="faq-a"><div class="faq-a-inner">Severe toothache, broken or cracked tooth, knocked-out tooth, lost crown or filling, abscess or swelling, and dental trauma from an injury all require same-day care. When in doubt, call us.</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span class="faq-q-text">What should I do if a tooth is knocked out?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="faq-a"><div class="faq-a-inner">Keep it moist — place it in milk or hold it between your cheek and gum. Call us immediately. Reimplantation is most successful within 30–60 minutes.</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span class="faq-q-text">Do you offer sedation for emergency visits?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="faq-a"><div class="faq-a-inner">Yes. If you're in pain and anxious, we offer oral conscious sedation and nitrous oxide to make your emergency visit as comfortable as possible.</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span class="faq-q-text">What if my emergency happens after hours?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="faq-a"><div class="faq-a-inner">Call our main number (818) 706-6077 for after-hours guidance. We do our best to accommodate true emergencies as soon as possible.</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span class="faq-q-text">How quickly can I get seen?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="faq-a"><div class="faq-a-inner">We prioritize emergency cases and typically see patients the same day they call. Call as early as possible for the best chance of a morning appointment.</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span class="faq-q-text">Will my insurance cover emergency treatment?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div><div class="faq-a"><div class="faq-a-inner">Most PPO dental plans cover emergency exams and many emergency procedures. Our team verifies your coverage at check-in and discusses any costs upfront.</div></div></div>
     </div>
   </div>
 </section>
@@ -709,174 +634,129 @@ function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=docum
 function closeBook(){document.getElementById('bk-modal').classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){document.getElementById('bk-container').innerHTML='';},300);}
 function escBook(e){if(e.key==='Escape')closeBook();}
 
-// AI SMILE
-// ── AI SMILE ANALYSIS ──────────────────────────────────────
+// AI SMILE ANALYSIS
 (function(){
-  var ENDPOINT = '/api/smileAnalysis';
-
-  var TREATMENT_LABELS = {
-    veneers:        { label: 'Porcelain Veneers',    icon: '✨', url: '/services/veneers' },
-    whitening:      { label: 'Teeth Whitening',      icon: '🌟', url: '/services/teeth-whitening' },
-    invisalign:     { label: 'Invisalign',           icon: '😁', url: '/services/invisalign' },
-    bonding:        { label: 'Dental Bonding',       icon: '🔧', url: '/services/restorative-dentistry' },
-    implants:       { label: 'Dental Implants',      icon: '🦷', url: '/services/dental-implants' },
-    makeover:       { label: 'Smile Makeover',       icon: '🏆', url: '/services/veneers' },
-    crowns:         { label: 'Dental Crowns',        icon: '👑', url: '/services/restorative-dentistry' },
-    gum_contouring: { label: 'Gum Contouring',       icon: '💎', url: '/services/restorative-dentistry' }
+  var ENDPOINT='/api/smileAnalysis';
+  var LABELS={
+    veneers:{label:'Porcelain Veneers',emoji:'✨'},
+    whitening:{label:'Teeth Whitening',emoji:'⭐'},
+    invisalign:{label:'Invisalign',emoji:'🦷'},
+    bonding:{label:'Dental Bonding',emoji:'🔬'},
+    implants:{label:'Dental Implants',emoji:'🔩'},
+    makeover:{label:'Smile Makeover',emoji:'💎'},
+    crowns:{label:'Dental Crowns',emoji:'👑'},
+    gum_contouring:{label:'Gum Contouring',emoji:'🌿'}
   };
+  var dropzone=document.getElementById('aiDropzone'),fileInput=document.getElementById('aiFile');
+  var dropTitle=document.getElementById('aiDropTitle'),preview=document.getElementById('aiPreview');
+  var thumb=document.getElementById('aiThumb'),fileName=document.getElementById('aiFileName');
+  var removeBtn=document.getElementById('aiRemove'),analyzeBtn=document.getElementById('aiBtn');
+  var loading=document.getElementById('aiLoading'),resultBody=document.getElementById('aiResultBody');
+  var emergBody=document.getElementById('aiEmergencyBody'),resultText=document.getElementById('aiResultText');
+  var emergText=document.getElementById('aiEmergencyText'),chipsWrap=document.getElementById('aiChips');
+  var deepdive=document.getElementById('aiDeepdive'),footer=document.getElementById('aiFooter');
+  var resetBtn=document.getElementById('aiReset');
+  var b64=null,mime=null,activeChip=null;
 
-  var fileInput   = document.getElementById('aiFile');
-  var analyzeBtn  = document.getElementById('aiAnalyzeBtn');
-  var dropzone    = document.getElementById('aiDropzone');
-  var loading     = document.getElementById('aiLoading');
-  var result      = document.getElementById('aiResult');
-  var resultText  = document.getElementById('aiResultText');
-  var treatments  = document.getElementById('aiTreatments');
-  var deepdive    = document.getElementById('aiDeepdive');
-  var ddLoading   = document.getElementById('aiDdLoading');
-  var ddText      = document.getElementById('aiDdText');
-  var resetBtn    = document.getElementById('aiReset');
-  if (!fileInput) return;
+  fileInput.addEventListener('change',function(){if(this.files&&this.files[0])loadFile(this.files[0]);});
+  dropzone.addEventListener('dragover',function(e){e.preventDefault();dropzone.classList.add('drag');});
+  dropzone.addEventListener('dragleave',function(){dropzone.classList.remove('drag');});
+  dropzone.addEventListener('drop',function(e){e.preventDefault();dropzone.classList.remove('drag');if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
 
-  var selectedFile = null;
-  var storedBase64 = null;
-  var storedMediaType = null;
-  var activeChip = null;
-
-  // File select
-  fileInput.addEventListener('change', function(){
-    if (fileInput.files && fileInput.files[0]) {
-      selectedFile = fileInput.files[0];
-      analyzeBtn.disabled = false;
-      dropzone.querySelector('.ai-upload-title').textContent = selectedFile.name;
+  function loadFile(file){
+    if(!file.type.match(/image\//))return;
+    mime=file.type;
+    var r=new FileReader();
+    r.onload=function(e){
+      b64=e.target.result.split(',')[1];
+      thumb.src=e.target.result;
+      fileName.textContent=file.name;
+      dropTitle.textContent=file.name;
+      preview.classList.add('show');
       dropzone.classList.add('has-file');
-    }
-  });
-
-  // Drag and drop
-  dropzone.addEventListener('dragover', function(e){ e.preventDefault(); dropzone.classList.add('drag'); });
-  dropzone.addEventListener('dragleave', function(){ dropzone.classList.remove('drag'); });
-  dropzone.addEventListener('drop', function(e){
-    e.preventDefault(); dropzone.classList.remove('drag');
-    var file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      selectedFile = file; analyzeBtn.disabled = false;
-      dropzone.querySelector('.ai-upload-title').textContent = file.name;
-      dropzone.classList.add('has-file');
-    }
-  });
-
-  // Analyze
-  analyzeBtn.addEventListener('click', function(){
-    if (!selectedFile) return;
-    analyzeBtn.disabled = true;
-    loading.classList.add('show');
-    result.classList.remove('show');
-    deepdive.style.display = 'none';
-    treatments.innerHTML = '';
-    resetBtn.style.display = 'none';
-
-    var reader = new FileReader();
-    reader.onload = function(ev){
-      var dataUrl = ev.target.result;
-      var base64 = dataUrl.split(',')[1];
-      var mediaType = selectedFile.type || 'image/jpeg';
-      storedBase64 = base64;
-      storedMediaType = mediaType;
-
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: base64, mediaType: mediaType })
-      })
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        loading.classList.remove('show');
-        if (data.error) {
-          resultText.textContent = data.error;
-          result.classList.add('show');
-          analyzeBtn.disabled = false;
-          return;
-        }
-        // Show analysis text
-        resultText.textContent = data.analysis || '';
-        // Render treatment chips
-        treatments.innerHTML = '';
-        if (data.treatments && data.treatments.length) {
-          data.treatments.forEach(function(t){
-            var info = TREATMENT_LABELS[t.id];
-            if (!info) return;
-            var chip = document.createElement('button');
-            chip.className = 'ai-treatment-chip';
-            chip.title = t.reason || '';
-            chip.innerHTML = info.icon + ' ' + info.label;
-            chip.addEventListener('click', function(){
-              if (activeChip === chip && deepdive.style.display !== 'none') {
-                deepdive.style.display = 'none'; activeChip = null; chip.classList.remove('active'); return;
-              }
-              document.querySelectorAll('.ai-treatment-chip').forEach(function(c){ c.classList.remove('active'); });
-              chip.classList.add('active'); activeChip = chip;
-              doDeepDive(info.label);
-            });
-            treatments.appendChild(chip);
-          });
-        }
-        result.classList.add('show');
-        resetBtn.style.display = 'block';
-      })
-      .catch(function(){
-        loading.classList.remove('show');
-        resultText.textContent = "We couldn't complete the analysis right now. Please call (818) 706-6077 or book a free consultation for your personalized smile assessment.";
-        result.classList.add('show');
-        analyzeBtn.disabled = false;
-        resetBtn.style.display = 'block';
-      });
+      analyzeBtn.disabled=false;
     };
-    reader.readAsDataURL(selectedFile);
-  });
-
-  // Deep dive on treatment chip click
-  function doDeepDive(treatmentLabel){
-    if (!storedBase64) return;
-    deepdive.style.display = 'block';
-    ddLoading.style.display = 'flex';
-    ddText.textContent = '';
-
-    fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        imageBase64: storedBase64,
-        mediaType: storedMediaType,
-        mode: 'deep_dive',
-        treatmentLabel: treatmentLabel
-      })
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      ddLoading.style.display = 'none';
-      ddText.textContent = data.analysis || data.error || 'Please call (818) 706-6077 for details on this treatment.';
-    })
-    .catch(function(){
-      ddLoading.style.display = 'none';
-      ddText.textContent = 'Please call (818) 706-6077 for details on this treatment.';
-    });
+    r.readAsDataURL(file);
   }
 
-  // Reset
-  window.aiReset = function(){
-    selectedFile = null; storedBase64 = null; storedMediaType = null; activeChip = null;
-    fileInput.value = '';
-    dropzone.querySelector('.ai-upload-title').textContent = 'Upload Your Smile Photo';
+  removeBtn.addEventListener('click',resetAll);
+
+  analyzeBtn.addEventListener('click',function(){
+    if(!b64)return;
+    analyzeBtn.disabled=true;
+    loading.classList.add('show');
+    resultBody.classList.remove('show');
+    emergBody.classList.remove('show');
+    footer.style.display='none';
+    chipsWrap.innerHTML='';
+    deepdive.classList.remove('show');
+    deepdive.innerHTML='';
+    activeChip=null;
+
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime})})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      loading.classList.remove('show');
+      if(data.error){resultText.textContent=data.error;resultBody.classList.add('show');footer.style.display='block';return;}
+      if(data.emergency){
+        emergText.textContent=data.analysis;
+        emergBody.classList.add('show');
+      } else {
+        resultText.textContent=data.analysis;
+        (data.treatments||[]).forEach(function(t){
+          var info=LABELS[t.id];if(!info)return;
+          var chip=document.createElement('button');
+          chip.className='ai-chip';
+          chip.textContent=info.emoji+' '+info.label;
+          chip.title=t.reason||'';
+          chip.addEventListener('click',function(){
+            if(activeChip===t.id){activeChip=null;chip.classList.remove('on');deepdive.classList.remove('show');deepdive.innerHTML='';return;}
+            document.querySelectorAll('.ai-chip').forEach(function(c){c.classList.remove('on');});
+            chip.classList.add('on');activeChip=t.id;loadDeepDive(info.label);
+          });
+          chipsWrap.appendChild(chip);
+        });
+        resultBody.classList.add('show');
+      }
+      footer.style.display='block';
+    })
+    .catch(function(){
+      loading.classList.remove('show');
+      resultText.textContent='Something went wrong. Please try again or call (818) 706-6077.';
+      resultBody.classList.add('show');
+      footer.style.display='block';
+    });
+  });
+
+  function loadDeepDive(label){
+    deepdive.innerHTML='<em style="color:#94a3b8;font-size:13px">Loading…</em>';
+    deepdive.classList.add('show');
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,mode:'deep_dive',treatmentLabel:label})})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(data.error){deepdive.textContent=data.error;return;}
+      deepdive.innerHTML=data.analysis.split(/\n+/).filter(Boolean).map(function(p){return'<p>'+p+'</p>';}).join('');
+    })
+    .catch(function(){deepdive.textContent='Unable to load. Call (818) 706-6077.';});
+  }
+
+  resetBtn.addEventListener('click',resetAll);
+  function resetAll(){
+    b64=null;mime=null;activeChip=null;fileInput.value='';
+    preview.classList.remove('show');
     dropzone.classList.remove('has-file','drag');
-    analyzeBtn.disabled = true;
+    dropTitle.textContent='Drop your smile photo here';
+    analyzeBtn.disabled=true;
     loading.classList.remove('show');
-    result.classList.remove('show');
-    deepdive.style.display = 'none';
-    treatments.innerHTML = '';
-    resetBtn.style.display = 'none';
-  };
+    resultBody.classList.remove('show');
+    emergBody.classList.remove('show');
+    chipsWrap.innerHTML='';
+    deepdive.classList.remove('show');
+    deepdive.innerHTML='';
+    footer.style.display='none';
+  }
 })();
+
 // CHATBOT
 (function(){
   var API='https://www.agourahillsdentaldesigns.com/_functions/chatbot';
