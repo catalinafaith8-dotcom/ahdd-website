@@ -127,7 +127,7 @@ export default async function handler(req) {
           },
           {
             role: 'assistant',
-            content: '{"analysis": "Looking at your smile, I notice ',
+            content: '{"analysis": "Looking at your smile, I notice',
           },
         ],
       }),
