@@ -99,27 +99,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .svc-hero-badge-num{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--navy);line-height:1}
 .svc-hero-badge-lbl{font-size:11px;color:var(--slate);margin-top:3px}
 
-/* OVERVIEW */
-.svc-overview{background:var(--cloud);padding:80px 0}
-.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.overview-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
-.overview-h2{font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:400;color:var(--graphite);line-height:1.15;margin-bottom:20px}
-.overview-p{font-size:15px;line-height:1.78;color:var(--slate);margin-bottom:14px}
-.overview-checklist{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:24px}
-.overview-checklist li{display:flex;align-items:flex-start;gap:11px;font-size:15px;color:var(--slate);line-height:1.6}
-.check-icon{width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.check-icon svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.5}
-/* Visual placeholder right */
-.overview-visual{
-  border-radius:20px;overflow:hidden;
-  background:linear-gradient(135deg,#1D3E5C 0%,#2A5A82 60%,#C96A2E 100%);
-  aspect-ratio:4/3;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-}
-.overview-visual-inner{text-align:center;color:#fff;padding:32px}
-.overview-visual-icon{font-size:56px;margin-bottom:16px;opacity:.85}
-.overview-visual-txt{font-family:var(--serif);font-size:22px;font-weight:400;opacity:.9;line-height:1.3}
+/* overview removed */
 
 /* PROCESS STEPS */
 .svc-process{background:#fff;padding:80px 0}
@@ -165,65 +145,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .fin-card-icon svg{width:22px;height:22px;stroke:var(--amber);fill:none;stroke-width:1.75}
 .fin-card-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:3px}
 .fin-card-desc{font-size:13px;color:rgba(255,255,255,.62)}
-
-/* AI SMILE ANALYSIS */
-.svc-ai{background:var(--cloud);padding:80px 0}
-.ai-inner{
-  background:#fff;border-radius:24px;
-  border:1px solid rgba(29,62,92,.09);
-  box-shadow:0 8px 40px rgba(29,62,92,.08);
-  overflow:hidden;
-}
-.ai-top{
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;
-}
-.ai-text{padding:52px 52px 52px 56px}
-.ai-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
-.ai-h2{font-family:var(--serif);font-size:clamp(24px,2.8vw,34px);font-weight:400;color:var(--graphite);line-height:1.2;margin-bottom:14px}
-.ai-p{font-size:15px;line-height:1.75;color:var(--slate);margin-bottom:28px}
-.ai-upload-area{
-  border:2px dashed rgba(29,62,92,.18);border-radius:16px;
-  padding:36px 24px;text-align:center;
-  cursor:pointer;transition:all .22s;background:var(--cloud);
-  position:relative;
-}
-.ai-upload-area:hover,.ai-upload-area.drag{border-color:var(--steel);background:var(--sky)}
-.ai-upload-icon{width:52px;height:52px;border-radius:14px;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.ai-upload-icon svg{width:26px;height:26px;stroke:var(--navy);fill:none;stroke-width:1.75}
-.ai-upload-title{font-size:15px;font-weight:600;color:var(--graphite);margin-bottom:6px}
-.ai-upload-sub{font-size:13px;color:var(--slate)}
-.ai-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.ai-btn{
-  width:100%;margin-top:16px;padding:14px;border-radius:12px;
-  background:var(--navy);color:#fff;font-size:15px;font-weight:600;
-  border:none;cursor:pointer;transition:all .22s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.ai-btn:hover:not(:disabled){background:var(--steel);transform:translateY(-1px)}
-.ai-btn:disabled{opacity:.45;cursor:not-allowed}
-/* AI Visual right side */
-.ai-visual{
-  background:linear-gradient(135deg,var(--navy) 0%,var(--steel) 100%);
-  display:flex;align-items:center;justify-content:center;
-  padding:48px;min-height:400px;
-}
-.ai-visual-content{text-align:center;color:#fff}
-.ai-visual-icon{font-size:64px;margin-bottom:16px}
-.ai-visual-title{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:10px;line-height:1.3}
-.ai-visual-sub{font-size:13px;color:rgba(255,255,255,.65);line-height:1.6}
-/* Results */
-.ai-result{display:none;margin-top:16px;padding:18px;background:var(--sky);border-radius:12px;border:1px solid rgba(29,62,92,.10)}
-.ai-result.show{display:block;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.ai-result-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:8px}
-.ai-result-text{font-size:13.5px;line-height:1.68;color:var(--slate)}
-.ai-result-cta{margin-top:14px;width:100%;padding:12px;border-radius:10px;background:var(--copper);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background .2s}
-.ai-result-cta:hover{background:#b85e28}
-.ai-loading{display:none;text-align:center;padding:16px}
-.ai-loading.show{display:block}
-.ai-spinner{width:32px;height:32px;border:3px solid rgba(29,62,92,.15);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
-@keyframes spin{to{transform:rotate(360deg)}}
 
 /* FAQs */
 .svc-faq{background:#fff;padding:80px 0}
@@ -341,6 +262,101 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   .steps-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
 }
+
+/* Services dropdown — minimal clean style */
+.nav-links li{position:relative}
+.nav-dropdown{
+  position:absolute;
+  top:calc(100% + 16px);
+  left:50%;
+  transform:translateX(-50%) translateY(-4px);
+  background:#fff;
+  border-radius:4px;
+  padding:12px 0;
+  min-width:210px;
+  z-index:2000;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;
+  box-shadow:0 4px 24px rgba(0,0,0,.08);
+}
+.nav-links li:hover .nav-dropdown{
+  opacity:1;visibility:visible;pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+.nav-dropdown a{
+  display:block;
+  padding:11px 24px;
+  font-size:14px;
+  font-weight:400;
+  color:#333;
+  transition:color .15s;
+  white-space:nowrap;
+}
+.nav-dropdown a:hover{color:var(--navy)}
+.nav-dropdown a.dd-active{color:var(--navy);font-weight:500}
+.nav-dropdown a::after{display:none!important}
+
+
+/* ── AI SMILE ANALYSIS ─────────────────────────────── */
+.svc-ai{background:var(--cloud);padding:80px 0}
+.ai-inner{background:#fff;border-radius:24px;border:1px solid rgba(29,62,92,.09);box-shadow:0 8px 40px rgba(29,62,92,.08);overflow:hidden}
+.ai-top{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+.ai-text{padding:52px 52px 52px 56px;display:flex;flex-direction:column;gap:0}
+.ai-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
+.ai-h2{font-family:var(--serif);font-size:clamp(22px,2.6vw,32px);font-weight:400;color:var(--graphite);line-height:1.2;margin-bottom:12px}
+.ai-p{font-size:14.5px;line-height:1.72;color:var(--slate);margin-bottom:22px}
+.ai-upload-area{border:2px dashed rgba(29,62,92,.18);border-radius:16px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .22s;background:var(--cloud);position:relative;margin-bottom:14px}
+.ai-upload-area:hover,.ai-upload-area.drag{border-color:var(--steel);background:var(--sky)}
+.ai-upload-area.has-file{border-color:var(--green);background:#f0fdf4}
+.ai-upload-icon{width:48px;height:48px;border-radius:12px;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.ai-upload-title{font-size:14px;font-weight:600;color:var(--graphite);margin-bottom:5px}
+.ai-upload-sub{font-size:12px;color:var(--slate)}
+.ai-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ai-btn{width:100%;padding:13px;border-radius:12px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
+.ai-btn:hover:not(:disabled){background:var(--steel);transform:translateY(-1px)}
+.ai-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.ai-loading{display:none;text-align:center;padding:14px;align-items:center;justify-content:center;gap:10px}
+.ai-loading.show{display:flex}
+.ai-spinner{width:28px;height:28px;border:2.5px solid rgba(29,62,92,.15);border-top-color:var(--navy);border-radius:50%;animation:aiSpin .8s linear infinite;flex-shrink:0}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+/* Result panel */
+.ai-result{display:none;background:var(--sky);border:1px solid rgba(29,62,92,.10);border-radius:14px;padding:20px;margin-bottom:14px}
+.ai-result.show{display:block;animation:aiFadeIn .3s ease}
+@keyframes aiFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ai-result-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.ai-result-text{font-size:13.5px;line-height:1.72;color:var(--slate);white-space:pre-line;margin-bottom:16px}
+/* Treatment chips */
+.ai-treatments{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ai-treatment-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 13px;border-radius:100px;
+  font-size:12px;font-weight:500;
+  background:#fff;color:var(--navy);
+  border:1.5px solid rgba(29,62,92,.18);
+  cursor:pointer;transition:all .2s;
+}
+.ai-treatment-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ai-treatment-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ai-treatment-chip svg{width:12px;height:12px;flex-shrink:0}
+/* Deep dive */
+.ai-deepdive{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid rgba(29,62,92,.08)}
+.ai-deepdive-text{font-size:13.5px;line-height:1.72;color:var(--slate);white-space:pre-line}
+/* CTA */
+.ai-result-cta{width:100%;padding:12px;border-radius:10px;background:var(--copper);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background .2s;margin-top:4px}
+.ai-result-cta:hover{background:#b85e28}
+.ai-reset{background:none;border:none;color:var(--slate);font-size:13px;cursor:pointer;padding:0;text-decoration:underline;transition:color .2s}
+.ai-reset:hover{color:var(--navy)}
+/* Visual right panel */
+.ai-visual{background:linear-gradient(135deg,var(--navy) 0%,var(--steel) 100%);display:flex;align-items:center;justify-content:center;padding:48px;min-height:400px}
+.ai-visual-content{text-align:center;color:#fff}
+.ai-visual-icon{font-size:60px;margin-bottom:16px}
+.ai-visual-title{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:10px;line-height:1.3}
+.ai-visual-sub{font-size:13px;color:rgba(255,255,255,.62);line-height:1.65}
+@media(max-width:768px){
+  .ai-top{grid-template-columns:1fr}
+  .ai-text{padding:32px 24px}
+  .ai-visual{display:none}
+}
 </style>
 </head>
 <body>
@@ -352,7 +368,16 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
       <li><a href="/about">About Us</a></li>
-      <li><a href="/services" class="active">Services</a></li>
+      <li><a href="/services" class="active">Services</a>
+        <div class="nav-dropdown">
+          <a href="/services/invisalign" class="dd-active" class="dd-active">Invisalign</a>
+          <a href="/services/veneers">Porcelain Veneers</a>
+          <a href="/services/dental-implants">Dental Implants</a>
+          <a href="/services/teeth-whitening">Teeth Whitening</a>
+          <a href="/services/emergency-dentistry">Emergency &amp; Sedation</a>
+          <a href="/services/restorative-dentistry">Restorative Dentistry</a>
+        </div>
+      </li>
       <li><a href="/financing">Financing</a></li>
       <li><a href="/technology">Technology</a></li>
     </ul>
@@ -365,7 +390,15 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   </div>
 </nav>
 <nav id="mobile-nav">
-  <a href="/">Home</a><a href="/about">About Us</a><a href="/services">Services</a><a href="/financing">Financing</a><a href="/technology">Technology</a>
+  <a href="/">Home</a><a href="/about">About Us</a>  <a href="/services">Services</a>
+  <div style="padding-left:16px;border-left:2px solid var(--sky);margin-left:8px;display:flex;flex-direction:column;">
+    <a href="/services/invisalign" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Invisalign</a>
+    <a href="/services/veneers" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Porcelain Veneers</a>
+    <a href="/services/dental-implants" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Dental Implants</a>
+    <a href="/services/teeth-whitening" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Teeth Whitening</a>
+    <a href="/services/emergency-dentistry" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Emergency &amp; Sedation</a>
+    <a href="/services/restorative-dentistry" style="font-size:14px;padding:8px 0;border-bottom:none;color:var(--slate)">Restorative Dentistry</a>
+  </div><a href="/financing">Financing</a><a href="/technology">Technology</a>
   <div class="mob-ctas">
     <a href="tel:+18187066077" style="font-size:16px;font-weight:500;color:var(--navy)">(818) 706-6077</a>
     <a href="#" class="mob-book" onclick="doBook(event)">Book Online</a>
@@ -398,33 +431,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
     <div class="svc-hero-badge">
       <div class="svc-hero-badge-num">98%</div>
       <div class="svc-hero-badge-lbl">Patient Satisfaction</div>
-    </div>
-  </div>
-</section>
-
-<!-- OVERVIEW -->
-<section class="svc-overview">
-  <div class="wrap">
-    <div class="overview-grid reveal">
-      <div>
-        <span class="overview-label">What Is Invisalign?</span>
-        <h2 class="overview-h2">The Discreet Way to a Straighter Smile</h2>
-        <p class="overview-p">Invisalign uses a series of custom-crafted clear plastic aligners, each worn for 1–2 weeks, to gently guide your teeth into their ideal positions. The system is designed around your life — not the other way around.</p>
-        <p class="overview-p">At Agoura Hills Dental Designs, Dr. Shawn and Dr. David Matian are experienced Invisalign providers who combine precision treatment planning with the iTero Outcome Simulator — so you can see your projected final result before you even start.</p>
-        <ul class="overview-checklist">
-          <li><span class="check-icon"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5"/></svg></span>Virtually invisible — wear with total confidence</li>
-          <li><span class="check-icon"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5"/></svg></span>Removable — eat and drink whatever you want</li>
-          <li><span class="check-icon"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5"/></svg></span>Treats crowding, spacing, overbite, underbite, and more</li>
-          <li><span class="check-icon"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5"/></svg></span>Average treatment: 12–18 months</li>
-          <li><span class="check-icon"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5"/></svg></span>Preview results with our iTero digital scanner</li>
-        </ul>
-      </div>
-      <div class="overview-visual reveal d2">
-        <div class="overview-visual-inner">
-          <div class="overview-visual-icon">🦷</div>
-          <div class="overview-visual-txt">Custom Clear Aligners<br/>Designed Around You</div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -496,33 +502,61 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       <div class="ai-top">
         <div class="ai-text">
           <span class="ai-label">AI-Powered Smile Analysis</span>
-          <h2 class="ai-h2">Not Sure If Invisalign Is Right for You?</h2>
-          <p class="ai-p">Upload a photo of your smile and our AI will analyze your alignment, spacing, and bite — then give you personalized recommendations in seconds. Completely private, no sign-up required.</p>
+          <h2 class="ai-h2" id="aiH2">Not Sure If This Treatment Is Right for You?</h2>
+          <p class="ai-p">Upload a photo of your smile and our AI will analyze your teeth — evaluating shade, alignment, spacing, and more — then give you personalized treatment recommendations in seconds. Completely private, no sign-up required.</p>
+
+          <!-- Upload zone -->
           <div class="ai-upload-area" id="aiDropzone">
             <input type="file" class="ai-upload-input" id="aiFile" accept="image/*"/>
-            <div class="ai-upload-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div class="ai-upload-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.75"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
             <div class="ai-upload-title">Upload Your Smile Photo</div>
-            <div class="ai-upload-sub">JPG or PNG · Your photo is never stored or shared</div>
+            <div class="ai-upload-sub">JPG or PNG &middot; Your photo is never stored or shared</div>
           </div>
+
           <button class="ai-btn" id="aiAnalyzeBtn" disabled>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             Analyze My Smile
           </button>
+
+          <!-- Loading -->
           <div class="ai-loading" id="aiLoading">
             <div class="ai-spinner"></div>
-            <div style="font-size:13px;color:var(--slate)">Analyzing your smile…</div>
+            <div style="font-size:13px;color:var(--slate)">Analyzing your smile&hellip;</div>
           </div>
+
+          <!-- Analysis result -->
           <div class="ai-result" id="aiResult">
-            <div class="ai-result-title" id="aiResultTitle"></div>
+            <div class="ai-result-title">Your AI Smile Assessment</div>
             <div class="ai-result-text" id="aiResultText"></div>
-            <button class="ai-result-cta" onclick="doBook(event)">Book Your Free Consultation →</button>
+
+            <!-- Treatment chips -->
+            <div class="ai-treatments" id="aiTreatments"></div>
+
+            <!-- Deep-dive panel -->
+            <div class="ai-deepdive" id="aiDeepdive" style="display:none">
+              <div class="ai-deepdive-loading" id="aiDdLoading" style="display:none">
+                <div class="ai-spinner" style="width:22px;height:22px;border-width:2px"></div>
+                <span style="font-size:12px;color:var(--slate);margin-left:8px">Getting details&hellip;</span>
+              </div>
+              <div class="ai-deepdive-text" id="aiDdText"></div>
+            </div>
+
+            <button class="ai-result-cta" onclick="doBook(event)">Book Your Free Consultation &rarr;</button>
           </div>
+
+          <!-- Reset -->
+          <button class="ai-reset" id="aiReset" style="display:none" onclick="aiReset()">
+            &larr; Analyze another photo
+          </button>
         </div>
+
         <div class="ai-visual">
           <div class="ai-visual-content">
-            <div class="ai-visual-icon">🤖</div>
+            <div class="ai-visual-icon">&#129302;</div>
             <div class="ai-visual-title">AI Smile<br/>Analysis</div>
-            <div class="ai-visual-sub">Powered by advanced computer vision.<br/>Results in under 30 seconds.</div>
+            <div class="ai-visual-sub">Powered by Claude AI &amp; trained on dental science.<br/>Results in under 30 seconds.<br/>100% private &mdash; never stored.</div>
           </div>
         </div>
       </div>
@@ -676,65 +710,172 @@ function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=docum
 function closeBook(){document.getElementById('bk-modal').classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){document.getElementById('bk-container').innerHTML='';},300);}
 function escBook(e){if(e.key==='Escape')closeBook();}
 
-// AI SMILE ANALYSIS
+// ── AI SMILE ANALYSIS ──────────────────────────────────────
 (function(){
-  var fileInput=document.getElementById('aiFile');
-  var analyzeBtn=document.getElementById('aiAnalyzeBtn');
-  var loading=document.getElementById('aiLoading');
-  var result=document.getElementById('aiResult');
-  var resultTitle=document.getElementById('aiResultTitle');
-  var resultText=document.getElementById('aiResultText');
-  var dropzone=document.getElementById('aiDropzone');
-  if(!fileInput)return;
-  var selectedFile=null;
-  fileInput.addEventListener('change',function(){
-    if(fileInput.files&&fileInput.files[0]){
-      selectedFile=fileInput.files[0];
-      analyzeBtn.disabled=false;
-      dropzone.querySelector('.ai-upload-title').textContent='Photo selected: '+selectedFile.name;
-      dropzone.style.borderColor='var(--steel)';
-      dropzone.style.background='var(--sky)';
+  var ENDPOINT = '/api/smileAnalysis';
+
+  var TREATMENT_LABELS = {
+    veneers:        { label: 'Porcelain Veneers',    icon: '✨', url: '/services/veneers' },
+    whitening:      { label: 'Teeth Whitening',      icon: '🌟', url: '/services/teeth-whitening' },
+    invisalign:     { label: 'Invisalign',           icon: '😁', url: '/services/invisalign' },
+    bonding:        { label: 'Dental Bonding',       icon: '🔧', url: '/services/restorative-dentistry' },
+    implants:       { label: 'Dental Implants',      icon: '🦷', url: '/services/dental-implants' },
+    makeover:       { label: 'Smile Makeover',       icon: '🏆', url: '/services/veneers' },
+    crowns:         { label: 'Dental Crowns',        icon: '👑', url: '/services/restorative-dentistry' },
+    gum_contouring: { label: 'Gum Contouring',       icon: '💎', url: '/services/restorative-dentistry' }
+  };
+
+  var fileInput   = document.getElementById('aiFile');
+  var analyzeBtn  = document.getElementById('aiAnalyzeBtn');
+  var dropzone    = document.getElementById('aiDropzone');
+  var loading     = document.getElementById('aiLoading');
+  var result      = document.getElementById('aiResult');
+  var resultText  = document.getElementById('aiResultText');
+  var treatments  = document.getElementById('aiTreatments');
+  var deepdive    = document.getElementById('aiDeepdive');
+  var ddLoading   = document.getElementById('aiDdLoading');
+  var ddText      = document.getElementById('aiDdText');
+  var resetBtn    = document.getElementById('aiReset');
+  if (!fileInput) return;
+
+  var selectedFile = null;
+  var storedBase64 = null;
+  var storedMediaType = null;
+  var activeChip = null;
+
+  // File select
+  fileInput.addEventListener('change', function(){
+    if (fileInput.files && fileInput.files[0]) {
+      selectedFile = fileInput.files[0];
+      analyzeBtn.disabled = false;
+      dropzone.querySelector('.ai-upload-title').textContent = selectedFile.name;
+      dropzone.classList.add('has-file');
     }
   });
-  analyzeBtn.addEventListener('click',function(){
-    if(!selectedFile)return;
-    analyzeBtn.style.display='none';
+
+  // Drag and drop
+  dropzone.addEventListener('dragover', function(e){ e.preventDefault(); dropzone.classList.add('drag'); });
+  dropzone.addEventListener('dragleave', function(){ dropzone.classList.remove('drag'); });
+  dropzone.addEventListener('drop', function(e){
+    e.preventDefault(); dropzone.classList.remove('drag');
+    var file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      selectedFile = file; analyzeBtn.disabled = false;
+      dropzone.querySelector('.ai-upload-title').textContent = file.name;
+      dropzone.classList.add('has-file');
+    }
+  });
+
+  // Analyze
+  analyzeBtn.addEventListener('click', function(){
+    if (!selectedFile) return;
+    analyzeBtn.disabled = true;
     loading.classList.add('show');
     result.classList.remove('show');
-    var reader=new FileReader();
-    reader.onload=function(ev){
-      var base64=ev.target.result.split(',')[1];
-      fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          model:'claude-sonnet-4-20250514',
-          max_tokens:400,
-          messages:[{role:'user',content:[
-            {type:'image',source:{type:'base64',media_type:selectedFile.type||'image/jpeg',data:base64}},
-            {type:'text',text:'You are a dental concierge AI for Agoura Hills Dental Designs. Analyze this smile photo and provide: 1) A warm, encouraging 2-sentence assessment of the smile, 2) Whether Invisalign aligners could benefit this person (yes/maybe/probably not needed), and 3) One specific observation. Keep it positive, professional, and under 80 words. End by encouraging them to book a free consultation for a definitive evaluation.'}
-          ]}]
-        })
+    deepdive.style.display = 'none';
+    treatments.innerHTML = '';
+    resetBtn.style.display = 'none';
+
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var dataUrl = ev.target.result;
+      var base64 = dataUrl.split(',')[1];
+      var mediaType = selectedFile.type || 'image/jpeg';
+      storedBase64 = base64;
+      storedMediaType = mediaType;
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: base64, mediaType: mediaType })
       })
-      .then(function(r){return r.json();})
-      .then(function(d){
+      .then(function(r){ return r.json(); })
+      .then(function(data){
         loading.classList.remove('show');
-        var text=(d.content&&d.content[0]&&d.content[0].text)||'We\'d love to evaluate your smile in person! Book a free consultation for a personalized assessment.';
-        resultTitle.textContent='Your AI Smile Assessment';
-        resultText.textContent=text;
+        if (data.error) {
+          resultText.textContent = data.error;
+          result.classList.add('show');
+          analyzeBtn.disabled = false;
+          return;
+        }
+        // Show analysis text
+        resultText.textContent = data.analysis || '';
+        // Render treatment chips
+        treatments.innerHTML = '';
+        if (data.treatments && data.treatments.length) {
+          data.treatments.forEach(function(t){
+            var info = TREATMENT_LABELS[t.id];
+            if (!info) return;
+            var chip = document.createElement('button');
+            chip.className = 'ai-treatment-chip';
+            chip.title = t.reason || '';
+            chip.innerHTML = info.icon + ' ' + info.label;
+            chip.addEventListener('click', function(){
+              if (activeChip === chip && deepdive.style.display !== 'none') {
+                deepdive.style.display = 'none'; activeChip = null; chip.classList.remove('active'); return;
+              }
+              document.querySelectorAll('.ai-treatment-chip').forEach(function(c){ c.classList.remove('active'); });
+              chip.classList.add('active'); activeChip = chip;
+              doDeepDive(info.label);
+            });
+            treatments.appendChild(chip);
+          });
+        }
         result.classList.add('show');
-        analyzeBtn.style.display='flex';analyzeBtn.disabled=true;
+        resetBtn.style.display = 'block';
       })
       .catch(function(){
         loading.classList.remove('show');
-        resultTitle.textContent='Analysis Complete';
-        resultText.textContent="Thanks for uploading your smile! Book a free consultation with Dr. Shawn or Dr. David for your full personalized assessment.";
+        resultText.textContent = "We couldn't complete the analysis right now. Please call (818) 706-6077 or book a free consultation for your personalized smile assessment.";
         result.classList.add('show');
-        analyzeBtn.style.display='flex';analyzeBtn.disabled=true;
+        analyzeBtn.disabled = false;
+        resetBtn.style.display = 'block';
       });
     };
     reader.readAsDataURL(selectedFile);
   });
+
+  // Deep dive on treatment chip click
+  function doDeepDive(treatmentLabel){
+    if (!storedBase64) return;
+    deepdive.style.display = 'block';
+    ddLoading.style.display = 'flex';
+    ddText.textContent = '';
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageBase64: storedBase64,
+        mediaType: storedMediaType,
+        mode: 'deep_dive',
+        treatmentLabel: treatmentLabel
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      ddLoading.style.display = 'none';
+      ddText.textContent = data.analysis || data.error || 'Please call (818) 706-6077 for details on this treatment.';
+    })
+    .catch(function(){
+      ddLoading.style.display = 'none';
+      ddText.textContent = 'Please call (818) 706-6077 for details on this treatment.';
+    });
+  }
+
+  // Reset
+  window.aiReset = function(){
+    selectedFile = null; storedBase64 = null; storedMediaType = null; activeChip = null;
+    fileInput.value = '';
+    dropzone.querySelector('.ai-upload-title').textContent = 'Upload Your Smile Photo';
+    dropzone.classList.remove('has-file','drag');
+    analyzeBtn.disabled = true;
+    loading.classList.remove('show');
+    result.classList.remove('show');
+    deepdive.style.display = 'none';
+    treatments.innerHTML = '';
+    resetBtn.style.display = 'none';
+  };
 })();
 
 // CHATBOT
