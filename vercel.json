@@ -1,29 +1,27 @@
 {
   "outputDirectory": ".",
-  "buildCommand": "",
-  "installCommand": "",
-  "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/services/invisalign",           "destination": "/services/invisalign.html" },
+    { "source": "/services/veneers",               "destination": "/services/veneers.html" },
+    { "source": "/services/dental-implants",       "destination": "/services/dental-implants.html" },
+    { "source": "/services/teeth-whitening",       "destination": "/services/teeth-whitening.html" },
+    { "source": "/services/emergency-dentistry",   "destination": "/services/emergency-dentistry.html" },
+    { "source": "/services/restorative-dentistry", "destination": "/services/restorative-dentistry.html" }
+  ],
+  "redirects": [
+    { "source": "/home",                        "destination": "/",                             "permanent": true },
+    { "source": "/services/sedation-dentistry", "destination": "/services/emergency-dentistry", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-      ]
-    },
-    {
-      "source": "/(.*)\\.(jpg|jpeg|png|gif|webp|svg|ico|mp4|woff|woff2)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
       ]
     }
-  ],
-  "redirects": [
-    { "source": "/home", "destination": "/", "permanent": true },
-    { "source": "/services/sedation-dentistry", "destination": "/services/emergency-dentistry", "permanent": true }
   ]
 }
