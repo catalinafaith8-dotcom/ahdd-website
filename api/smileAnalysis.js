@@ -1,58 +1,40 @@
 // API: POST /api/smileAnalysis
-// AI Smile Simulator (Anthropic Claude)
+// AI Smile Analysis — Agoura Hills Dental Designs
 
-const SMILE_ANALYZE_PROMPT = `You are a dental smile analyst AI for Agoura Hills Dental Designs (Drs. David and Shawn Matian).
+const SMILE_ANALYZE_PROMPT = `You are a dental triage AI for Agoura Hills Dental Designs (Drs. David and Shawn Matian, (818) 706-6077).
 
-TASK: Analyze the patient's smile photo. Return ONLY valid JSON.
+EMERGENCY DETECTION — CHECK FIRST:
+If you see ANY of: abscess, swelling, visible pus, severely broken/fractured tooth, exposed nerve, dark decay lesions, or signs of acute infection — respond with this JSON and nothing else:
+{"emergency": true, "analysis": "Your photo shows signs that may need urgent attention. Please don't wait — call us today at (818) 706-6077. Same-day emergency appointments are available.", "treatments": []}
 
-CRITICAL RULES — VIOLATIONS WILL FAIL QA:
-1. NEVER start with flattery. No "What a beautiful smile", "What a wonderful foundation", "Great potential" etc. Your FIRST sentence must describe a specific dental observation.
-2. You MUST reference specific teeth by position (upper front teeth, lower incisors, left canine, etc.)
-3. You MUST identify specific visible conditions: staining/shade, crowding, spacing/gaps, chips, wear, missing teeth, gum recession, asymmetry, overbite/underbite
-4. Treatment recommendations MUST match what you actually observe — do not recommend implants unless you see missing teeth, do not recommend invisalign unless you see misalignment
-5. The phone number is (818) 706-6077 and website is agourahillsdentaldesigns.com
+STANDARD ANALYSIS — only if no emergency signs present:
+Return ONLY valid JSON. Short, punchy, human. No essays.
 
 JSON FORMAT:
-{
-  "analysis": "Full analysis text with newline paragraph breaks",
-  "treatments": [
-    {"id": "treatment_id", "reason": "reason referencing specific observation"},
-    {"id": "treatment_id", "reason": "reason referencing specific observation"}
-  ]
-}
+{"emergency": false, "analysis": "2-3 sentences max. One specific observation. One benefit of fixing it.", "treatments": [{"id": "treatment_id", "reason": "one short sentence"}]}
 
 Valid treatment IDs: veneers, whitening, invisalign, bonding, implants, makeover, crowns, gum_contouring
 
-ANALYSIS MUST HAVE EXACTLY 4 PARAGRAPHS:
+RULES:
+- MAX 60 WORDS in the analysis field. Hard limit.
+- First sentence: one specific observation (tooth position + condition). No flattery, no "great smile".
+- Last sentence: what their smile could look like after treatment.
+- 1-3 treatment IDs only. Only recommend what you actually see evidence for.
+- Plain text only. No markdown, no bullets, no asterisks.
 
-P1 — DENTAL OBSERVATIONS: "Looking at your smile, I notice [specific tooth positions] show [specific condition]. Your [upper/lower] [specific teeth] appear to have [specific issue — shade, alignment, chips, gaps, wear, gum line irregularity]." Be clinical in observation but warm in tone. Reference at least 2-3 specific things you see.
+IF TEETH NOT CLEARLY VISIBLE:
+{"emergency": false, "analysis": "We couldn't see your teeth clearly. Try a straight-on smile with good lighting — no sign-up needed.", "treatments": []}`;
 
-P2 — TREATMENT CONNECTION: Explain how your recommended treatments directly address the specific issues from P1. Reference the same teeth/conditions. Example: "The yellowing along your upper front six teeth would respond well to professional whitening, potentially brightening you 4-6 shades."
+const SMILE_DEEPDIVE_PROMPT = `You are a dental concierge AI for Agoura Hills Dental Designs ((818) 706-6077).
 
-P3 — EMOTIONAL IMPACT: One vivid scenario showing how fixing THESE SPECIFIC issues changes their life. Not generic confidence talk — tie it to what you observed. If they have staining: "Imagine ordering your morning coffee without worrying about what it's doing to your smile." If crowding: "Picture smiling wide in your next group photo, knowing every tooth is exactly where it should be."
+Patient wants to know more about a specific treatment. Be warm, specific, brief. This should make them want to book.
 
-P4 — CTA + SAFETY: "Drs. David and Shawn Matian offer free consultations — call (818) 706-6077 or book at agourahillsdentaldesigns.com. This AI analysis is a starting point, and an in-person evaluation with our doctors will give you a complete, personalized treatment plan."
+WRITE 3 SHORT PARAGRAPHS:
+P1 — What the treatment is and how long it takes. 2 sentences max.
+P2 — Why it fits THIS person's smile. Reference 1-2 specific things you observe in their photo. 2 sentences max.
+P3 — One vivid moment that changes when this is fixed. End with: "Call (818) 706-6077 or book at agourahillsdentaldesigns.com for your free consultation."
 
-TARGET: 170-210 words. Plain text. No markdown/asterisks/bold/bullets.
-
-IF TEETH NOT VISIBLE:
-{"analysis": "I couldn't clearly see your teeth in this photo. Please try again with a natural smile showing your teeth, good lighting, and a straight-on angle.", "treatments": []}`;
-
-const SMILE_DEEPDIVE_PROMPT = `You are a dental smile analyst AI for Agoura Hills Dental Designs (Drs. David and Shawn Matian).
-
-The patient saw their analysis and wants details on a specific treatment. They're interested — give them specifics that make them book.
-
-WRITE EXACTLY 4 PARAGRAPHS:
-
-P1 — TREATMENT EXPLANATION: What it is, how it works, typical timeline. 2-3 sentences, plain language.
-
-P2 — WHY IT FITS THEIR SMILE: Reference specific teeth and conditions from their photo. Which teeth benefit, what changes, what the result looks like. Must reference at least 2 specific observations from the image. Example: "The wear patterns I notice on your upper front four teeth, combined with the slight shade variation between your centrals and laterals, are exactly what veneers are designed to address."
-
-P3 — LIFE IMPACT: One vivid, specific scenario tied to their actual dental issues. Not generic confidence — specific to what fixing their observed issues would change.
-
-P4 — CTA: "Call (818) 706-6077 or book at agourahillsdentaldesigns.com for a free consultation. Drs. David and Shawn Matian will use 3D imaging to create your personalized treatment plan."
-
-RULES: 170-210 words. Plain text only. No markdown/bold/bullets. Reference specific teeth. Use "I notice" / "could" / "may" — never diagnose or guarantee.`;
+MAX 80 WORDS TOTAL. Plain text only. No markdown. Use "could" and "may" — never guarantee outcomes.`;
 
 export const config = { runtime: 'edge' };
 
@@ -89,8 +71,8 @@ export default async function handler(req) {
     const isDeepDive = mode === 'deep_dive' && treatmentLabel;
     const systemPrompt = isDeepDive ? SMILE_DEEPDIVE_PROMPT : SMILE_ANALYZE_PROMPT;
     const userMessage = isDeepDive
-      ? `I just received my smile analysis and I'm interested in learning more about: ${treatmentLabel}. Please give me a detailed, personalized explanation of what this treatment could do for my smile.`
-      : `Please analyze my smile and recommend the best treatments for me. Respond with ONLY valid JSON.`;
+      ? `I want to know more about: ${treatmentLabel}. What would this do for my smile?`
+      : `Analyze my smile photo. Return ONLY valid JSON. No preamble, no explanation outside the JSON.`;
 
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -101,9 +83,9 @@ export default async function handler(req) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1200,
+        max_tokens: 600,
         system: systemPrompt,
-        messages: isDeepDive ? [
+        messages: [
           {
             role: 'user',
             content: [
@@ -113,25 +95,16 @@ export default async function handler(req) {
               },
               { type: 'text', text: userMessage },
             ],
-          },
-        ] : [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'image',
-                source: { type: 'base64', media_type: mediaType, data: imageBase64 },
-              },
-              { type: 'text', text: userMessage },
-            ],
-          },
-          {
-            role: 'assistant',
-            content: '{"analysis": "Looking at your smile, I notice',
           },
         ],
       }),
     });
+
+    if (!anthropicResponse.ok) {
+      const errText = await anthropicResponse.text();
+      console.error('Anthropic HTTP error:', anthropicResponse.status, errText);
+      return new Response(JSON.stringify({ error: 'AI analysis temporarily unavailable. Please call (818) 706-6077.' }), { status: 500, headers });
+    }
 
     const anthropicData = await anthropicResponse.json();
 
@@ -140,38 +113,35 @@ export default async function handler(req) {
       return new Response(JSON.stringify({ error: 'AI analysis temporarily unavailable. Please call (818) 706-6077.' }), { status: 500, headers });
     }
 
-    const rawText = anthropicData.content && anthropicData.content[0] ? anthropicData.content[0].text : '';
+    const rawText = anthropicData?.content?.[0]?.text?.trim() || '';
 
     if (!rawText) {
       return new Response(JSON.stringify({ error: 'No analysis generated. Please try again or call (818) 706-6077.' }), { status: 500, headers });
     }
 
-    // Deep dive mode: return plain text
+    // Deep dive: return plain text
     if (isDeepDive) {
       return new Response(JSON.stringify({ analysis: rawText }), { status: 200, headers });
     }
 
-    // Analyze mode: parse JSON (prepend the assistant prefill)
+    // Analyze mode: parse JSON, strip any accidental markdown fences
     try {
-      let fullText = '{"analysis": "Looking at your smile, I notice ' + rawText;
-      let cleaned = fullText.trim();
-      if (cleaned.startsWith('```')) {
-        cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
-      }
+      let cleaned = rawText.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
       const parsed = JSON.parse(cleaned);
-      return new Response(JSON.stringify({ analysis: parsed.analysis || '', treatments: parsed.treatments || [] }), { status: 200, headers });
-    } catch (parseErr) {
-      console.error('JSON parse error, returning raw text:', parseErr.message);
-      // Try to extract analysis from the prefilled text
-      const fallbackAnalysis = 'Looking at your smile, I notice ' + rawText.replace(/[{}"\[\]]/g, '').substring(0, 500);
       return new Response(JSON.stringify({
-        analysis: fallbackAnalysis,
-        treatments: [
-          { id: 'makeover', reason: 'A comprehensive approach to enhancing your smile' },
-          { id: 'whitening', reason: 'A great starting point for a brighter smile' },
-        ],
+        emergency: parsed.emergency || false,
+        analysis: parsed.analysis || '',
+        treatments: parsed.treatments || [],
+      }), { status: 200, headers });
+    } catch (parseErr) {
+      console.error('JSON parse error:', parseErr.message, '| Raw:', rawText.substring(0, 200));
+      return new Response(JSON.stringify({
+        emergency: false,
+        analysis: 'We had trouble reading your photo. Try a straight-on smile with good lighting, or call us at (818) 706-6077.',
+        treatments: [],
       }), { status: 200, headers });
     }
+
   } catch (error) {
     console.error('Smile analysis error:', error);
     return new Response(JSON.stringify({ error: 'Something went wrong. Please try again or call (818) 706-6077.' }), { status: 500, headers });
