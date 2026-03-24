@@ -190,73 +190,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .car-dot{width:7px;height:7px;border-radius:50%;background:rgba(29,62,92,.18);cursor:pointer;transition:all .22s}
 .car-dot.on{background:var(--navy);width:22px;border-radius:4px}
 
-/* INSURANCE */
-#ins{background:#f8fafc;padding:80px 0 64px;border-top:1px solid rgba(29,62,92,.07)}
-.ins-layout{display:grid;grid-template-columns:1fr 1.6fr;gap:56px;align-items:start}
-.ins-left{}
-.ins-ey{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:10px}
-.ins-h2{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:400;line-height:1.1;color:var(--graphite);margin-bottom:14px}
-.ins-h2 em{font-style:italic;font-weight:300;color:var(--slate)}
-.ins-sub{font-size:15px;line-height:1.7;color:var(--slate);margin-bottom:24px}
-.ins-right{}
-.ins-card{background:#fff;border:1px solid rgba(29,62,92,.09);border-radius:18px;padding:32px;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(29,62,92,.07);margin-bottom:20px;font-family:'Inter',sans-serif;}
-.ins-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4A9FD4,#2dd4bf)}
-.ins-steps{display:flex;align-items:center;justify-content:center;margin-bottom:32px}
-.ins-step{display:flex;flex-direction:column;align-items:center;gap:5px}
-.ins-dot{width:32px;height:32px;border-radius:50%;border:1.5px solid #cbd5e1;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .22s}
-.ins-dot span{font-size:12px;font-weight:600;color:#94a3b8;transition:all .22s}
-.ins-step.active .ins-dot{background:#4A9FD4;border-color:#4A9FD4;box-shadow:0 0 12px rgba(74,159,212,.35)}
-.ins-step.active .ins-dot span{color:#fff}
-.ins-step.done .ins-dot{background:#eef6fc;border-color:#4A9FD4}
-.ins-step.done .ins-dot span{color:#4A9FD4}
-.ins-lbl{font-size:10px;font-weight:500;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-.ins-step.active .ins-lbl{color:#2b7db5}
-.ins-step.done .ins-lbl{color:#4A9FD4}
-.ins-line{flex:1;height:1px;background:rgba(29,62,92,.10);margin:0 10px;margin-bottom:20px;min-width:44px}
-.ins-panel{display:none}
-.ins-panel.active{display:block;animation:pIn .26s ease}
-@keyframes pIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.ins-instr{font-size:14px;color:var(--slate);margin-bottom:20px}
-.ins-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.ins-opt{display:flex;flex-direction:column;align-items:center;gap:8px;padding:26px 14px 20px;background:#f8fafc;border:1.5px solid rgba(29,62,92,.10);border-radius:14px;cursor:pointer;transition:all .22s;color:var(--slate);text-align:center;}
-.ins-opt:hover,.ins-opt.sel{border-color:#4A9FD4;background:#eef6fc}
-.ins-opt-name{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;color:var(--graphite)}
-.ins-opt-desc{font-size:11px;color:#94a3b8}
-.ins-back{display:inline-flex;align-items:center;gap:4px;background:none;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:0;margin-bottom:18px;transition:color .2s}
-.ins-back:hover{color:#4A9FD4}
-.ins-sel-wr{position:relative;margin-bottom:8px}
-.ins-sel{width:100%;padding:13px 42px 13px 14px;background:#fff;border:1.5px solid rgba(29,62,92,.12);border-radius:10px;color:var(--graphite);font-size:14px;appearance:none;outline:none;transition:border-color .2s}
-.ins-sel:focus{border-color:#4A9FD4}
-.ins-arr{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
-.ins-not{font-size:12px;color:#94a3b8;margin-bottom:18px}
-.ins-not button{background:none;border:none;color:#4A9FD4;font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
-.ins-go{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:14px;background:#4A9FD4;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .22s;box-shadow:0 4px 14px rgba(74,159,212,.28);}
-.ins-go:hover:not(:disabled){background:#3a8fc4;transform:translateY(-1px)}
-.ins-go:disabled{opacity:.35;cursor:not-allowed}
-.ins-res{display:none;border-radius:12px;padding:22px;margin-bottom:14px;border:1px solid transparent;opacity:0;transform:translateY(8px);transition:opacity .32s,transform .32s}
-.ins-res.show{opacity:1;transform:none}
-.res-pos{background:#f0fdf4;border-color:#bbf7d0}
-.res-neu{background:#eff8ff;border-color:#bfdbee}
-.res-warm{background:#fffbeb;border-color:#fde68a}
-.res-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:100px;padding:4px 10px;margin-bottom:10px}
-.bg-g{background:#dcfce7;color:#15803d}
-.bg-b{background:#dbeafe;color:#1d6fa4}
-.res-hl{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:7px}
-.res-msg{font-size:13.5px;color:var(--slate);line-height:1.7;margin-bottom:18px}
-.res-msg strong{color:var(--graphite)}
-.res-ctas{display:flex;flex-direction:column;gap:9px}
-.rc-p,.rc-s{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 18px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer;transition:all .2s}
-.rc-p{background:#4A9FD4;color:#fff;box-shadow:0 3px 10px rgba(74,159,212,.26)}
-.rc-p:hover{background:#3a8fc4;transform:translateY(-1px)}
-.rc-s{background:#fff;color:#2b7db5;border:1.5px solid #bfdbee}
-.rc-s:hover{background:#eef6fc}
-.ins-trust{display:none;align-items:flex-start;gap:9px;padding:12px 14px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:9px;font-size:12.5px;font-style:italic;color:var(--slate);line-height:1.6;margin-top:4px}
-.ins-trust.vis{display:flex}
-.ins-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 24px;background:#eef6fc;border:1px solid #bfdbee;border-radius:12px;margin-bottom:16px;flex-wrap:wrap}
-.ins-banner p{font-size:13.5px;color:var(--slate);flex:1;min-width:160px}
-.ins-bann-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#4A9FD4;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background .2s}
-.ins-bann-btn:hover{background:#3a8fc4}
-.ins-disc{font-size:11px;color:#94a3b8;text-align:center;line-height:1.6}
 
 /* LOCATION */
 #loc{background:var(--cloud);padding:0;overflow:hidden;width:100%}
@@ -355,6 +288,20 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 #chat-send svg{width:15px;height:15px;fill:#fff}
 @media(max-width:480px){#chat-win{width:calc(100vw - 18px);height:calc(100vh - 90px);bottom:66px;right:-10px;border-radius:14px}#chat-wrap{bottom:16px;right:16px}}
 
+/* NO INSURANCE CTA */
+.ins-no-insurance{position:relative;margin-top:20px;border-radius:16px;isolation:isolate}
+.ins-no-insurance-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 24px;background:rgba(255,255,255,.62);backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(74,159,212,.18);border-top:1px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 2px 16px rgba(74,159,212,.08),0 1px 0 rgba(255,255,255,.95) inset;text-decoration:none;transition:transform .24s cubic-bezier(.4,0,.2,1),box-shadow .24s ease,border-color .24s ease}
+.ins-no-insurance-inner:hover{transform:translateY(-2px);border-color:rgba(74,159,212,.32);box-shadow:0 6px 28px rgba(74,159,212,.14),0 1px 0 rgba(255,255,255,.95) inset}
+.ins-no-ins-text{flex:1;min-width:0}
+.ins-no-ins-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:3px}
+.ins-no-ins-headline{font-size:15px;font-weight:600;color:var(--graphite);letter-spacing:-.01em;line-height:1.3}
+.ins-no-ins-headline em{font-style:italic;font-weight:400;color:var(--slate)}
+.ins-no-ins-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:linear-gradient(135deg,#C96A2E 0%,#e8742a 100%);color:#fff;border-radius:100px;font-size:13px;font-weight:700;letter-spacing:.02em;text-decoration:none;white-space:nowrap;flex-shrink:0;box-shadow:0 3px 14px rgba(201,106,46,.32);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.ins-no-ins-btn svg{transition:transform .2s ease}
+.ins-no-insurance-inner:hover .ins-no-ins-btn{filter:brightness(1.06);box-shadow:0 5px 18px rgba(201,106,46,.42)}
+.ins-no-insurance-inner:hover .ins-no-ins-btn svg{transform:translateX(3px)}
+@media(max-width:640px){.ins-no-insurance-inner{flex-direction:column;align-items:flex-start;padding:16px 18px;gap:14px}.ins-no-ins-btn{width:100%;justify-content:center}}
+
 /* RESPONSIVE */
 @media(max-width:1024px){.wrap{padding:0 28px}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}.doc-outer{gap:0}.doc-text{padding-left:48px;padding-right:40px}}
 @media(max-width:768px){
@@ -366,7 +313,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   .svc-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .doc-outer{grid-template-columns:1fr}.doc-text{padding:56px 24px 40px 24px}
   .doc-photo{min-height:320px;aspect-ratio:unset}
-  .ins-layout{grid-template-columns:1fr}
   .loc-outer{grid-template-columns:1fr}.loc-text{padding:56px 24px 40px 24px}
   .map-wrap{min-height:320px}
   .footer-grid{grid-template-columns:1fr 1fr;gap:22px}.footer-brand-col{grid-column:1/-1}
@@ -379,6 +325,111 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   .hero-h1{font-size:22px}.hero-content{right:16px;width:240px}
   .team-staff{grid-template-columns:repeat(2,1fr);gap:12px}
 }
+
+
+
+/* ── INSURANCE WIDGET ─────────────────────────────────────────── */
+#ins{background:#f8fafc;padding:80px 0 64px;border-top:1px solid #e8eef4}
+.ins-inner{max-width:1100px;margin:0 auto;padding:0 40px}
+.ins-header{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;margin-bottom:48px;flex-wrap:wrap}
+.ins-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#2b7db5;margin-bottom:10px}
+.ins-heading{font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;color:#0f172a;line-height:1.2;letter-spacing:-.02em;margin-bottom:14px}
+.ins-heading em{font-style:italic;font-weight:300;color:#475569}
+.ins-subhead{font-size:.9rem;font-weight:300;color:#64748b;line-height:1.7;max-width:420px}
+.ins-header-badge{background:#eef6fc;border:1px solid #c2dff0;border-radius:14px;padding:18px 24px;text-align:center;flex-shrink:0;align-self:flex-start}
+.ins-badge-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#2b7db5;margin-bottom:6px}
+.ins-badge-text{font-size:.82rem;color:#475569;line-height:1.5}
+.ins-card{background:#fff;border:1px solid #e2eaf2;border-radius:20px;padding:40px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,.07),0 1px 4px rgba(15,23,42,.04)}
+.ins-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4A9FD4,#2dd4bf)}
+.ins-steps{display:flex;align-items:center;justify-content:center;margin-bottom:36px}
+.ins-step{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ins-step-dot{width:34px;height:34px;border-radius:50%;border:1.5px solid #cbd5e1;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .22s ease}
+.ins-step-dot span{font-size:.78rem;font-weight:600;color:#94a3b8;transition:all .22s ease}
+.ins-step.active .ins-step-dot{background:#4A9FD4;border-color:#4A9FD4;box-shadow:0 0 14px rgba(74,159,212,.35)}
+.ins-step.active .ins-step-dot span{color:#fff}
+.ins-step.completed .ins-step-dot{background:#eef6fc;border-color:#4A9FD4}
+.ins-step.completed .ins-step-dot span{color:#4A9FD4}
+.ins-step-label{font-size:.62rem;font-weight:500;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase;transition:color .22s;white-space:nowrap}
+.ins-step.active .ins-step-label{color:#2b7db5}
+.ins-step.completed .ins-step-label{color:#4A9FD4}
+.ins-step-line{flex:1;height:1px;background:#e2eaf2;margin:0 12px;margin-bottom:22px;min-width:48px}
+.ins-panel{display:none;animation:insPanelIn .28s cubic-bezier(.4,0,.2,1)}
+.ins-panel.active{display:block}
+@keyframes insPanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ins-instruction{font-size:.9rem;color:#64748b;margin-bottom:22px;font-weight:400}
+.ins-plan-btns{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ins-plan-btn{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 16px 22px;background:#f8fafc;border:1.5px solid #e2eaf2;border-radius:16px;cursor:pointer;transition:all .22s ease;color:#64748b;font-family:var(--sans);text-align:center}
+.ins-plan-btn:hover{border-color:#4A9FD4;background:#eef6fc;color:#2b7db5;transform:translateY(-2px);box-shadow:0 8px 28px rgba(74,159,212,.13)}
+.ins-plan-btn.selected{border-color:#4A9FD4;background:#eef6fc;color:#2b7db5;box-shadow:0 4px 20px rgba(74,159,212,.18)}
+.ins-plan-icon{color:inherit}
+.ins-plan-name{font-size:1.6rem;font-weight:700;letter-spacing:-.01em;color:#0f172a;transition:color .22s}
+.ins-plan-btn:hover .ins-plan-name,.ins-plan-btn.selected .ins-plan-name{color:#2b7db5}
+.ins-plan-desc{font-size:.7rem;color:#94a3b8;line-height:1.4}
+.ins-plan-check{position:absolute;top:12px;right:12px;color:#4A9FD4;opacity:0;transition:opacity .2s}
+.ins-plan-btn.selected .ins-plan-check{opacity:1}
+.ins-back-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#94a3b8;font-family:var(--sans);font-size:.8rem;font-weight:500;cursor:pointer;padding:0;margin-bottom:22px;transition:color .2s}
+.ins-back-btn:hover{color:#4A9FD4}
+.ins-select-wrap{position:relative;margin-bottom:10px}
+.ins-select{width:100%;padding:14px 44px 14px 16px;background:#fff;border:1.5px solid #e2eaf2;border-radius:12px;color:#334155;font-family:var(--sans);font-size:.9rem;appearance:none;-webkit-appearance:none;cursor:pointer;outline:none;transition:border-color .2s,box-shadow .2s}
+.ins-select:focus{border-color:#4A9FD4;box-shadow:0 0 0 3px rgba(74,159,212,.12)}
+.ins-select-arrow{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
+.ins-not-listed{font-size:.8rem;color:#94a3b8;margin-bottom:22px}
+.ins-link-btn{background:none;border:none;color:#4A9FD4;font-family:inherit;font-size:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
+.ins-link-btn:hover{color:#2b7db5}
+.ins-check-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 24px;background:#4A9FD4;color:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .22s ease;box-shadow:0 4px 16px rgba(74,159,212,.3)}
+.ins-check-btn:hover:not(:disabled){background:#3a8fc4;transform:translateY(-1px);box-shadow:0 6px 20px rgba(74,159,212,.4)}
+.ins-check-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.ins-result{display:none;border-radius:14px;padding:24px;margin-bottom:16px;border:1px solid transparent;opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease}
+.ins-result.ins-result-show{opacity:1;transform:translateY(0)}
+.ins-result-positive{background:#f0fdf4;border-color:#bbf7d0}
+.ins-result-neutral{background:#eff8ff;border-color:#bfdbee}
+.ins-result-warm{background:#fffbeb;border-color:#fde68a}
+.ins-result-badge{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:100px;padding:5px 12px;margin-bottom:12px}
+.ins-badge-green{background:#dcfce7;color:#15803d}
+.ins-badge-blue{background:#dbeafe;color:#1d6fa4}
+.ins-result-headline{font-size:1.3rem;font-weight:700;color:#0f172a;margin-bottom:8px;letter-spacing:-.01em}
+.ins-result-msg{font-size:.875rem;color:#475569;line-height:1.75;margin-bottom:20px}
+.ins-result-msg strong{color:#1e293b}
+.ins-cta-group{display:flex;flex-direction:column;gap:10px}
+.ins-cta-primary,.ins-cta-secondary{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:10px;font-family:var(--sans);font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s ease;cursor:pointer;text-align:center}
+.ins-cta-primary{background:#4A9FD4;color:#fff;box-shadow:0 3px 12px rgba(74,159,212,.28)}
+.ins-cta-primary:hover{background:#3a8fc4;transform:translateY(-1px);box-shadow:0 5px 16px rgba(74,159,212,.38)}
+.ins-cta-secondary{background:#fff;color:#2b7db5;border:1.5px solid #bfdbee}
+.ins-cta-secondary:hover{background:#eef6fc;border-color:#4A9FD4;color:#1d6fa4}
+.ins-trust{display:none;align-items:flex-start;gap:10px;padding:14px 16px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;font-size:.8rem;font-style:italic;color:#475569;line-height:1.6;margin-top:4px}
+.ins-trust svg{flex-shrink:0;margin-top:2px}
+.ins-trust.visible{display:flex}
+.ins-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 28px;background:#eef6fc;border:1px solid #bfdbee;border-radius:14px;margin-bottom:20px;flex-wrap:wrap}
+.ins-banner p{font-size:.875rem;color:#475569;line-height:1.5;flex:1;min-width:180px;font-weight:400}
+.ins-banner-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;background:#4A9FD4;color:#fff;border:none;border-radius:9px;font-family:var(--sans);font-size:.84rem;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .2s}
+.ins-banner-btn:hover{background:#3a8fc4;transform:translateY(-1px)}
+.ins-disclaimer{font-size:.69rem;color:#94a3b8;text-align:center;line-height:1.6;padding:0 16px}
+.ins-no-insurance{position:relative;margin-top:20px;border-radius:16px;isolation:isolate}
+.ins-no-insurance-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 24px;background:rgba(255,255,255,.62);backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(74,159,212,.18);border-top:1px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 2px 16px rgba(74,159,212,.08),0 1px 0 rgba(255,255,255,.95) inset;text-decoration:none;transition:transform .24s cubic-bezier(.4,0,.2,1),box-shadow .24s ease,border-color .24s ease}
+.ins-no-insurance-inner:hover{transform:translateY(-2px);border-color:rgba(74,159,212,.32);box-shadow:0 6px 28px rgba(74,159,212,.14),0 1px 0 rgba(255,255,255,.95) inset}
+.ins-no-ins-text{flex:1;min-width:0}
+.ins-no-ins-eyebrow{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CC5801;margin-bottom:3px}
+.ins-no-ins-headline{font-size:.95rem;font-weight:600;color:#0f172a;letter-spacing:-.01em;line-height:1.3}
+.ins-no-ins-headline em{font-style:italic;font-weight:400;color:#475569}
+.ins-no-ins-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:linear-gradient(135deg,#CC5801,#e8742a);color:#fff;border-radius:100px;font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.02em;text-decoration:none;white-space:nowrap;flex-shrink:0;box-shadow:0 3px 14px rgba(204,88,1,.32);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.ins-no-ins-btn svg{transition:transform .2s ease}
+.ins-no-insurance-inner:hover .ins-no-ins-btn{filter:brightness(1.06);box-shadow:0 5px 18px rgba(204,88,1,.42)}
+.ins-no-insurance-inner:hover .ins-no-ins-btn svg{transform:translateX(3px)}
+@media(max-width:640px){
+  #ins{padding:56px 0 48px}
+  .ins-inner{padding:0 20px}
+  .ins-card{padding:28px 20px}
+  .ins-heading{font-size:1.5rem}
+  .ins-plan-btns{gap:12px}
+  .ins-plan-btn{padding:20px 10px 16px}
+  .ins-plan-name{font-size:1.35rem}
+  .ins-banner{padding:16px 18px}
+  .ins-step-line{min-width:28px}
+  .ins-no-insurance-inner{flex-direction:column;align-items:flex-start;padding:16px 18px;gap:14px}
+  .ins-no-ins-btn{width:100%;justify-content:center}
+}
+@media(max-width:400px){.ins-plan-btns{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -598,60 +649,199 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 </section>
 
 <section id="ins">
-  <div class="wrap">
-    <div class="ins-layout reveal">
-      <div class="ins-left">
-        <span class="ins-ey">Insurance &amp; Coverage</span>
-        <h2 class="ins-h2">Check Your Insurance <em>in Seconds</em></h2>
-        <p class="ins-sub">We accept most PPO plans through our Careington and Connection Dental networks — covering hundreds of carriers nationwide.</p>
+  <div class="ins-inner">
+
+    <div class="ins-header">
+      <div class="ins-header-left">
+        <div class="ins-eyebrow">Insurance &amp; Coverage</div>
+        <h2 class="ins-heading">Check Your Dental<br><em>Insurance in Seconds</em></h2>
+        <p class="ins-subhead">Select your plan type and carrier below. Our team is always happy to verify your benefits before your visit — no forms, no phone tag.</p>
       </div>
-      <div class="ins-right">
-        <div class="ins-card">
-          <div class="ins-steps" id="insSteps">
-            <div class="ins-step active" data-s="1"><div class="ins-dot"><span>1</span></div><div class="ins-lbl">Plan Type</div></div>
-            <div class="ins-line"></div>
-            <div class="ins-step" data-s="2"><div class="ins-dot"><span>2</span></div><div class="ins-lbl">Your Carrier</div></div>
-            <div class="ins-line"></div>
-            <div class="ins-step" data-s="3"><div class="ins-dot"><span>3</span></div><div class="ins-lbl">Your Results</div></div>
-          </div>
-          <div class="ins-panel active" id="iP1">
-            <p class="ins-instr">Start by selecting your dental insurance type.</p>
-            <div class="ins-btns">
-              <button class="ins-opt" data-t="PPO" onclick="insPick('PPO')">
-                <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/><path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/><path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/></svg>
-                <div class="ins-opt-name">PPO</div><div class="ins-opt-desc">Preferred Provider Organization</div>
-              </button>
-              <button class="ins-opt" data-t="HMO" onclick="insPick('HMO')">
-                <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/><path d="M16 9V23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-                <div class="ins-opt-name">HMO</div><div class="ins-opt-desc">Health Maintenance Organization</div>
-              </button>
+      <div class="ins-header-badge">
+        <div class="ins-badge-label">No PHI Required</div>
+        <div class="ins-badge-text">Private &amp; Secure<br>100% Client-Side</div>
+      </div>
+    </div>
+
+    <div class="ins-card">
+      <div class="ins-steps" id="insSteps">
+        <div class="ins-step active" data-step="1">
+          <div class="ins-step-dot"><span>1</span></div>
+          <div class="ins-step-label">Plan Type</div>
+        </div>
+        <div class="ins-step-line"></div>
+        <div class="ins-step" data-step="2">
+          <div class="ins-step-dot"><span>2</span></div>
+          <div class="ins-step-label">Your Carrier</div>
+        </div>
+        <div class="ins-step-line"></div>
+        <div class="ins-step" data-step="3">
+          <div class="ins-step-dot"><span>3</span></div>
+          <div class="ins-step-label">Your Results</div>
+        </div>
+      </div>
+
+      <!-- Panel 1 -->
+      <div class="ins-panel active" id="insPanel1">
+        <p class="ins-instruction">Start by selecting your dental insurance type.</p>
+        <div class="ins-plan-btns">
+          <button class="ins-plan-btn" data-type="PPO" onclick="insSelectType('PPO')">
+            <div class="ins-plan-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/>
+                <path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/>
+                <path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                <path d="M9 23H14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                <circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/>
+              </svg>
             </div>
-          </div>
-          <div class="ins-panel" id="iP2">
-            <button class="ins-back" onclick="insBack(1)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</button>
-            <p class="ins-instr">Select your insurance carrier.</p>
-            <div class="ins-sel-wr">
-              <select class="ins-sel" id="insSel"><option value="">— Select your carrier —</option></select>
-              <div class="ins-arr"><svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M3 5.5L7.5 10L12 5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ins-plan-name">PPO</div>
+            <div class="ins-plan-desc">Preferred Provider Organization</div>
+            <div class="ins-plan-check">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-            <div class="ins-not">Don't see your carrier? <button onclick="insNotListed()">Click here</button></div>
-            <button class="ins-go" id="insGo" onclick="insCheck()" disabled>Check My Coverage <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </button>
+          <button class="ins-plan-btn" data-type="HMO" onclick="insSelectType('HMO')">
+            <div class="ins-plan-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/>
+                <path d="M16 9V23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                <path d="M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="ins-plan-name">HMO</div>
+            <div class="ins-plan-desc">Health Maintenance Organization</div>
+            <div class="ins-plan-check">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="ins-panel" id="insPanel2">
+        <button class="ins-back-btn" onclick="insGoBack(1)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <p class="ins-instruction">Now select your insurance carrier from the list below.</p>
+        <div class="ins-select-wrap">
+          <select class="ins-select" id="insCarrierSelect">
+            <option value="">— Select your carrier —</option>
+          </select>
+          <div class="ins-select-arrow">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 5.5L7.5 10L12 5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <div class="ins-panel" id="iP3">
-            <button class="ins-back" onclick="insBack(2)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Check Another Plan</button>
-            <div class="ins-res res-pos" id="iRIn"><div class="res-badge bg-g"><svg width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>In Network</div><div class="res-hl">Great News!</div><p class="res-msg">It looks like we are typically <strong>In Network with this PPO plan.</strong> Our team would be happy to review your coverage and help you maximize your benefits.</p><div class="res-ctas"><a href="#" class="rc-p" onclick="doBook(event)">Schedule Your Appointment</a></div></div>
-            <div class="ins-res res-neu" id="iROut"><div class="res-badge bg-b"><svg width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r=".65" fill="currentColor"/></svg>Let's Take a Look</div><div class="res-hl">Let's Take a Look at Your Benefits</div><p class="res-msg">We may not directly participate with this plan, but many patients still have <strong>out-of-network benefits</strong> they can use. Our team is happy to check your coverage.</p><div class="res-ctas"><a href="#" class="rc-p" onclick="doBook(event)">Request an Appointment</a></div></div>
-            <div class="ins-res res-warm" id="iRHmo"><div class="res-hl">We'd Love to See You!</div><p class="res-msg">While we may not participate with your HMO plan, many patients still receive care in our office. Our team will <strong>personally review your benefits</strong> and walk you through your options.</p><div class="res-ctas"><a href="#" class="rc-p" onclick="doBook(event)">Request an Appointment</a></div></div>
-            <div class="ins-trust" id="iTrust">Many patients are surprised to learn they can still use their benefits here. Our team is happy to check for you.</div>
+        </div>
+        <div class="ins-not-listed">Don't see your carrier? <button class="ins-link-btn" onclick="insSelectNotListed()">Click here</button></div>
+        <button class="ins-check-btn" id="insCheckBtn" onclick="insCheck()" disabled>
+          Check My Coverage
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="ins-panel" id="insPanel3">
+        <button class="ins-back-btn" onclick="insGoBack(2)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Check Another Plan
+        </button>
+
+        <!-- In-network -->
+        <div class="ins-result ins-result-positive" id="insRes-ppo-in">
+          <div class="ins-result-badge ins-badge-green">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            In Network
           </div>
+          <h3 class="ins-result-headline">Great News!</h3>
+          <p class="ins-result-msg">It looks like we are typically <strong>In Network with this PPO plan.</strong> Our team would be happy to review your coverage and help you maximize your benefits before your visit.</p>
+          <div class="ins-cta-group">
+            <a href="#" class="ins-cta-primary" onclick="doBook(event)">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Schedule Your Appointment
+            </a>
+            <a href="tel:+18187066077" class="ins-cta-secondary">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              Have Our Team Verify My Benefits
+            </a>
+          </div>
+        </div>
+
+        <!-- Out-of-network -->
+        <div class="ins-result ins-result-neutral" id="insRes-ppo-out">
+          <div class="ins-result-badge ins-badge-blue">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r="0.65" fill="currentColor"/></svg>
+            Let's Take a Look
+          </div>
+          <h3 class="ins-result-headline">Let's Take a Look at Your Benefits</h3>
+          <p class="ins-result-msg">It looks like we may not currently participate directly with this specific plan. However, many patients still have <strong>out-of-network benefits</strong> they can use in our office. Our team would be happy to check your coverage and explain your options.</p>
+          <div class="ins-cta-group">
+            <a href="tel:+18187066077" class="ins-cta-primary">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              Call Us — We'll Verify Your Benefits
+            </a>
+            <a href="#" class="ins-cta-secondary" onclick="doBook(event)">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Schedule an Appointment
+            </a>
+          </div>
+        </div>
+
+        <!-- HMO -->
+        <div class="ins-result ins-result-warm" id="insRes-hmo">
+          <h3 class="ins-result-headline">We'd Love to See You!</h3>
+          <p class="ins-result-msg">While we may not currently participate with your HMO plan, many patients with similar coverage are still able to receive care in our office. Our team will <strong>personally review your benefits</strong> and walk you through your options — so you know exactly what to expect before your visit.</p>
+          <div class="ins-cta-group">
+            <a href="#" class="ins-cta-primary" onclick="doBook(event)">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Request an Appointment
+            </a>
+            <a href="tel:+18187066077" class="ins-cta-secondary">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              Call Us — We'll Figure It Out
+            </a>
+          </div>
+        </div>
+
+        <div class="ins-trust" id="insTrust">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L10 5.5H14.5L11 8.5L12.5 13L8 10.5L3.5 13L5 8.5L1.5 5.5H6L8 1.5Z" stroke="#4A9FD4" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Many patients are surprised to learn they can still use their benefits in our office. Our team is happy to check for you.
         </div>
       </div>
     </div>
-    <div class="ins-banner reveal">
-      <p>Insurance participation can vary by employer group and plan details. Our team is happy to verify your benefits before your visit.</p>
-      <a href="tel:+18187066077" class="ins-bann-btn"><svg width="13" height="13" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Speak With Our Team</a>
+
+    <div class="ins-banner">
+      <p>Questions about your insurance? Our team verifies benefits for patients every day.</p>
+      <a href="tel:+18187066077" class="ins-banner-btn">
+        <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Speak With Our Team
+      </a>
     </div>
-    <p class="ins-disc">No PHI Required · Private &amp; Secure · 100% Client-Side</p>
+
+    <p class="ins-disclaimer">Insurance participation and coverage can vary by employer group and plan details. Our team is happy to verify your benefits before your visit.</p>
+
+    <div class="ins-no-insurance">
+      <a href="/financing#membership" class="ins-no-insurance-inner">
+        <div class="ins-no-ins-text">
+          <div class="ins-no-ins-eyebrow">No Insurance?&nbsp;&nbsp;No Problem.</div>
+          <div class="ins-no-ins-headline">Explore our in-house Smile Care Plan &mdash; <em>starting at $35/month.</em></div>
+        </div>
+        <div class="ins-no-ins-btn">
+          See Membership Plans
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+
   </div>
 </section>
 
@@ -732,7 +922,54 @@ window.addEventListener('scroll',function(){document.getElementById('nav').class
 (function(){var els=document.querySelectorAll('.reveal');if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.05});els.forEach(function(el){io.observe(el);});})();
 document.querySelectorAll('.tech-card').forEach(function(c){c.addEventListener('click',function(){if(window.innerWidth<=768)c.classList.toggle('tapped');});});
 (function(){var track=document.getElementById('carTrack');var dots=document.getElementById('cDots');var prev=document.getElementById('cPrev');var next=document.getElementById('cNext');if(!track)return;var cards=track.querySelectorAll('.rev-card');var idx=0,sx=0,cx=0,drag=false;function cpv(){return window.innerWidth<=580?1:window.innerWidth<=860?2:3;}function cw(){return cards[0]?cards[0].offsetWidth+18:0;}function maxI(){return Math.max(0,cards.length-cpv());}function go(n){idx=Math.max(0,Math.min(n,maxI()));track.style.transform='translateX(-'+(idx*cw())+'px)';dots.querySelectorAll('.car-dot').forEach(function(d,i){d.classList.toggle('on',i===idx);});}function buildDots(){dots.innerHTML='';for(var i=0;i<=maxI();i++){var d=document.createElement('button');d.className='car-dot'+(i===idx?' on':'');d.setAttribute('aria-label','Review '+(i+1));d.dataset.i=i;d.addEventListener('click',function(){go(parseInt(this.dataset.i));});dots.appendChild(d);}}prev.addEventListener('click',function(){go(idx-1);});next.addEventListener('click',function(){go(idx+1);});track.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;drag=true;},{passive:true});track.addEventListener('touchmove',function(e){if(drag)cx=e.touches[0].clientX;},{passive:true});track.addEventListener('touchend',function(){if(!drag)return;if(Math.abs(sx-cx)>38)go(sx-cx>0?idx+1:idx-1);drag=false;});buildDots();go(0);window.addEventListener('resize',function(){buildDots();go(Math.min(idx,maxI()));},{passive:true});var auto=setInterval(function(){go(idx>=maxI()?0:idx+1);},5000);track.addEventListener('mouseenter',function(){clearInterval(auto);});})();
-(function(){var PPO_IN=["Aetna PPO","Anthem Blue Cross Blue Shield","Beam Dental","Careington Care PPO","Cigna PPO","Cobra PPO","Delta Dental PPO","Guardian","Humana PPO","Lincoln Financial","MetLife","Principal","Sun Life Financial","United Concordia","United Healthcare (UHC)"];var PPO_OUT=["Blue Shield of CA","GEHA","HealthNet PPO","Supplemental / Other PPO"];var T=null,C=null;function goStep(s){document.querySelectorAll('.ins-panel').forEach(function(p,i){p.classList.toggle('active',i+1===s);});document.querySelectorAll('.ins-step').forEach(function(d){var n=parseInt(d.dataset.s);d.classList.toggle('active',n===s);d.classList.toggle('done',n<s);});}function hideRes(){document.querySelectorAll('.ins-res').forEach(function(r){r.style.display='none';r.classList.remove('show');});}function showRes(id){var el=document.getElementById(id);if(!el)return;el.style.display='block';requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('show');});});}window.insPick=function(t){T=t;C=null;document.querySelectorAll('.ins-opt').forEach(function(b){b.classList.toggle('sel',b.dataset.t===t);});if(t==='HMO'){C='hmo';setTimeout(function(){goStep(3);hideRes();showRes('iRHmo');document.getElementById('iTrust').classList.add('vis');},200);return;}var s=document.getElementById('insSel');s.innerHTML='<option value="">— Select your carrier —</option>';var list=PPO_IN.map(function(c){return{l:c,v:'in:'+c};}).concat(PPO_OUT.map(function(c){return{l:c,v:'out:'+c};})).sort(function(a,b){return a.l.localeCompare(b.l);});list.forEach(function(c){var o=document.createElement('option');o.value=c.v;o.textContent=c.l;s.appendChild(o);});s.value='';document.getElementById('insGo').disabled=true;setTimeout(function(){goStep(2);},200);};window.insNotListed=function(){C='out:other';insCheck();};window.insCheck=function(){if(!C){var v=document.getElementById('insSel').value;if(!v)return;C=v;}goStep(3);hideRes();showRes(T==='HMO'?'iRHmo':(C.indexOf('in:')===0?'iRIn':'iROut'));document.getElementById('iTrust').classList.add('vis');};window.insBack=function(s){if(T==='HMO'&&s===2)s=1;if(s===1){T=null;C=null;document.querySelectorAll('.ins-opt').forEach(function(b){b.classList.remove('sel');});document.getElementById('iTrust').classList.remove('vis');}if(s===2)C=null;goStep(s);};document.getElementById('insSel').addEventListener('change',function(){C=this.value||null;document.getElementById('insGo').disabled=!this.value;});})();
+(function(){
+  "use strict";
+  var PPO_IN=["Aetna PPO","Anthem Blue Cross Blue Shield","Beam Dental","Careington Care PPO","Cigna PPO","Cobra PPO","Delta Dental PPO","Guardian","Humana PPO","Lincoln Financial","MetLife","Principal","Sun Life Financial","United Concordia","United Healthcare (UHC)"];
+  var PPO_OTHER=["Blue Shield of CA","GEHA","HealthNet PPO","Supplemental / Other PPO"];
+  var selectedType=null,selectedCarrier=null;
+  window.insSelectType=function(type){
+    selectedType=type;selectedCarrier=null;
+    document.querySelectorAll(".ins-plan-btn").forEach(function(b){b.classList.toggle("selected",b.dataset.type===type);});
+    if(type==="HMO"){
+      selectedCarrier="hmo:direct";
+      setTimeout(function(){
+        goToStep(3);
+        document.querySelectorAll(".ins-result").forEach(function(el){el.style.display="none";el.classList.remove("ins-result-show");});
+        var card=document.getElementById("insRes-hmo");card.style.display="block";
+        requestAnimationFrame(function(){requestAnimationFrame(function(){card.classList.add("ins-result-show");});});
+        var trust=document.getElementById("insTrust");if(trust)trust.classList.add("visible");
+      },200);return;
+    }
+    var sel=document.getElementById("insCarrierSelect");
+    sel.innerHTML='<option value="">— Select your carrier —</option>';
+    var list=PPO_IN.map(function(c){return{label:c,val:"in:"+c};}).concat(PPO_OTHER.map(function(c){return{label:c,val:"out:"+c};})).sort(function(a,b){return a.label.localeCompare(b.label);});
+    list.forEach(function(c){var o=document.createElement("option");o.value=c.val;o.textContent=c.label;sel.appendChild(o);});
+    sel.value="";document.getElementById("insCheckBtn").disabled=true;
+    setTimeout(function(){goToStep(2);},200);
+  };
+  window.insSelectNotListed=function(){selectedCarrier="out:__not_listed__";insCheck();};
+  window.insCheck=function(){
+    if(!selectedCarrier){var v=document.getElementById("insCarrierSelect").value;if(!v)return;selectedCarrier=v;}
+    goToStep(3);
+    document.querySelectorAll(".ins-result").forEach(function(el){el.style.display="none";el.classList.remove("ins-result-show");});
+    var id=selectedType==="HMO"?"insRes-hmo":(selectedCarrier.indexOf("in:")===0?"insRes-ppo-in":"insRes-ppo-out");
+    var card=document.getElementById(id);card.style.display="block";
+    requestAnimationFrame(function(){requestAnimationFrame(function(){card.classList.add("ins-result-show");});});
+    var trust=document.getElementById("insTrust");if(trust)trust.classList.add("visible");
+  };
+  window.insGoBack=function(toStep){
+    if(selectedType==="HMO"&&toStep===2)toStep=1;
+    if(toStep===1){selectedType=null;selectedCarrier=null;document.querySelectorAll(".ins-plan-btn").forEach(function(b){b.classList.remove("selected");});var trust=document.getElementById("insTrust");if(trust)trust.classList.remove("visible");}
+    if(toStep===2)selectedCarrier=null;
+    goToStep(toStep);
+  };
+  function goToStep(step){
+    document.querySelectorAll(".ins-panel").forEach(function(p,i){p.classList.toggle("active",i+1===step);});
+    document.querySelectorAll(".ins-step").forEach(function(dot){var s=parseInt(dot.dataset.step,10);dot.classList.toggle("active",s===step);dot.classList.toggle("completed",s<step);});
+    var section=document.getElementById("ins");if(section)section.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  document.getElementById("insCarrierSelect").addEventListener("change",function(){selectedCarrier=this.value||null;document.getElementById("insCheckBtn").disabled=!this.value;});
+})();
 var BOOK_URL='https://bookit.dentrixascend.com/soe/new/dental?pid=ASC64000000019461&mode=externalLink';
 function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=document.getElementById('bk-modal');var cont=document.getElementById('bk-container');cont.innerHTML='';var fr=document.createElement('iframe');fr.src=BOOK_URL;fr.title='Book Appointment Online';fr.allow='payment';fr.setAttribute('allowfullscreen','');fr.style.cssText='width:100%;height:100%;min-height:580px;border:none;display:block;';cont.appendChild(fr);modal.classList.add('open');document.body.style.overflow='hidden';document.addEventListener('keydown',escBook);}
 function closeBook(){var modal=document.getElementById('bk-modal');var cont=document.getElementById('bk-container');modal.classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){cont.innerHTML='';},300);}
