@@ -489,94 +489,773 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 /* ═══════════════════════
    INSURANCE
 ═══════════════════════ */
-#ins{background:#f8fafc;padding:80px 0 64px;border-top:1px solid rgba(29,62,92,.07)}
-/* Side-by-side: title/info left, widget right */
-.ins-layout{display:grid;grid-template-columns:1fr 1.6fr;gap:56px;align-items:start}
-.ins-left{}
-.ins-ey{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:10px}
-.ins-h2{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:400;line-height:1.1;color:var(--graphite);margin-bottom:14px}
-.ins-h2 em{font-style:italic;font-weight:300;color:var(--slate)}
-.ins-sub{font-size:15px;line-height:1.7;color:var(--slate);margin-bottom:24px}
-.ins-badge{background:#eef6fc;border:1px solid #c2dff0;border-radius:12px;padding:16px 20px;text-align:center;display:inline-block}
-.ins-badge-top{font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2b7db5;margin-bottom:4px}
-.ins-badge-txt{font-size:12px;color:var(--slate);line-height:1.5}
-/* Widget right column */
-.ins-right{}
-.ins-card{
-  background:#fff;border:1px solid rgba(29,62,92,.09);
-  border-radius:18px;padding:32px;position:relative;overflow:hidden;
-  box-shadow:0 4px 24px rgba(29,62,92,.07);margin-bottom:20px;
-  font-family:'Inter',sans-serif;
+<section id="ins">
+  <div class="wrap">
+    <div class="ins-layout reveal">
+ 
+      <!-- LEFT: title + sub -->
+      <div class="ins-left">
+        <span class="ins-ey">Insurance &amp; Coverage</span>
+        <h2 class="ins-h2">Check Your Insurance <em>in Seconds</em></h2>
+        <p class="ins-sub">We accept most PPO plans through our Careington and Connection Dental networks — covering hundreds of carriers nationwide. COBRA, Medicare Advantage, and TRICARE welcome.</p>
+      </div>
+ 
+      <!-- RIGHT: widget card -->
+      <div class="ins-right">
+        <div class="ins-card">
+ 
+          <!-- Step indicators -->
+          <div class="ins-steps" id="insSteps">
+            <div class="ins-step active" data-s="1">
+              <div class="ins-dot"><span>1</span></div>
+              <div class="ins-lbl">Plan Type</div>
+            </div>
+            <div class="ins-line"></div>
+            <div class="ins-step" data-s="2">
+              <div class="ins-dot"><span>2</span></div>
+              <div class="ins-lbl">Your Carrier</div>
+            </div>
+            <div class="ins-line"></div>
+            <div class="ins-step" data-s="3">
+              <div class="ins-dot"><span>3</span></div>
+              <div class="ins-lbl">Your Results</div>
+            </div>
+          </div>
+ 
+          <!-- Panel 1: PPO / HMO -->
+          <div class="ins-panel active" id="iP1">
+            <p class="ins-instr">Start by selecting your dental insurance type.</p>
+            <div class="ins-btns">
+              <button class="ins-opt" data-t="PPO" onclick="insPick('PPO')">
+                <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+                  <rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/>
+                  <path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/>
+                  <path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                  <circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/>
+                </svg>
+                <div class="ins-opt-name">PPO</div>
+                <div class="ins-opt-desc">Preferred Provider Organization</div>
+              </button>
+              <button class="ins-opt" data-t="HMO" onclick="insPick('HMO')">
+                <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/>
+                  <path d="M16 9V23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                  <path d="M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                </svg>
+                <div class="ins-opt-name">HMO</div>
+                <div class="ins-opt-desc">Health Maintenance Organization</div>
+              </button>
+            </div>
+          </div>
+ 
+          <!-- Panel 2: Typeahead carrier search -->
+          <div class="ins-panel" id="iP2">
+            <button class="ins-back" onclick="insBack(1)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                <path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Back
+            </button>
+            <p class="ins-instr">Start typing your insurance carrier name.</p>
+ 
+            <!-- Typeahead input -->
+            <div class="ins-ta-wrap">
+              <div class="ins-ta-row">
+                <svg class="ins-ta-ico" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                <input
+                  type="text"
+                  class="ins-ta-input"
+                  id="insTaInput"
+                  placeholder="e.g. Aetna, Blue Shield, MetLife, GEHA…"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-label="Search insurance carrier"
+                  aria-autocomplete="list"
+                  aria-controls="insTaDrop"
+                  oninput="insTaFilter()"
+                  onkeydown="insTaKey(event)"
+                  onfocus="insTaFilter()"
+                />
+                <button class="ins-ta-clear" id="insTaClear" onclick="insTaClearFn()" aria-label="Clear" style="display:none">
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="ins-ta-drop" id="insTaDrop" role="listbox" style="display:none"></div>
+            </div>
+ 
+            <div class="ins-not">
+              Can't find your carrier?
+              <button onclick="insNotListed()">Continue anyway</button>
+            </div>
+            <button class="ins-go" id="insGo" onclick="insCheck()" disabled>
+              Check My Coverage
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+ 
+          <!-- Panel 3: Results -->
+          <div class="ins-panel" id="iP3">
+            <button class="ins-back" onclick="insBack(2)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                <path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Check Another Plan
+            </button>
+ 
+            <!-- In-network result -->
+            <div class="ins-res res-pos" id="iRIn">
+              <div class="res-badge bg-g">
+                <svg width="12" height="12" viewBox="0 0 13 13" fill="none">
+                  <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                In Network
+              </div>
+              <div class="res-hl">Great News — You're Covered!</div>
+              <p class="res-msg">We are <strong>in-network with your PPO plan</strong>, which means you'll pay the lowest possible out-of-pocket costs at our office. Our team will confirm your exact benefits before your appointment — no surprises.</p>
+              <div class="res-ctas">
+                <a href="#" class="rc-p" onclick="doBook(event)">
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  Schedule Your Appointment
+                </a>
+                <a href="tel:+18187066077" class="rc-s">
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                  Call to Verify Benefits
+                </a>
+              </div>
+            </div>
+ 
+            <!-- Out-of-network / possible benefits result -->
+            <div class="ins-res res-neu" id="iROut">
+              <div class="res-badge bg-b">
+                <svg width="12" height="12" viewBox="0 0 13 13" fill="none">
+                  <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="6.5" cy="9.5" r=".65" fill="currentColor"/>
+                </svg>
+                Let's Take a Look
+              </div>
+              <div class="res-hl">We Can Still Help You!</div>
+              <p class="res-msg">We may not have a direct contract with this specific plan, but <strong>you may still have out-of-network PPO benefits</strong> that cover care in our office. Many patients are surprised how much their plan covers. Our team will verify your benefits at no cost — before your visit.</p>
+              <div class="res-ctas">
+                <a href="tel:+18187066077" class="rc-p">
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                  Call Us — We'll Check Your Benefits
+                </a>
+                <a href="#" class="rc-s" onclick="doBook(event)">
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  Request an Appointment
+                </a>
+              </div>
+            </div>
+ 
+            <!-- HMO result -->
+            <div class="ins-res res-warm" id="iRHmo">
+              <div class="res-hl">We'd Love to See You!</div>
+              <p class="res-msg">HMO plans typically require a primary care dentist within their network, but many patients with HMO coverage still choose to see us. Our team will <strong>personally review your benefits</strong> and walk you through all of your options at no cost.</p>
+              <div class="res-ctas">
+                <a href="tel:+18187066077" class="rc-p">
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                  Call Us — We'll Figure It Out
+                </a>
+                <a href="#" class="rc-s" onclick="doBook(event)">
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  Request an Appointment
+                </a>
+              </div>
+            </div>
+ 
+            <div class="ins-trust" id="iTrust">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L10 5.5H14.5L11 8.5L12.5 13L8 10.5L3.5 13L5 8.5L1.5 5.5H6L8 1.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              Many patients are surprised to learn they can still use their benefits here. Our team checks for you — at no cost, before your visit.
+            </div>
+          </div>
+ 
+        </div><!-- end .ins-card -->
+      </div><!-- end .ins-right -->
+ 
+    </div><!-- end .ins-layout -->
+ 
+    <!-- Banner -->
+    <div class="ins-banner reveal">
+      <p>We accept COBRA, Medicare Advantage, TRICARE, and most PPO plans. Not sure? Our team verifies benefits every day.</p>
+      <a href="tel:+18187066077" class="ins-bann-btn">
+        <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
+          <path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+        </svg>
+        Speak With Our Team
+      </a>
+    </div>
+    <p class="ins-disc">No PHI Required · Private &amp; Secure · 100% Client-Side · Results are a general guide — always verify with your carrier.</p>
+ 
+  </div>
+</section>
+ 
+<!-- ═══ TYPEAHEAD STYLES (add to your site CSS or <style> block) ═══ -->
+<style>
+/* Typeahead input row */
+.ins-ta-wrap { position: relative; margin-bottom: 10px; }
+.ins-ta-row { position: relative; display: flex; align-items: center; }
+.ins-ta-ico { position: absolute; left: 13px; color: #94a3b8; pointer-events: none; flex-shrink: 0; }
+.ins-ta-input {
+  width: 100%;
+  padding: 13px 40px 13px 38px;
+  background: #fff;
+  border: 1.5px solid #e2eaf2;
+  border-radius: 12px;
+  color: #334155;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.ins-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4A9FD4,#2dd4bf)}
-.ins-steps{display:flex;align-items:center;justify-content:center;margin-bottom:32px}
-.ins-step{display:flex;flex-direction:column;align-items:center;gap:5px}
-.ins-dot{width:32px;height:32px;border-radius:50%;border:1.5px solid #cbd5e1;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .22s}
-.ins-dot span{font-size:12px;font-weight:600;color:#94a3b8;transition:all .22s}
-.ins-step.active .ins-dot{background:#4A9FD4;border-color:#4A9FD4;box-shadow:0 0 12px rgba(74,159,212,.35)}
-.ins-step.active .ins-dot span{color:#fff}
-.ins-step.done .ins-dot{background:#eef6fc;border-color:#4A9FD4}
-.ins-step.done .ins-dot span{color:#4A9FD4}
-.ins-lbl{font-size:10px;font-weight:500;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-.ins-step.active .ins-lbl{color:#2b7db5}
-.ins-step.done .ins-lbl{color:#4A9FD4}
-.ins-line{flex:1;height:1px;background:rgba(29,62,92,.10);margin:0 10px;margin-bottom:20px;min-width:44px}
-.ins-panel{display:none}
-.ins-panel.active{display:block;animation:pIn .26s ease}
-@keyframes pIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.ins-instr{font-size:14px;color:var(--slate);margin-bottom:20px}
-.ins-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.ins-opt{
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  padding:26px 14px 20px;background:#f8fafc;
-  border:1.5px solid rgba(29,62,92,.10);border-radius:14px;
-  cursor:pointer;transition:all .22s;color:var(--slate);text-align:center;
+.ins-ta-input::placeholder { color: #94a3b8; }
+.ins-ta-input:focus { border-color: #4A9FD4; box-shadow: 0 0 0 3px rgba(74,159,212,0.12); }
+.ins-ta-input.has-val { border-color: #4A9FD4; }
+.ins-ta-clear {
+  position: absolute; right: 12px;
+  background: none; border: none; cursor: pointer;
+  color: #94a3b8; padding: 3px; line-height: 1;
+  transition: color 0.2s;
 }
-.ins-opt:hover,.ins-opt.sel{border-color:#4A9FD4;background:#eef6fc}
-.ins-opt-name{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;color:var(--graphite)}
-.ins-opt-desc{font-size:11px;color:#94a3b8}
-.ins-opt-chk{position:absolute;top:10px;right:10px;color:#4A9FD4;opacity:0;transition:opacity .2s}
-.ins-opt.sel .ins-opt-chk{opacity:1}
-.ins-back{display:inline-flex;align-items:center;gap:4px;background:none;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:0;margin-bottom:18px;transition:color .2s}
-.ins-back:hover{color:#4A9FD4}
-.ins-sel-wr{position:relative;margin-bottom:8px}
-.ins-sel{width:100%;padding:13px 42px 13px 14px;background:#fff;border:1.5px solid rgba(29,62,92,.12);border-radius:10px;color:var(--graphite);font-size:14px;appearance:none;outline:none;transition:border-color .2s}
-.ins-sel:focus{border-color:#4A9FD4}
-.ins-arr{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
-.ins-not{font-size:12px;color:#94a3b8;margin-bottom:18px}
-.ins-not button{background:none;border:none;color:#4A9FD4;font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
-.ins-go{
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:14px;background:#4A9FD4;color:#fff;
-  border:none;border-radius:10px;font-size:14px;font-weight:600;
-  cursor:pointer;transition:all .22s;box-shadow:0 4px 14px rgba(74,159,212,.28);
+.ins-ta-clear:hover { color: #475569; }
+ 
+/* Dropdown */
+.ins-ta-drop {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+  background: #fff;
+  border: 1.5px solid #c2dff0;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(15,23,42,0.13), 0 2px 8px rgba(15,23,42,0.06);
+  z-index: 9999;
+  max-height: 260px;
+  overflow-y: auto;
 }
-.ins-go:hover:not(:disabled){background:#3a8fc4;transform:translateY(-1px)}
-.ins-go:disabled{opacity:.35;cursor:not-allowed}
-.ins-res{display:none;border-radius:12px;padding:22px;margin-bottom:14px;border:1px solid transparent;opacity:0;transform:translateY(8px);transition:opacity .32s,transform .32s}
-.ins-res.show{opacity:1;transform:none}
-.res-pos{background:#f0fdf4;border-color:#bbf7d0}
-.res-neu{background:#eff8ff;border-color:#bfdbee}
-.res-warm{background:#fffbeb;border-color:#fde68a}
-.res-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:100px;padding:4px 10px;margin-bottom:10px}
-.bg-g{background:#dcfce7;color:#15803d}
-.bg-b{background:#dbeafe;color:#1d6fa4}
-.res-hl{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:7px}
-.res-msg{font-size:13.5px;color:var(--slate);line-height:1.7;margin-bottom:18px}
-.res-msg strong{color:var(--graphite)}
-.res-ctas{display:flex;flex-direction:column;gap:9px}
-.rc-p,.rc-s{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 18px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer;transition:all .2s}
-.rc-p{background:#4A9FD4;color:#fff;box-shadow:0 3px 10px rgba(74,159,212,.26)}
-.rc-p:hover{background:#3a8fc4;transform:translateY(-1px)}
-.rc-s{background:#fff;color:#2b7db5;border:1.5px solid #bfdbee}
-.rc-s:hover{background:#eef6fc}
-.ins-trust{display:none;align-items:flex-start;gap:9px;padding:12px 14px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:9px;font-size:12.5px;font-style:italic;color:var(--slate);line-height:1.6;margin-top:4px}
-.ins-trust.vis{display:flex}
-.ins-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 24px;background:#eef6fc;border:1px solid #bfdbee;border-radius:12px;margin-bottom:16px;flex-wrap:wrap}
-.ins-banner p{font-size:13.5px;color:var(--slate);flex:1;min-width:160px}
-.ins-bann-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#4A9FD4;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background .2s}
-.ins-bann-btn:hover{background:#3a8fc4}
-.ins-disc{font-size:11px;color:#94a3b8;text-align:center;line-height:1.6}
+.ins-ta-drop::-webkit-scrollbar { width: 5px; }
+.ins-ta-drop::-webkit-scrollbar-track { background: #f8fafc; }
+.ins-ta-drop::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+.ins-ta-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.13s;
+  gap: 10px;
+}
+.ins-ta-item:last-child { border-bottom: none; }
+.ins-ta-item:hover, .ins-ta-item.ta-focus { background: #eef6fc; }
+.ins-ta-item mark { background: none; color: #2b7db5; font-weight: 700; }
+.ins-ta-item-name { flex: 1; }
+.ins-ta-pill {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 100px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.pill-in  { background: #dcfce7; color: #15803d; }
+.pill-out { background: #fef9c3; color: #92400e; }
+.ins-ta-empty {
+  padding: 18px 14px; font-size: 0.875rem;
+  color: #94a3b8; text-align: center; font-style: italic;
+}
+ 
+/* Result secondary CTA */
+.rc-s {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 12px 18px; border-radius: 10px;
+  font-size: 0.875rem; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+  background: #fff; color: #2b7db5; border: 1.5px solid #bfdbee;
+  margin-top: 8px;
+}
+.rc-s:hover { background: #eef6fc; border-color: #4A9FD4; }
+.ins-trust {
+  display: none; align-items: flex-start; gap: 8px;
+  padding: 13px 15px; background: #f0f9ff;
+  border: 1px solid #bae6fd; border-radius: 10px;
+  font-size: 0.8rem; font-style: italic; color: #475569;
+  line-height: 1.6; margin-top: 4px;
+}
+.ins-trust svg { flex-shrink: 0; margin-top: 2px; color: #4A9FD4; }
+.ins-trust.vis { display: flex; }
+</style>
+ 
+<!-- ═══ INSURANCE LOGIC ═══ -->
+<script>
+(function () {
+  "use strict";
+ 
+  /* ── BOOKING / VERIFY LINKS — update these ── */
+  var BOOK_URL   = "https://bookit.dentrixascend.com/soe/new/dental?pid=ASC64000000019461&amp;mode=externalLink";   /* your Dentrix Ascend / booking modal trigger */
+  var VERIFY_URL = "#contact";
+ 
+  /* ═══════════════════════════════════════════════════════════
+     CARRIER DATABASE
+     Sources: Careington TPA Payor List (Aug 2024) +
+              GEHA Connection Dental Network Payor List (Jul 2025) +
+              Practice-confirmed direct contracts
+ 
+     status: "in"  = In-Network (we have a direct or network contract)
+     status: "out" = Not directly contracted but out-of-network PPO benefits
+                     typically apply — we still welcome these patients
+ 
+     NOTE: COBRA is not a carrier — it's continuation coverage.
+           The underlying plan (Aetna, Cigna, etc.) determines network.
+           We flag COBRA as "in" so patients know we accept it.
+  ═══════════════════════════════════════════════════════════ */
+  var CARRIERS = [
+    /* ── A ── */
+    { name: "AARP Medicare Complete (UHC)",         status: "in"  },
+    { name: "Aetna Commercial PPO",                 status: "in"  },
+    { name: "Aetna DVH",                            status: "in"  },
+    { name: "Aetna Maximum Care",                   status: "in"  },
+    { name: "Aetna Medicare Advantage",             status: "in"  },
+    { name: "Aetna PPO",                            status: "in"  },
+    { name: "Aegis Dental",                         status: "in"  },
+    { name: "Alignment Health (Care PPO)",          status: "in"  },
+    { name: "AlwaysCare Benefits",                  status: "in"  },
+    { name: "Alterwood Medicare Advantage",         status: "in"  },
+    { name: "AmeriBen Solutions",                   status: "in"  },
+    { name: "Ameritas Life Insurance",              status: "in"  },
+    { name: "Ameritas Dental Select",               status: "in"  },
+    { name: "Anthem Blue Cross",                    status: "in"  },
+    { name: "Anthem Blue Cross Blue Shield",        status: "in"  },
+    { name: "Anthem Blue Cross PPO",                status: "in"  },
+    { name: "Anthem BCBS Freedom",                  status: "in"  },
+ 
+    /* ── B ── */
+    { name: "Beam Dental",                          status: "in"  },
+    { name: "Best Life and Health Insurance",       status: "in"  },
+    { name: "BEST Health Plans",                    status: "in"  },
+    { name: "Blackhawk (Precise / Virtue / Luminous)", status: "in" },
+    { name: "Blue Cross Blue Shield (all plans)",   status: "in"  },
+    { name: "Blue Cross Blue Shield of Michigan",   status: "in"  },
+    { name: "Blue Cross Blue Shield Federal (FEDVIP)", status: "in" },
+    { name: "Blue Shield of California",            status: "in"  },
+    { name: "Blue Shield CA PPO",                   status: "in"  },
+    { name: "Bright Benefits",                      status: "in"  },
+ 
+    /* ── C ── */
+    { name: "Capital BlueCross",                    status: "in"  },
+    { name: "CareFirst BCBS (Care PPO)",            status: "in"  },
+    { name: "Careington Care PPO",                  status: "in"  },
+    { name: "Careington Discount Plan",             status: "in"  },
+    { name: "Careington International",             status: "in"  },
+    { name: "Century Healthcare",                   status: "in"  },
+    { name: "Chesapeake Life Insurance (Health Markets)", status: "in" },
+    { name: "CHUBB",                                status: "in"  },
+    { name: "Cigna DPPO",                           status: "in"  },
+    { name: "Cigna DVH",                            status: "in"  },
+    { name: "Cigna PPO",                            status: "in"  },
+    { name: "Citizens Security Life",               status: "in"  },
+    { name: "COBRA (Aetna)",                        status: "in"  },
+    { name: "COBRA (Anthem)",                       status: "in"  },
+    { name: "COBRA (Blue Shield)",                  status: "in"  },
+    { name: "COBRA (Cigna)",                        status: "in"  },
+    { name: "COBRA (MetLife)",                      status: "in"  },
+    { name: "COBRA (UHC / UnitedHealthcare)",       status: "in"  },
+    { name: "COBRA — Most PPO Plans",               status: "in"  },
+    { name: "Colonial Life",                        status: "in"  },
+    { name: "Companion Life",                       status: "in"  },
+    { name: "Connection Dental (GEHA)",             status: "in"  },
+    { name: "Connection Dental Federal",            status: "in"  },
+    { name: "Connection Dental Plus",               status: "in"  },
+    { name: "Corporate Benefit Services",           status: "in"  },
+    { name: "Cypress – DenteMax Plus",              status: "in"  },
+ 
+    /* ── D ── */
+    { name: "Delta Dental PPO",                     status: "in"  },
+    { name: "Delta Dental Premier",                 status: "in"  },
+    { name: "Delta Dental of California",           status: "in"  },
+    { name: "Delta Dental (all states)",            status: "in"  },
+    { name: "Delta Health Systems",                 status: "in"  },
+    { name: "Dental Care Plus Group – DenteMax",    status: "in"  },
+    { name: "DentaQuest",                           status: "in"  },
+    { name: "DenteMax",                             status: "in"  },
+    { name: "DenteMax Plus",                        status: "in"  },
+    { name: "DNOA – Blue Cross Blue Shield TX/IL/NM/OK/MT", status: "in" },
+    { name: "DNOA – Dearborn National",             status: "in"  },
+    { name: "Dominion National",                    status: "in"  },
+    { name: "DocsHealth (Reservists, Care PPO)",    status: "in"  },
+ 
+    /* ── E ── */
+    { name: "Electrical Components International",  status: "in"  },
+    { name: "Emblem Health / GHI",                  status: "in"  },
+    { name: "EMI Health (Care PPO)",                status: "in"  },
+    { name: "Employee Painters Trust H&W",          status: "in"  },
+    { name: "Encore Dental / Stonebridge Life",     status: "in"  },
+    { name: "Equitable",                            status: "in"  },
+ 
+    /* ── F ── */
+    { name: "FCE Benefit Administrators",           status: "in"  },
+    { name: "FEHB (Federal Employee Health Benefits)", status: "in" },
+    { name: "FEDVIP Dental",                        status: "in"  },
+    { name: "Fidelio Dental Insurance",             status: "in"  },
+    { name: "First Continental Life",               status: "in"  },
+    { name: "First Dental Health",                  status: "in"  },
+    { name: "First Priority Life Insurance",        status: "in"  },
+    { name: "First Reliance Standard Life",         status: "in"  },
+    { name: "Foundation for Medical Care (HealthEdge)", status: "in" },
+    { name: "Free Market Administrators",           status: "in"  },
+    { name: "Freedom Life Insurance",               status: "in"  },
+ 
+    /* ── G ── */
+    { name: "GEHA",                                 status: "in"  },
+    { name: "GEHA Connection Dental",               status: "in"  },
+    { name: "GEHA Connection Dental Federal",       status: "in"  },
+    { name: "GEHA Federal FEHB",                    status: "in"  },
+    { name: "Group Administrators",                 status: "in"  },
+    { name: "Guardian Dental",                      status: "in"  },
+    { name: "Guardian Life Insurance",              status: "in"  },
+ 
+    /* ── H ── */
+    { name: "Harrington / Colonial Life",           status: "in"  },
+    { name: "Health Resources / Dental Health Options (Care PPO)", status: "in" },
+    { name: "Healthgram",                           status: "in"  },
+    { name: "Healthplex",                           status: "in"  },
+    { name: "Healthscope",                          status: "in"  },
+    { name: "HealthNet PPO",                        status: "in"  },
+    { name: "Highmark",                             status: "in"  },
+    { name: "Highmark Blue Shield",                 status: "in"  },
+    { name: "HRI Dental & Vision",                  status: "in"  },
+    { name: "Humana PPO",                           status: "in"  },
+    { name: "Humana Dental PPO",                    status: "in"  },
+    { name: "Humana One",                           status: "in"  },
+    { name: "Humana Federal Advantage FEDVIP",      status: "in"  },
+    { name: "Humana Medicare Advantage",            status: "in"  },
+ 
+    /* ── I ── */
+    { name: "Imperial",                             status: "in"  },
+    { name: "Independence Blue Cross",              status: "in"  },
+ 
+    /* ── K ── */
+    { name: "Kaiser (Connection Dental network)",   status: "in"  },
+    { name: "Key Benefit Administrators",           status: "in"  },
+ 
+    /* ── L ── */
+    { name: "LifeMap",                              status: "in"  },
+    { name: "LifeShield",                           status: "in"  },
+    { name: "Lincoln Financial",                    status: "in"  },
+    { name: "Local 786 Building Material Welfare Fund", status: "in" },
+ 
+    /* ── M ── */
+    { name: "Management Benefit Fund (ASO)",        status: "in"  },
+    { name: "Manhattan Life",                       status: "in"  },
+    { name: "Medical Mutual",                       status: "in"  },
+    { name: "Merchants Benefit Administration",     status: "in"  },
+    { name: "MetLife PPO",                          status: "in"  },
+    { name: "MetLife PDP Plus",                     status: "in"  },
+    { name: "MetLife Federal / FED VIP",            status: "in"  },
+    { name: "Mid-West National Life of Tennessee",  status: "in"  },
+    { name: "Morgan White / Standard Life",         status: "in"  },
+    { name: "Multiflex Dental – MBA",               status: "in"  },
+    { name: "Mutual of Omaha",                      status: "in"  },
+    { name: "My WellSpent (Care PPO)",              status: "in"  },
+ 
+    /* ── N ── */
+    { name: "National Care Dental – MBA",           status: "in"  },
+    { name: "National Foundation Life (Care PPO)",  status: "in"  },
+    { name: "National General Accident & Health",   status: "in"  },
+    { name: "National Rural Electric (NRECA)",      status: "in"  },
+    { name: "Nationwide Insurance",                 status: "in"  },
+    { name: "NetCare (Care PPO)",                   status: "in"  },
+    { name: "New Era Life – Philadelphia American", status: "in"  },
+    { name: "Nippon Life",                          status: "in"  },
+    { name: "NovaNet",                              status: "in"  },
+ 
+    /* ── P ── */
+    { name: "Pacific Life",                         status: "in"  },
+    { name: "Peoples Benefit Life Insurance",       status: "in"  },
+    { name: "Personify Health (formerly Health Comp)", status: "in" },
+    { name: "Physicians Mutual",                    status: "in"  },
+    { name: "Point C (formerly Mid America Benefits)", status: "in" },
+    { name: "Preferred Health Professionals",       status: "in"  },
+    { name: "Preferred Insurance Specialist",       status: "in"  },
+    { name: "Principal Financial Group",            status: "in"  },
+    { name: "Principal Dental",                     status: "in"  },
+    { name: "Printing Specialties / Northwest",     status: "in"  },
+ 
+    /* ── R ── */
+    { name: "Reliance Standard Life",               status: "in"  },
+    { name: "Renaissance Dental",                   status: "in"  },
+    { name: "Roofers Union Welfare Trust Fund",     status: "in"  },
+ 
+    /* ── S ── */
+    { name: "Self Insured Services Co. (SISCO)",    status: "in"  },
+    { name: "Senior Supplemental Insurance (Aetna)", status: "in" },
+    { name: "Shelterpoint / Pro Benefits Admin",    status: "in"  },
+    { name: "SkyGen",                               status: "in"  },
+    { name: "Solstice Benefits",                    status: "in"  },
+    { name: "Staff Benefits Management & Admin",    status: "in"  },
+    { name: "Standard Insurance Company",           status: "in"  },
+    { name: "StarMount",                            status: "in"  },
+    { name: "Suffolk County Employee Benefit Plan", status: "in"  },
+    { name: "Sun Life Financial",                   status: "in"  },
+    { name: "Superior Dental Care",                 status: "in"  },
+    { name: "SureBridge",                           status: "in"  },
+ 
+    /* ── T ── */
+    { name: "Trans America",                        status: "in"  },
+    { name: "TransWestern Insurance Administrators", status: "in" },
+    { name: "TRICARE",                              status: "in"  },
+    { name: "TRICARE Dental Program",               status: "in"  },
+    { name: "TRICARE Retiree",                      status: "in"  },
+    { name: "TriStar Benefit Administrators",       status: "in"  },
+    { name: "TruAssure",                            status: "in"  },
+    { name: "Tuckpointers Local 52",                status: "in"  },
+    { name: "Tufts Health Plan",                    status: "in"  },
+ 
+    /* ── U ── */
+    { name: "UHC (UnitedHealthcare) Commercial",    status: "in"  },
+    { name: "UHC (UnitedHealthcare) Medicare",      status: "in"  },
+    { name: "UHC Optum Dental",                     status: "in"  },
+    { name: "UMR",                                  status: "in"  },
+    { name: "Unimerica Dental",                     status: "in"  },
+    { name: "United Concordia",                     status: "in"  },
+    { name: "United Concordia TRICARE",             status: "in"  },
+    { name: "United Concordia Care PPO",            status: "in"  },
+    { name: "United Medical Resources (UMR)",       status: "in"  },
+    { name: "UnitedHealthcare PPO",                 status: "in"  },
+    { name: "UnitedHealthcare GEHA Group Medicare", status: "in"  },
+    { name: "Unum",                                 status: "in"  },
+ 
+    /* ── V / W / Z ── */
+    { name: "Varipro",                              status: "in"  },
+    { name: "Vault Health Captive",                 status: "in"  },
+    { name: "Zelis – Cigna",                        status: "in"  },
+    { name: "90 Degree Benefits",                   status: "in"  },
+ 
+    /* ── Carriers we don't directly participate with
+          but patients may still have out-of-network benefits ── */
+    { name: "DeltaCare USA (HMO)",                  status: "out" },
+    { name: "Cigna HMO",                            status: "out" },
+    { name: "MetLife HMO",                          status: "out" },
+    { name: "UnitedHealthcare HMO",                 status: "out" },
+    { name: "Delta Dental HMO / Capitation",        status: "out" },
+    { name: "Other HMO Plan",                       status: "out" }
+  ].sort(function(a,b){ return a.name.localeCompare(b.name); });
+ 
+  /* ── STATE ── */
+  var selType    = null;
+  var selCarrier = null;  /* { name, status } */
+  var focusIdx   = -1;
+ 
+  /* ── STEP NAVIGATION ── */
+  function goStep(n) {
+    document.querySelectorAll(".ins-panel").forEach(function(p, i){
+      p.classList.toggle("active", i + 1 === n);
+    });
+    document.querySelectorAll(".ins-step").forEach(function(d){
+      var s = parseInt(d.dataset.s, 10);
+      d.classList.toggle("active",    s === n);
+      d.classList.toggle("completed", s < n);
+    });
+    var sec = document.getElementById("ins");
+    if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+ 
+  /* ── PLAN TYPE PICK ── */
+  window.insPick = function(type) {
+    selType    = type;
+    selCarrier = null;
+    document.querySelectorAll(".ins-opt").forEach(function(b){
+      b.classList.toggle("active", b.dataset.t === type);
+    });
+ 
+    if (type === "HMO") {
+      selCarrier = { name: "HMO", status: "hmo" };
+      setTimeout(function(){
+        goStep(3);
+        showResult("hmo");
+      }, 200);
+      return;
+    }
+ 
+    /* PPO → reset typeahead and go to step 2 */
+    var inp = document.getElementById("insTaInput");
+    if (inp) { inp.value = ""; inp.classList.remove("has-val"); }
+    var clear = document.getElementById("insTaClear");
+    if (clear) clear.style.display = "none";
+    var drop = document.getElementById("insTaDrop");
+    if (drop) drop.style.display = "none";
+    document.getElementById("insGo").disabled = true;
+    focusIdx = -1;
+    selCarrier = null;
+    setTimeout(function(){ goStep(2); }, 200);
+  };
+ 
+  /* ── TYPEAHEAD FILTER ── */
+  window.insTaFilter = function() {
+    var inp  = document.getElementById("insTaInput");
+    var drop = document.getElementById("insTaDrop");
+    var clear = document.getElementById("insTaClear");
+    var q = inp.value.trim();
+ 
+    inp.classList.toggle("has-val", q.length > 0);
+    clear.style.display = q.length > 0 ? "flex" : "none";
+ 
+    if (!q) {
+      /* Show first 12 carriers as hints when field is focused but empty */
+      renderDropdown(CARRIERS.slice(0, 12), "");
+      drop.style.display = "block";
+      return;
+    }
+ 
+    var ql = q.toLowerCase();
+    var matches = CARRIERS.filter(function(c){
+      return c.name.toLowerCase().indexOf(ql) !== -1;
+    }).slice(0, 20);
+ 
+    renderDropdown(matches, q);
+    drop.style.display = "block";
+    focusIdx = -1;
+  };
+ 
+  function renderDropdown(items, q) {
+    var drop = document.getElementById("insTaDrop");
+    if (!items.length) {
+      drop.innerHTML = '<div class="ins-ta-empty">No carriers found — try a shorter search or use "Continue anyway" below.</div>';
+      return;
+    }
+    drop.innerHTML = items.map(function(c, i){
+      var label = q ? highlight(c.name, q) : c.name;
+      var pill  = c.status === "in"
+        ? '<span class="ins-ta-pill pill-in">In Network</span>'
+        : '<span class="ins-ta-pill pill-out">Out of Network</span>';
+      return '<div class="ins-ta-item" role="option" data-idx="' + i + '" onclick="insTaSelect(' + i + ',' + JSON.stringify(c.name) + ',' + JSON.stringify(c.status) + ')">'
+        + '<span class="ins-ta-item-name">' + label + '</span>' + pill + '</div>';
+    }).join("");
+  }
+ 
+  function highlight(text, q) {
+    var idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return text;
+    return text.slice(0, idx)
+      + '<mark>' + text.slice(idx, idx + q.length) + '</mark>'
+      + text.slice(idx + q.length);
+  }
+ 
+  /* ── TYPEAHEAD SELECT ── */
+  window.insTaSelect = function(idx, name, status) {
+    selCarrier = { name: name, status: status };
+    var inp = document.getElementById("insTaInput");
+    inp.value = name;
+    inp.classList.add("has-val");
+    document.getElementById("insTaClear").style.display = "flex";
+    document.getElementById("insTaDrop").style.display = "none";
+    document.getElementById("insGo").disabled = false;
+    focusIdx = -1;
+  };
+ 
+  /* ── KEYBOARD NAVIGATION ── */
+  window.insTaKey = function(e) {
+    var drop = document.getElementById("insTaDrop");
+    var items = drop.querySelectorAll(".ins-ta-item");
+    if (!items.length || drop.style.display === "none") return;
+ 
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      focusIdx = Math.min(focusIdx + 1, items.length - 1);
+      updateFocus(items);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      focusIdx = Math.max(focusIdx - 1, 0);
+      updateFocus(items);
+    } else if (e.key === "Enter" && focusIdx >= 0) {
+      e.preventDefault();
+      items[focusIdx].click();
+    } else if (e.key === "Escape") {
+      drop.style.display = "none";
+    }
+  };
+ 
+  function updateFocus(items) {
+    items.forEach(function(it, i){ it.classList.toggle("ta-focus", i === focusIdx); });
+    if (focusIdx >= 0) items[focusIdx].scrollIntoView({ block: "nearest" });
+  }
+ 
+  /* ── CLEAR BUTTON ── */
+  window.insTaClearFn = function() {
+    var inp = document.getElementById("insTaInput");
+    inp.value = ""; inp.classList.remove("has-val");
+    document.getElementById("insTaClear").style.display = "none";
+    document.getElementById("insTaDrop").style.display = "none";
+    document.getElementById("insGo").disabled = true;
+    selCarrier = null;
+    inp.focus();
+  };
+ 
+  /* ── NOT LISTED ── */
+  window.insNotListed = function() {
+    selCarrier = { name: "Unknown / Not Listed", status: "out" };
+    insCheck();
+  };
+ 
+  /* ── CHECK COVERAGE ── */
+  window.insCheck = function() {
+    if (!selCarrier) return;
+    goStep(3);
+    var s = selCarrier.status;
+    showResult(s === "hmo" ? "hmo" : (s === "in" ? "in" : "out"));
+  };
+ 
+  function showResult(type) {
+    ["iRIn","iROut","iRHmo"].forEach(function(id){
+      var el = document.getElementById(id);
+      el.style.display = "none";
+      el.classList.remove("res-show");
+    });
+    var id = type === "in" ? "iRIn" : type === "out" ? "iROut" : "iRHmo";
+    var card = document.getElementById(id);
+    card.style.display = "block";
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ card.classList.add("res-show"); }); });
+    var trust = document.getElementById("iTrust");
+    if (trust) trust.classList.add("vis");
+  }
+ 
+  /* ── BACK ── */
+  window.insBack = function(toStep) {
+    if (selType === "HMO" && toStep === 2) toStep = 1;
+    if (toStep === 1) {
+      selType = null; selCarrier = null;
+      document.querySelectorAll(".ins-opt").forEach(function(b){ b.classList.remove("active"); });
+      var trust = document.getElementById("iTrust");
+      if (trust) trust.classList.remove("vis");
+    }
+    if (toStep === 2) {
+      selCarrier = null;
+      document.getElementById("insGo").disabled = true;
+    }
+    goStep(toStep);
+  };
+ 
+  /* ── BOOKING SHORTCUT ── */
+  window.doBook = function(e) {
+    e.preventDefault();
+    var t = document.getElementById("booking") || document.getElementById("book") || document.querySelector("[data-booking]");
+    if (t) { t.scrollIntoView({ behavior: "smooth" }); }
+    else { window.location.href = BOOK_URL; }
+  };
+ 
+  /* ── CLOSE DROPDOWN ON OUTSIDE CLICK ── */
+  document.addEventListener("click", function(e) {
+    var wrap = document.querySelector(".ins-ta-wrap");
+    if (wrap && !wrap.contains(e.target)) {
+      var drop = document.getElementById("insTaDrop");
+      if (drop) drop.style.display = "none";
+    }
+  });
+ 
+})();
+</script>
 
 /* ═══════════════════════
    LOCATION
