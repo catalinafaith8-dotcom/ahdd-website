@@ -1188,63 +1188,560 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 </section>
 
 <!-- ═══════ INSURANCE ═══════ -->
-<section id="ins">
-  <div class="wrap">
-    <div class="ins-layout reveal">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Check Your Dental Insurance — Agoura Hills Dental Designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; -webkit-font-smoothing: antialiased; }
 
-      <!-- LEFT: title, sub, badge -->
-      <div class="ins-left">
-        <span class="ins-ey">Insurance &amp; Coverage</span>
-        <h2 class="ins-h2">Check Your Insurance <em>in Seconds</em></h2>
-        <p class="ins-sub">We accept most PPO plans through our Careington and Connection Dental networks — covering hundreds of carriers nationwide.</p>
+.ins-section { background: #f8fafc; padding: 80px 0 64px; border-top: 1px solid #e8eef4; }
+.ins-inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+.ins-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; margin-bottom: 48px; flex-wrap: wrap; }
+.ins-eyebrow { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #2b7db5; margin-bottom: 10px; }
+.ins-heading { font-family: 'Outfit', sans-serif; font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 700; color: #0f172a; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 14px; }
+.ins-heading em { font-style: italic; font-weight: 300; color: #475569; }
+.ins-subhead { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: #64748b; line-height: 1.7; max-width: 420px; }
+
+.ins-header-badge { background: #eef6fc; border: 1px solid #c2dff0; border-radius: 14px; padding: 18px 24px; text-align: center; flex-shrink: 0; align-self: flex-start; }
+.ins-badge-label { font-family: 'Outfit', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #2b7db5; margin-bottom: 6px; }
+.ins-badge-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.82rem; color: #475569; line-height: 1.5; }
+
+.ins-card { background: #ffffff; border: 1px solid #e2eaf2; border-radius: 20px; padding: 40px; margin-bottom: 24px; position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(15,23,42,0.07), 0 1px 4px rgba(15,23,42,0.04); }
+.ins-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #4A9FD4 0%, #2dd4bf 100%); }
+
+.ins-steps { display: flex; align-items: center; justify-content: center; margin-bottom: 36px; }
+.ins-step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ins-step-dot { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #cbd5e1; display: flex; align-items: center; justify-content: center; background: #fff; transition: all 0.22s ease; }
+.ins-step-dot span { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; color: #94a3b8; transition: all 0.22s ease; }
+.ins-step.active .ins-step-dot { background: #4A9FD4; border-color: #4A9FD4; box-shadow: 0 0 14px rgba(74,159,212,0.35); }
+.ins-step.active .ins-step-dot span { color: #fff; }
+.ins-step.completed .ins-step-dot { background: #eef6fc; border-color: #4A9FD4; }
+.ins-step.completed .ins-step-dot span { color: #4A9FD4; }
+.ins-step-label { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.62rem; font-weight: 500; color: #94a3b8; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.22s; white-space: nowrap; }
+.ins-step.active .ins-step-label { color: #2b7db5; }
+.ins-step.completed .ins-step-label { color: #4A9FD4; }
+.ins-step-line { flex: 1; height: 1px; background: #e2eaf2; margin: 0 12px; margin-bottom: 22px; min-width: 48px; }
+
+.ins-panel { display: none; animation: insPanelIn 0.28s cubic-bezier(0.4,0,0.2,1); }
+.ins-panel.active { display: block; }
+@keyframes insPanelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.ins-instruction { font-size: 0.9rem; color: #64748b; margin-bottom: 22px; font-weight: 400; }
+
+.ins-plan-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ins-plan-btn { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 16px 22px; background: #f8fafc; border: 1.5px solid #e2eaf2; border-radius: 16px; cursor: pointer; transition: all 0.22s ease; color: #64748b; font-family: 'Outfit', sans-serif; text-align: center; }
+.ins-plan-btn:hover { border-color: #4A9FD4; background: #eef6fc; color: #2b7db5; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(74,159,212,0.13); }
+.ins-plan-btn.selected { border-color: #4A9FD4; background: #eef6fc; color: #2b7db5; box-shadow: 0 4px 20px rgba(74,159,212,0.18); }
+.ins-plan-icon { color: inherit; }
+.ins-plan-name { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em; color: #0f172a; transition: color 0.22s; }
+.ins-plan-btn:hover .ins-plan-name, .ins-plan-btn.selected .ins-plan-name { color: #2b7db5; }
+.ins-plan-desc { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.7rem; color: #94a3b8; line-height: 1.4; }
+.ins-plan-check { position: absolute; top: 12px; right: 12px; color: #4A9FD4; opacity: 0; transition: opacity 0.2s; }
+.ins-plan-btn.selected .ins-plan-check { opacity: 1; }
+
+.ins-back-btn { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: #94a3b8; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; padding: 0; margin-bottom: 22px; transition: color 0.2s; }
+.ins-back-btn:hover { color: #4A9FD4; }
+
+.ins-select-wrap { position: relative; margin-bottom: 10px; }
+.ins-select { width: 100%; padding: 14px 44px 14px 16px; background: #fff; border: 1.5px solid #e2eaf2; border-radius: 12px; color: #334155; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; appearance: none; -webkit-appearance: none; cursor: pointer; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.ins-select:focus { border-color: #4A9FD4; box-shadow: 0 0 0 3px rgba(74,159,212,0.12); }
+.ins-select option { background: #fff; color: #334155; }
+.ins-select-arrow { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+.ins-not-listed { font-size: 0.8rem; color: #94a3b8; margin-bottom: 22px; }
+.ins-link-btn { background: none; border: none; color: #4A9FD4; font-family: inherit; font-size: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; padding: 0; }
+.ins-link-btn:hover { color: #2b7db5; }
+
+.ins-check-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px 24px; background: #4A9FD4; color: #fff; border: none; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.22s ease; box-shadow: 0 4px 16px rgba(74,159,212,0.3); }
+.ins-check-btn:hover:not(:disabled) { background: #3a8fc4; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,159,212,0.4); }
+.ins-check-btn:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+.ins-result { display: none; border-radius: 14px; padding: 24px; margin-bottom: 16px; border: 1px solid transparent; opacity: 0; transform: translateY(10px); transition: opacity 0.35s ease, transform 0.35s ease; }
+.ins-result.ins-result-show { opacity: 1; transform: translateY(0); }
+.ins-result-positive { background: #f0fdf4; border-color: #bbf7d0; }
+.ins-result-neutral { background: #eff8ff; border-color: #bfdbee; }
+.ins-result-warm { background: #fffbeb; border-color: #fde68a; }
+
+.ins-result-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'Outfit', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 100px; padding: 5px 12px; margin-bottom: 12px; }
+.ins-badge-green { background: #dcfce7; color: #15803d; }
+.ins-badge-blue { background: #dbeafe; color: #1d6fa4; }
+.ins-badge-gold { background: #fef9c3; color: #92400e; }
+
+.ins-result-headline { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 700; color: #0f172a; margin-bottom: 8px; letter-spacing: -0.01em; }
+.ins-result-msg { font-size: 0.875rem; color: #475569; line-height: 1.75; margin-bottom: 20px; }
+.ins-result-msg strong { color: #1e293b; }
+
+.ins-cta-group { display: flex; flex-direction: column; gap: 10px; }
+.ins-cta-primary, .ins-cta-secondary { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 20px; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease; cursor: pointer; text-align: center; }
+.ins-cta-primary { background: #4A9FD4; color: #fff; box-shadow: 0 3px 12px rgba(74,159,212,0.28); }
+.ins-cta-primary:hover { background: #3a8fc4; transform: translateY(-1px); box-shadow: 0 5px 16px rgba(74,159,212,0.38); }
+.ins-cta-secondary { background: #fff; color: #2b7db5; border: 1.5px solid #bfdbee; }
+.ins-cta-secondary:hover { background: #eef6fc; border-color: #4A9FD4; color: #1d6fa4; }
+
+.ins-trust { display: none; align-items: flex-start; gap: 10px; padding: 14px 16px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; font-size: 0.8rem; font-style: italic; color: #475569; line-height: 1.6; margin-top: 4px; }
+.ins-trust svg { flex-shrink: 0; margin-top: 2px; }
+.ins-trust.visible { display: flex; }
+
+.ins-banner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 28px; background: #eef6fc; border: 1px solid #bfdbee; border-radius: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+.ins-banner p { font-size: 0.875rem; color: #475569; line-height: 1.5; flex: 1; min-width: 180px; font-weight: 400; }
+.ins-banner-btn { display: inline-flex; align-items: center; gap: 7px; padding: 11px 20px; background: #4A9FD4; color: #fff; border: none; border-radius: 9px; font-family: 'Outfit', sans-serif; font-size: 0.84rem; font-weight: 600; text-decoration: none; cursor: pointer; white-space: nowrap; transition: background 0.2s, transform 0.2s; }
+.ins-banner-btn:hover { background: #3a8fc4; transform: translateY(-1px); }
+
+.ins-disclaimer { font-size: 0.69rem; color: #94a3b8; text-align: center; line-height: 1.6; padding: 0 16px; }
+
+@media (max-width: 640px) {
+  .ins-section { padding: 56px 0 48px; }
+  .ins-inner { padding: 0 20px; }
+  .ins-card { padding: 28px 20px; }
+  .ins-heading { font-size: 1.5rem; }
+  .ins-plan-btns { gap: 12px; }
+  .ins-plan-btn { padding: 20px 10px 16px; }
+  .ins-plan-name { font-size: 1.35rem; }
+  .ins-banner { padding: 16px 18px; }
+  .ins-step-line { min-width: 28px; }
+}
+@media (max-width: 400px) { .ins-plan-btns { grid-template-columns: 1fr; } }
+
+/* ── No Insurance CTA Block — Light Glass ────────────────────────── */
+.ins-no-insurance {
+  position: relative;
+  margin-top: 20px;
+  border-radius: 16px;
+  isolation: isolate;
+}
+
+.ins-no-insurance-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 24px;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(74, 159, 212, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow:
+    0 2px 16px rgba(74, 159, 212, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.95) inset;
+  text-decoration: none;
+  transition: transform 0.24s cubic-bezier(0.4,0,0.2,1), box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.ins-no-insurance-inner:hover {
+  transform: translateY(-2px);
+  border-color: rgba(74, 159, 212, 0.32);
+  box-shadow:
+    0 6px 28px rgba(74, 159, 212, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.95) inset;
+}
+
+.ins-no-ins-text { flex: 1; min-width: 0; }
+
+.ins-no-ins-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #CC5801;
+  margin-bottom: 3px;
+}
+
+.ins-no-ins-headline {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.ins-no-ins-headline em {
+  font-style: italic;
+  font-weight: 400;
+  color: #475569;
+}
+
+/* CTA button — slim copper pill */
+.ins-no-ins-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: linear-gradient(135deg, #CC5801 0%, #e8742a 100%);
+  color: #fff;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 3px 14px rgba(204, 88, 1, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.ins-no-ins-btn svg { transition: transform 0.2s ease; }
+
+.ins-no-insurance-inner:hover .ins-no-ins-btn {
+  filter: brightness(1.06);
+  box-shadow: 0 5px 18px rgba(204, 88, 1, 0.42);
+}
+
+.ins-no-insurance-inner:hover .ins-no-ins-btn svg {
+  transform: translateX(3px);
+}
+
+@media (max-width: 640px) {
+  .ins-no-insurance-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 18px;
+    gap: 14px;
+  }
+  .ins-no-ins-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<section class="ins-section" id="insuranceChecker">
+  <div class="ins-inner">
+
+    <div class="ins-header">
+      <div class="ins-header-left">
+        <div class="ins-eyebrow">Insurance &amp; Coverage</div>
+        <h2 class="ins-heading">Check Your Dental<br><em>Insurance in Seconds</em></h2>
+        <p class="ins-subhead">Select your plan type and carrier below. Our team is always happy to verify your benefits before your visit — no forms, no phone tag.</p>
       </div>
+      <div class="ins-header-badge">
+        <div class="ins-badge-label">No PHI Required</div>
+        <div class="ins-badge-text">Private &amp; Secure<br>100% Client-Side</div>
+      </div>
+    </div>
 
-      <!-- RIGHT: widget card -->
-      <div class="ins-right">
-        <div class="ins-card">
-          <div class="ins-steps" id="insSteps">
-            <div class="ins-step active" data-s="1"><div class="ins-dot"><span>1</span></div><div class="ins-lbl">Plan Type</div></div>
-            <div class="ins-line"></div>
-            <div class="ins-step" data-s="2"><div class="ins-dot"><span>2</span></div><div class="ins-lbl">Your Carrier</div></div>
-            <div class="ins-line"></div>
-            <div class="ins-step" data-s="3"><div class="ins-dot"><span>3</span></div><div class="ins-lbl">Your Results</div></div>
-          </div>
-          <div class="ins-panel active" id="iP1">
-            <p class="ins-instr">Start by selecting your dental insurance type.</p>
-            <div class="ins-btns">
-              <button class="ins-opt" data-t="PPO" onclick="insPick('PPO')">
-                <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/><path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/><path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/></svg>
-                <div class="ins-opt-name">PPO</div>
-                <div class="ins-opt-desc">Preferred Provider Organization</div>
-              </button>
-              <button class="ins-opt" data-t="HMO" onclick="insPick('HMO')">
-                <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/><path d="M16 9V23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-                <div class="ins-opt-name">HMO</div>
-                <div class="ins-opt-desc">Health Maintenance Organization</div>
-              </button>
-            </div>
-          </div>
-          <div class="ins-panel" id="iP2">
-            <button class="ins-back" onclick="insBack(1)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</button>
-            <p class="ins-instr">Select your insurance carrier.</p>
-            <div class="ins-sel-wr">
-              <select class="ins-sel" id="insSel"><option value="">— Select your carrier —</option></select>
-              <div class="ins-arr"><svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M3 5.5L7.5 10L12 5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            </div>
-            <div class="ins-not">Don't see your carrier? <button onclick="insNotListed()">Click here</button></div>
-            <button class="ins-go" id="insGo" onclick="insCheck()" disabled>Check My Coverage <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
-          <div class="ins-panel" id="iP3">
-            <button class="ins-back" onclick="insBack(2)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Check Another Plan</button>
-            <div class="ins-res res-pos" id="iRIn"><div class="res-badge bg-g"><svg width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>In Network</div><div class="res-hl">Great News!</div><p class="res-msg">It looks like we are typically <strong>In Network with this PPO plan.</strong> Our team would be happy to review your coverage and help you maximize your benefits.</p><div class="res-ctas"><a href="#" class="rc-p" onclick="doBook(event)">Schedule Your Appointment</a></div></div>
-            <div class="ins-res res-neu" id="iROut"><div class="res-badge bg-b"><svg width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r=".65" fill="currentColor"/></svg>Let's Take a Look</div><div class="res-hl">Let's Take a Look at Your Benefits</div><p class="res-msg">We may not directly participate with this plan, but many patients still have <strong>out-of-network benefits</strong> they can use. Our team is happy to check your coverage.</p><div class="res-ctas"><a href="#" class="rc-p" onclick="doBook(event)">Schedule an Appointment</a></div></div>
-            <div class="ins-res res-warm" id="iRHmo"><div class="res-hl">We'd Love to See You!</div><p class="res-msg">While we may not participate with your HMO plan, many patients still receive care in our office. Our team will <strong>personally review your benefits</strong> and walk you through your options.</p><div class="res-ctas"><a href="#" class="rc-p" onclick="doBook(event)">Request an Appointment</a></div></div>
-            <div class="ins-trust" id="iTrust">Many patients are surprised to learn they can still use their benefits here. Our team is happy to check for you.</div>
-          </div>
+    <div class="ins-card">
+
+      <div class="ins-steps" id="insSteps">
+        <div class="ins-step active" data-step="1">
+          <div class="ins-step-dot"><span>1</span></div>
+          <div class="ins-step-label">Plan Type</div>
+        </div>
+        <div class="ins-step-line"></div>
+        <div class="ins-step" data-step="2">
+          <div class="ins-step-dot"><span>2</span></div>
+          <div class="ins-step-label">Your Carrier</div>
+        </div>
+        <div class="ins-step-line"></div>
+        <div class="ins-step" data-step="3">
+          <div class="ins-step-dot"><span>3</span></div>
+          <div class="ins-step-label">Your Results</div>
         </div>
       </div>
 
-    </div><!-- end .ins-layout -->
+      <!-- Panel 1 -->
+      <div class="ins-panel active" id="insPanel1">
+        <p class="ins-instruction">Start by selecting your dental insurance type.</p>
+        <div class="ins-plan-btns">
+          <button class="ins-plan-btn" data-type="PPO" onclick="insSelectType('PPO')">
+            <div class="ins-plan-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.75"/>
+                <path d="M3 12H29" stroke="currentColor" stroke-width="1.75"/>
+                <path d="M9 19H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                <path d="M9 23H14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                <circle cx="22" cy="21" r="3.5" stroke="currentColor" stroke-width="1.75"/>
+              </svg>
+            </div>
+            <div class="ins-plan-name">PPO</div>
+            <div class="ins-plan-desc">Preferred Provider Organization</div>
+            <div class="ins-plan-check">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </button>
+          <button class="ins-plan-btn" data-type="HMO" onclick="insSelectType('HMO')">
+            <div class="ins-plan-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.75"/>
+                <path d="M16 9V23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                <path d="M9 16H23" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="ins-plan-name">HMO</div>
+            <div class="ins-plan-desc">Health Maintenance Organization</div>
+            <div class="ins-plan-check">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5.5 9L7.5 11L12.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="ins-panel" id="insPanel2">
+        <button class="ins-back-btn" onclick="insGoBack(1)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <p class="ins-instruction">Now select your insurance carrier from the list below.</p>
+        <div class="ins-select-wrap">
+          <select class="ins-select" id="insCarrierSelect">
+            <option value="">— Select your carrier —</option>
+          </select>
+          <div class="ins-select-arrow">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 5.5L7.5 10L12 5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="ins-not-listed">Don't see your carrier? <button class="ins-link-btn" onclick="insSelectNotListed()">Click here</button></div>
+        <button class="ins-check-btn" id="insCheckBtn" onclick="insCheck()" disabled>
+          Check My Coverage
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="ins-panel" id="insPanel3">
+        <button class="ins-back-btn" onclick="insGoBack(2)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Check Another Plan
+        </button>
+
+        <div class="ins-result ins-result-positive" id="insRes-ppo-in">
+          <div class="ins-result-badge ins-badge-green">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5L5.8 8.3L9.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            In Network
+          </div>
+          <h3 class="ins-result-headline">Great News!</h3>
+          <p class="ins-result-msg">It looks like we are typically <strong>In Network with this PPO plan.</strong> Our team would be happy to review your coverage and help you maximize your benefits before your visit.</p>
+          <div class="ins-cta-group">
+            <a href="#" class="ins-cta-primary ins-link-schedule">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Schedule Your Appointment
+            </a>
+            <a href="#" class="ins-cta-secondary ins-link-verify">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M12 7.5V12.5a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M9 2H13V6M8 8L13 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Have Our Team Verify My Benefits
+            </a>
+          </div>
+        </div>
+
+        <div class="ins-result ins-result-neutral" id="insRes-ppo-out">
+          <div class="ins-result-badge ins-badge-blue">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="9.5" r="0.65" fill="currentColor"/></svg>
+            Let's Take a Look
+          </div>
+          <h3 class="ins-result-headline">Let's Take a Look at Your Benefits</h3>
+          <p class="ins-result-msg">It looks like we may not currently participate directly with this specific plan. However, many patients still have <strong>out-of-network benefits</strong> they can use in our office. Our team would be happy to check your coverage and explain your options.</p>
+          <div class="ins-cta-group">
+            <a href="#" class="ins-cta-primary ins-link-verify">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M12 7.5V12.5a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M9 2H13V6M8 8L13 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Verify My Benefits
+            </a>
+            <a href="#" class="ins-cta-secondary ins-link-schedule">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Schedule an Appointment
+            </a>
+          </div>
+        </div>
+
+        <div class="ins-result ins-result-warm" id="insRes-hmo">
+          <h3 class="ins-result-headline">We'd Love to See You!</h3>
+          <p class="ins-result-msg">While we may not currently participate with your HMO plan, many patients with similar coverage are still able to receive care in our office. Our team will <strong>personally review your benefits</strong> and walk you through your options — so you know exactly what to expect before your visit.</p>
+          <div class="ins-cta-group">
+            <a href="#" class="ins-cta-primary ins-link-schedule">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="2" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 1V3M10.5 1V3M1 6H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Request an Appointment
+            </a>
+            <a href="#" class="ins-cta-secondary ins-link-phone">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              Call Us — We'll Figure It Out
+            </a>
+          </div>
+        </div>
+
+        <div class="ins-trust" id="insTrust">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L10 5.5H14.5L11 8.5L12.5 13L8 10.5L3.5 13L5 8.5L1.5 5.5H6L8 1.5Z" stroke="#4A9FD4" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Many patients are surprised to learn they can still use their benefits in our office. Our team is happy to check for you.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ins-banner">
+      <p>Questions about your insurance? Our team verifies benefits for patients every day.</p>
+      <a href="#" class="ins-banner-btn ins-link-phone">
+        <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M2 2H5.5L7 5.5L5.5 6.5C6.3 8.3 7.7 9.7 9.5 10.5L10.5 9L14 10.5V14C14 14 11 15 7.5 12C4.5 9.5 2 2 2 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Speak With Our Team
+      </a>
+    </div>
+
+    <p class="ins-disclaimer">Insurance participation and coverage can vary by employer group and plan details. Our team is happy to verify your benefits before your visit.</p>
+
+    <!-- ── No Insurance? No Problem. ───────────────────────── -->
+    <div class="ins-no-insurance">
+      <a href="/financing#membership" class="ins-no-insurance-inner">
+        <div class="ins-no-ins-text">
+          <div class="ins-no-ins-eyebrow">No Insurance?&nbsp;&nbsp;No Problem.</div>
+          <div class="ins-no-ins-headline">Explore our in-house membership plan &mdash; <em>starting at $375/year.</em></div>
+        </div>
+        <div class="ins-no-ins-btn">
+          See Membership Plans
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+    <!-- ──────────────────────────────────────────────────────── -->
+
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  /* UPDATE THESE 3 URLS */
+  var SCHEDULE_URL = "#";
+  var VERIFY_URL   = "#";
+  var PHONE_URL    = "tel:+18181234567";
+
+  var PPO_IN_NETWORK = [
+    "Aetna PPO","Anthem Blue Cross Blue Shield","Beam Dental",
+    "Careington Care PPO","Cigna PPO","Cobra PPO","Delta Dental PPO",
+    "Guardian","Humana PPO","Lincoln Financial","MetLife",
+    "Principal","Sun Life Financial","United Concordia","United Healthcare (UHC)"
+  ];
+  var PPO_OTHER = ["Blue Shield of CA","GEHA","HealthNet PPO","Supplemental / Other PPO"];
+  var HMO_CARRIERS = ["Cigna HMO","Delta Dental HMO / Capitation","DeltaCare USA","MetLife HMO","UnitedHealthcare HMO","Other HMO Plan"];
+
+  var selectedType = null;
+  var selectedCarrier = null;
+
+  function applyLinks() {
+    document.querySelectorAll(".ins-link-schedule").forEach(function(el){ el.href = SCHEDULE_URL; });
+    document.querySelectorAll(".ins-link-verify").forEach(function(el){ el.href = VERIFY_URL; });
+    document.querySelectorAll(".ins-link-phone").forEach(function(el){ el.href = PHONE_URL; });
+  }
+
+  window.insSelectType = function(type) {
+    selectedType = type;
+    selectedCarrier = null;
+    document.querySelectorAll(".ins-plan-btn").forEach(function(b){
+      b.classList.toggle("selected", b.dataset.type === type);
+    });
+
+    if (type === "HMO") {
+      // Skip carrier step — go straight to result
+      selectedCarrier = "hmo:direct";
+      setTimeout(function(){
+        goToStep(3);
+        document.querySelectorAll(".ins-result").forEach(function(el){
+          el.style.display = "none";
+          el.classList.remove("ins-result-show");
+        });
+        var card = document.getElementById("insRes-hmo");
+        card.style.display = "block";
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ card.classList.add("ins-result-show"); }); });
+        var trust = document.getElementById("insTrust");
+        if (trust) trust.classList.add("visible");
+      }, 200);
+      return;
+    }
+
+    // PPO — populate carrier dropdown
+    var sel = document.getElementById("insCarrierSelect");
+    sel.innerHTML = '<option value="">— Select your carrier —</option>';
+    var list = PPO_IN_NETWORK.map(function(c){ return {label:c, val:"in:"+c}; })
+      .concat(PPO_OTHER.map(function(c){ return {label:c, val:"out:"+c}; }))
+      .sort(function(a,b){ return a.label.localeCompare(b.label); });
+    list.forEach(function(c){
+      var o = document.createElement("option");
+      o.value = c.val; o.textContent = c.label;
+      sel.appendChild(o);
+    });
+    sel.value = "";
+    document.getElementById("insCheckBtn").disabled = true;
+    setTimeout(function(){ goToStep(2); }, 200);
+  };
+
+  window.insSelectNotListed = function() {
+    selectedCarrier = "out:__not_listed__";
+    insCheck();
+  };
+
+  window.insCheck = function() {
+    if (!selectedCarrier) {
+      var v = document.getElementById("insCarrierSelect").value;
+      if (!v) return;
+      selectedCarrier = v;
+    }
+    goToStep(3);
+    document.querySelectorAll(".ins-result").forEach(function(el){
+      el.style.display = "none";
+      el.classList.remove("ins-result-show");
+    });
+    var id = selectedType === "HMO" ? "insRes-hmo"
+           : (selectedCarrier.indexOf("in:") === 0 ? "insRes-ppo-in" : "insRes-ppo-out");
+    var card = document.getElementById(id);
+    card.style.display = "block";
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ card.classList.add("ins-result-show"); }); });
+    var trust = document.getElementById("insTrust");
+    if (trust) trust.classList.add("visible");
+  };
+
+  window.insGoBack = function(toStep) {
+    // HMO skips step 2 — always go back to step 1 from results
+    if (selectedType === "HMO" && toStep === 2) toStep = 1;
+    if (toStep === 1) {
+      selectedType = null; selectedCarrier = null;
+      document.querySelectorAll(".ins-plan-btn").forEach(function(b){ b.classList.remove("selected"); });
+      var trust = document.getElementById("insTrust");
+      if (trust) trust.classList.remove("visible");
+    }
+    if (toStep === 2) selectedCarrier = null;
+    goToStep(toStep);
+  };
+
+  function goToStep(step) {
+    document.querySelectorAll(".ins-panel").forEach(function(p, i){ p.classList.toggle("active", i+1 === step); });
+    document.querySelectorAll(".ins-step").forEach(function(dot){
+      var s = parseInt(dot.dataset.step, 10);
+      dot.classList.toggle("active", s === step);
+      dot.classList.toggle("completed", s < step);
+    });
+    var section = document.getElementById("insuranceChecker");
+    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  document.getElementById("insCarrierSelect").addEventListener("change", function(){
+    selectedCarrier = this.value || null;
+    document.getElementById("insCheckBtn").disabled = !this.value;
+  });
+
+  applyLinks();
+})();
+</script>
+</body>
+</html>
 
     <!-- Banner — full width below both columns -->
     <div class="ins-banner reveal">
