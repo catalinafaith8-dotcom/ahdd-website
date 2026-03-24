@@ -892,19 +892,35 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 </section>
 
 <!-- ═══════ SERVICES ═══════ -->
-<section id="services">
-  <div class="wrap">
+<section id="services" style="position:relative;overflow:hidden;padding:88px 0 100px">
+ 
+  <!-- Video background -->
+  <video
+    autoplay muted loop playsinline preload="auto"
+    id="svc-video"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;filter:brightness(.72);"
+  >
+    <source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Office%20Video.mp4" type="video/mp4"/>
+  </video>
+ 
+  <!-- Semi-transparent overlay — adjust rgba alpha to control transparency -->
+  <div style="position:absolute;inset:0;background:rgba(29,62,92,.55);z-index:1;pointer-events:none"></div>
+ 
+  <!-- Content sits above video -->
+  <div class="wrap" style="position:relative;z-index:2">
     <div style="text-align:center" class="reveal">
-      <span class="sec-label">Our Services</span>
-      <h2 class="sec-title">Everything Your Smile Deserves</h2>
-      <p class="sec-sub">From routine cleanings to complete smile transformations — all in one place, no referrals needed.</p>
+      <span class="sec-label" style="color:#E8A870">Our Services</span>
+      <h2 class="sec-title" style="color:#fff">Everything Your Smile Deserves</h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.72)">From routine cleanings to complete smile transformations — all in one place, no referrals needed.</p>
       <div style="text-align:center;margin-bottom:44px">
-        <span class="norefs-pill"><span class="nr-dot"></span>No Referrals. Every treatment handled in-house.</span>
+        <span class="norefs-pill" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.85)">
+          <span class="nr-dot"></span>No Referrals. Every treatment handled in-house.
+        </span>
       </div>
     </div>
     <div class="svc-grid">
-
-      <a href="/services/restorative-dentistry" class="svc-card reveal">
+ 
+      <a href="/services/restorative-dentistry" class="svc-card reveal" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
           <ellipse cx="24" cy="24" rx="16" ry="14" fill="white" opacity=".92"/>
@@ -915,10 +931,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <path d="M0 50 Q60 18 120 42 Q180 65 260 30 Q280 20 300 38 L300 70 L0 70Z" fill="#5a9a3a" opacity=".88"/>
           <path d="M0 62 Q90 38 185 56 Q245 68 300 52 L300 70 L0 70Z" fill="#4a8a2a" opacity=".78"/>
         </svg>
-        <div class="svc-name">Restorative Dentistry</div>
+        <div class="svc-name" style="color:#fff">Restorative Dentistry</div>
       </a>
-
-      <a href="/services/veneers" class="svc-card reveal d1">
+ 
+      <a href="/services/veneers" class="svc-card reveal d1" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
           <ellipse cx="24" cy="24" rx="16" ry="14" fill="white" opacity=".92"/>
@@ -929,10 +945,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <path d="M0 44 Q70 14 140 38 Q200 58 280 28 L300 35 L300 70 L0 70Z" fill="#5a9a3a" opacity=".88"/>
           <path d="M0 60 Q100 36 200 54 Q255 66 300 50 L300 70 L0 70Z" fill="#4a8a2a" opacity=".78"/>
         </svg>
-        <div class="svc-name">Veneers</div>
+        <div class="svc-name" style="color:#fff">Veneers</div>
       </a>
-
-      <a href="/services/teeth-whitening" class="svc-card reveal d2">
+ 
+      <a href="/services/teeth-whitening" class="svc-card reveal d2" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
           <ellipse cx="24" cy="24" rx="16" ry="14" fill="white" opacity=".92"/>
@@ -943,10 +959,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <path d="M0 52 Q55 20 115 46 Q175 68 250 36 Q275 24 300 42 L300 70 L0 70Z" fill="#5a9a3a" opacity=".88"/>
           <path d="M0 64 Q85 40 180 60 Q242 72 300 56 L300 70 L0 70Z" fill="#4a8a2a" opacity=".78"/>
         </svg>
-        <div class="svc-name">Whitening</div>
+        <div class="svc-name" style="color:#fff">Whitening</div>
       </a>
-
-      <a href="/services/emergency-dentistry" class="svc-card reveal">
+ 
+      <a href="/services/emergency-dentistry" class="svc-card reveal" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
           <ellipse cx="24" cy="24" rx="16" ry="14" fill="white" opacity=".92"/>
@@ -957,10 +973,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <path d="M0 46 Q80 12 155 40 Q215 62 295 30 L300 32 L300 70 L0 70Z" fill="#5a9a3a" opacity=".88"/>
           <path d="M0 62 Q70 38 165 56 Q232 68 300 52 L300 70 L0 70Z" fill="#4a8a2a" opacity=".78"/>
         </svg>
-        <div class="svc-name">Emergency &amp; Sedation Dentistry</div>
+        <div class="svc-name" style="color:#fff">Emergency &amp; Sedation Dentistry</div>
       </a>
-
-      <a href="/services/dental-implants" class="svc-card reveal d1">
+ 
+      <a href="/services/dental-implants" class="svc-card reveal d1" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
           <ellipse cx="24" cy="24" rx="16" ry="14" fill="white" opacity=".92"/>
@@ -971,10 +987,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <path d="M0 56 Q52 22 108 48 Q168 70 242 36 Q270 22 300 44 L300 70 L0 70Z" fill="#5a9a3a" opacity=".88"/>
           <path d="M0 66 Q84 42 176 60 Q244 74 300 58 L300 70 L0 70Z" fill="#4a8a2a" opacity=".78"/>
         </svg>
-        <div class="svc-name">Dental Implants</div>
+        <div class="svc-name" style="color:#fff">Dental Implants</div>
       </a>
-
-      <a href="/services/invisalign" class="svc-card reveal d2">
+ 
+      <a href="/services/invisalign" class="svc-card reveal d2" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
           <ellipse cx="24" cy="24" rx="16" ry="14" fill="white" opacity=".92"/>
@@ -985,13 +1001,21 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
           <path d="M0 50 Q62 18 126 44 Q188 68 258 34 Q278 24 300 40 L300 70 L0 70Z" fill="#5a9a3a" opacity=".88"/>
           <path d="M0 64 Q86 40 178 58 Q240 72 300 56 L300 70 L0 70Z" fill="#4a8a2a" opacity=".78"/>
         </svg>
-        <div class="svc-name">Invisalign</div>
+        <div class="svc-name" style="color:#fff">Invisalign</div>
       </a>
-
+ 
     </div>
   </div>
 </section>
-
+ 
+<!-- Video slow-motion script — slows playback to 0.6x speed -->
+<script>
+(function(){
+  var v = document.getElementById('svc-video');
+  if(v) v.playbackRate = 0.6;
+})();
+</script>
+ 
 <!-- ═══════ DOCTORS ═══════ -->
 <section id="doctors">
   <div class="doc-outer">
