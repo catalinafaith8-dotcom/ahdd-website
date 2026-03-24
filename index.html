@@ -892,20 +892,22 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 </section>
 
 <!-- ═══════ SERVICES ═══════ -->
-<section id="services" style="position:relative;overflow:hidden;padding:88px 0 100px">
- 
+<!-- ═══════ SERVICES ═══════ -->
+<!-- REPLACE your existing <section id="services">...</section> with this entire block -->
+<section id="services" style="position:relative;overflow:hidden;padding:88px 0 100px;min-height:600px">
+
   <!-- Video background -->
   <video
     autoplay muted loop playsinline preload="auto"
     id="svc-video"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;filter:brightness(.72);"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:0;filter:brightness(.92);"
   >
     <source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Office%20Video.mp4" type="video/mp4"/>
   </video>
- 
-  <!-- Semi-transparent overlay — adjust rgba alpha to control transparency -->
-  <div style="position:absolute;inset:0;background:rgba(29,62,92,.55);z-index:1;pointer-events:none"></div>
- 
+
+  <!-- Overlay — .35 alpha lets video breathe, keeps text readable -->
+  <div style="position:absolute;inset:0;background:rgba(29,62,92,.35);z-index:1;pointer-events:none"></div>
+
   <!-- Content sits above video -->
   <div class="wrap" style="position:relative;z-index:2">
     <div style="text-align:center" class="reveal">
@@ -919,7 +921,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       </div>
     </div>
     <div class="svc-grid">
- 
+
       <a href="/services/restorative-dentistry" class="svc-card reveal" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
@@ -933,7 +935,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </svg>
         <div class="svc-name" style="color:#fff">Restorative Dentistry</div>
       </a>
- 
+
       <a href="/services/veneers" class="svc-card reveal d1" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
@@ -947,7 +949,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </svg>
         <div class="svc-name" style="color:#fff">Veneers</div>
       </a>
- 
+
       <a href="/services/teeth-whitening" class="svc-card reveal d2" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
@@ -961,7 +963,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </svg>
         <div class="svc-name" style="color:#fff">Whitening</div>
       </a>
- 
+
       <a href="/services/emergency-dentistry" class="svc-card reveal" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
@@ -975,7 +977,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </svg>
         <div class="svc-name" style="color:#fff">Emergency &amp; Sedation Dentistry</div>
       </a>
- 
+
       <a href="/services/dental-implants" class="svc-card reveal d1" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
@@ -989,7 +991,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </svg>
         <div class="svc-name" style="color:#fff">Dental Implants</div>
       </a>
- 
+
       <a href="/services/invisalign" class="svc-card reveal d2" style="background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)">
         <svg class="svc-cloud" width="80" height="46" viewBox="0 0 80 46" fill="none">
           <ellipse cx="40" cy="34" rx="38" ry="12" fill="white" opacity=".92"/>
@@ -1003,10 +1005,18 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </svg>
         <div class="svc-name" style="color:#fff">Invisalign</div>
       </a>
- 
+
     </div>
   </div>
 </section>
+
+<!-- Video slow-motion script — slows playback to 0.6x speed -->
+<script>
+(function(){
+  var v = document.getElementById('svc-video');
+  if(v) v.playbackRate = 1.0;
+})();
+</script>
  
 <!-- Video slow-motion script — slows playback to 0.6x speed -->
 <script>
