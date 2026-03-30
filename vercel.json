@@ -3,15 +3,25 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/services/invisalign",           "destination": "/services/invisalign.html" },
-    { "source": "/services/veneers",               "destination": "/services/veneers.html" },
-    { "source": "/services/dental-implants",       "destination": "/services/dental-implants.html" },
-    { "source": "/services/teeth-whitening",       "destination": "/services/teeth-whitening.html" },
-    { "source": "/services/emergency-dentistry",   "destination": "/services/emergency-dentistry.html" },
-    { "source": "/services/restorative-dentistry", "destination": "/services/restorative-dentistry.html" }
+    { "source": "/services/invisalign", "destination": "/services/invisalign.html" },
+    { "source": "/services/veneers", "destination": "/services/veneers.html" },
+    { "source": "/services/dental-implants", "destination": "/services/dental-implants.html" },
+    { "source": "/services/teeth-whitening", "destination": "/services/teeth-whitening.html" },
+    { "source": "/services/emergency-dentistry", "destination": "/services/emergency-dentistry.html" },
+    { "source": "/services/restorative-dentistry", "destination": "/services/restorative-dentistry.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/technology", "destination": "/technology.html" },
+    { "source": "/agoura-hills-dentist", "destination": "/agoura-hills-dentist.html" },
+    { "source": "/westlake-village-dentist", "destination": "/westlake-village-dentist.html" },
+    { "source": "/thousand-oaks-dentist", "destination": "/thousand-oaks-dentist.html" },
+    { "source": "/calabasas-dentist", "destination": "/calabasas-dentist.html" },
+    { "source": "/oak-park-dentist", "destination": "/oak-park-dentist.html" },
+    { "source": "/malibu-dentist", "destination": "/malibu-dentist.html" },
+    { "source": "/faq", "destination": "/faq.html" },
+    { "source": "/privacy", "destination": "/privacy.html" }
   ],
   "redirects": [
-    { "source": "/home",                        "destination": "/",                             "permanent": true },
+    { "source": "/home", "destination": "/", "permanent": true },
     { "source": "/services/sedation-dentistry", "destination": "/services/emergency-dentistry", "permanent": true }
   ],
   "headers": [
@@ -19,8 +29,8 @@
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     }
   ]
