@@ -6,7 +6,7 @@
   <title>About Us | Agoura Hills Dental Designs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400;1,14..32,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400;1,14..32,500&display=swap" rel="stylesheet" />
   <style>
     /* ── TOKENS ─────────────────────────────────────────────── */
     :root {
@@ -224,41 +224,6 @@
       line-height: 1.65;
       color: rgba(255,255,255,.80);
       max-width: 600px;
-    }
-
-    /* ── STATS STRIP ────────────────────────────────────────── */
-    .stats-strip {
-      background: #ffffff;
-      padding: 0 80px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-bottom: 1px solid rgba(29,62,92,.08);
-    }
-
-    .stat-item {
-      background: #ffffff;
-      padding: 36px 32px;
-      text-align: center;
-      border-right: 1px solid rgba(29,62,92,.08);
-    }
-    .stat-item:last-child { border-right: none; }
-
-    .stat-num {
-      font-family: var(--ff-display);
-      font-size: 38px;
-      font-weight: 600;
-      color: var(--navy);
-      line-height: 1;
-      letter-spacing: -.02em;
-    }
-
-    .stat-label {
-      font-size: 11.5px;
-      font-weight: 500;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      color: var(--slate);
-      margin-top: 6px;
     }
 
     /* ── SECTION SHELLS ─────────────────────────────────────── */
@@ -560,57 +525,6 @@
       color: rgba(255,255,255,.65);
     }
 
-    /* Team photo full-width */
-    .team-photo-strip {
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 60px;
-      position: relative;
-    }
-
-    .team-photo-strip img {
-      width: 100%;
-      height: 460px;
-      object-fit: cover;
-      object-position: center 35%;
-      display: block;
-    }
-
-    .team-photo-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(29,62,92,.70) 0%,
-        transparent 60%
-      );
-      display: flex;
-      align-items: center;
-      padding: 0 60px;
-    }
-
-    .team-photo-quote {
-      max-width: 420px;
-    }
-
-    .team-photo-quote blockquote {
-      font-family: var(--ff-display);
-      font-size: 26px;
-      font-weight: 400;
-      font-style: italic;
-      line-height: 1.4;
-      color: var(--white);
-      margin-bottom: 16px;
-    }
-
-    .team-photo-quote cite {
-      font-size: 12px;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      color: var(--copper);
-      font-style: normal;
-    }
-
     /* Team grid */
     .team-grid {
       display: grid;
@@ -837,7 +751,6 @@
       nav { padding: 0 32px; }
       footer { padding: 48px 48px 28px; }
       .hero-content { padding: 0 48px 52px; }
-      .stats-strip { padding: 28px 48px; }
       .doctor-layout { grid-template-columns: 360px 1fr; gap: 56px; }
       .doctor-layout.reverse { grid-template-columns: 1fr 360px; }
       .team-grid { grid-template-columns: repeat(3, 1fr); }
@@ -850,7 +763,6 @@
       section, .doctor-section, .team-section, .cta-strip, footer { padding: 56px 24px; }
       .hero { height: 460px; }
       .hero-content { padding: 0 24px 44px; }
-      .stats-strip { grid-template-columns: repeat(2, 1fr); padding: 20px 24px; }
       .practice-intro { grid-template-columns: 1fr; gap: 48px; }
       .doctor-layout, .doctor-layout.reverse {
         grid-template-columns: 1fr;
@@ -870,8 +782,14 @@
 
     @media (max-width: 480px) {
       .team-grid { grid-template-columns: 1fr 1fr; }
-      .stats-strip { grid-template-columns: 1fr 1fr; }
     }
+    /* ── QUOTES — Playfair Display only ────────────────────── */
+    blockquote,
+    .intro-card-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+    }
+
   </style>
 </head>
 <body>
@@ -911,25 +829,7 @@
 </section>
 
 
-<!-- ── STATS STRIP ───────────────────────────────────────────── -->
-<div class="stats-strip">
-  <div class="stat-item">
-    <div class="stat-num">331+</div>
-    <div class="stat-label">5-Star Reviews</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">20+</div>
-    <div class="stat-label">Years Experience</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">15K+</div>
-    <div class="stat-label">Smiles Created</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">3rd</div>
-    <div class="stat-label">Generation Dentists</div>
-  </div>
-</div>
+
 
 
 <!-- ── PRACTICE INTRO ────────────────────────────────────────── -->
@@ -1064,20 +964,6 @@
       <p class="section-eyebrow" style="color:var(--copper);">Our Team</p>
       <h2 class="section-title" style="color:var(--white);">The People Behind<br /><em>Your Experience</em></h2>
       <p class="team-header-sub">A skilled, compassionate team of dental professionals committed to exceptional care in a warm and welcoming environment.</p>
-    </div>
-  </div>
-
-  <!-- Team photo -->
-  <div class="team-photo-strip">
-    <img
-      src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Team%20Photo.JPG"
-      alt="The Agoura Hills Dental Designs team"
-    />
-    <div class="team-photo-overlay">
-      <div class="team-photo-quote">
-        <blockquote>"We built a team that genuinely loves what they do — and it shows in every interaction."</blockquote>
-        <cite>Drs. Shawn &amp; David Matian</cite>
-      </div>
     </div>
   </div>
 
