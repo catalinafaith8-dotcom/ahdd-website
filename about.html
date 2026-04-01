@@ -167,12 +167,7 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(29,62,92,.20) 0%,
-        rgba(29,62,92,.55) 60%,
-        rgba(29,62,92,.78) 100%
-      );
+      background: none;
     }
 
     .hero-content {
@@ -226,7 +221,7 @@
 
     /* ── SECTION SHELLS ─────────────────────────────────────── */
     section {
-      padding: 100px 80px;
+      padding: 56px 80px;
     }
 
     .section-eyebrow {
@@ -348,7 +343,7 @@
 
     /* ── DOCTOR SECTIONS ────────────────────────────────────── */
     .doctor-section {
-      padding: 100px 80px;
+      padding: 56px 80px;
     }
 
     .doctor-section:nth-child(even) {
@@ -496,7 +491,7 @@
     /* ── TEAM SECTION ───────────────────────────────────────── */
     .team-section {
       background: var(--navy);
-      padding: 100px 80px;
+      padding: 56px 80px;
     }
 
     .team-section .section-eyebrow { color: var(--copper); }
@@ -531,25 +526,27 @@
       border: 1px solid rgba(255,255,255,.10);
       border-radius: 14px;
       overflow: hidden;
-      transition: transform .3s ease, box-shadow .3s ease;
     }
 
-    .team-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(0,0,0,.30);
+    /* Zoom lives on the img only — wrapper clips it */
+    .team-card-photo-wrap {
+      overflow: hidden;
+      height: 200px;
     }
 
     .team-card-photo {
       width: 100%;
-      height: 260px;
+      height: 200px;
       object-fit: cover;
       object-position: center top;
       display: block;
       filter: grayscale(20%);
-      transition: filter .3s ease;
+      transition: transform .45s ease, filter .3s ease;
+      transform-origin: center 20%;
     }
 
     .team-card:hover .team-card-photo {
+      transform: scale(1.12);
       filter: grayscale(0%);
     }
 
@@ -585,7 +582,7 @@
     /* ── CTA STRIP ──────────────────────────────────────────── */
     .cta-strip {
       background: var(--sky);
-      padding: 80px;
+      padding: 56px 80px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -738,10 +735,9 @@
 
     /* ── RESPONSIVE ─────────────────────────────────────────── */
     @media (max-width: 1100px) {
-      section, .doctor-section, .team-section, .cta-strip { padding: 72px 48px; }
+      section, .doctor-section, .team-section, .cta-strip { padding: 44px 48px; }
       nav { padding: 0 32px; }
-      footer { padding: 48px 48px 28px; }
-      .hero-content { padding: 0 48px 52px; }
+      footer { padding: 40px 48px 28px; }
       .doctor-layout { grid-template-columns: 360px 1fr; gap: 56px; }
       .doctor-layout.reverse { grid-template-columns: 1fr 360px; }
       .team-grid { grid-template-columns: repeat(3, 1fr); }
@@ -751,10 +747,9 @@
     @media (max-width: 860px) {
       nav { padding: 0 24px; }
       .nav-links { display: none; }
-      section, .doctor-section, .team-section, .cta-strip, footer { padding: 56px 24px; }
-      .hero { height: 460px; }
-      .hero-content { padding: 0 24px 44px; }
-      .practice-intro { grid-template-columns: 1fr; gap: 48px; }
+      section, .doctor-section, .team-section, .cta-strip, footer { padding: 40px 24px; }
+      .hero { height: 400px; }
+      .practice-intro { grid-template-columns: 1fr; gap: 36px; }
       .doctor-layout, .doctor-layout.reverse {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -956,88 +951,104 @@
   <!-- Team cards -->
   <div class="team-grid">
     <div class="team-card doctor-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Dr%20Shawn%20headshot.JPG"
         alt="Dr. Shawn Matian"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Dr. Shawn Matian</div>
         <div class="team-card-role">General &amp; Cosmetic Dentistry</div>
       </div>
     </div>
     <div class="team-card doctor-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Dr%20David%20headshot.jpeg"
         alt="Dr. David Matian"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Dr. David Matian</div>
         <div class="team-card-role">General &amp; Cosmetic Dentistry</div>
       </div>
     </div>
     <div class="team-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Catalina%20Operations%20Manager.jpeg"
         alt="Catalina"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Catalina</div>
         <div class="team-card-role">Operations Manager</div>
       </div>
     </div>
     <div class="team-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Erik%20Lead%20Assistant.jpeg"
         alt="Erick"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Erick</div>
         <div class="team-card-role">Lead Assistant</div>
       </div>
     </div>
     <div class="team-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Stacey%20Patient%20Care%20Coordinator.jpeg"
         alt="Stacey"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Stacey</div>
         <div class="team-card-role">Patient Care Coordinator</div>
       </div>
     </div>
     <div class="team-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Derek%20Dental%20Assistant.jpg"
         alt="Derek"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Derek</div>
         <div class="team-card-role">Dental Assistant</div>
       </div>
     </div>
     <div class="team-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Gely%20Hygienist%20headshot.jpg"
         alt="Gely"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Gely</div>
         <div class="team-card-role">Hygienist</div>
       </div>
     </div>
     <div class="team-card">
-      <img
+      <div class="team-card-photo-wrap">
+        <img
         class="team-card-photo"
         src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Heidi%20Hygienist%20headshot.jpeg"
         alt="Heidi"
       />
+      </div>
       <div class="team-card-info">
         <div class="team-card-name">Heidi</div>
         <div class="team-card-role">Hygienist</div>
