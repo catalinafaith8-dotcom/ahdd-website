@@ -6,27 +6,28 @@
   <title>About Us | Agoura Hills Dental Designs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ── TOKENS ─────────────────────────────────────────────── */
     :root {
-      --navy:   #0d1b2a;
-      --navy2:  #122234;
-      --gold:   #c9a96e;
-      --gold2:  #e8c88a;
-      --cream:  #faf6ef;
-      --cream2: #f2ece0;
-      --white:  #ffffff;
-      --muted:  #6b7280;
-      --text:   #1a2332;
+      --navy:    #1D3E5C;
+      --steel:   #2A5A82;
+      --copper:  #C96A2E;
+      --amber:   #E8A870;
+      --cloud:   #F5F6F7;
+      --sky:     #E8F0F9;
+      --slate:   #6B7B8D;
+      --graphite:#1A1F24;
+      --white:   #ffffff;
+      --muted:   #6B7B8D;
 
-      --ff-display: 'Cormorant Garamond', Georgia, serif;
-      --ff-body:    'DM Sans', system-ui, sans-serif;
+      --ff-display: 'Playfair Display', Georgia, serif;
+      --ff-body:    'Inter', system-ui, sans-serif;
 
-      --nav-h: 76px;
-      --radius: 4px;
-      --shadow: 0 8px 40px rgba(13,27,42,.10);
-      --shadow-lg: 0 20px 60px rgba(13,27,42,.16);
+      --nav-h: 64px;
+      --radius: 100px;
+      --shadow: 0 8px 40px rgba(29,62,92,.10);
+      --shadow-lg: 0 20px 60px rgba(29,62,92,.16);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,8 +36,8 @@
 
     body {
       font-family: var(--ff-body);
-      color: var(--text);
-      background: var(--cream);
+      color: var(--graphite);
+      background: #ffffff;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -53,8 +54,8 @@
       padding: 0 48px;
       background: rgba(255,255,255,0.96);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,169,110,.18);
-      box-shadow: 0 2px 20px rgba(13,27,42,.06);
+      border-bottom: 1px solid rgba(29,62,92,.08);
+      box-shadow: 0 2px 20px rgba(29,62,92,.06);
     }
 
     .nav-logo img {
@@ -80,7 +81,7 @@
     }
 
     .nav-links a:hover,
-    .nav-links a.active { color: var(--gold); }
+    .nav-links a.active { color: var(--copper); }
 
     .nav-cta {
       display: flex;
@@ -103,10 +104,9 @@
       font-family: var(--ff-body);
       font-size: 13px;
       font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
+      letter-spacing: .04em;
       text-decoration: none;
-      border-radius: var(--radius);
+      border-radius: 100px;
       transition: all .25s ease;
       cursor: pointer;
       border: none;
@@ -115,32 +115,35 @@
     .btn-primary {
       background: var(--navy);
       color: var(--white);
-      padding: 11px 24px;
+      padding: 11px 26px;
+      box-shadow: 0 3px 12px rgba(29,62,92,.22);
     }
     .btn-primary:hover {
-      background: var(--gold);
-      color: var(--navy);
+      background: var(--steel);
+      transform: translateY(-1px);
     }
 
     .btn-outline {
       background: transparent;
       border: 1.5px solid var(--navy);
       color: var(--navy);
-      padding: 10px 22px;
+      padding: 10px 24px;
     }
     .btn-outline:hover {
-      border-color: var(--gold);
-      color: var(--gold);
+      background: var(--navy);
+      color: #fff;
     }
 
     .btn-gold {
-      background: var(--gold);
-      color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
       padding: 14px 32px;
       font-size: 13.5px;
+      box-shadow: 0 3px 12px rgba(29,62,92,.22);
     }
     .btn-gold:hover {
-      background: var(--gold2);
+      background: var(--steel);
+      transform: translateY(-1px);
     }
 
     /* ── HERO ───────────────────────────────────────────────── */
@@ -167,9 +170,9 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(13,27,42,.20) 0%,
-        rgba(13,27,42,.55) 60%,
-        rgba(13,27,42,.78) 100%
+        rgba(29,62,92,.20) 0%,
+        rgba(29,62,92,.55) 60%,
+        rgba(29,62,92,.78) 100%
       );
     }
 
@@ -188,7 +191,7 @@
       font-weight: 500;
       letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
       margin-bottom: 16px;
     }
 
@@ -197,27 +200,27 @@
       display: block;
       width: 32px;
       height: 1px;
-      background: var(--gold);
+      background: var(--copper);
     }
 
     .hero h1 {
       font-family: var(--ff-display);
       font-size: clamp(44px, 5vw, 68px);
-      font-weight: 300;
+      font-weight: 500;
       line-height: 1.08;
       color: var(--white);
-      letter-spacing: -.01em;
+      letter-spacing: -.02em;
     }
 
     .hero h1 em {
       font-style: italic;
-      color: var(--gold2);
+      color: var(--amber);
     }
 
     .hero-sub {
       margin-top: 18px;
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.65;
       color: rgba(255,255,255,.80);
       max-width: 600px;
@@ -225,36 +228,36 @@
 
     /* ── STATS STRIP ────────────────────────────────────────── */
     .stats-strip {
-      background: var(--navy);
-      padding: 32px 80px;
+      background: #ffffff;
+      padding: 0 80px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background-color: var(--navy);
+      border-bottom: 1px solid rgba(29,62,92,.08);
     }
 
     .stat-item {
-      background: var(--navy);
-      padding: 20px 32px;
+      background: #ffffff;
+      padding: 36px 32px;
       text-align: center;
-      border-right: 1px solid rgba(255,255,255,.08);
+      border-right: 1px solid rgba(29,62,92,.08);
     }
     .stat-item:last-child { border-right: none; }
 
     .stat-num {
       font-family: var(--ff-display);
       font-size: 38px;
-      font-weight: 500;
-      color: var(--gold);
+      font-weight: 600;
+      color: var(--navy);
       line-height: 1;
+      letter-spacing: -.02em;
     }
 
     .stat-label {
       font-size: 11.5px;
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.60);
+      color: var(--slate);
       margin-top: 6px;
     }
 
@@ -271,7 +274,7 @@
       font-weight: 500;
       letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
       margin-bottom: 16px;
     }
 
@@ -280,26 +283,26 @@
       display: block;
       width: 28px;
       height: 1px;
-      background: var(--gold);
+      background: var(--copper);
     }
 
     .section-title {
       font-family: var(--ff-display);
       font-size: clamp(32px, 3.5vw, 52px);
-      font-weight: 300;
+      font-weight: 500;
       line-height: 1.12;
       color: var(--navy);
-      letter-spacing: -.01em;
+      letter-spacing: -.02em;
     }
 
     .section-title em {
       font-style: italic;
-      color: var(--gold);
+      color: var(--copper);
     }
 
     /* ── PRACTICE INTRO ─────────────────────────────────────── */
     .practice-intro {
-      background: var(--cream);
+      background: #ffffff;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
@@ -308,9 +311,9 @@
 
     .intro-text p {
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.80;
-      color: #374151;
+      color: var(--slate);
       margin-top: 28px;
     }
 
@@ -336,7 +339,7 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--gold);
+      background: var(--copper);
       flex-shrink: 0;
     }
 
@@ -346,7 +349,7 @@
 
     .intro-card {
       background: var(--navy);
-      border-radius: 2px;
+      border-radius: 16px;
       padding: 48px 44px;
       color: var(--white);
     }
@@ -356,14 +359,14 @@
       font-size: 28px;
       font-weight: 400;
       font-style: italic;
-      color: var(--gold2);
+      color: var(--amber);
       margin-bottom: 20px;
       line-height: 1.3;
     }
 
     .intro-card-body {
       font-size: 15px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.75;
       color: rgba(255,255,255,.80);
     }
@@ -371,7 +374,7 @@
     .intro-card-divider {
       width: 40px;
       height: 1px;
-      background: var(--gold);
+      background: var(--copper);
       margin: 24px 0;
     }
 
@@ -379,7 +382,7 @@
       font-size: 12px;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
     }
 
     /* ── DOCTOR SECTIONS ────────────────────────────────────── */
@@ -388,11 +391,11 @@
     }
 
     .doctor-section:nth-child(even) {
-      background: var(--white);
+      background: #ffffff;
     }
 
     .doctor-section:nth-child(odd) {
-      background: var(--cream);
+      background: var(--cloud);
     }
 
     .doctor-layout {
@@ -423,7 +426,7 @@
 
     .doctor-photo-wrap {
       position: relative;
-      border-radius: 2px;
+      border-radius: 16px;
       overflow: hidden;
     }
 
@@ -439,17 +442,19 @@
       position: absolute;
       bottom: 24px;
       left: 24px;
-      background: var(--navy);
-      color: var(--white);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      color: var(--graphite);
       padding: 12px 20px;
-      border-radius: 2px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(29,62,92,.12);
     }
 
     .doctor-photo-badge-name {
       font-family: var(--ff-display);
       font-size: 20px;
-      font-weight: 500;
-      color: var(--white);
+      font-weight: 600;
+      color: var(--navy);
       line-height: 1;
     }
 
@@ -457,7 +462,7 @@
       font-size: 11px;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
       margin-top: 4px;
     }
 
@@ -468,9 +473,10 @@
     .doctor-name {
       font-family: var(--ff-display);
       font-size: clamp(38px, 4vw, 56px);
-      font-weight: 300;
+      font-weight: 500;
       line-height: 1.05;
       color: var(--navy);
+      letter-spacing: -.02em;
       margin-bottom: 6px;
     }
 
@@ -479,22 +485,22 @@
       font-weight: 400;
       letter-spacing: .08em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
       margin-bottom: 32px;
     }
 
     .doctor-divider {
       width: 48px;
       height: 2px;
-      background: linear-gradient(90deg, var(--gold), transparent);
+      background: linear-gradient(90deg, var(--copper), transparent);
       margin-bottom: 32px;
     }
 
     .doctor-bio p {
       font-size: 15.5px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.82;
-      color: #374151;
+      color: var(--slate);
       margin-bottom: 20px;
     }
 
@@ -507,9 +513,9 @@
 
     .highlight-item {
       padding: 18px 20px;
-      background: var(--cream2);
-      border-left: 2px solid var(--gold);
-      border-radius: 0 2px 2px 0;
+      background: var(--sky);
+      border-left: 2px solid var(--copper);
+      border-radius: 0 10px 10px 0;
     }
 
     .highlight-label {
@@ -517,7 +523,7 @@
       font-weight: 500;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
       margin-bottom: 5px;
     }
 
@@ -534,7 +540,7 @@
       padding: 100px 80px;
     }
 
-    .team-section .section-eyebrow { color: var(--gold); }
+    .team-section .section-eyebrow { color: var(--copper); }
     .team-section .section-title { color: var(--white); }
 
     .team-header {
@@ -549,7 +555,7 @@
     .team-header-sub {
       margin-top: 16px;
       font-size: 15px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.65;
       color: rgba(255,255,255,.65);
     }
@@ -575,7 +581,7 @@
       inset: 0;
       background: linear-gradient(
         90deg,
-        rgba(13,27,42,.70) 0%,
+        rgba(29,62,92,.70) 0%,
         transparent 60%
       );
       display: flex;
@@ -601,7 +607,7 @@
       font-size: 12px;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--copper);
       font-style: normal;
     }
 
@@ -613,16 +619,16 @@
     }
 
     .team-card {
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 2px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
       overflow: hidden;
       transition: transform .3s ease, box-shadow .3s ease;
     }
 
     .team-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(0,0,0,.3);
+      box-shadow: 0 20px 50px rgba(0,0,0,.30);
     }
 
     .team-card-photo {
@@ -645,58 +651,61 @@
 
     .team-card-name {
       font-family: var(--ff-display);
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--white);
+      font-size: 18px;
+      font-weight: 500;
+      color: #ffffff;
       margin-bottom: 4px;
     }
 
     .team-card-role {
       font-size: 11px;
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--amber);
     }
 
     /* Doctor cards in team */
     .team-card.doctor-card {
-      border-color: rgba(201,169,110,.30);
-      background: rgba(201,169,110,.06);
+      border-color: rgba(29,62,92,.30);
+      background: rgba(29,62,92,.12);
     }
 
     .team-card.doctor-card .team-card-name {
-      color: var(--gold2);
+      color: #ffffff;
     }
 
     /* ── CTA STRIP ──────────────────────────────────────────── */
     .cta-strip {
-      background: var(--cream2);
+      background: var(--sky);
       padding: 80px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 40px;
+      border-top: 1px solid rgba(29,62,92,.08);
+      border-bottom: 1px solid rgba(29,62,92,.08);
     }
 
     .cta-strip-text .cta-title {
       font-family: var(--ff-display);
       font-size: clamp(28px, 3vw, 42px);
-      font-weight: 300;
+      font-weight: 500;
       color: var(--navy);
+      letter-spacing: -.01em;
       line-height: 1.2;
     }
 
     .cta-strip-text .cta-title em {
       font-style: italic;
-      color: var(--gold);
+      color: var(--copper);
     }
 
     .cta-strip-text .cta-sub {
       margin-top: 10px;
       font-size: 15px;
-      font-weight: 300;
-      color: var(--muted);
+      font-weight: 400;
+      color: var(--slate);
     }
 
     .cta-strip-actions {
@@ -729,7 +738,7 @@
 
     .footer-brand p {
       font-size: 13.5px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.70;
       color: rgba(255,255,255,.55);
       margin-bottom: 20px;
@@ -739,7 +748,7 @@
       font-size: 18px;
       font-family: var(--ff-display);
       font-weight: 500;
-      color: var(--gold);
+      color: var(--copper);
       text-decoration: none;
     }
 
@@ -761,13 +770,13 @@
 
     .footer-col ul a {
       font-size: 13.5px;
-      font-weight: 300;
+      font-weight: 400;
       color: rgba(255,255,255,.60);
       text-decoration: none;
       transition: color .2s;
     }
 
-    .footer-col ul a:hover { color: var(--gold); }
+    .footer-col ul a:hover { color: var(--copper); }
 
     .footer-bottom {
       display: flex;
@@ -793,7 +802,7 @@
       transition: color .2s;
     }
 
-    .footer-legal a:hover { color: var(--gold); }
+    .footer-legal a:hover { color: var(--copper); }
 
     /* ── ANIMATIONS ─────────────────────────────────────────── */
     @keyframes fadeUp {
@@ -1052,7 +1061,7 @@
 <div class="team-section reveal">
   <div class="team-header">
     <div class="team-header-text">
-      <p class="section-eyebrow" style="color:var(--gold);">Our Team</p>
+      <p class="section-eyebrow" style="color:var(--copper);">Our Team</p>
       <h2 class="section-title" style="color:var(--white);">The People Behind<br /><em>Your Experience</em></h2>
       <p class="team-header-sub">A skilled, compassionate team of dental professionals committed to exceptional care in a warm and welcoming environment.</p>
     </div>
