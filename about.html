@@ -490,12 +490,12 @@
 
     /* ── TEAM SECTION ───────────────────────────────────────── */
     .team-section {
-      background: var(--navy);
+      background: #ffffff;
       padding: 56px 80px;
     }
 
     .team-section .section-eyebrow { color: var(--copper); }
-    .team-section .section-title { color: var(--white); }
+    .team-section .section-title { color: var(--navy); }
 
     .team-header {
       display: flex;
@@ -511,53 +511,63 @@
       font-size: 15px;
       font-weight: 400;
       line-height: 1.65;
-      color: rgba(255,255,255,.65);
+      color: var(--slate);
     }
 
     /* Team grid */
     .team-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+      gap: 32px 24px;
     }
 
     .team-card {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 14px;
-      overflow: hidden;
+      background: none;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
-    /* Zoom lives on the img only — wrapper clips it */
+    /* Circle wrapper — clips the zoom */
     .team-card-photo-wrap {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
       overflow: hidden;
-      height: 200px;
+      border: 3px solid rgba(29,62,92,.10);
+      box-shadow: 0 4px 20px rgba(29,62,92,.10);
+      flex-shrink: 0;
+      background: var(--cloud);
     }
 
     .team-card-photo {
       width: 100%;
-      height: 200px;
+      height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
-      filter: grayscale(20%);
-      transition: transform .45s ease, filter .3s ease;
-      transform-origin: center 20%;
+      filter: grayscale(15%);
+      transition: transform .45s ease, filter .35s ease;
+      transform-origin: center 15%;
     }
 
     .team-card:hover .team-card-photo {
-      transform: scale(1.12);
+      transform: scale(1.14);
       filter: grayscale(0%);
     }
 
     .team-card-info {
-      padding: 20px 20px 22px;
+      padding: 14px 8px 0;
     }
 
     .team-card-name {
-      font-size: 18px;
-      font-weight: 500;
-      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
       margin-bottom: 4px;
     }
 
@@ -566,17 +576,20 @@
       font-weight: 500;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--amber);
+      color: var(--copper);
     }
 
-    /* Doctor cards in team */
-    .team-card.doctor-card {
-      border-color: rgba(29,62,92,.30);
-      background: rgba(29,62,92,.12);
+    /* Doctor cards — slightly larger circle, gold ring */
+    .team-card.doctor-card .team-card-photo-wrap {
+      width: 180px;
+      height: 180px;
+      border-color: var(--copper);
+      border-width: 2px;
+      box-shadow: 0 6px 28px rgba(201,106,46,.20);
     }
 
     .team-card.doctor-card .team-card-name {
-      color: #ffffff;
+      color: var(--navy);
     }
 
     /* ── CTA STRIP ──────────────────────────────────────────── */
@@ -740,7 +753,7 @@
       footer { padding: 40px 48px 28px; }
       .doctor-layout { grid-template-columns: 360px 1fr; gap: 56px; }
       .doctor-layout.reverse { grid-template-columns: 1fr 360px; }
-      .team-grid { grid-template-columns: repeat(3, 1fr); }
+      .team-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
       .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
     }
 
@@ -758,7 +771,7 @@
       .doctor-layout.reverse .doctor-bio-col  { order: 2; }
       .doctor-photo-col { position: static; }
       .doctor-photo-wrap img { height: 420px; }
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .team-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
       .team-header { flex-direction: column; align-items: flex-start; gap: 24px; }
       .cta-strip { flex-direction: column; align-items: flex-start; }
       .footer-top { grid-template-columns: 1fr; }
