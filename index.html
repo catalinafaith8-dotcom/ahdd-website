@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Ads Global Site Tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1313632759"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-1313632759');
+</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Agoura Hills Dental Designs | Cosmetic & Restorative Dentistry in Agoura Hills, CA</title>
@@ -14,7 +22,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:#fff;color:#1A1F24;-webkit-font-smoothing:antialiased;}
+body{font-family:'Inter',sans-serif;background:#fff;color:#1A1F24;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,video{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
 button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none}
@@ -174,7 +182,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .goog-btn:hover{border-color:var(--navy);color:var(--navy)}
 .car-outer{overflow:hidden}
 .car-track{display:flex;gap:18px;transition:transform .42s ease;touch-action:pan-y;padding-top:28px;}
-.rev-card{scroll-snap-align:start;flex:0 0 calc(33.333% - 12px);background:var(--cloud);border:1px solid rgba(29,62,92,.09);border-radius:16px;padding:20px 20px 22px;position:relative;display:flex;flex-direction:column;gap:10px;}
+.rev-card{flex:0 0 calc(33.333% - 12px);background:var(--cloud);border:1px solid rgba(29,62,92,.09);border-radius:16px;padding:20px 20px 22px;position:relative;display:flex;flex-direction:column;gap:10px;}
 .rev-av{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--steel));border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px;font-weight:600;color:#fff;box-shadow:0 2px 8px rgba(29,62,92,.18);}
 .rev-stars{display:flex;gap:3px;margin-top:12px}
 .rev-stars svg{width:13px;height:13px;fill:#f59e0b}
@@ -286,17 +294,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 #chat-send:hover{transform:scale(1.07)}
 #chat-send:disabled{opacity:.45;cursor:not-allowed}
 #chat-send svg{width:15px;height:15px;fill:#fff}
-@media(max-width:480px){#chat-win{width:calc(100vw - 32px);height:calc(100vh - 100px);bottom:70px;right:16px;border-radius:14px}#chat-wrap{bottom:16px;right:16px}
-.tech-grid{gap:16px;padding:0 16px}
-.hero-content{position:relative;right:auto;top:auto;transform:none;width:100%;padding:24px 16px;background:rgba(11,22,40,0.85)}
-.hero-inner{position:relative;padding-top:0}
-.hero-h1{font-size:26px}
-.hero-sub{font-size:14px}
-.hero-pills{justify-content:flex-start}
-.hero-pills a{font-size:12px;padding:6px 12px}
-.team-staff{grid-template-columns:repeat(2,1fr);gap:10px}
-.rev-card{flex:0 0 calc(85vw - 24px)}
-}
+@media(max-width:480px){#chat-win{width:calc(100vw - 18px);height:calc(100vh - 90px);bottom:66px;right:-10px;border-radius:14px}#chat-wrap{bottom:16px;right:16px}}
 
 /* NO INSURANCE CTA */
 .ins-no-insurance{position:relative;margin-top:20px;border-radius:16px;isolation:isolate}
@@ -313,9 +311,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 @media(max-width:640px){.ins-no-insurance-inner{flex-direction:column;align-items:flex-start;padding:16px 18px;gap:14px}.ins-no-ins-btn{width:100%;justify-content:center}}
 
 /* RESPONSIVE */
-@media(max-width:1024px){.wrap{padding:0 28px}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}.doc-outer{gap:0}.doc-text{padding-left:48px;padding-right:40px}
-.tech-grid{grid-template-columns:1fr 1fr;max-width:100%;width:100%}
-}
+@media(max-width:1024px){.wrap{padding:0 28px}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}.doc-outer{gap:0}.doc-text{padding-left:48px;padding-right:40px}}
 @media(max-width:768px){
   .wrap{padding:0 20px}.nav-links,.nav-right{display:none}.hamburger{display:flex}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
@@ -329,17 +325,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   .map-wrap{min-height:320px}
   .footer-grid{grid-template-columns:1fr 1fr;gap:22px}.footer-brand-col{grid-column:1/-1}
   .cta-btns{flex-direction:column;align-items:center}
-  .rev-top{flex-direction:column;gap:12px}.rev-card{scroll-snap-align:start;flex:0 0 calc(76vw - 36px)}
+  .rev-top{flex-direction:column;gap:12px}.rev-card{flex:0 0 calc(76vw - 36px)}
   .team-docs{gap:28px}.team-staff{grid-template-columns:repeat(3,1fr);gap:14px}
-
-.tech-grid{grid-template-columns:1fr;max-width:100%;width:100%}
-.hero-pills{flex-wrap:wrap;gap:8px}
-.hero-pills a{font-size:11px;padding:6px 10px;min-height:44px}
-.ins-inner{max-width:100%}
-.ins-subhead{max-width:100%}
-.ins-card{max-width:100%}
-a:not(.hero-pills a),button{min-height:44px}
-.rev-card{flex:0 0 calc(75vw - 24px)}
 }
 @media(max-width:480px){
   .svc-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}
@@ -451,22 +438,14 @@ a:not(.hero-pills a),button{min-height:44px}
 }
 @media(max-width:400px){.ins-plan-btns{grid-template-columns:1fr}}
 
-
-@media(max-width:360px){
-.hero-pills a{font-size:10px;padding:4px 8px}
-.team-staff{grid-template-columns:1fr}
-.stats-grid{grid-template-columns:1fr}
-.stat{border-right:none!important}
-.footer-grid{grid-template-columns:1fr}
-.ins-plan-btns{grid-template-columns:1fr}
-}</style>
+</style>
 </head>
 <body>
 
 <nav id="nav" aria-label="Main navigation">
   <div class="wrap nav-wrap">
     <a href="/" class="nav-logo" aria-label="Agoura Hills Dental Designs">
-      <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/logo.svg" alt="Agoura Hills Dental Designs"/>
+      <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/logo.png" alt="Agoura Hills Dental Designs" onerror="this.style.display='none'"/>
     </a>
     <ul class="nav-links">
       <li><a href="/" class="active">Home</a></li>
