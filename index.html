@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <!-- Google Ads Global Site Tag -->
@@ -959,10 +959,9 @@ document.querySelectorAll('.tech-card').forEach(function(c){c.addEventListener('
   window.insCheck=function(){
     if(!selectedCarrier){var v=document.getElementById("insCarrierSelect").value;if(!v)return;selectedCarrier=v;}
     goToStep(3);
-    document.querySelectorAll(".ins-result").forEach(function(el){el.style.display="none";el.classList.remove("ins-result-show");});
-    var id=selectedType==="HMO"?"insRes-hmo":(selectedCarrier.indexOf("in:")===0?"insRes-ppo-in":"insRes-ppo-out");
+function doBook(e){if(e){e.preventDefault();e.stopPropagation();}    var id=selectedType==="HMO"?"insRes-hmo":(selectedCarrier.indexOf("in:")===0?"insRes-ppo-in":"insRes-ppo-out");
     var card=document.getElementById(id);card.style.display="block";
-    requestAnimationFrame(function(){requestAnimationFrame(function(){card.classList.add("ins-result-show");});});
+  function doBook(e){if(e){e.preventDefault();e.stopPropagation();}gtag('event','conversion',{'send_to':'AW-11217610443/kZZHCO2O15QcEMvN_OQp'});  requestAnimationFrame(function(){requestAnimationFrame(function(){card.classList.add("ins-result-show");});});
     var trust=document.getElementById("insTrust");if(trust)trust.classList.add("visible");
   };
   window.insGoBack=function(toStep){
