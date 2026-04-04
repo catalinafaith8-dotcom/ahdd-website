@@ -24,18 +24,18 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:#fff;color:#1A1F24;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1A1F24;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,video{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
-button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none}
+button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;background:none}
 :root{
   --navy:#1D3E5C;--steel:#2A5A82;--copper:#C96A2E;--amber:#E8A870;
   --cloud:#F5F6F7;--slate:#6B7B8D;--graphite:#1A1F24;--green:#1A8C61;
-  --sky:#E8F0F9;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',sans-serif;
+  --sky:#E8F0F9;--serif:'DM Serif Display',Georgia,serif;--sans:'Plus Jakarta Sans',sans-serif;
 }
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
@@ -54,7 +54,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .nav-right{display:flex;align-items:center;gap:18px}
 .nav-phone{font-size:14px;color:#555}
 .nav-sep{width:1px;height:18px;background:rgba(29,62,92,.15)}
-.nav-book{padding:10px 22px;border-radius:100px;background:var(--navy);color:#fff;font-size:14px;font-weight:500;box-shadow:0 3px 12px rgba(29,62,92,.22);transition:background .2s,transform .2s;display:inline-block}
+.nav-book{padding:10px 22px;border-radius:10px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;box-shadow:0 2px 12px rgba(29,62,92,.2);transition:background .2s,transform .2s;display:inline-block}
 .nav-book:hover{background:var(--steel);transform:translateY(-1px)}
 .hamburger{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer}
 .hamburger span{display:block;width:22px;height:2px;background:var(--navy);border-radius:2px;transition:all .25s}
@@ -67,7 +67,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .mob-ctas{padding-top:18px;display:flex;flex-direction:column;gap:10px}
 .mob-book{display:block;text-align:center;padding:13px;border-radius:100px;background:var(--navy);color:#fff;font-size:15px;font-weight:500}
 
-/* SERVICE HERO â split layout */
+/* SERVICE HERO — split layout */
 .svc-hero{
   padding-top:64px;
   display:grid;grid-template-columns:1fr 1fr;
@@ -89,11 +89,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .svc-hero-h1{font-family:var(--serif);font-size:clamp(32px,3.8vw,52px);font-weight:600;color:var(--graphite);line-height:1.08;letter-spacing:-.01em;margin-bottom:20px}
 .svc-hero-p{font-size:16px;line-height:1.75;color:var(--slate);margin-bottom:32px;max-width:480px}
 .svc-hero-btns{display:flex;gap:14px;flex-wrap:wrap}
-.btn-primary{padding:14px 32px;border-radius:100px;background:var(--navy);color:#fff;font-size:15px;font-weight:600;box-shadow:0 4px 16px rgba(29,62,92,.24);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.btn-primary{padding:14px 32px;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:600;box-shadow:0 2px 12px rgba(29,62,92,.2);transition:all .2s;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
 .btn-primary:hover{background:var(--steel);transform:translateY(-2px)}
 .btn-secondary{padding:14px 32px;border-radius:100px;background:transparent;color:var(--navy);border:1.5px solid var(--navy);font-size:15px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;cursor:pointer;text-decoration:none}
 .btn-secondary:hover{background:var(--navy);color:#fff;transform:translateY(-2px)}
-/* Hero image â right side, full bleed */
+/* Hero image — right side, full bleed */
 .svc-hero-img{
   position:relative;overflow:hidden;background:linear-gradient(135deg,#ddf0fb,#88c2e8);
 }
@@ -114,7 +114,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .section-header{text-align:center;margin-bottom:56px}
 .sec-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:10px}
 .sec-title{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:400;color:var(--graphite);line-height:1.15}
-.sec-title em{font-style:italic;color:var(--steel)}
+.sec-title em{color:var(--steel)}
 .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
 .step-card{
   background:var(--cloud);border-radius:18px;
@@ -177,28 +177,28 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .svc-cta p{font-size:15px;color:rgba(255,255,255,.58);margin-bottom:36px}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .cta-book{padding:15px 36px;border-radius:100px;background:#fff;color:var(--graphite);font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .22s;box-shadow:0 2px 12px rgba(0,0,0,.15)}
-.cta-book:hover{background:#f0f0f0;transform:translateY(-2px)}
+.cta-book:hover{background:#b85a24;transform:translateY(-2px);box-shadow:0 7px 26px rgba(201,106,46,.45)}
 .cta-call{padding:15px 36px;border-radius:100px;background:#2d3748;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .22s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.cta-call:hover{background:#3d4a5c;transform:translateY(-2px)}
+.cta-call:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
 .svc-cta-info{font-size:13px;color:rgba(255,255,255,.32);margin-top:22px}
 
 /* FOOTER */
-#footer{background:#f8f7f4;border-top:1px solid rgba(29,62,92,.08);padding:56px 0 28px}
+#footer{background:#0f1520;border-top:1px solid rgba(255,255,255,.05);padding:56px 0 28px}
 .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
-.foot-brand{font-family:var(--sans);font-size:13.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite);margin-bottom:14px}
+.foot-brand{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:14px}
 .foot-brand span{color:var(--copper)}
-.foot-desc{font-size:13.5px;line-height:1.7;color:var(--slate);margin-bottom:12px;max-width:250px}
-.foot-ph{font-size:13.5px;font-weight:500;color:var(--navy);transition:color .2s}
-.foot-ph:hover{color:var(--copper)}
-.foot-head{font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--graphite);margin-bottom:16px}
+.foot-desc{font-size:13px;line-height:1.75;color:rgba(255,255,255,.38);margin-bottom:12px;max-width:250px}
+.foot-ph{font-size:14px;font-weight:600;color:rgba(255,255,255,.6);transition:color .2s}
+.foot-ph:hover{color:#fff}
+.foot-head{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:16px}
 .foot-links{list-style:none;display:flex;flex-direction:column;gap:9px}
-.foot-links a{font-size:13.5px;color:var(--slate);transition:color .2s}
-.foot-links a:hover{color:var(--navy)}
-.foot-bot{border-top:1px solid rgba(29,62,92,.07);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.foot-copy{font-size:12.5px;color:var(--slate)}
+.foot-links a{font-size:13px;color:rgba(255,255,255,.45);transition:color .2s}
+.foot-links a:hover{color:#fff}
+.foot-bot{border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.22);font-weight:300}
 .foot-legal{display:flex;gap:18px}
-.foot-legal a{font-size:12.5px;color:var(--slate);transition:color .2s}
-.foot-legal a:hover{color:var(--navy)}
+.foot-legal a{font-size:12px;color:rgba(255,255,255,.22);transition:color .2s}
+.foot-legal a:hover{color:rgba(255,255,255,.6)}
 
 /* BOOKING MODAL */
 #bk-modal{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -271,7 +271,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   .footer-grid{grid-template-columns:1fr}
 }
 
-/* Services dropdown â minimal clean style */
+/* Services dropdown — minimal clean style */
 .nav-links li{position:relative}
 .nav-dropdown{
   position:absolute;
@@ -305,7 +305,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 .nav-dropdown a::after{display:none!important}
 
 
-/* ââ AI SMILE ANALYSIS âââââââââââââââââââââââââââââââ */
+/* ── AI SMILE ANALYSIS ─────────────────────────────── */
 .svc-ai{background:var(--cloud);padding:80px 0}
 .ai-inner{background:#fff;border-radius:24px;border:1px solid rgba(29,62,92,.09);box-shadow:0 8px 40px rgba(29,62,92,.08);overflow:hidden}
 .ai-top{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
@@ -417,11 +417,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 <section class="svc-hero">
   <div class="svc-hero-text">
     <div class="svc-breadcrumb">
-      <a href="/">Home</a><span>âº</span><a href="/services">Services</a><span>âº</span><span>Dental Implants</span>
+      <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>Dental Implants</span>
     </div>
     <span class="svc-eyebrow">Permanent Tooth Replacement</span>
     <h1 class="svc-hero-h1">Replace Missing Teeth That Look, Feel, and Function Like Your Own</h1>
-    <p class="svc-hero-p">Dental implants are the gold standard for tooth replacement â a titanium post that fuses to your jawbone, topped with a custom crown that's completely indistinguishable from a natural tooth.</p>
+    <p class="svc-hero-p">Dental implants are the gold standard for tooth replacement — a titanium post that fuses to your jawbone, topped with a custom crown that's completely indistinguishable from a natural tooth.</p>
     <div class="svc-hero-btns">
       <button class="btn-primary" onclick="doBook(event)">Book Free Consultation</button>
       <a href="tel:+18187066077" class="btn-secondary">Call (818) 706-6077</a>
@@ -430,7 +430,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   <div class="svc-hero-img">
     <div style="position:absolute;inset:0;background:linear-gradient(135deg,#ddf0fb 0%,#88c2e8 50%,#2A5A82 100%);display:flex;align-items:center;justify-content:center;">
       <div style="text-align:center;color:#fff;padding:32px">
-        <div style="font-size:72px;margin-bottom:16px">ð¦·</div>
+        <div style="font-size:72px;margin-bottom:16px">🦷</div>
         <div style="font-family:var(--serif);font-size:22px;opacity:.9">Dental Implants</div>
         <div style="font-size:13px;opacity:.65;margin-top:6px">Service Photo Coming Soon</div>
       </div>
@@ -447,13 +447,13 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   <div class="wrap">
     <div class="section-header reveal">
       <span class="sec-label">Your Journey</span>
-      <h2 class="sec-title">The Process, <em>Step by Step</em></h2>
+      <h2 class="sec-title">The Process, Step by Step</h2>
     </div>
     <div class="steps-grid">
       <div class="step-card reveal">
         <div class="step-num">1</div>
         <div class="step-title">3D Imaging & Consultation</div>
-        <div class="step-desc">Our CBCT scanner creates a full 3D map of your jaw. We plan your implant digitally â exact position, angle, and depth â before any procedure.</div>
+        <div class="step-desc">Our CBCT scanner creates a full 3D map of your jaw. We plan your implant digitally — exact position, angle, and depth — before any procedure.</div>
       </div>
       <div class="step-card reveal d1">
         <div class="step-num">2</div>
@@ -463,12 +463,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       <div class="step-card reveal d2">
         <div class="step-num">3</div>
         <div class="step-title">Healing & Osseointegration</div>
-        <div class="step-desc">Over 3â6 months, your implant fuses naturally with your jawbone. A temporary crown keeps your smile complete throughout.</div>
+        <div class="step-desc">Over 3–6 months, your implant fuses naturally with your jawbone. A temporary crown keeps your smile complete throughout.</div>
       </div>
       <div class="step-card reveal d3">
         <div class="step-num">4</div>
         <div class="step-title">Crown Placement</div>
-        <div class="step-desc">Your custom porcelain crown is attached to the implant â perfectly matched to your surrounding teeth. Your smile is complete.</div>
+        <div class="step-desc">Your custom porcelain crown is attached to the implant — perfectly matched to your surrounding teeth. Your smile is complete.</div>
       </div>
     </div>
   </div>
@@ -481,8 +481,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       <div class="reveal">
         <span class="fin-label">Flexible Financing</span>
         <h2 class="fin-h2">Dental Implants That Fits Your Budget</h2>
-        <p class="fin-p">Dental implants are the longest-lasting tooth replacement option available. We offer extended monthly payment plans and work with your insurance to maximize any covered benefits â making the investment more accessible than you might expect.</p>
-        <a href="/financing" class="btn-primary" style="display:inline-flex;text-decoration:none">Explore Financing Options â</a>
+        <p class="fin-p">Dental implants are the longest-lasting tooth replacement option available. We offer extended monthly payment plans and work with your insurance to maximize any covered benefits — making the investment more accessible than you might expect.</p>
+        <a href="/financing" class="btn-primary" style="display:inline-flex;text-decoration:none">Explore Financing Options →</a>
       </div>
       <div class="fin-cards reveal d2">
         <div class="fin-card">
@@ -491,11 +491,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         </div>
         <div class="fin-card">
           <div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-          <div><div class="fin-card-title">Insurance Accepted</div><div class="fin-card-desc">We work with most PPO plans â our team verifies your benefits before you start</div></div>
+          <div><div class="fin-card-title">Insurance Accepted</div><div class="fin-card-desc">We work with most PPO plans — our team verifies your benefits before you start</div></div>
         </div>
         <div class="fin-card">
           <div class="fin-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
-          <div><div class="fin-card-title">Free Consultation</div><div class="fin-card-desc">No cost, no commitment â get your full treatment plan and pricing upfront</div></div>
+          <div><div class="fin-card-title">Free Consultation</div><div class="fin-card-desc">No cost, no commitment — get your full treatment plan and pricing upfront</div></div>
         </div>
       </div>
     </div>
@@ -510,7 +510,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
         <div class="ai-text">
           <span class="ai-label">AI-Powered Smile Analysis</span>
           <h2 class="ai-h2" id="aiH2">Not Sure If This Treatment Is Right for You?</h2>
-          <p class="ai-p">Upload a photo of your smile and our AI will analyze your teeth â evaluating shade, alignment, spacing, and more â then give you personalized treatment recommendations in seconds. Completely private, no sign-up required.</p>
+          <p class="ai-p">Upload a photo of your smile and our AI will analyze your teeth — evaluating shade, alignment, spacing, and more — then give you personalized treatment recommendations in seconds. Completely private, no sign-up required.</p>
 
           <!-- Upload zone -->
           <div class="ai-upload-area" id="aiDropzone">
@@ -576,12 +576,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
   <div class="wrap">
     <div class="section-header reveal">
       <span class="sec-label">Common Questions</span>
-      <h2 class="sec-title">Dental Implants <em>FAQ</em></h2>
+      <h2 class="sec-title">Dental Implants FAQ</h2>
     </div>
     <div class="faq-grid reveal">
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-text">How long do dental implants last?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">With proper care, dental implants can last a lifetime. The crown on top may need replacement after 15â25 years due to normal wear, but the implant post itself is designed to be permanent.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">With proper care, dental implants can last a lifetime. The crown on top may need replacement after 15–25 years due to normal wear, but the implant post itself is designed to be permanent.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-text">Are dental implants painful?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
@@ -589,7 +589,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       </div>
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-text">How long does the whole process take?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
-        <div class="faq-a"><div class="faq-a-inner">From placement to final crown, the process typically takes 4â8 months depending on healing time. We'll give you a precise timeline at your consultation.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">From placement to final crown, the process typically takes 4–8 months depending on healing time. We'll give you a precise timeline at your consultation.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-text">What if I don't have enough bone?</span><div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
@@ -611,12 +611,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
 <section class="svc-cta">
   <div class="wrap">
     <h2>Ready to Replace Your Missing Teeth?</h2>
-    <p>Book a free implant consultation and see your full treatment plan â including 3D imaging.</p>
+    <p>Book a free implant consultation and see your full treatment plan — including 3D imaging.</p>
     <div class="cta-btns">
       <button class="cta-book" onclick="doBook(event)">Book Free Consultation</button>
       <a href="tel:+18187066077" class="cta-call">Call (818) 706-6077</a>
     </div>
-    <p class="svc-cta-info">28632 Roadside Dr #270, Agoura Hills, CA 91301 Â· MonâThu 8amâ5pm Â· Fri 8amâ3pm</p>
+    <p class="svc-cta-info">28632 Roadside Dr #270, Agoura Hills, CA 91301 · Mon–Thu 8am–5pm · Fri 8am–3pm</p>
   </div>
 </section>
 
@@ -663,7 +663,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
       </div>
     </div>
     <div class="foot-bot">
-      <span class="foot-copy">Â© 2025 Agoura Hills Dental Designs. All rights reserved.</span>
+      <span class="foot-copy">© 2025 Agoura Hills Dental Designs. All rights reserved.</span>
       <div class="foot-legal"><a href="/privacy">Privacy Policy</a><a href="/sitemap.xml">Sitemap</a></div>
     </div>
   </div>
@@ -687,13 +687,13 @@ button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none
     <div id="chat-hd">
       <div id="chat-hd-info">
         <div id="chat-hd-title">Agoura Hills Dental Designs<br>Patient Concierge</div>
-        <div id="chat-status">Online â Ready to help</div>
+        <div id="chat-status">Online — Ready to help</div>
       </div>
       <button id="chat-cls"><svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
     </div>
     <div id="chat-msgs"></div>
     <div id="chat-inp-area">
-      <input type="text" id="chat-inp" placeholder="Ask me anythingâ¦"/>
+      <input type="text" id="chat-inp" placeholder="Ask me anything…"/>
       <button id="chat-send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
     </div>
   </div>
@@ -713,24 +713,24 @@ document.querySelectorAll('.faq-item').forEach(function(item){item.querySelector
 
 // BOOKING
 var BOOK_URL='https://bookit.dentrixascend.com/soe/new/dental?pid=ASC64000000019461&mode=externalLink';
-function doBook(e){if(e){e.preventDefault();e.stopPropagation();}gtag('event','conversion',{'send_to':'AW-11217610443/kZZHCO2O15QcEMvN_OQp'});var modal=document.getElementById('bk-modal'),cont=document.getElementById('bk-container');cont.innerHTML='';var fr=document.createElement('iframe');fr.src=BOOK_URL;fr.title='Book Appointment Online';fr.allow='payment';fr.style.cssText='width:100%;height:100%;min-height:580px;border:none;display:block;';cont.appendChild(fr);modal.classList.add('open');document.body.style.overflow='hidden';document.addEventListener('keydown',escBook);}
+function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=document.getElementById('bk-modal'),cont=document.getElementById('bk-container');cont.innerHTML='';var fr=document.createElement('iframe');fr.src=BOOK_URL;fr.title='Book Appointment Online';fr.allow='payment';fr.style.cssText='width:100%;height:100%;min-height:580px;border:none;display:block;';cont.appendChild(fr);modal.classList.add('open');document.body.style.overflow='hidden';document.addEventListener('keydown',escBook);}
 function closeBook(){document.getElementById('bk-modal').classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){document.getElementById('bk-container').innerHTML='';},300);}
 function escBook(e){if(e.key==='Escape')closeBook();}
 
 // AI SMILE
-// ââ AI SMILE ANALYSIS ââââââââââââââââââââââââââââââââââââââ
+// ── AI SMILE ANALYSIS ──────────────────────────────────────
 (function(){
   var ENDPOINT = '/api/smileAnalysis';
 
   var TREATMENT_LABELS = {
-    veneers:        { label: 'Porcelain Veneers',    icon: 'â¨', url: '/services/veneers' },
-    whitening:      { label: 'Teeth Whitening',      icon: 'ð', url: '/services/teeth-whitening' },
-    invisalign:     { label: 'Invisalign',           icon: 'ð', url: '/services/invisalign' },
-    bonding:        { label: 'Dental Bonding',       icon: 'ð§', url: '/services/restorative-dentistry' },
-    implants:       { label: 'Dental Implants',      icon: 'ð¦·', url: '/services/dental-implants' },
-    makeover:       { label: 'Smile Makeover',       icon: 'ð', url: '/services/veneers' },
-    crowns:         { label: 'Dental Crowns',        icon: 'ð', url: '/services/restorative-dentistry' },
-    gum_contouring: { label: 'Gum Contouring',       icon: 'ð', url: '/services/restorative-dentistry' }
+    veneers:        { label: 'Porcelain Veneers',    icon: '✨', url: '/services/veneers' },
+    whitening:      { label: 'Teeth Whitening',      icon: '🌟', url: '/services/teeth-whitening' },
+    invisalign:     { label: 'Invisalign',           icon: '😁', url: '/services/invisalign' },
+    bonding:        { label: 'Dental Bonding',       icon: '🔧', url: '/services/restorative-dentistry' },
+    implants:       { label: 'Dental Implants',      icon: '🦷', url: '/services/dental-implants' },
+    makeover:       { label: 'Smile Makeover',       icon: '🏆', url: '/services/veneers' },
+    crowns:         { label: 'Dental Crowns',        icon: '👑', url: '/services/restorative-dentistry' },
+    gum_contouring: { label: 'Gum Contouring',       icon: '💎', url: '/services/restorative-dentistry' }
   };
 
   var fileInput   = document.getElementById('aiFile');
