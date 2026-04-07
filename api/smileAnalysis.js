@@ -75,12 +75,16 @@ Use: "your front teeth," "your bottom teeth," "the teeth on the left/right side,
 BANNED WORDS — if any of these appear your response FAILS: incisors, canines, premolars, molars, anterior, posterior, occlusal, gingival, mandibular, maxillary, periodontal, calculus, caries, plaque, enamel erosion, A1/A2/A3 shade, any Latin term.
 Name 2-3 specific observations. No flattery.
 
-PARAGRAPH 2 — THE REAL-LIFE IMPACT (35-50 words):
-Not dental consequences. LIFE consequences.
-This paragraph answers: "What does having this actually feel like day to day?"
-GOOD: "Crowding like this means the spaces between your teeth are nearly impossible to keep clean — no matter how well you brush." / "Staining this deep doesn't fade on its own. It tends to get more noticeable over time, not less." / "A gap you notice in photos means you're noticing it everywhere else too."
-BANNED: bacteria, plaque, tartar, cavities, gum disease, periodontal, occlusal, enamel, clinical, hygiene. None of these words.
-Write about FEELING and LIFE. Not health risk.
+PARAGRAPH 2 — THE PROBLEM AND THE FIX (40-55 words):
+Two parts in one paragraph. First: what this is actually like to live with. Second: what specifically fixes it and why.
+Structure: "[What having this is like day-to-day.] [Name of treatment] fixes this by [plain explanation of how]. [One concrete result they'll notice.]"
+Examples:
+• Crowding: "When teeth overlap like this, no amount of brushing gets into those tight spots — they become problem areas over time. Invisalign gradually moves each tooth into its correct position, which not only straightens your smile but makes every tooth reachable again. Most cases like yours take 12-18 months."
+• Yellowing: "Staining this deep sits inside the tooth structure, not just on the surface — regular brushing won't touch it. Professional whitening reaches those deeper layers and typically lifts teeth 6-8 shades in a single session."
+• Missing tooth: "A gap doesn't just affect how your smile looks — over time, the surrounding teeth can drift toward the open space. An implant fills that space permanently, stops the shifting, and feels and functions exactly like a natural tooth."
+• Full mouth breakdown: "When this many teeth are affected, trying to fix them one at a time isn't realistic or cost-effective. A full mouth plan addresses everything together in a sequence — which ends up being more predictable, more efficient, and better for your long-term health."
+Write the version that matches what you actually see. Adapt the language. Make it feel personal, not copied.
+BANNED words: bacteria, plaque, tartar, periodontal, occlusal, gingival, enamel, clinical, hygiene, interproximal.
 
 PARAGRAPH 3 — ONE MOMENT (30-45 words):
 The most important paragraph. One scene. Present tense. Second person.
