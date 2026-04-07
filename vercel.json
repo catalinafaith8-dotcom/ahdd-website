@@ -1,15 +1,15 @@
 {
-  "outputDirectory": ".",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/dental-implants",       "destination": "/dental-implants.html" },
-    { "source": "/emergency-dentistry",   "destination": "/emergency-dentistry.html" },
-    { "source": "/invisalign",            "destination": "/invisalign.html" },
-    { "source": "/restorative-dentistry", "destination": "/restorative-dentistry.html" },
-    { "source": "/teeth-whitening",       "destination": "/teeth-whitening.html" },
-    { "source": "/veneers",               "destination": "/veneers.html" },
-    { "source": "/insurance-checker",     "destination": "/insurance-checker-ahdd__4_.html" },
-    { "source": "/chatbot",               "destination": "/chatbot-widget-updated.html" }
+    { "source": "/dental-implants",       "destination": "/dental-implants" },
+    { "source": "/emergency-dentistry",   "destination": "/emergency-dentistry" },
+    { "source": "/invisalign",            "destination": "/invisalign" },
+    { "source": "/restorative-dentistry", "destination": "/restorative-dentistry" },
+    { "source": "/teeth-whitening",       "destination": "/teeth-whitening" },
+    { "source": "/veneers",               "destination": "/veneers" },
+    { "source": "/insurance-checker",     "destination": "/insurance-checker-ahdd__4_" },
+    { "source": "/chatbot",               "destination": "/chatbot-widget-updated" }
   ]
 }
