@@ -498,15 +498,13 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 .sai-result-text{font-size:15px;line-height:1.82;color:#2d3340}
 .sai-para{margin-bottom:16px;line-height:1.82;font-size:15px}
 .sai-para:last-child{margin-bottom:0}
-.sai-para-diagnosis{color:#0a0e14;font-size:15px;font-weight:400}
+.sai-para-diagnosis{color:#0a0e14;font-size:15px;font-weight:400;line-height:1.85}
 .sai-para-rationale{color:#2d3340;font-size:14.5px;padding:14px 16px;background:rgba(0,113,227,.04);border-left:3px solid rgba(0,113,227,.25);border-radius:0 10px 10px 0;margin-bottom:16px}
 .sai-para-impact{color:#2d3340;font-size:14.5px;font-style:italic;padding:14px 16px;background:rgba(201,106,46,.04);border-left:3px solid rgba(201,106,46,.3);border-radius:0 10px 10px 0;margin-bottom:16px}
-.sai-para-cta{color:#0071e3;font-size:13.5px;font-weight:500;padding-top:4px}
+.sai-para-cta{color:#6b7585;font-size:13.5px;font-weight:400;padding-top:6px}
 
 .sai-result-text{font-size:14.5px;line-height:1.82;color:#2d3340;white-space:pre-line}
-.sai-impact{background:linear-gradient(135deg,rgba(0,113,227,.04),rgba(0,88,176,.02));border:1px solid rgba(0,113,227,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px}
-.sai-impact-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0071e3;margin-bottom:8px}
-.sai-impact-text{font-size:14px;line-height:1.78;color:#2d3340;font-style:italic}
+
 .sai-tx-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .sai-tx-label{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#6b7585}
 .sai-tx-hint{font-size:11px;color:#6b7585;opacity:.65}
@@ -983,10 +981,6 @@ button { font-family: var(--sans); }
               <div class="sai-result-label">Your Smile Assessment</div>
               <div class="sai-result-text" id="saiResultText"></div>
             </div>
-            <div class="sai-impact" id="saiImpact" style="display:none">
-              <div class="sai-impact-label">What This Means For You</div>
-              <div class="sai-impact-text" id="saiImpactText"></div>
-            </div>
             <div id="saiTxWrap" style="display:none">
               <div class="sai-tx-header"><span class="sai-tx-label">Treatment Pathways</span><span class="sai-tx-hint">&mdash; tap any for details</span></div>
               <div class="sai-tx-chips" id="saiTxChips"></div>
@@ -1202,13 +1196,6 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     recommended:{label:'Clinically Recommended',      cls:'recommended'},
     priority:   {label:'Priority Evaluation Advised', cls:'priority'}
   };
-  var IMPACT = {
-    elective:   'Every conversation starts with your smile. Even subtle improvements change how others perceive you and how you feel walking into every room.',
-    recommended:'What you see now will progress without care. Addressing this today protects the investment you have already made in your teeth.',
-    priority:   'The window to act with the simplest, most affordable solution is still open. Waiting closes that window. Drs. Matian can create a treatment sequence that fits your timeline and budget.',
-    full_mouth: 'A full smile transformation changes your bite, your speech, how food feels, and how you show up in your own life. Patients consistently describe it as one of the most meaningful investments they have ever made.',
-    emergency:  'Dental issues that look serious can escalate faster than most people realize. What is treatable today can become significantly more complex and costly in weeks. Same-day appointments are available.'
-  };
   function $$(id){return document.getElementById(id)}
   var fileInput=$$('saiFile'),analyzeBtn=$$('saiAnalyzeBtn');
   var dropzone=$$('saiDrop'),dropTitle=$$('saiDropTitle');
@@ -1220,7 +1207,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
   var gateSubmit=$$('saiGateSubmit');
   var emrgBanner=$$('saiEmrgBanner'),emrgBody=$$('saiEmrgBody'),emrgCta=$$('saiEmrgCta');
   var resultWrap=$$('saiResult'),urgencyEl=$$('saiUrgency');
-  var resultText=$$('saiResultText'),impactEl=$$('saiImpact'),impactText=$$('saiImpactText');
+  var resultText=$$('saiResultText');
   var txWrap=$$('saiTxWrap'),txChips=$$('saiTxChips');
   var deepdive=$$('saiDeepdive'),ddTitle=$$('saiDdTitle');
   var ddLoad=$$('saiDdLoad'),ddText=$$('saiDdText');
@@ -1245,7 +1232,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     gate.classList.remove('show');emrgBanner.classList.remove('show');
     resultWrap.classList.remove('show');deepdive.style.display='none';
     txWrap.style.display='none';txChips.innerHTML='';urgencyEl.innerHTML='';
-    impactEl.style.display='none';resetBtn.classList.remove('visible');
+    resetBtn.classList.remove('visible');
     pendingData=null;activeChip=null;
     var reader=new FileReader();
     reader.onload=function(ev){
@@ -1304,8 +1291,6 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       return'<p class="'+cls+'">'+p.trim().replace(/\n/g,' ')+'</p>';
     }).join('');
     var isFull=hasFullMouth(data);
-    impactText.textContent=IMPACT[isFull?'full_mouth':(data.urgency||'elective')]||IMPACT.elective;
-    impactEl.style.display='block';
     txChips.innerHTML='';
     (data.treatments||[]).forEach(function(t){
       var meta=TX[t.id];if(!meta)return;
@@ -1322,7 +1307,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     resultWrap.classList.add('show');
     setTimeout(function(){resultWrap.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
   }
-  function showErr(msg){urgencyEl.innerHTML='';resultText.textContent=msg;txWrap.style.display='none';impactEl.style.display='none';resultWrap.classList.add('show');analyzeBtn.disabled=false;resetBtn.classList.add('visible');}
+  function showErr(msg){urgencyEl.innerHTML='';resultText.textContent=msg;txWrap.style.display='none';resultWrap.classList.add('show');analyzeBtn.disabled=false;resetBtn.classList.add('visible');}
   function openDeepdive(label){
     if(!b64)return;deepdive.style.display='block';ddTitle.textContent=label;ddLoad.classList.add('show');ddText.textContent='';
     fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,mode:'deep_dive',treatmentLabel:label})})
@@ -1339,7 +1324,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     preview.classList.remove('show');previewImg.src='';analyzeBtn.disabled=true;
     loader.classList.remove('show');gate.classList.remove('show');emrgBanner.classList.remove('show');
     resultWrap.classList.remove('show');deepdive.style.display='none';txWrap.style.display='none';
-    txChips.innerHTML='';urgencyEl.innerHTML='';impactEl.style.display='none';ddText.textContent='';
+    txChips.innerHTML='';urgencyEl.innerHTML='';ddText.textContent='';
     resetBtn.classList.remove('visible');
     gateName.value='';gateEmail.value='';gatePhone.value='';
     gateName.classList.remove('error');gateEmail.classList.remove('error');
