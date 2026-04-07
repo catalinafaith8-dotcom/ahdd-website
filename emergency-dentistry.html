@@ -19,7 +19,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -546,8 +546,9 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 /* ── AI SMILE ANALYSIS v3 ─────────────────────────────────
    Glass UI · Apple meets dentist · SF Pro Display + Instrument Sans
    ─────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
+/* sai widget always visible */
+.sai-section,.sai-card{opacity:1!important;transform:none!important}
 .sai-section{
   padding:100px 0;
   background:linear-gradient(160deg,#f0f4f9 0%,#ffffff 40%,#f6f0eb 100%);
@@ -1107,7 +1108,7 @@ button { font-family: var(--sans); }
 <!-- AI SMILE ANALYSIS v3 -->
 <section class="sai-section" id="smileAnalysis">
   <div class="wrap">
-    <div class="sai-card reveal">
+    <div class="sai-card">
       <div class="sai-grid">
         <!-- LEFT -->
         <div class="sai-left">
