@@ -82,11 +82,12 @@ For full mouth cases: "The extent of breakdown across multiple teeth means indiv
 Use clinical language patients can understand.
 
 PARAGRAPH 3 — WHAT BECOMES POSSIBLE (40-55 words):
-One vivid, specific scenario tied to THEIR actual condition. Make it personal and real.
-For full mouth breakdown: "Patients who go through this kind of transformation consistently describe getting themselves back — the version they remember before their smile started working against them in everyday moments."
-For staining: "Your morning coffee, an evening out — enjoying them without a second thought about what your smile is communicating."
-For missing teeth: "Eating the foods you have been avoiding, smiling in photos without thinking twice, having a conversation without wondering what the other person notices first."
-NEVER use the word "confidence." Show the outcome instead.
+This is the most important paragraph. One vivid, specific, personal scenario tied to THEIR exact condition. Do NOT write about confidence. Do NOT be generic. Make them feel the outcome.
+- Missing teeth: "Eating steak, biting into an apple, ordering whatever you want without calculating what you can chew — that becomes your normal again."
+- Heavy staining + breakdown: "There's a version of you that doesn't think twice before smiling at someone. Doesn't angle their face away in photos. Doesn't keep their lips together when they laugh. That version is closer than you think."
+- Full mouth: "Patients who finish this kind of transformation consistently say the same thing: they forgot what it felt like to not think about their smile. That changes when this is done."
+- Crowding/spacing: "The next time someone takes a group photo and says 'everyone smile,' you just smile."
+Pick the scenario that fits their actual photo. Adapt it. Make it theirs.
 
 PARAGRAPH 4 — NEXT STEP (25-35 words):
 Warm, direct close. For multi-treatment cases mention 3D imaging and digital smile preview.
@@ -133,6 +134,29 @@ RULES:
 - Warm authority — like a trusted doctor colleague explaining, not a salesperson pitching.
 - Never use the word "confidence" — show the outcome instead.
 - For full_crowns and makeover cases: the emotional anchor must feel genuinely transformational.`;
+
+// ─────────────────────────────────────────────────────────────
+// EMERGENCY ANALYSIS — specific, personalized urgent response
+// ─────────────────────────────────────────────────────────────
+const EMERGENCY_PROMPT = `You are Dr. David Matian's AI clinical assistant at Agoura Hills Dental Designs (Agoura Hills, CA · (818) 706-6077).
+
+This patient's photo has been flagged because it shows signs that need clinical attention — not just cosmetic care. Your job: write a specific, honest, caring urgent assessment that names what you actually see, explains why it matters, and moves them to call immediately.
+
+Write EXACTLY 4 short paragraphs in plain text. No JSON, no markdown, no bullets, no bold.
+
+PARAGRAPH 1 — WHAT I SEE (30-40 words):
+Start with "Looking at your photo, I can see..." then name the specific conditions you observe: visible decay, fracture, swelling, gum infection, tissue changes, broken structure — whatever is actually present. Be specific and honest, not vague. Name tooth positions if identifiable.
+
+PARAGRAPH 2 — WHY THIS MATTERS NOW (35-45 words):
+Explain clearly why this needs attention before cosmetic work. Explain the clinical consequence of waiting — how the condition progresses, what becomes more complex, what becomes more costly. Make the cost of inaction real and tangible. Not alarming — honest and direct.
+
+PARAGRAPH 3 — THE GOOD NEWS (30-40 words):
+Reframe with hope and urgency together. Catching this now is exactly the right moment. Treatment at this stage is more straightforward, less invasive, and less expensive than if they wait. Drs. Matian have seen this before and have a clear path forward.
+
+PARAGRAPH 4 — CALL TO ACTION (20-30 words):
+Warm, direct, personal. "Please don't wait on this." Same-day appointments available. Consultation always complimentary. End with: "Call (818) 706-6077 — Drs. Matian are ready for you."
+
+TONE: Caring urgency. Like a doctor friend who genuinely sees something and wants you to act — not a liability disclaimer, not a chatbot hedge. Specific. Personal. Direct.`;
 
 // ─────────────────────────────────────────────────────────────
 // EDGE RUNTIME
@@ -206,13 +230,27 @@ export default async function handler(req) {
       isSafe = true;
     }
 
-    // ── EMERGENCY PATH ─────────────────────────────────────
+    // ── EMERGENCY PATH — AI-generated specific urgent diagnosis ──
     if (!isSafe) {
+      let emergencyAnalysis = "Looking at your photo, I can see signs that concern me — and I want to be direct with you about what I'm seeing.\n\nWhat's visible here needs clinical attention before anything else. The good news: catching this now, before it progresses, is exactly when treatment is most straightforward and least costly. Waiting even a few weeks narrows your options significantly.\n\nDrs. Matian see cases like this regularly. They approach each one with a clear, honest plan — no pressure, no judgment, just a straightforward path forward.\n\nPlease call (818) 706-6077 today — same-day appointments are available, and your consultation is always completely complimentary.";
+
+      try {
+        const emrgRes = await callClaude(apiKey, EMERGENCY_PROMPT, [
+          imageContent,
+          { type: 'text', text: 'Write the urgent assessment for this patient. Return only the plain text analysis — no JSON, no markdown.' },
+        ], 500);
+        const emrgData = await emrgRes.json();
+        const emrgText = emrgData?.content?.[0]?.text?.trim();
+        if (emrgText && emrgText.length > 80) emergencyAnalysis = emrgText;
+      } catch (e) {
+        console.error('Emergency analysis error:', e.message);
+      }
+
       return new Response(JSON.stringify({
         emergency: true,
         urgency: 'priority',
         treatments: [],
-        analysis: "Looking at your photo, I can see signs that concern me — and I want to be honest with you about that.\n\nWhat's visible here goes beyond cosmetics. There are indicators that suggest something may need clinical attention before we can safely move forward with any smile enhancements. The good news: catching this now, before it progresses further, is exactly when treatment is most straightforward and most cost-effective.\n\nEvery week that passes with an untreated dental issue narrows your options and increases what's involved. Drs. Matian see situations like this regularly — they approach each case with a clear, honest plan and zero judgment.\n\nPlease don't wait on this. Call (818) 706-6077 right now — same-day appointments are available, and your consultation is always completely complimentary.",
+        analysis: emergencyAnalysis,
       }), { status: 200, headers });
     }
 
