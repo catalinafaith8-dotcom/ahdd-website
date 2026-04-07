@@ -404,6 +404,7 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 }
 .sai-analyze-btn:hover:not(:disabled){background:#0058b0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,113,227,.4)}
 .sai-analyze-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+.sai-analyze-btn.done{display:none!important}
 .sai-privacy{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;color:#6b7585;margin-bottom:20px;opacity:.8}
 .sai-privacy svg{width:11px;height:11px;stroke:#6b7585;fill:none;stroke-width:2;flex-shrink:0}
 /* Loader */
@@ -493,6 +494,15 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 .sai-analysis-card{background:rgba(255,255,255,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(0,0,0,.07);border-radius:18px;padding:22px 22px 20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .sai-result-label{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#0071e3;margin-bottom:10px;display:flex;align-items:center;gap:7px}
 .sai-result-label::before{content:'';width:14px;height:1.5px;background:#0071e3}
+/* ── Analysis paragraph styles ─────────────────────── */
+.sai-result-text{font-size:15px;line-height:1.82;color:#2d3340}
+.sai-para{margin-bottom:16px;line-height:1.82;font-size:15px}
+.sai-para:last-child{margin-bottom:0}
+.sai-para-diagnosis{color:#0a0e14;font-size:15px;font-weight:400}
+.sai-para-rationale{color:#2d3340;font-size:14.5px;padding:14px 16px;background:rgba(0,113,227,.04);border-left:3px solid rgba(0,113,227,.25);border-radius:0 10px 10px 0;margin-bottom:16px}
+.sai-para-impact{color:#2d3340;font-size:14.5px;font-style:italic;padding:14px 16px;background:rgba(201,106,46,.04);border-left:3px solid rgba(201,106,46,.3);border-radius:0 10px 10px 0;margin-bottom:16px}
+.sai-para-cta{color:#0071e3;font-size:13.5px;font-weight:500;padding-top:4px}
+
 .sai-result-text{font-size:14.5px;line-height:1.82;color:#2d3340;white-space:pre-line}
 .sai-impact{background:linear-gradient(135deg,rgba(0,113,227,.04),rgba(0,88,176,.02));border:1px solid rgba(0,113,227,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px}
 .sai-impact-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0071e3;margin-bottom:8px}
@@ -1224,7 +1234,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
   }
   analyzeBtn.addEventListener('click',function(){if(selFile)run()});
   function run(){
-    analyzeBtn.disabled=true;loader.classList.add('show');
+    analyzeBtn.disabled=true;analyzeBtn.classList.add('done');loader.classList.add('show');
     gate.classList.remove('show');emrgBanner.classList.remove('show');
     resultWrap.classList.remove('show');deepdive.style.display='none';
     txWrap.style.display='none';txChips.innerHTML='';urgencyEl.innerHTML='';
@@ -1247,14 +1257,16 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     else if(isFull){gateHeading.textContent='Your Full Smile Report Is Ready';gateSub.textContent='This is a comprehensive assessment. Drs. Matian will review it personally before your visit.';}
     else{gateHeading.textContent='Your Results Are Ready';gateSub.textContent='Enter your info and Drs. Matian will personally review your analysis before your consultation.';}
     gate.classList.add('show');resetBtn.classList.add('visible');
-    setTimeout(function(){gate.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
+    setTimeout(function(){gate.scrollIntoView({behavior:'smooth',block:'start'})},80);
   }
   gateSubmit.addEventListener('click',function(){
     var name=(gateName.value||'').trim(),email=(gateEmail.value||'').trim(),phone=(gatePhone.value||'').trim();
     gateName.classList.remove('error');gateEmail.classList.remove('error');
     if(!name){gateName.classList.add('error');gateName.focus();return;}
     if(!email||!email.includes('@')){gateEmail.classList.add('error');gateEmail.focus();return;}
-    gateSubmit.disabled=true;gateSubmit.querySelector('span').textContent='Sending...';
+    gateSubmit.disabled=true;
+    gateSubmit.style.background='rgba(0,0,0,.08)';
+    gateSubmit.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#0a0e14;font-size:13px">Sent — loading your report…</span>';
     var data=pendingData||{},isFull=hasFullMouth(data);
     var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
     var payload={
@@ -1264,14 +1276,26 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       source:'Smile Analysis Widget',
       customField:{smile_analysis_result:(data.analysis)||'',treatments_flagged:txLabels,urgency:(data.urgency)||'elective',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
     };
-    fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){gate.classList.remove('show');renderResult(pendingData);});
+    fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){
+      // Fade gate out, show result
+      gate.style.transition='opacity .3s ease';gate.style.opacity='0';
+      setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},320);
+    });
   });
   function renderResult(data){
     resetBtn.classList.add('visible');
-    if(data.emergency){emrgBody.textContent=data.analysis||'';emrgBanner.classList.add('show');setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;}
+    if(data.emergency){
+      var eParas=(data.analysis||'').split(/\n\n+/).filter(function(p){return p.trim();});
+      emrgBody.innerHTML=eParas.map(function(p){return'<p style="margin-bottom:12px;last-child:margin-bottom:0">'+p.trim()+'</p>';}).join('');
+      emrgBanner.classList.add('show');setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;}
     var u=UC[data.urgency]||UC.elective;
     urgencyEl.innerHTML='<div class="sai-urgency '+u.cls+'"><span class="sai-urg-dot"></span>'+u.label+'</div>';
-    resultText.textContent=data.analysis||'';
+    // Render paragraphs as formatted HTML blocks
+    var paras=(data.analysis||'').split(/\n\n+/).filter(function(p){return p.trim();});
+    resultText.innerHTML=paras.map(function(p,i){
+      var cls=i===0?'sai-para sai-para-diagnosis':i===1?'sai-para sai-para-rationale':i===2?'sai-para sai-para-impact':'sai-para sai-para-cta';
+      return'<p class="'+cls+'">'+p.trim().replace(/\n/g,' ')+'</p>';
+    }).join('');
     var isFull=hasFullMouth(data);
     impactText.textContent=IMPACT[isFull?'full_mouth':(data.urgency||'elective')]||IMPACT.elective;
     impactEl.style.display='block';
@@ -1304,7 +1328,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
   resetBtn.addEventListener('click',function(){
     selFile=null;b64=null;mime=null;activeChip=null;pendingData=null;
     fileInput.value='';dropTitle.textContent='Upload Your Smile Photo';
-    dropzone.classList.remove('has-file','drag');iconUp.style.display='block';iconOk.style.display='none';
+    dropzone.classList.remove('has-file','drag');iconUp.style.display='block';iconOk.style.display='none';analyzeBtn.classList.remove('done');
     preview.classList.remove('show');previewImg.src='';analyzeBtn.disabled=true;
     loader.classList.remove('show');gate.classList.remove('show');emrgBanner.classList.remove('show');
     resultWrap.classList.remove('show');deepdive.style.display='none';txWrap.style.display='none';
