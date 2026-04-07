@@ -499,9 +499,9 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 .sai-para{margin-bottom:16px;line-height:1.82;font-size:15px}
 .sai-para:last-child{margin-bottom:0}
 .sai-para-diagnosis{color:#0a0e14;font-size:15px;font-weight:400;line-height:1.85}
-.sai-para-rationale{color:#2d3340;font-size:14.5px;padding:14px 16px;background:rgba(0,113,227,.04);border-left:3px solid rgba(0,113,227,.25);border-radius:0 10px 10px 0;margin-bottom:16px}
-.sai-para-impact{color:#2d3340;font-size:14.5px;font-style:italic;padding:14px 16px;background:rgba(201,106,46,.04);border-left:3px solid rgba(201,106,46,.3);border-radius:0 10px 10px 0;margin-bottom:16px}
-.sai-para-cta{color:#6b7585;font-size:13.5px;font-weight:400;padding-top:6px}
+.sai-para-rationale{color:#2d3340;font-size:15px;line-height:1.78;padding:16px 18px;background:rgba(11,37,69,.03);border-left:3px solid rgba(11,37,69,.2);border-radius:0 12px 12px 0;margin-bottom:16px}
+.sai-para-impact{color:#0a0e14;font-size:16px;font-weight:500;line-height:1.72;padding:18px 20px;background:rgba(201,106,46,.05);border-left:4px solid #C96A2E;border-radius:0 14px 14px 0;margin-bottom:16px;font-style:normal}
+.sai-para-cta{color:#0a0e14;font-size:14px;font-weight:500;padding:14px 18px;background:rgba(0,113,227,.05);border-radius:12px;border:1px solid rgba(0,113,227,.12);margin-top:4px;line-height:1.7}
 
 .sai-result-text{font-size:14.5px;line-height:1.82;color:#2d3340;white-space:pre-line}
 
@@ -1283,7 +1283,9 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     var paras=(data.analysis||'').split(/\n\n+/).filter(function(p){return p.trim();});
     resultText.innerHTML=paras.map(function(p,i){
       var cls=i===0?'sai-para sai-para-diagnosis':i===1?'sai-para sai-para-rationale':i===2?'sai-para sai-para-impact':'sai-para sai-para-cta';
-      return'<p class="'+cls+'">'+p.trim().replace(/\n/g,' ')+'</p>';
+      var txt=p.trim().replace(/\n/g,' ');
+      // P4: render as CTA note without hyperlinking the phone
+      return'<p class="'+cls+'">'+txt+'</p>';
     }).join('');
     var isFull=hasFullMouth(data);
     txChips.innerHTML='';
