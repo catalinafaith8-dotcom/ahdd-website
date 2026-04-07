@@ -305,66 +305,253 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 .nav-dropdown a::after{display:none!important}
 
 
-/* ── AI SMILE ANALYSIS ─────────────────────────────── */
-.svc-ai{background:var(--cloud);padding:80px 0}
-.ai-inner{background:#fff;border-radius:24px;border:1px solid rgba(29,62,92,.09);box-shadow:0 8px 40px rgba(29,62,92,.08);overflow:hidden}
-.ai-top{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
-.ai-text{padding:52px 52px 52px 56px;display:flex;flex-direction:column;gap:0}
-.ai-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
-.ai-h2{font-family:var(--serif);font-size:clamp(22px,2.6vw,32px);font-weight:400;color:var(--graphite);line-height:1.2;margin-bottom:12px}
-.ai-p{font-size:14.5px;line-height:1.72;color:var(--slate);margin-bottom:22px}
-.ai-upload-area{border:2px dashed rgba(29,62,92,.18);border-radius:16px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .22s;background:var(--cloud);position:relative;margin-bottom:14px}
-.ai-upload-area:hover,.ai-upload-area.drag{border-color:var(--steel);background:var(--sky)}
-.ai-upload-area.has-file{border-color:var(--green);background:#f0fdf4}
-.ai-upload-icon{width:48px;height:48px;border-radius:12px;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.ai-upload-title{font-size:14px;font-weight:600;color:var(--graphite);margin-bottom:5px}
-.ai-upload-sub{font-size:12px;color:var(--slate)}
-.ai-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.ai-btn{width:100%;padding:13px;border-radius:12px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
-.ai-btn:hover:not(:disabled){background:var(--steel);transform:translateY(-1px)}
-.ai-btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
-.ai-loading{display:none;text-align:center;padding:14px;align-items:center;justify-content:center;gap:10px}
-.ai-loading.show{display:flex}
-.ai-spinner{width:28px;height:28px;border:2.5px solid rgba(29,62,92,.15);border-top-color:var(--navy);border-radius:50%;animation:aiSpin .8s linear infinite;flex-shrink:0}
-@keyframes aiSpin{to{transform:rotate(360deg)}}
-/* Result panel */
-.ai-result{display:none;background:var(--sky);border:1px solid rgba(29,62,92,.10);border-radius:14px;padding:20px;margin-bottom:14px}
-.ai-result.show{display:block;animation:aiFadeIn .3s ease}
-@keyframes aiFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.ai-result-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
-.ai-result-text{font-size:13.5px;line-height:1.72;color:var(--slate);white-space:pre-line;margin-bottom:16px}
-/* Treatment chips */
-.ai-treatments{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.ai-treatment-chip{
+
+/* ── AI SMILE ANALYSIS v3 ─────────────────────────────────
+   Glass UI · Apple meets dentist · SF Pro Display + Instrument Sans
+   ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+.sai-section{
+  padding:100px 0;
+  background:linear-gradient(160deg,#f0f4f9 0%,#ffffff 40%,#f6f0eb 100%);
+  position:relative;overflow:hidden;
+  font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;
+}
+.sai-section::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%,rgba(0,113,227,.04) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 60% at 10% 80%,rgba(201,106,46,.04) 0%,transparent 70%);
+}
+.sai-card{
+  background:rgba(255,255,255,0.72);
+  backdrop-filter:saturate(1.8) blur(24px);
+  -webkit-backdrop-filter:saturate(1.8) blur(24px);
+  border:1px solid rgba(255,255,255,0.55);
+  border-radius:28px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 2px 4px rgba(0,0,0,.04),
+    0 16px 48px rgba(0,0,0,.08),
+    0 48px 96px rgba(0,0,0,.06);
+  overflow:hidden;
+}
+.sai-grid{display:grid;grid-template-columns:1fr 400px;min-height:620px}
+.sai-left{
+  padding:52px 52px 52px 56px;
+  display:flex;flex-direction:column;
+  border-right:1px solid rgba(0,0,0,.05);
+}
+.sai-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:#C96A2E;margin-bottom:16px;
+}
+.sai-eyebrow-line{width:20px;height:1.5px;background:#C96A2E;flex-shrink:0}
+.sai-h2{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;
+  font-size:clamp(26px,3vw,38px);font-weight:700;color:#0a0e14;
+  line-height:1.08;letter-spacing:-.025em;margin-bottom:12px;
+}
+.sai-h2 em{font-style:normal;color:#0071e3}
+.sai-subhead{font-size:15px;line-height:1.7;color:#6b7585;margin-bottom:28px;max-width:440px}
+.sai-trust{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.sai-chip{
   display:inline-flex;align-items:center;gap:6px;
-  padding:7px 13px;border-radius:100px;
-  font-size:12px;font-weight:500;
-  background:#fff;color:var(--navy);
-  border:1.5px solid rgba(29,62,92,.18);
-  cursor:pointer;transition:all .2s;
+  padding:5px 12px 5px 8px;border-radius:100px;
+  background:rgba(255,255,255,.8);border:1px solid rgba(0,0,0,.07);
+  font-size:12px;font-weight:500;color:#2d3340;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
-.ai-treatment-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-.ai-treatment-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.ai-treatment-chip svg{width:12px;height:12px;flex-shrink:0}
-/* Deep dive */
-.ai-deepdive{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid rgba(29,62,92,.08)}
-.ai-deepdive-text{font-size:13.5px;line-height:1.72;color:var(--slate);white-space:pre-line}
-/* CTA */
-.ai-result-cta{width:100%;padding:12px;border-radius:10px;background:var(--copper);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background .2s;margin-top:4px}
-.ai-result-cta:hover{background:#b85e28}
-.ai-reset{background:none;border:none;color:var(--slate);font-size:13px;cursor:pointer;padding:0;text-decoration:underline;transition:color .2s}
-.ai-reset:hover{color:var(--navy)}
-/* Visual right panel */
-.ai-visual{background:linear-gradient(135deg,var(--navy) 0%,var(--steel) 100%);display:flex;align-items:center;justify-content:center;padding:48px;min-height:400px}
-.ai-visual-content{text-align:center;color:#fff}
-.ai-visual-icon{font-size:60px;margin-bottom:16px}
-.ai-visual-title{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:10px;line-height:1.3}
-.ai-visual-sub{font-size:13px;color:rgba(255,255,255,.62);line-height:1.65}
-@media(max-width:768px){
-  .ai-top{grid-template-columns:1fr}
-  .ai-text{padding:32px 24px}
-  .ai-visual{display:none}
+.sai-chip-dot{width:6px;height:6px;border-radius:50%;background:#34c759;flex-shrink:0}
+/* Drop zone */
+.sai-drop{
+  position:relative;border:1.5px dashed rgba(0,0,0,.16);border-radius:18px;
+  padding:30px 20px;text-align:center;cursor:pointer;
+  background:rgba(255,255,255,.5);
+  transition:all .22s cubic-bezier(.25,.46,.45,.94);margin-bottom:12px;
 }
+.sai-drop:hover{border-color:#0071e3;background:rgba(0,113,227,.03);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.08)}
+.sai-drop.drag{border-color:#0071e3;border-style:solid;background:rgba(0,113,227,.04)}
+.sai-drop.has-file{border-color:#34c759;border-style:solid;background:rgba(52,199,89,.04)}
+.sai-drop-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.sai-drop-icon{
+  width:48px;height:48px;border-radius:14px;background:#fff;
+  border:1px solid rgba(0,0,0,.06);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 10px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .2s;
+}
+.sai-drop:hover .sai-drop-icon{transform:translateY(-2px)}
+.sai-drop.has-file .sai-drop-icon{background:#dcfce7;border-color:transparent;box-shadow:none}
+.sai-drop-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:14px;font-weight:600;color:#0a0e14;margin-bottom:4px;letter-spacing:-.01em}
+.sai-drop-sub{font-size:12px;color:#6b7585;line-height:1.5}
+/* Preview */
+.sai-preview{display:none;position:relative;margin-bottom:12px;border-radius:16px;overflow:hidden;max-height:200px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.sai-preview.show{display:block;animation:saiFade .3s ease}
+.sai-preview img{width:100%;display:block;object-fit:cover;max-height:200px}
+.sai-preview-badge{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:.03em}
+/* Analyze btn */
+.sai-analyze-btn{
+  width:100%;padding:15px 24px;border-radius:14px;
+  background:#0071e3;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:-.01em;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .22s cubic-bezier(.25,.46,.45,.94);
+  box-shadow:0 4px 14px rgba(0,113,227,.3),0 1px 0 rgba(255,255,255,.15) inset;
+  margin-bottom:10px;
+}
+.sai-analyze-btn:hover:not(:disabled){background:#0058b0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,113,227,.4)}
+.sai-analyze-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+.sai-privacy{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;color:#6b7585;margin-bottom:20px;opacity:.8}
+.sai-privacy svg{width:11px;height:11px;stroke:#6b7585;fill:none;stroke-width:2;flex-shrink:0}
+/* Loader */
+.sai-loader{display:none;flex-direction:column;align-items:center;gap:14px;padding:24px 0}
+.sai-loader.show{display:flex;animation:saiFade .25s ease}
+.sai-loader-ring{position:relative;width:40px;height:40px}
+.sai-ring-outer{width:40px;height:40px;border:2px solid rgba(0,113,227,.1);border-top-color:#0071e3;border-radius:50%;animation:saiSpin .85s linear infinite}
+.sai-ring-inner{position:absolute;inset:8px;border:1.5px solid rgba(201,106,46,.15);border-top-color:#C96A2E;border-radius:50%;animation:saiSpin 1.3s linear infinite reverse}
+@keyframes saiSpin{to{transform:rotate(360deg)}}
+.sai-loader-label{font-size:13px;color:#6b7585;font-weight:500;text-align:center}
+.sai-loader-dots{display:flex;gap:5px;margin-top:2px}
+.sai-loader-dot{width:5px;height:5px;border-radius:50%;background:rgba(0,0,0,.12);animation:saiDot 1.4s ease-in-out infinite}
+.sai-loader-dot:nth-child(2){animation-delay:.2s}
+.sai-loader-dot:nth-child(3){animation-delay:.4s}
+@keyframes saiDot{0%,80%,100%{background:rgba(0,0,0,.12);transform:scale(.85)}40%{background:#0071e3;transform:scale(1)}}
+/* Gate */
+.sai-gate{
+  display:none;background:rgba(255,255,255,.9);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(0,113,227,.12);border-radius:20px;padding:28px 24px;margin-bottom:14px;
+}
+.sai-gate.show{display:block;animation:saiFade .4s cubic-bezier(.25,.46,.45,.94)}
+.sai-gate-icon{
+  width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,#0071e3,#2c4a6e);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;box-shadow:0 4px 14px rgba(0,113,227,.25);
+}
+.sai-gate-icon svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.75}
+.sai-gate-heading{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;
+  font-size:18px;font-weight:700;color:#0a0e14;letter-spacing:-.02em;
+  text-align:center;margin-bottom:6px;line-height:1.2;
+}
+.sai-gate-sub{font-size:13px;color:#6b7585;text-align:center;line-height:1.6;margin-bottom:20px}
+.sai-gate-field{
+  width:100%;padding:13px 16px;border-radius:12px;
+  border:1.5px solid rgba(0,0,0,.1);background:rgba(255,255,255,.9);
+  font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;font-size:14px;color:#0a0e14;
+  outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;
+  margin-bottom:10px;box-sizing:border-box;
+}
+.sai-gate-field::placeholder{color:rgba(107,117,133,.5)}
+.sai-gate-field:focus{border-color:#0071e3;box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.sai-gate-field.error{border-color:#ff3b30;box-shadow:0 0 0 3px rgba(255,59,48,.08)}
+.sai-gate-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sai-gate-row .sai-gate-field{margin-bottom:0}
+.sai-gate-submit{
+  width:100%;padding:14px 20px;border-radius:12px;
+  background:#0071e3;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:-.01em;border:none;cursor:pointer;margin-top:12px;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .22s;
+  box-shadow:0 4px 14px rgba(0,113,227,.28),0 1px 0 rgba(255,255,255,.15) inset;
+}
+.sai-gate-submit:hover{background:#0058b0;transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,113,227,.36)}
+.sai-gate-submit:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.sai-gate-legal{font-size:11px;color:#6b7585;text-align:center;line-height:1.55;margin-top:10px;opacity:.75}
+/* Urgency */
+.sai-urgency{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.sai-urgency.elective{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.sai-urgency.recommended{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+.sai-urgency.priority{background:#fff1f0;color:#991b1b;border:1px solid #fecaca}
+.sai-urgency.emergency{background:linear-gradient(135deg,#fff1f0,#fef2f2);color:#991b1b;border:1px solid #fecaca;animation:saiPulse 2s ease-in-out infinite}
+.sai-urg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.elective .sai-urg-dot{background:#34c759}
+.recommended .sai-urg-dot{background:#ff9500;animation:saiDotPulse 2s infinite}
+.priority .sai-urg-dot,.emergency .sai-urg-dot{background:#ff3b30;animation:saiDotPulse 1.5s infinite}
+@keyframes saiPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,48,.2)}50%{box-shadow:0 0 0 6px rgba(255,59,48,0)}}
+@keyframes saiDotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+/* Emergency banner */
+.sai-emergency-banner{display:none;background:linear-gradient(135deg,rgba(255,59,48,.06),rgba(255,59,48,.03));border:1.5px solid rgba(255,59,48,.2);border-radius:20px;padding:24px;margin-bottom:16px}
+.sai-emergency-banner.show{display:block;animation:saiFade .4s ease}
+.sai-emrg-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.sai-emrg-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ff3b30,#ff6b6b);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(255,59,48,.3)}
+.sai-emrg-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2.5}
+.sai-emrg-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:17px;font-weight:700;color:#991b1b;letter-spacing:-.02em;line-height:1.2}
+.sai-emrg-subtitle{font-size:12.5px;color:#c0392b;line-height:1.5;margin-top:2px}
+.sai-emrg-body{font-size:14px;line-height:1.78;color:#2d3340;margin-bottom:18px}
+.sai-emrg-cta{width:100%;padding:15px 20px;border-radius:12px;background:linear-gradient(135deg,#ff3b30,#e02020);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:-.01em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .22s;box-shadow:0 4px 14px rgba(255,59,48,.35);margin-bottom:10px}
+.sai-emrg-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,59,48,.45)}
+.sai-emrg-phone{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;color:#991b1b;text-decoration:none}
+.sai-emrg-phone:hover{text-decoration:underline}
+/* Result */
+.sai-result{display:none}
+.sai-result.show{display:block;animation:saiFade .4s ease}
+.sai-analysis-card{background:rgba(255,255,255,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(0,0,0,.07);border-radius:18px;padding:22px 22px 20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.sai-result-label{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#0071e3;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.sai-result-label::before{content:'';width:14px;height:1.5px;background:#0071e3}
+.sai-result-text{font-size:14.5px;line-height:1.82;color:#2d3340;white-space:pre-line}
+.sai-impact{background:linear-gradient(135deg,rgba(0,113,227,.04),rgba(0,88,176,.02));border:1px solid rgba(0,113,227,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px}
+.sai-impact-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0071e3;margin-bottom:8px}
+.sai-impact-text{font-size:14px;line-height:1.78;color:#2d3340;font-style:italic}
+.sai-tx-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sai-tx-label{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#6b7585}
+.sai-tx-hint{font-size:11px;color:#6b7585;opacity:.65}
+.sai-tx-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.sai-tx-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:100px;font-size:13px;font-weight:500;background:#fff;color:#2d3340;border:1px solid rgba(0,0,0,.1);cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.sai-tx-chip:hover{background:#0071e3;color:#fff;border-color:#0071e3;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,113,227,.2)}
+.sai-tx-chip.active{background:#0071e3;color:#fff;border-color:#0071e3;box-shadow:0 4px 12px rgba(0,113,227,.22)}
+.sai-chip-mark{width:5px;height:5px;border-radius:50%;background:#C96A2E;flex-shrink:0;transition:background .2s}
+.sai-tx-chip:hover .sai-chip-mark,.sai-tx-chip.active .sai-chip-mark{background:rgba(255,255,255,.6)}
+.sai-deepdive-wrap{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.sai-dd-header{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(248,249,251,.8);border-bottom:1px solid rgba(0,0,0,.05)}
+.sai-dd-icon{width:28px;height:28px;border-radius:8px;background:#0071e3;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sai-dd-icon svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2}
+.sai-dd-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:12.5px;font-weight:600;color:#0a0e14}
+.sai-dd-body{padding:16px 18px}
+.sai-dd-spin{display:none;align-items:center;gap:10px;padding:2px 0}
+.sai-dd-spin.show{display:flex}
+.sai-dd-ring{width:18px;height:18px;border:1.5px solid rgba(0,113,227,.12);border-top-color:#0071e3;border-radius:50%;animation:saiSpin .7s linear infinite;flex-shrink:0}
+.sai-dd-text{font-size:14px;line-height:1.78;color:#2d3340;white-space:pre-line}
+.sai-book-cta{width:100%;padding:16px 24px;border-radius:14px;background:linear-gradient(135deg,#0071e3,#0058b0);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:16px;font-weight:700;letter-spacing:-.02em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .22s;box-shadow:0 4px 16px rgba(0,113,227,.32),0 1px 0 rgba(255,255,255,.15) inset;margin-bottom:12px}
+.sai-book-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,113,227,.42)}
+.sai-book-cta svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;transition:transform .2s}
+.sai-book-cta:hover svg{transform:translateX(3px)}
+.sai-alt-row{display:flex;align-items:center;justify-content:center;gap:8px}
+.sai-alt-divider{width:1px;height:12px;background:rgba(0,0,0,.12)}
+.sai-alt-link{font-size:13px;color:#6b7585;text-decoration:none;font-weight:500;transition:color .2s}
+.sai-alt-link:hover{color:#0071e3}
+.sai-reset-btn{background:none;border:none;font-size:12.5px;color:#6b7585;cursor:pointer;padding:10px 0 0;display:none;align-items:center;gap:6px;transition:color .2s}
+.sai-reset-btn:hover{color:#0071e3}
+.sai-reset-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.sai-reset-btn.visible{display:flex}
+/* Right panel */
+.sai-right{background:#0b2545;display:flex;flex-direction:column;justify-content:center;padding:52px 44px;position:relative;overflow:hidden}
+.sai-right::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 90% 10%,rgba(255,255,255,.04) 0%,transparent 60%),radial-gradient(ellipse 50% 80% at 10% 90%,rgba(201,106,46,.06) 0%,transparent 55%)}
+.sai-right::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.03;background-image:linear-gradient(rgba(255,255,255,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.8) 1px,transparent 1px);background-size:32px 32px}
+.sai-right-content{position:relative;z-index:1}
+.sai-right-eyebrow{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,180,80,.85);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sai-right-eyebrow::before{content:'';width:18px;height:1px;background:rgba(255,180,80,.6)}
+.sai-right-heading{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:clamp(22px,2.4vw,30px);font-weight:700;color:#fff;line-height:1.12;letter-spacing:-.025em;margin-bottom:14px}
+.sai-right-heading em{font-style:normal;color:rgba(255,180,80,.9)}
+.sai-right-body{font-size:13.5px;line-height:1.72;color:rgba(255,255,255,.5);margin-bottom:32px}
+.sai-right-divider{height:1px;background:rgba(255,255,255,.08);margin-bottom:28px}
+.sai-stats{display:flex;flex-direction:column;gap:2px}
+.sai-stat{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;transition:background .2s}
+.sai-stat:hover{background:rgba(255,255,255,.04)}
+.sai-stat-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sai-stat-icon svg{width:16px;height:16px;stroke:rgba(255,180,80,.8);fill:none;stroke-width:1.75}
+.sai-stat-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.sai-stat-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.4}
+.sai-right-quote{margin-top:24px;padding:16px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px}
+.sai-right-quote-text{font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.68;font-style:italic;margin-bottom:8px}
+.sai-right-quote-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.03em}
+@keyframes saiFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(max-width:1020px){.sai-grid{grid-template-columns:1fr}.sai-right{display:none}.sai-left{padding:40px 32px;border-right:none}}
+@media(max-width:640px){.sai-section{padding:64px 0}.sai-left{padding:32px 20px}.sai-gate-row{grid-template-columns:1fr}.sai-trust{gap:8px}}
+
 </style>
 
 <style>
@@ -706,68 +893,128 @@ button { font-family: var(--sans); }
   </div>
 </section>
 
-<!-- AI SMILE ANALYSIS -->
-<section class="svc-ai">
+<!-- AI SMILE ANALYSIS v3 -->
+<section class="sai-section" id="smileAnalysis">
   <div class="wrap">
-    <div class="ai-inner reveal">
-      <div class="ai-top">
-        <div class="ai-text">
-          <span class="ai-label">AI-Powered Smile Analysis</span>
-          <h2 class="ai-h2" id="aiH2">Not Sure If This Treatment Is Right for You?</h2>
-          <p class="ai-p">Upload a photo of your smile and our AI will analyze your teeth — evaluating shade, alignment, spacing, and more — then give you personalized treatment recommendations in seconds. Completely private, no sign-up required.</p>
-
-          <!-- Upload zone -->
-          <div class="ai-upload-area" id="aiDropzone">
-            <input type="file" class="ai-upload-input" id="aiFile" accept="image/*"/>
-            <div class="ai-upload-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.75"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    <div class="sai-card reveal">
+      <div class="sai-grid">
+        <!-- LEFT -->
+        <div class="sai-left">
+          <span class="sai-eyebrow"><span class="sai-eyebrow-line"></span>AI Smile Analysis &mdash; Always Complimentary</span>
+          <h2 class="sai-h2">Your Smile Deserves<br/>an <em>Honest</em> Answer</h2>
+          <p class="sai-subhead">Upload a smile photo and our AI delivers the same personalized assessment Drs. Matian would give in person — evaluating shade, alignment, structure, and restoration needs in under 30 seconds.</p>
+          <div class="sai-trust">
+            <span class="sai-chip"><span class="sai-chip-dot"></span>Results in 30 seconds</span>
+            <span class="sai-chip"><span class="sai-chip-dot"></span>Photo never stored</span>
+            <span class="sai-chip"><span class="sai-chip-dot"></span>Doctor-reviewed AI</span>
+          </div>
+          <!-- Upload -->
+          <div class="sai-drop" id="saiDrop">
+            <input type="file" class="sai-drop-input" id="saiFile" accept="image/jpeg,image/png,image/webp"/>
+            <div class="sai-drop-icon">
+              <svg id="saiIconUp" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.75" width="22" height="22"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <svg id="saiIconOk" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2.5" width="22" height="22" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="ai-upload-title">Upload Your Smile Photo</div>
-            <div class="ai-upload-sub">JPG or PNG &middot; Your photo is never stored or shared</div>
+            <div class="sai-drop-title" id="saiDropTitle">Upload Your Smile Photo</div>
+            <div class="sai-drop-sub">JPG, PNG or WebP &nbsp;&middot;&nbsp; Drag &amp; drop or click to browse</div>
           </div>
-
-          <button class="ai-btn" id="aiAnalyzeBtn" disabled>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            Analyze My Smile
+          <!-- Preview -->
+          <div class="sai-preview" id="saiPreview"><img id="saiPreviewImg" src="" alt="Your smile preview"/><span class="sai-preview-badge">Photo Ready</span></div>
+          <!-- Analyze -->
+          <button class="sai-analyze-btn" id="saiAnalyzeBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Analyze My Smile &mdash; Free
           </button>
-
-          <!-- Loading -->
-          <div class="ai-loading" id="aiLoading">
-            <div class="ai-spinner"></div>
-            <div style="font-size:13px;color:var(--slate)">Analyzing your smile&hellip;</div>
+          <div class="sai-privacy"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Your photo is analyzed privately and immediately discarded</div>
+          <!-- Loader -->
+          <div class="sai-loader" id="saiLoader">
+            <div class="sai-loader-ring"><div class="sai-ring-outer"></div><div class="sai-ring-inner"></div></div>
+            <div class="sai-loader-label">Analyzing your smile&hellip;</div>
+            <div class="sai-loader-dots"><div class="sai-loader-dot"></div><div class="sai-loader-dot"></div><div class="sai-loader-dot"></div></div>
           </div>
-
-          <!-- Analysis result -->
-          <div class="ai-result" id="aiResult">
-            <div class="ai-result-title">Your AI Smile Assessment</div>
-            <div class="ai-result-text" id="aiResultText"></div>
-
-            <!-- Treatment chips -->
-            <div class="ai-treatments" id="aiTreatments"></div>
-
-            <!-- Deep-dive panel -->
-            <div class="ai-deepdive" id="aiDeepdive" style="display:none">
-              <div class="ai-deepdive-loading" id="aiDdLoading" style="display:none">
-                <div class="ai-spinner" style="width:22px;height:22px;border-width:2px"></div>
-                <span style="font-size:12px;color:var(--slate);margin-left:8px">Getting details&hellip;</span>
+          <!-- Email Gate -->
+          <div class="sai-gate" id="saiGate">
+            <div class="sai-gate-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="sai-gate-heading" id="saiGateHeading">Your Results Are Ready</div>
+            <p class="sai-gate-sub" id="saiGateSub">Enter your info below and Drs. Matian will personally review your analysis before your consultation.</p>
+            <div class="sai-gate-row">
+              <input class="sai-gate-field" id="saiGateName" type="text" placeholder="First name" autocomplete="given-name"/>
+              <input class="sai-gate-field" id="saiGateEmail" type="email" placeholder="Email address" autocomplete="email"/>
+            </div>
+            <input class="sai-gate-field" id="saiGatePhone" type="tel" placeholder="Phone (optional)" autocomplete="tel" style="margin-top:10px"/>
+            <button class="sai-gate-submit" id="saiGateSubmit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Reveal My Smile Report</span>
+            </button>
+            <p class="sai-gate-legal">By continuing you agree to receive information about your results and treatment options. We never spam. Unsubscribe anytime.</p>
+          </div>
+          <!-- Emergency Banner -->
+          <div class="sai-emergency-banner" id="saiEmrgBanner">
+            <div class="sai-emrg-header">
+              <div class="sai-emrg-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+              <div>
+                <div class="sai-emrg-title">This Looks Like It Needs Attention Soon</div>
+                <div class="sai-emrg-subtitle">Don't wait — early care protects your smile and your wallet.</div>
               </div>
-              <div class="ai-deepdive-text" id="aiDdText"></div>
             </div>
-
-            <button class="ai-result-cta" onclick="doBook(event)">Book Your Free Consultation &rarr;</button>
+            <div class="sai-emrg-body" id="saiEmrgBody"></div>
+            <button class="sai-emrg-cta" id="saiEmrgCta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.59a19.79 19.79 0 01-3.07-8.65A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.16a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 15.92z"/></svg>
+              Call Now &mdash; Same-Day Available: (818) 706-6077
+            </button>
+            <a href="tel:+18187066077" class="sai-emrg-phone">Or tap here to call directly</a>
           </div>
-
-          <!-- Reset -->
-          <button class="ai-reset" id="aiReset" style="display:none" onclick="aiReset()">
-            &larr; Analyze another photo
-          </button>
+          <!-- Result -->
+          <div class="sai-result" id="saiResult">
+            <div id="saiUrgency"></div>
+            <div class="sai-analysis-card">
+              <div class="sai-result-label">Your Smile Assessment</div>
+              <div class="sai-result-text" id="saiResultText"></div>
+            </div>
+            <div class="sai-impact" id="saiImpact" style="display:none">
+              <div class="sai-impact-label">What This Means For You</div>
+              <div class="sai-impact-text" id="saiImpactText"></div>
+            </div>
+            <div id="saiTxWrap" style="display:none">
+              <div class="sai-tx-header"><span class="sai-tx-label">Treatment Pathways</span><span class="sai-tx-hint">&mdash; tap any for details</span></div>
+              <div class="sai-tx-chips" id="saiTxChips"></div>
+            </div>
+            <div class="sai-deepdive-wrap" id="saiDeepdive" style="display:none">
+              <div class="sai-dd-header">
+                <div class="sai-dd-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6M9 16h6M9 8h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg></div>
+                <div class="sai-dd-title" id="saiDdTitle">Treatment Details</div>
+              </div>
+              <div class="sai-dd-body">
+                <div class="sai-dd-spin" id="saiDdLoad"><div class="sai-dd-ring"></div><span style="font-size:12.5px;color:#6b7585">Getting clinical details&hellip;</span></div>
+                <div class="sai-dd-text" id="saiDdText"></div>
+              </div>
+            </div>
+            <button class="sai-book-cta" id="saiBookCta">Book Your Free Consultation<svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            <div class="sai-alt-row">
+              <a href="tel:+18187066077" class="sai-alt-link">(818) 706-6077</a>
+              <div class="sai-alt-divider"></div>
+              <span class="sai-alt-link" style="cursor:default">Consultations always free</span>
+            </div>
+          </div>
+          <button class="sai-reset-btn" id="saiReset"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Analyze another photo</button>
         </div>
-
-        <div class="ai-visual">
-          <div class="ai-visual-content">
-            <div class="ai-visual-icon">&#129302;</div>
-            <div class="ai-visual-title">AI Smile<br/>Analysis</div>
-            <div class="ai-visual-sub">Powered by Claude AI &amp; trained on dental science.<br/>Results in under 30 seconds.<br/>100% private &mdash; never stored.</div>
+        <!-- RIGHT -->
+        <div class="sai-right">
+          <div class="sai-right-content">
+            <div class="sai-right-eyebrow">Powered by Claude AI</div>
+            <div class="sai-right-heading">The same eye<br/>your dentist has,<br/><em>in seconds.</em></div>
+            <p class="sai-right-body">Our AI delivers the observations Drs. Matian would make in person &mdash; shade, structure, alignment, restoration needs &mdash; clearly and honestly.</p>
+            <div class="sai-right-divider"></div>
+            <div class="sai-stats">
+              <div class="sai-stat"><div class="sai-stat-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><div class="sai-stat-title">Clinically trained AI</div><div class="sai-stat-desc">Trained on dental science, not generic data</div></div></div>
+              <div class="sai-stat"><div class="sai-stat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><div class="sai-stat-title">Completely private</div><div class="sai-stat-desc">Photo analyzed and immediately discarded</div></div></div>
+              <div class="sai-stat"><div class="sai-stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="sai-stat-title">Results in 30 seconds</div><div class="sai-stat-desc">No appointment, no wait, no obligation</div></div></div>
+              <div class="sai-stat"><div class="sai-stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div><div class="sai-stat-title">Doctor reviewed</div><div class="sai-stat-desc">Flagged results personally reviewed by Drs. Matian</div></div></div>
+            </div>
+            <div class="sai-right-quote">
+              <div class="sai-right-quote-text">&ldquo;We built this so patients could understand their smile before ever walking through our door &mdash; no pressure, just clarity and a path forward.&rdquo;</div>
+              <div class="sai-right-quote-name">Drs. David &amp; Shawn Matian</div>
+            </div>
           </div>
         </div>
       </div>
@@ -910,186 +1157,164 @@ window.addEventListener('scroll',function(){document.getElementById('nav').class
 (function(){var b=document.getElementById('hbg'),m=document.getElementById('mobile-nav');if(!b)return;b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});})();
 
 // SCROLL REVEAL
-(function(){var els=document.querySelectorAll('.reveal');if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.05});els.forEach(function(el){io.observe(el);});})();
-
-// FAQ
-document.querySelectorAll('.faq-item').forEach(function(item){item.querySelector('.faq-q').addEventListener('click',function(){var wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});if(!wasOpen)item.classList.add('open');});});
-
-// BOOKING
 var BOOK_URL='https://bookit.dentrixascend.com/soe/new/dental?pid=ASC64000000019461&mode=externalLink';
 function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=document.getElementById('bk-modal'),cont=document.getElementById('bk-container');cont.innerHTML='';var fr=document.createElement('iframe');fr.src=BOOK_URL;fr.title='Book Appointment Online';fr.allow='payment';fr.style.cssText='width:100%;height:100%;min-height:580px;border:none;display:block;';cont.appendChild(fr);modal.classList.add('open');document.body.style.overflow='hidden';document.addEventListener('keydown',escBook);}
 function closeBook(){document.getElementById('bk-modal').classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){document.getElementById('bk-container').innerHTML='';},300);}
 function escBook(e){if(e.key==='Escape')closeBook();}
 
-// AI SMILE
-// ── AI SMILE ANALYSIS ──────────────────────────────────────
+// AI SMILE ANALYSIS v3 — email gate + GHL + emotional copy
 (function(){
-  var ENDPOINT = '/api/smileAnalysis';
-
-  var TREATMENT_LABELS = {
-    veneers:        { label: 'Porcelain Veneers',    icon: '✨', url: '/services/veneers' },
-    whitening:      { label: 'Teeth Whitening',      icon: '🌟', url: '/services/teeth-whitening' },
-    invisalign:     { label: 'Invisalign',           icon: '😁', url: '/services/invisalign' },
-    bonding:        { label: 'Dental Bonding',       icon: '🔧', url: '/services/restorative-dentistry' },
-    implants:       { label: 'Dental Implants',      icon: '🦷', url: '/services/dental-implants' },
-    makeover:       { label: 'Smile Makeover',       icon: '🏆', url: '/services/veneers' },
-    crowns:         { label: 'Dental Crowns',        icon: '👑', url: '/services/restorative-dentistry' },
-    gum_contouring: { label: 'Gum Contouring',       icon: '💎', url: '/services/restorative-dentistry' }
+  'use strict';
+  var ENDPOINT    = '/api/smileAnalysis';
+  var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/ZctCFusr5pyeEBo9FLH4/webhook-trigger/5b2a2150-a83e-4cde-9a00-d467004dc203';
+  var TX = {
+    whitening:      {label:'Teeth Whitening',       url:'/services/teeth-whitening'},
+    veneers:        {label:'Porcelain Veneers',      url:'/services/veneers'},
+    invisalign:     {label:'Invisalign',             url:'/services/invisalign'},
+    bonding:        {label:'Dental Bonding',         url:'/services/restorative-dentistry'},
+    implants:       {label:'Dental Implants',        url:'/services/dental-implants'},
+    makeover:       {label:'Full Smile Makeover',    url:'/services/veneers'},
+    crowns:         {label:'Dental Crowns',          url:'/services/restorative-dentistry'},
+    full_crowns:    {label:'Full Mouth Restoration', url:'/services/restorative-dentistry'},
+    gum_contouring: {label:'Gum Contouring',         url:'/services/restorative-dentistry'},
+    sealants:       {label:'Preventive Sealants',    url:'/services/restorative-dentistry'}
   };
-
-  var fileInput   = document.getElementById('aiFile');
-  var analyzeBtn  = document.getElementById('aiAnalyzeBtn');
-  var dropzone    = document.getElementById('aiDropzone');
-  var loading     = document.getElementById('aiLoading');
-  var result      = document.getElementById('aiResult');
-  var resultText  = document.getElementById('aiResultText');
-  var treatments  = document.getElementById('aiTreatments');
-  var deepdive    = document.getElementById('aiDeepdive');
-  var ddLoading   = document.getElementById('aiDdLoading');
-  var ddText      = document.getElementById('aiDdText');
-  var resetBtn    = document.getElementById('aiReset');
-  if (!fileInput) return;
-
-  var selectedFile = null;
-  var storedBase64 = null;
-  var storedMediaType = null;
-  var activeChip = null;
-
-  // File select
-  fileInput.addEventListener('change', function(){
-    if (fileInput.files && fileInput.files[0]) {
-      selectedFile = fileInput.files[0];
-      analyzeBtn.disabled = false;
-      dropzone.querySelector('.ai-upload-title').textContent = selectedFile.name;
-      dropzone.classList.add('has-file');
-    }
-  });
-
-  // Drag and drop
-  dropzone.addEventListener('dragover', function(e){ e.preventDefault(); dropzone.classList.add('drag'); });
-  dropzone.addEventListener('dragleave', function(){ dropzone.classList.remove('drag'); });
-  dropzone.addEventListener('drop', function(e){
-    e.preventDefault(); dropzone.classList.remove('drag');
-    var file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      selectedFile = file; analyzeBtn.disabled = false;
-      dropzone.querySelector('.ai-upload-title').textContent = file.name;
-      dropzone.classList.add('has-file');
-    }
-  });
-
-  // Analyze
-  analyzeBtn.addEventListener('click', function(){
-    if (!selectedFile) return;
-    analyzeBtn.disabled = true;
-    loading.classList.add('show');
-    result.classList.remove('show');
-    deepdive.style.display = 'none';
-    treatments.innerHTML = '';
-    resetBtn.style.display = 'none';
-
-    var reader = new FileReader();
-    reader.onload = function(ev){
-      var dataUrl = ev.target.result;
-      var base64 = dataUrl.split(',')[1];
-      var mediaType = selectedFile.type || 'image/jpeg';
-      storedBase64 = base64;
-      storedMediaType = mediaType;
-
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: base64, mediaType: mediaType })
-      })
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        loading.classList.remove('show');
-        if (data.error) {
-          resultText.textContent = data.error;
-          result.classList.add('show');
-          analyzeBtn.disabled = false;
-          return;
-        }
-        // Show analysis text
-        resultText.textContent = data.analysis || '';
-        // Render treatment chips
-        treatments.innerHTML = '';
-        if (data.treatments && data.treatments.length) {
-          data.treatments.forEach(function(t){
-            var info = TREATMENT_LABELS[t.id];
-            if (!info) return;
-            var chip = document.createElement('button');
-            chip.className = 'ai-treatment-chip';
-            chip.title = t.reason || '';
-            chip.innerHTML = info.icon + ' ' + info.label;
-            chip.addEventListener('click', function(){
-              if (activeChip === chip && deepdive.style.display !== 'none') {
-                deepdive.style.display = 'none'; activeChip = null; chip.classList.remove('active'); return;
-              }
-              document.querySelectorAll('.ai-treatment-chip').forEach(function(c){ c.classList.remove('active'); });
-              chip.classList.add('active'); activeChip = chip;
-              doDeepDive(info.label);
-            });
-            treatments.appendChild(chip);
-          });
-        }
-        result.classList.add('show');
-        resetBtn.style.display = 'block';
-      })
-      .catch(function(){
-        loading.classList.remove('show');
-        resultText.textContent = "We couldn't complete the analysis right now. Please call (818) 706-6077 or book a free consultation for your personalized smile assessment.";
-        result.classList.add('show');
-        analyzeBtn.disabled = false;
-        resetBtn.style.display = 'block';
-      });
-    };
-    reader.readAsDataURL(selectedFile);
-  });
-
-  // Deep dive on treatment chip click
-  function doDeepDive(treatmentLabel){
-    if (!storedBase64) return;
-    deepdive.style.display = 'block';
-    ddLoading.style.display = 'flex';
-    ddText.textContent = '';
-
-    fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        imageBase64: storedBase64,
-        mediaType: storedMediaType,
-        mode: 'deep_dive',
-        treatmentLabel: treatmentLabel
-      })
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      ddLoading.style.display = 'none';
-      ddText.textContent = data.analysis || data.error || 'Please call (818) 706-6077 for details on this treatment.';
-    })
-    .catch(function(){
-      ddLoading.style.display = 'none';
-      ddText.textContent = 'Please call (818) 706-6077 for details on this treatment.';
-    });
+  var UC = {
+    elective:   {label:'Cosmetic Opportunity',        cls:'elective'},
+    recommended:{label:'Clinically Recommended',      cls:'recommended'},
+    priority:   {label:'Priority Evaluation Advised', cls:'priority'}
+  };
+  var IMPACT = {
+    elective:   'Every conversation starts with your smile. Even subtle improvements change how others perceive you and how you feel walking into every room.',
+    recommended:'What you see now will progress without care. Addressing this today protects the investment you have already made in your teeth.',
+    priority:   'The window to act with the simplest, most affordable solution is still open. Waiting closes that window. Drs. Matian can create a treatment sequence that fits your timeline and budget.',
+    full_mouth: 'A full smile transformation changes your bite, your speech, how food feels, and how you show up in your own life. Patients consistently describe it as one of the most meaningful investments they have ever made.',
+    emergency:  'Dental issues that look serious can escalate faster than most people realize. What is treatable today can become significantly more complex and costly in weeks. Same-day appointments are available.'
+  };
+  function $$(id){return document.getElementById(id)}
+  var fileInput=$$('saiFile'),analyzeBtn=$$('saiAnalyzeBtn');
+  var dropzone=$$('saiDrop'),dropTitle=$$('saiDropTitle');
+  var iconUp=$$('saiIconUp'),iconOk=$$('saiIconOk');
+  var preview=$$('saiPreview'),previewImg=$$('saiPreviewImg');
+  var loader=$$('saiLoader');
+  var gate=$$('saiGate'),gateHeading=$$('saiGateHeading'),gateSub=$$('saiGateSub');
+  var gateName=$$('saiGateName'),gateEmail=$$('saiGateEmail'),gatePhone=$$('saiGatePhone');
+  var gateSubmit=$$('saiGateSubmit');
+  var emrgBanner=$$('saiEmrgBanner'),emrgBody=$$('saiEmrgBody'),emrgCta=$$('saiEmrgCta');
+  var resultWrap=$$('saiResult'),urgencyEl=$$('saiUrgency');
+  var resultText=$$('saiResultText'),impactEl=$$('saiImpact'),impactText=$$('saiImpactText');
+  var txWrap=$$('saiTxWrap'),txChips=$$('saiTxChips');
+  var deepdive=$$('saiDeepdive'),ddTitle=$$('saiDdTitle');
+  var ddLoad=$$('saiDdLoad'),ddText=$$('saiDdText');
+  var bookCta=$$('saiBookCta'),resetBtn=$$('saiReset');
+  if(!fileInput)return;
+  var selFile=null,b64=null,mime=null,activeChip=null,pendingData=null;
+  fileInput.addEventListener('change',function(){pick(fileInput.files&&fileInput.files[0])});
+  dropzone.addEventListener('dragover',function(e){e.preventDefault();dropzone.classList.add('drag')});
+  dropzone.addEventListener('dragleave',function(){dropzone.classList.remove('drag')});
+  dropzone.addEventListener('drop',function(e){e.preventDefault();dropzone.classList.remove('drag');var f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))pick(f);});
+  function pick(f){
+    if(!f)return;
+    selFile=f;analyzeBtn.disabled=false;
+    dropTitle.textContent=f.name;
+    dropzone.classList.add('has-file');
+    iconUp.style.display='none';iconOk.style.display='block';
+    var r=new FileReader();r.onload=function(ev){previewImg.src=ev.target.result;preview.classList.add('show');};r.readAsDataURL(f);
   }
-
-  // Reset
-  window.aiReset = function(){
-    selectedFile = null; storedBase64 = null; storedMediaType = null; activeChip = null;
-    fileInput.value = '';
-    dropzone.querySelector('.ai-upload-title').textContent = 'Upload Your Smile Photo';
-    dropzone.classList.remove('has-file','drag');
-    analyzeBtn.disabled = true;
-    loading.classList.remove('show');
-    result.classList.remove('show');
-    deepdive.style.display = 'none';
-    treatments.innerHTML = '';
-    resetBtn.style.display = 'none';
-  };
+  analyzeBtn.addEventListener('click',function(){if(selFile)run()});
+  function run(){
+    analyzeBtn.disabled=true;loader.classList.add('show');
+    gate.classList.remove('show');emrgBanner.classList.remove('show');
+    resultWrap.classList.remove('show');deepdive.style.display='none';
+    txWrap.style.display='none';txChips.innerHTML='';urgencyEl.innerHTML='';
+    impactEl.style.display='none';resetBtn.classList.remove('visible');
+    pendingData=null;activeChip=null;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      b64=ev.target.result.split(',')[1];mime=selFile.type||'image/jpeg';
+      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime})})
+      .then(function(r){return r.json()})
+      .then(function(data){loader.classList.remove('show');if(data.error){showErr(data.error);return;}pendingData=data;showGate(data);})
+      .catch(function(){loader.classList.remove('show');showErr('We could not complete the analysis. Please call (818) 706-6077.');});
+    };
+    reader.readAsDataURL(selFile);
+  }
+  function hasFullMouth(data){if(!data||!data.treatments)return false;var ids=(data.treatments||[]).map(function(t){return t.id});return ids.includes('full_crowns')||ids.includes('makeover')||(ids.length>=3);}
+  function showGate(data){
+    var isEmrg=data.emergency,isFull=hasFullMouth(data);
+    if(isEmrg){gateHeading.textContent='This Looks Urgent - Your Results Are Ready';gateSub.textContent='Enter your details so our team can reach you immediately. Same-day care is available.';}
+    else if(isFull){gateHeading.textContent='Your Full Smile Report Is Ready';gateSub.textContent='This is a comprehensive assessment. Drs. Matian will review it personally before your visit.';}
+    else{gateHeading.textContent='Your Results Are Ready';gateSub.textContent='Enter your info and Drs. Matian will personally review your analysis before your consultation.';}
+    gate.classList.add('show');resetBtn.classList.add('visible');
+    setTimeout(function(){gate.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
+  }
+  gateSubmit.addEventListener('click',function(){
+    var name=(gateName.value||'').trim(),email=(gateEmail.value||'').trim(),phone=(gatePhone.value||'').trim();
+    gateName.classList.remove('error');gateEmail.classList.remove('error');
+    if(!name){gateName.classList.add('error');gateName.focus();return;}
+    if(!email||!email.includes('@')){gateEmail.classList.add('error');gateEmail.focus();return;}
+    gateSubmit.disabled=true;gateSubmit.querySelector('span').textContent='Sending...';
+    var data=pendingData||{},isFull=hasFullMouth(data);
+    var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
+    var payload={
+      firstName:name.split(' ')[0],lastName:name.split(' ').slice(1).join(' ')||'',
+      email:email,phone:phone,
+      tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]),
+      source:'Smile Analysis Widget',
+      customField:{smile_analysis_result:(data.analysis)||'',treatments_flagged:txLabels,urgency:(data.urgency)||'elective',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
+    };
+    fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){gate.classList.remove('show');renderResult(pendingData);});
+  });
+  function renderResult(data){
+    resetBtn.classList.add('visible');
+    if(data.emergency){emrgBody.textContent=data.analysis||'';emrgBanner.classList.add('show');setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;}
+    var u=UC[data.urgency]||UC.elective;
+    urgencyEl.innerHTML='<div class="sai-urgency '+u.cls+'"><span class="sai-urg-dot"></span>'+u.label+'</div>';
+    resultText.textContent=data.analysis||'';
+    var isFull=hasFullMouth(data);
+    impactText.textContent=IMPACT[isFull?'full_mouth':(data.urgency||'elective')]||IMPACT.elective;
+    impactEl.style.display='block';
+    txChips.innerHTML='';
+    (data.treatments||[]).forEach(function(t){
+      var meta=TX[t.id];if(!meta)return;
+      var chip=document.createElement('button');chip.className='sai-tx-chip';
+      chip.innerHTML='<span class="sai-chip-mark"></span><span>'+(t.label||meta.label)+'</span>';
+      chip.addEventListener('click',function(){
+        if(activeChip===chip&&deepdive.style.display!=='none'){deepdive.style.display='none';activeChip=null;chip.classList.remove('active');return;}
+        document.querySelectorAll('.sai-tx-chip').forEach(function(c){c.classList.remove('active')});
+        chip.classList.add('active');activeChip=chip;openDeepdive(t.label||meta.label);
+      });
+      txChips.appendChild(chip);
+    });
+    if(data.treatments&&data.treatments.length)txWrap.style.display='block';
+    resultWrap.classList.add('show');
+    setTimeout(function(){resultWrap.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
+  }
+  function showErr(msg){urgencyEl.innerHTML='';resultText.textContent=msg;txWrap.style.display='none';impactEl.style.display='none';resultWrap.classList.add('show');analyzeBtn.disabled=false;resetBtn.classList.add('visible');}
+  function openDeepdive(label){
+    if(!b64)return;deepdive.style.display='block';ddTitle.textContent=label;ddLoad.classList.add('show');ddText.textContent='';
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,mode:'deep_dive',treatmentLabel:label})})
+    .then(function(r){return r.json()}).then(function(d){ddLoad.classList.remove('show');ddText.textContent=d.analysis||d.error||'Please call (818) 706-6077.';})
+    .catch(function(){ddLoad.classList.remove('show');ddText.textContent='Please call (818) 706-6077.';});
+    setTimeout(function(){deepdive.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
+  }
+  emrgCta.addEventListener('click',function(){window.location.href='tel:+18187066077'});
+  bookCta.addEventListener('click',function(e){if(typeof doBook==='function')doBook(e);else window.location.href='/contact#booking';});
+  resetBtn.addEventListener('click',function(){
+    selFile=null;b64=null;mime=null;activeChip=null;pendingData=null;
+    fileInput.value='';dropTitle.textContent='Upload Your Smile Photo';
+    dropzone.classList.remove('has-file','drag');iconUp.style.display='block';iconOk.style.display='none';
+    preview.classList.remove('show');previewImg.src='';analyzeBtn.disabled=true;
+    loader.classList.remove('show');gate.classList.remove('show');emrgBanner.classList.remove('show');
+    resultWrap.classList.remove('show');deepdive.style.display='none';txWrap.style.display='none';
+    txChips.innerHTML='';urgencyEl.innerHTML='';impactEl.style.display='none';ddText.textContent='';
+    resetBtn.classList.remove('visible');
+    gateName.value='';gateEmail.value='';gatePhone.value='';
+    gateName.classList.remove('error');gateEmail.classList.remove('error');
+    gateSubmit.disabled=false;gateSubmit.querySelector('span').textContent='Reveal My Smile Report';
+  });
 })();
-// CHATBOT
+
 (function(){
   var API='https://www.agourahillsdentaldesigns.com/_functions/chatbot';
   var PID='pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1',PV='6';
