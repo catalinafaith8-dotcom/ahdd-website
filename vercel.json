@@ -1,22 +1,14 @@
 {
-  "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/services/dental-implants",       "dest": "/dental-implants" },
-    { "src": "/services/emergency-dentistry",   "dest": "/emergency-dentistry" },
-    { "src": "/services/invisalign",            "dest": "/invisalign" },
-    { "src": "/services/restorative-dentistry", "dest": "/restorative-dentistry" },
-    { "src": "/services/teeth-whitening",       "dest": "/teeth-whitening" },
-    { "src": "/services/veneers",               "dest": "/veneers" },
-    { "src": "/insurance-checker",              "dest": "/insurance-checker-ahdd__4_" },
-    { "src": "/chatbot",                        "dest": "/chatbot-widget-updated" }
+  "rewrites": [
+    { "source": "/services/dental-implants",       "destination": "/dental-implants" },
+    { "source": "/services/emergency-dentistry",   "destination": "/emergency-dentistry" },
+    { "source": "/services/invisalign",            "destination": "/invisalign" },
+    { "source": "/services/restorative-dentistry", "destination": "/restorative-dentistry" },
+    { "source": "/services/teeth-whitening",       "destination": "/teeth-whitening" },
+    { "source": "/services/veneers",               "destination": "/veneers" },
+    { "source": "/insurance-checker",              "destination": "/insurance-checker-ahdd__4_" },
+    { "source": "/chatbot",                        "destination": "/chatbot-widget-updated" }
   ]
 }
