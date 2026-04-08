@@ -733,11 +733,21 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 .sai-result-label::before{content:'';width:14px;height:1.5px;background:#0071e3}
 /* ── Analysis paragraph styles ─────────────────────── */
 .sai-result-text{font-size:15px;line-height:1.82;color:#2d3340}
-.sai-para{margin-bottom:16px;line-height:1.82;font-size:15px}
+.sai-para{margin-bottom:14px;line-height:1.82;font-size:15px}
 .sai-para:last-child{margin-bottom:0}
-.sai-para-diagnosis{color:#0a0e14;font-size:15px;font-weight:400;line-height:1.85}
-.sai-para-rationale{color:#2d3340;font-size:15px;line-height:1.78;padding:16px 18px;background:rgba(11,37,69,.03);border-left:3px solid rgba(11,37,69,.2);border-radius:0 12px 12px 0;margin-bottom:16px}
-.sai-para-impact{color:#0a0e14;font-size:16px;font-weight:500;line-height:1.72;padding:18px 20px;background:rgba(201,106,46,.05);border-left:4px solid #C96A2E;border-radius:0 14px 14px 0;margin-bottom:16px;font-style:normal}
+/* S1 First impression — warm opener */
+.sai-para-first{color:#0a0e14;font-size:15.5px;font-weight:500;line-height:1.8;margin-bottom:18px}
+/* S2 Observations — plain */
+.sai-para-obs{color:#2d3340;font-size:15px;line-height:1.82}
+/* S3 What it means — plain with soft context */
+.sai-para-means{color:#2d3340;font-size:15px;line-height:1.82}
+/* S4 Options — subtle callout */
+.sai-para-options{color:#2d3340;font-size:15px;line-height:1.78;padding:16px 18px;background:rgba(11,37,69,.03);border-left:3px solid rgba(11,37,69,.18);border-radius:0 12px 12px 0;margin-bottom:16px}
+/* S5 Emotional moment — copper accent, bold */
+.sai-para-impact{color:#0a0e14;font-size:16px;font-weight:600;line-height:1.68;padding:18px 20px;background:rgba(201,106,46,.05);border-left:4px solid #C96A2E;border-radius:0 14px 14px 0;margin-bottom:16px}
+/* S6 Urgent note — conditional red tint */
+.sai-para-urgent{color:#7f1d1d;font-size:14.5px;line-height:1.75;padding:14px 18px;background:rgba(239,68,68,.04);border-left:3px solid rgba(239,68,68,.3);border-radius:0 12px 12px 0;margin-bottom:16px}
+/* S7 CTA card */
 .sai-para-cta{color:#0a0e14;font-size:14px;font-weight:500;padding:14px 18px;background:rgba(0,113,227,.05);border-radius:12px;border:1px solid rgba(0,113,227,.12);margin-top:4px;line-height:1.7}
 
 .sai-result-text{font-size:14.5px;line-height:1.82;color:#2d3340;white-space:pre-line}
@@ -1349,9 +1359,11 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     sealants:       {label:'Preventive Sealants',    url:'/services/restorative-dentistry'}
   };
   var UC = {
-    elective:   {label:'Cosmetic Opportunity',        cls:'elective'},
-    recommended:{label:'Clinically Recommended',      cls:'recommended'},
-    priority:   {label:'Priority Evaluation Advised', cls:'priority'}
+    standard:   {label:'', cls:''},
+    elective:   {label:'', cls:''},
+    soon:       {label:'Worth Addressing', cls:'recommended'},
+    recommended:{label:'Worth Addressing', cls:'recommended'},
+    priority:   {label:'Schedule Soon', cls:'priority'}
   };
   function $$(id){return document.getElementById(id)}
   var fileInput=$$('saiFile'),analyzeBtn=$$('saiAnalyzeBtn');
@@ -1425,7 +1437,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       email:email,phone:phone,
       tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]),
       source:'Smile Analysis Widget',
-      customField:{smile_analysis_result:(data.analysis)||'',treatments_flagged:txLabels,urgency:(data.urgency)||'elective',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
+      customField:{smile_analysis_result:(data.analysis||JSON.stringify(data.sections||{}))||'',treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
     };
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){
       // Fade gate out, show result
@@ -1433,22 +1445,42 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},320);
     });
   });
+  function sectionsToHtml(s){
+    // v5 returns sections object; map each key to styled paragraph
+    var order=['first_impression','observations','possibilities','treatment_options','biggest_impact','important_note','next_step'];
+    var cls_map={first_impression:'sai-para-first',observations:'sai-para-obs',possibilities:'sai-para-means',treatment_options:'sai-para-options',biggest_impact:'sai-para-impact',important_note:'sai-para-urgent',next_step:'sai-para-cta'};
+    return order.filter(function(k){return s[k]&&s[k].trim();}).map(function(k){
+      return'<p class="sai-para '+cls_map[k]+'">'+s[k].trim()+'</p>';
+    }).join('');
+  }
+
   function renderResult(data){
     resetBtn.classList.add('visible');
     if(data.emergency){
-      var eParas=(data.analysis||'').split(/\n\n+/).filter(function(p){return p.trim();});
-      emrgBody.innerHTML=eParas.map(function(p){return'<p style="margin-bottom:12px;last-child:margin-bottom:0">'+p.trim()+'</p>';}).join('');
+      var eText=data.analysis||'';
+      var eParas=eText.split(/\n\n+/).filter(function(p){return p.trim();});
+      emrgBody.innerHTML=eParas.map(function(p){return'<p style="margin-bottom:12px">'+p.trim()+'</p>';}).join('');
       emrgBanner.classList.add('show');setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;}
-    var u=UC[data.urgency]||UC.elective;
-    urgencyEl.innerHTML='<div class="sai-urgency '+u.cls+'"><span class="sai-urg-dot"></span>'+u.label+'</div>';
-    // Render paragraphs as formatted HTML blocks
-    var paras=(data.analysis||'').split(/\n\n+/).filter(function(p){return p.trim();});
-    resultText.innerHTML=paras.map(function(p,i){
-      var cls=i===0?'sai-para sai-para-diagnosis':i===1?'sai-para sai-para-rationale':i===2?'sai-para sai-para-impact':'sai-para sai-para-cta';
-      var txt=p.trim().replace(/\n/g,' ');
-      // P4: render as CTA note without hyperlinking the phone
-      return'<p class="'+cls+'">'+txt+'</p>';
-    }).join('');
+    // Urgency badge — hide for standard/elective
+    var u=UC[data.urgency]||{label:'',cls:''};
+    urgencyEl.innerHTML=u.label?'<div class="sai-urgency '+u.cls+'"><span class="sai-urg-dot"></span>'+u.label+'</div>':'';
+    // Render content — handle v5 sections object OR legacy analysis string
+    if(data.sections&&typeof data.sections==='object'){
+      resultText.innerHTML=sectionsToHtml(data.sections);
+    } else {
+      var paras=(data.analysis||'').split(/\n\n+/).filter(function(p){return p.trim();});
+      resultText.innerHTML=paras.map(function(p,i){
+        var cls;
+        if(i===0) cls='sai-para sai-para-first';
+        else if(i===1) cls='sai-para sai-para-obs';
+        else if(i===2) cls='sai-para sai-para-means';
+        else if(i===3) cls='sai-para sai-para-options';
+        else if(i===4) cls='sai-para sai-para-impact';
+        else if(i===5) cls='sai-para sai-para-urgent';
+        else cls='sai-para sai-para-cta';
+        return'<p class="'+cls+'">'+p.trim()+'</p>';
+      }).join('');
+    }
     var isFull=hasFullMouth(data);
     txChips.innerHTML='';
     (data.treatments||[]).forEach(function(t){
