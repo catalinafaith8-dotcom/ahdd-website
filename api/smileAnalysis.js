@@ -36,6 +36,8 @@ const SMILE_ANALYZE_PROMPT = `You are an experienced, highly ethical cosmetic de
 
 Analyze the patient's smile and generate a personalized, natural, and patient-friendly response.
 
+CRITICAL: Return ONLY valid JSON. No markdown. No backticks. No explanation before or after. Start your response with { and end with }.
+
 CORE RULES:
 - This is NOT a diagnosis
 - Only describe what is visible
@@ -61,23 +63,37 @@ URGENCY:
 - If unclear → recommend timely evaluation
 - If none → no urgency
 
-OUTPUT JSON:
+VALID TREATMENT IDs — only include what you can clearly see:
+- "whitening" → visible staining or yellowing
+- "invisalign" → crowding, overlapping, gaps, or shifted teeth
+- "veneers" → chips, worn edges, or permanent staining on front teeth
+- "bonding" → small chip or gap on 1-3 teeth
+- "crowns" → visibly broken down individual tooth
+- "implants" → clearly missing tooth with visible gap
+- "makeover" → multiple cosmetic issues on healthy teeth
+- "gum_contouring" → uneven gumline
+
+OUTPUT — return this exact JSON structure:
 
 {
   "sections": {
-    "first_impression": "",
-    "observations": "",
-    "possibilities": "",
-    "treatment_options": "",
-    "biggest_impact": "",
-    "important_note": "",
-    "next_step": ""
+    "first_impression": "2-3 warm sentences starting positive",
+    "observations": "2-4 sentences describing only what you can see",
+    "possibilities": "2-3 sentences on what this could mean, framed as possibilities",
+    "treatment_options": "2-4 sentences on 1-3 conservative options that fit what you see",
+    "biggest_impact": "2-3 sentences on the biggest improvement + one vivid specific moment",
+    "important_note": "Only include if urgent signs visible — otherwise leave empty string",
+    "next_step": "1-2 warm sentences. End with: Call (818) 706-6077 — first consultation is free."
   },
-  "treatments": [],
-  "urgency": "standard" | "soon" | "priority"
+  "treatments": [
+    {"id": "treatment_id", "label": "Display Name", "reason": "One sentence on what you see that justifies this"}
+  ],
+  "urgency": "standard"
 }
 
-Keep tone warm, honest, and reassuring.`;
+urgency values: "standard" (healthy/cosmetic), "soon" (worth addressing), "priority" (needs attention)
+
+Keep tone warm, honest, and reassuring. No URLs. No website addresses.`;
 
 // ─────────────────────────────────────────────
 // EMERGENCY RESPONSE — human, calm, direct
@@ -202,13 +218,31 @@ export default async function handler(req) {
     const data = await res.json();
     const raw = data?.content?.[0]?.text?.trim();
 
+    console.log('[smileAnalysis] raw response start:', raw?.substring(0, 100));
+
     if (!raw) throw new Error('No response');
 
     let parsed;
     try {
-      parsed = JSON.parse(raw);
+      // Strip markdown fences Claude sometimes adds
+      const cleaned = raw
+        .replace(/^```(?:json)?\s*/i, '')
+        .replace(/\s*```$/i, '')
+        .trim();
+      parsed = JSON.parse(cleaned);
     } catch {
-      throw new Error('Parse error');
+      // If parse fails, wrap the raw text as a single observation section
+      // so the patient still sees something useful
+      return new Response(JSON.stringify({
+        emergency: false,
+        sections: {
+          first_impression: "Here's what I can see from your photo.",
+          observations: raw.replace(/[{}"[\]]/g, '').substring(0, 400),
+          next_step: "Give us a call at (818) 706-6077 — your first consultation is always free."
+        },
+        treatments: [],
+        urgency: 'standard',
+      }), { status: 200, headers });
     }
 
     return new Response(JSON.stringify({
