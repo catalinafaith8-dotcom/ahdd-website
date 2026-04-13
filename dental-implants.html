@@ -1165,7 +1165,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       gate.style.transition='opacity .3s';gate.style.opacity='0';
       setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},300);
     });
-  });(t){return(t||'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/#{1,6}\s/g,'').trim();}
+  });
 
   function renderResult(data){
     resetBtn.classList.add('visible');
