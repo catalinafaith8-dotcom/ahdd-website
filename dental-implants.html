@@ -1057,16 +1057,21 @@ function escBook(e){if(e.key==='Escape')closeBook();}
   var ENDPOINT    = '/api/smileAnalysis';
   var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/ZctCFusr5pyeEBo9FLH4/webhook-trigger/5b2a2150-a83e-4cde-9a00-d467004dc203';
   var TX = {
-    whitening:      {label:'Teeth Whitening',       url:'/services/teeth-whitening'},
-    veneers:        {label:'Porcelain Veneers',      url:'/services/veneers'},
-    invisalign:     {label:'Invisalign',             url:'/services/invisalign'},
-    bonding:        {label:'Dental Bonding',         url:'/services/restorative-dentistry'},
-    implants:       {label:'Dental Implants',        url:'/services/dental-implants'},
-    makeover:       {label:'Full Smile Makeover',    url:'/services/veneers'},
-    crowns:         {label:'Dental Crowns',          url:'/services/restorative-dentistry'},
-    full_crowns:    {label:'Full Mouth Restoration', url:'/services/restorative-dentistry'},
-    gum_contouring: {label:'Gum Contouring',         url:'/services/restorative-dentistry'},
-    sealants:       {label:'Preventive Sealants',    url:'/services/restorative-dentistry'}
+    whitening:           {label:'Professional Whitening',    url:'/services/teeth-whitening'},
+    veneers:             {label:'Porcelain Veneers',         url:'/services/veneers'},
+    invisalign:          {label:'Invisalign',                url:'/services/invisalign'},
+    invisalign_whitening:{label:'Invisalign + Whitening',    url:'/services/invisalign'},
+    bonding:             {label:'Dental Bonding',            url:'/services/restorative-dentistry'},
+    implants:            {label:'Dental Implants',           url:'/services/dental-implants'},
+    implant_single:      {label:'Single-Tooth Implant',      url:'/services/dental-implants'},
+    implant_bridge:      {label:'Implant Bridge',            url:'/services/dental-implants'},
+    implant_multiple:    {label:'Multiple Implants',         url:'/services/dental-implants'},
+    all_on_4:            {label:'All-on-4 Implants',         url:'/services/dental-implants'},
+    makeover:            {label:'Full Smile Makeover',       url:'/services/veneers'},
+    crowns:              {label:'Dental Crowns',             url:'/services/restorative-dentistry'},
+    full_crowns:         {label:'Full Mouth Restoration',    url:'/services/restorative-dentistry'},
+    gum_contouring:      {label:'Gum Contouring',            url:'/services/restorative-dentistry'},
+    sealants:            {label:'Preventive Sealants',       url:'/services/restorative-dentistry'}
   };
   var UC = {
     standard:   {label:'', cls:''},
@@ -1173,50 +1178,46 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       var eParas=(data.analysis||'').split(/\n\n+/).filter(Boolean);
       emrgBody.innerHTML=eParas.map(function(p){return'<p>'+stripMd(p)+'</p>';}).join('');
       emrgBanner.classList.add('show');
-      setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;
-    }
-
-    // 1. Headline
+      setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;}
     var headlineEl=$$('saiHeadline');
     if(headlineEl)headlineEl.textContent=stripMd(data.headline||'');
-
-    // 2. Bullets
     var bulletsEl=$$('saiBullets');
     if(bulletsEl){
       bulletsEl.innerHTML='';
       (data.bullets||[]).forEach(function(b){
         var li=document.createElement('li');li.className='sai-bullet';
         li.innerHTML='<div class="sai-bullet-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span>'+stripMd(b)+'</span>';
-        bulletsEl.appendChild(li);
-      });
-    }
-
-    // 3. Plan — HIGH VISIBILITY
+        bulletsEl.appendChild(li);});}
+    var planArr=data.plan;
+    if(planArr&&!Array.isArray(planArr)&&planArr.best_option){
+      var t0=(data.treatments&&data.treatments[0])?data.treatments[0].id:'invisalign';
+      var t1=(data.treatments&&data.treatments[1])?data.treatments[1].id:'veneers';
+      planArr=[
+        {label:planArr.best_option,treatment:(planArr.best_option||'').replace(/^BEST OPTION\s*[-—]\s*/i,''),detail:planArr.best_detail||'',id:t0},
+        planArr.alternative?{label:planArr.alternative,treatment:(planArr.alternative||'').replace(/^ALTERNATIVE\s*[-—]\s*/i,''),detail:planArr.alt_detail||'',id:t1}:null
+      ].filter(Boolean);}
     var planEl=$$('saiPlan'),planItems=$$('saiPlanItems');
-    if(planEl&&planItems&&data.plan&&data.plan.length){
+    if(planEl&&planItems&&planArr&&planArr.length){
       planItems.innerHTML='';
-      data.plan.forEach(function(p){
+      planArr.forEach(function(p,idx){
         var div=document.createElement('div');div.className='sai-plan-item';
-        // Split "BEST OPTION — Invisalign" into badge + name
-        var rawLabel=stripMd(p.label||'Best Option');
-        var parts=rawLabel.split(' — ');
-        var badge=parts[0]||rawLabel;
-        var planName=parts[1]||stripMd(p.treatment||'');
+        if(idx>0){var hr=document.createElement('hr');hr.className='sai-plan-divider';planItems.appendChild(hr);}
+        var rawLabel=stripMd(p.label||'');
+        var dash=rawLabel.indexOf('—');if(dash<0)dash=rawLabel.indexOf('-');
+        var badge=dash>0?rawLabel.slice(0,dash).trim():rawLabel;
+        var planName=dash>0?rawLabel.slice(dash+1).trim():(stripMd(p.treatment||''));
         div.innerHTML='<div class="sai-plan-badge">'+badge+'</div>'
           +'<div class="sai-plan-info"><div class="sai-plan-name">'+planName+'</div>'
           +'<div class="sai-plan-detail">'+stripMd(p.detail||'')+'</div></div>';
-        planItems.appendChild(div);
-      });
+        planItems.appendChild(div);});
       planEl.style.display='block';
     } else if(planEl){planEl.style.display='none';}
-
-    // 4. Ideal result
     var idealEl=$$('saiIdeal'),idealText=$$('saiIdealText');
     var ideal=stripMd(data.ideal_result||'');
     if(idealEl&&ideal){idealText.textContent=ideal;idealEl.style.display='block';}
     else if(idealEl){idealEl.style.display='none';}
-
-    // 5. Deep dive chips
+    var ctaTextEl=$$('saiCtaText');
+    if(ctaTextEl&&data.cta)ctaTextEl.textContent=stripMd(data.cta);
     txChips.innerHTML='';
     (data.treatments||[]).forEach(function(t){
       var meta=TX[t.id];if(!meta)return;
@@ -1225,18 +1226,11 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       chip.addEventListener('click',function(){
         if(activeChip===chip&&deepdive.style.display!=='none'){deepdive.style.display='none';activeChip=null;chip.classList.remove('active');return;}
         document.querySelectorAll('.sai-tx-chip').forEach(function(c){c.classList.remove('active')});
-        chip.classList.add('active');activeChip=chip;openDeepdive(t.label||meta.label);
-      });
-      txChips.appendChild(chip);
-    });
+        chip.classList.add('active');activeChip=chip;openDeepdive(t.label||meta.label);});
+      txChips.appendChild(chip);});
     if(data.treatments&&data.treatments.length)txWrap.style.display='block';
-
-    // CTA text from API
-    var ctaTextEl=$$('saiCtaText');
-    if(ctaTextEl&&data.cta)ctaTextEl.textContent=stripMd(data.cta);
     resultWrap.classList.add('show');
-    setTimeout(function(){resultWrap.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
-  }
+    setTimeout(function(){resultWrap.scrollIntoView({behavior:'smooth',block:'nearest'})},80);}
   function showErr(msg){if(urgencyEl)urgencyEl.innerHTML='';if($$('saiHeadline'))$$('saiHeadline').textContent=msg;txWrap.style.display='none';resultWrap.classList.add('show');analyzeBtn.disabled=false;resetBtn.classList.add('visible');}
   function openDeepdive(label){
     if(!b64)return;deepdive.style.display='block';ddTitle.textContent=label;ddLoad.classList.add('show');ddText.textContent='';
