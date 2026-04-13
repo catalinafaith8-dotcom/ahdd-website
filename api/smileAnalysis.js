@@ -98,7 +98,7 @@ treatments: same IDs as plan.
 urgency: "standard" = cosmetic, "soon" = worth addressing, "priority" = needs attention.
 bullets: 2-4 items — last one always positive.
 Total word count across all fields: under 160 words.
-NO website URLs. NO "confidence" as a word. NO "transform". NO "journey".
+NO website URLs. NO "confidence" as a word. NO "transform". NO "journey".`;
 
 // ─────────────────────────────────────────────
 // DEEP DIVE — per-treatment detail
