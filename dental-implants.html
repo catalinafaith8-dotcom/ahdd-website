@@ -398,7 +398,7 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 .sai-plan-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
 .sai-plan-items{display:flex;flex-direction:column;gap:10px}
 .sai-plan-item{display:flex;align-items:flex-start;gap:12px}
-.sai-plan-badge{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:2px 7px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fbbf24;white-space:nowrap;margin-top:2px;flex-shrink:0}
+.sai-plan-badge{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fbbf24;white-space:nowrap;margin-top:3px;flex-shrink:0;line-height:1.4}
 .sai-plan-info{}
 .sai-plan-name{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14.5px;font-weight:700;color:#fff;margin-bottom:2px}
 .sai-plan-detail{font-size:13px;color:rgba(255,255,255,.6);line-height:1.5}
@@ -1197,8 +1197,13 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       planItems.innerHTML='';
       data.plan.forEach(function(p){
         var div=document.createElement('div');div.className='sai-plan-item';
-        div.innerHTML='<div class="sai-plan-badge">'+stripMd(p.label||'Best option')+'</div>'
-          +'<div class="sai-plan-info"><div class="sai-plan-name">'+stripMd(p.treatment||'')+'</div>'
+        // Split "BEST OPTION — Invisalign" into badge + name
+        var rawLabel=stripMd(p.label||'Best Option');
+        var parts=rawLabel.split(' — ');
+        var badge=parts[0]||rawLabel;
+        var planName=parts[1]||stripMd(p.treatment||'');
+        div.innerHTML='<div class="sai-plan-badge">'+badge+'</div>'
+          +'<div class="sai-plan-info"><div class="sai-plan-name">'+planName+'</div>'
           +'<div class="sai-plan-detail">'+stripMd(p.detail||'')+'</div></div>';
         planItems.appendChild(div);
       });
@@ -1226,6 +1231,9 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     });
     if(data.treatments&&data.treatments.length)txWrap.style.display='block';
 
+    // CTA text from API
+    var ctaTextEl=$$('saiCtaText');
+    if(ctaTextEl&&data.cta)ctaTextEl.textContent=stripMd(data.cta);
     resultWrap.classList.add('show');
     setTimeout(function(){resultWrap.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
   }
