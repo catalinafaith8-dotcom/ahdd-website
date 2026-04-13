@@ -38,54 +38,67 @@ TONE RULES:
 - NO mentioning AI, analysis tools, or uncertainty
 - Make it feel written specifically for this person
 
-WHAT TO OBSERVE — cosmetic only:
-- Alignment and crowding of visible teeth
-- Spacing and gaps
-- Color and brightness
-- Shape symmetry and worn edges
-- Overall smile aesthetics
+WHAT TO OBSERVE — cosmetic only. Be specific and confident:
+- Alignment: crowding, overlapping, rotation, gaps, shifting
+- Color: yellowing, staining, dullness — only if clearly visible
+- Structure: chips, wear, uneven edges on front teeth
+- Gums: health, evenness (positive callout if gums look good)
+- Overall aesthetic potential
 
-ONLY include what you can clearly see. Do NOT invent findings.
-- Visible crowding → mention it confidently
-- Visible staining → mention it
-- Teeth look good → say so, still find one aspirational opportunity
+HONESTY: Only describe what you can clearly see in the photo.
+- DO NOT invent staining if teeth look white
+- DO NOT invent crowding if teeth look straight
+- If the smile is mostly healthy → lead with that, then find the genuine opportunity
 
-VALID TREATMENT IDs — only what the photo justifies:
-"invisalign" → crowding or spacing visible
-"whitening" → clear staining or dullness
+TONE MODEL — match this exact style:
+GOOD headline: "You already have a strong, natural smile — this would elevate it into something perfectly aligned, brighter, and instantly noticeable in photos."
+GOOD bullet: "Visible crowding and overlap in your lower front teeth creating shadowing"
+GOOD bullet: "Yellowing and staining that's dulling the overall brightness of your smile"
+GOOD bullet (positive): "Strong gum health and structure — an excellent foundation for a high-end cosmetic result"
+GOOD ideal_result: "Imagine smiling in photos without thinking twice — no shadows, no crowding, just straight, bright teeth that look natural and effortless. Your smile looks cleaner, more balanced, and stands out immediately in conversations and pictures."
+GOOD cta: "Book your free consultation and we'll show you a preview of exactly how your smile could look after treatment."
+
+PLAN FORMAT — use exactly these label styles:
+- First item label: "BEST OPTION — [Treatment Name]"  e.g. "BEST OPTION — Invisalign + Whitening"
+- Second item label: "ALTERNATIVE — [Treatment Name]"  e.g. "ALTERNATIVE — Porcelain Veneers"
+- detail: One confident sentence explaining what it does for THIS specific smile. Not generic.
+
+VALID TREATMENT IDs — only what the photo clearly justifies:
+"invisalign" → visible crowding or spacing
+"whitening" → clear yellowing or staining
 "veneers" → chips, wear, or shape issues on front teeth
-"bonding" → small gap or chip on 1-3 teeth
-"implants" → missing tooth with visible gap
-"crowns" → visibly broken or worn-down tooth
+"bonding" → small chip or gap on 1-3 teeth
+"implants" → clearly missing tooth
+"crowns" → visibly broken or heavily worn tooth
 "makeover" → multiple cosmetic issues on healthy structure
 "gum_contouring" → clearly uneven gumline
 
-RETURN THIS EXACT JSON:
+RETURN THIS EXACT JSON — no extra fields, no markdown, no backticks:
 {
-  "headline": "One confident, aspirational sentence. Start positive. End with the transformation.",
+  "headline": "One sentence. Start with something genuinely positive about THIS smile. End with the transformation that's possible.",
   "bullets": [
-    "One-line observation — specific, confident, no minimizing",
-    "One-line observation",
-    "One-line positive — something already working"
+    "Specific observation about what you see — confident, no minimizing words",
+    "Second observation if present",
+    "One positive callout — something that's already working well"
   ],
-  "ideal_result": "2-3 short sentences. Paint the emotional outcome. Specific moments: photos, laughing, first impressions. No generic statements.",
+  "ideal_result": "2-3 sentences. Paint the specific emotional outcome. Real moments: photos, conversations, first impressions. Make them feel it.",
   "plan": [
-    {"label": "Best option", "treatment": "Treatment Name", "id": "treatment_id", "detail": "One sentence — what it does for THIS smile."},
-    {"label": "Optional refinement", "treatment": "Treatment Name", "id": "treatment_id", "detail": "One sentence."}
+    {"label": "BEST OPTION — Treatment Name", "treatment": "Treatment Name", "id": "treatment_id", "detail": "One sentence on what this does for their specific smile."},
+    {"label": "ALTERNATIVE — Treatment Name", "treatment": "Treatment Name", "id": "treatment_id", "detail": "One sentence on why this is a valid alternative."}
   ],
-  "cta": "1-2 lines. Action-driven. Benefit-focused. End: Call (818) 706-6077 — your consultation is free.",
+  "cta": "1-2 sentences. Action-driven. Mention showing them a preview. No phone number — just the action.",
   "treatments": [
     {"id": "treatment_id", "label": "Display Name"}
   ],
   "urgency": "standard"
 }
 
-plan array: include 1-2 items only. Only include what the photo justifies.
-treatments array: same IDs as plan, used for deep-dive chips.
-urgency: "standard" = cosmetic only, "soon" = worth addressing, "priority" = needs attention.
-
-TOTAL LENGTH: Keep all text fields under 150 words combined. Short. Scannable. Mobile-first.
-NO website URLs anywhere. Patient is already on our site.`;
+plan: 1-2 items only. Include only what the photo justifies.
+treatments: same IDs as plan.
+urgency: "standard" = cosmetic, "soon" = worth addressing, "priority" = needs attention.
+bullets: 2-4 items — last one always positive.
+Total word count across all fields: under 160 words.
+NO website URLs. NO "confidence" as a word. NO "transform". NO "journey".
 
 // ─────────────────────────────────────────────
 // DEEP DIVE — per-treatment detail
