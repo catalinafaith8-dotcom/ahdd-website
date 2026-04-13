@@ -307,138 +307,161 @@ button{font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;cursor:p
 
 
 
+
 /* sai widget always visible */
 .sai-section,.sai-card{opacity:1!important;transform:none!important}
 
-/* =======================================================
-   AI SMILE WIDGET v6 — Single column · Scannable
-   ======================================================= */
-.sai-section{padding:80px 0;background:#f8f9fb;position:relative;overflow:hidden}
-.sai-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 60% 0%,rgba(0,113,227,.05) 0%,transparent 70%);pointer-events:none}
-.sai-card{max-width:680px;margin:0 auto;background:#fff;border-radius:24px;box-shadow:0 2px 4px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.08);overflow:hidden}
-.sai-header{background:linear-gradient(135deg,#0b2545,#1a3f6e);padding:32px 40px;text-align:center}
-.sai-header-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px}
-.sai-header-eyebrow::before,.sai-header-eyebrow::after{content:'';width:16px;height:1px;background:rgba(255,255,255,.2)}
-.sai-header-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:clamp(22px,3vw,30px);font-weight:700;color:#fff;letter-spacing:-.025em;line-height:1.12;margin-bottom:8px}
-.sai-header-title em{font-style:normal;color:#f59e0b}
-.sai-header-sub{font-size:14px;color:rgba(255,255,255,.5);line-height:1.6}
-.sai-body{padding:36px 40px}
-.sai-drop{position:relative;border:2px dashed rgba(0,0,0,.12);border-radius:16px;padding:28px 20px;text-align:center;cursor:pointer;background:#fafafa;transition:all .2s;margin-bottom:12px}
+/* ═══════════════════════════════════════════════════════
+   AI SMILE WIDGET v7 — Mobile-first · Conversion-focused
+   ═══════════════════════════════════════════════════════ */
+.sai-section{padding:72px 0;background:#f4f6f9;position:relative}
+.sai-card{max-width:640px;margin:0 auto;background:#fff;border-radius:20px;box-shadow:0 2px 4px rgba(0,0,0,.04),0 16px 40px rgba(0,0,0,.09);overflow:hidden}
+
+/* Header */
+.sai-header{background:linear-gradient(135deg,#0b2545 0%,#1e4d8c 100%);padding:28px 32px;text-align:center}
+.sai-header-eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px}
+.sai-header-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:clamp(20px,3vw,26px);font-weight:700;color:#fff;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px}
+.sai-header-title em{font-style:normal;color:#fbbf24}
+.sai-header-sub{font-size:13.5px;color:rgba(255,255,255,.45);line-height:1.5}
+
+/* Body */
+.sai-body{padding:28px 32px}
+
+/* Drop zone */
+.sai-drop{position:relative;border:2px dashed rgba(0,0,0,.11);border-radius:14px;padding:24px 20px;text-align:center;cursor:pointer;background:#f9fafb;transition:all .2s;margin-bottom:12px}
 .sai-drop:hover{border-color:#0071e3;background:rgba(0,113,227,.03);transform:translateY(-1px)}
 .sai-drop.drag{border-color:#0071e3;border-style:solid}
 .sai-drop.has-file{border-color:#22c55e;border-style:solid;background:rgba(34,197,94,.03)}
 .sai-drop-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.sai-drop-icon{width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .2s}
+.sai-drop-icon{width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 1px 6px rgba(0,0,0,.06);transition:transform .2s}
 .sai-drop:hover .sai-drop-icon{transform:translateY(-2px)}
 .sai-drop.has-file .sai-drop-icon{background:#dcfce7;border-color:transparent}
-.sai-drop-title{font-size:14px;font-weight:600;color:#0a0e14;margin-bottom:3px}
-.sai-drop-sub{font-size:12px;color:#9ca3af}
-.sai-preview{display:none;position:relative;margin-bottom:12px;border-radius:14px;overflow:hidden;max-height:180px;border:1px solid rgba(0,0,0,.06)}
+.sai-drop-title{font-size:13.5px;font-weight:600;color:#111827;margin-bottom:2px}
+.sai-drop-sub{font-size:11.5px;color:#9ca3af}
+.sai-preview{display:none;position:relative;margin-bottom:12px;border-radius:12px;overflow:hidden;max-height:200px;border:1px solid rgba(0,0,0,.06)}
 .sai-preview.show{display:block;animation:saiFade .3s ease}
-.sai-preview img{width:100%;display:block;object-fit:cover;max-height:180px}
-.sai-preview-badge{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px}
-.sai-analyze-btn{width:100%;padding:15px;border-radius:12px;background:#0071e3;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:600;letter-spacing:-.01em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 14px rgba(0,113,227,.3);margin-bottom:10px}
-.sai-analyze-btn:hover:not(:disabled){background:#0058b0;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.4)}
-.sai-analyze-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
-.sai-privacy{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;color:#9ca3af;margin-bottom:4px}
-.sai-privacy svg{width:11px;height:11px;stroke:#9ca3af;fill:none;stroke-width:2;flex-shrink:0}
-.sai-loader{display:none;flex-direction:column;align-items:center;gap:12px;padding:20px 0}
+.sai-preview img{width:100%;display:block;object-fit:cover;max-height:200px}
+.sai-preview-badge{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:100px}
+.sai-analyze-btn{width:100%;padding:14px;border-radius:11px;background:#0071e3;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:600;letter-spacing:-.01em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 14px rgba(0,113,227,.28);margin-bottom:8px}
+.sai-analyze-btn:hover:not(:disabled){background:#0058b0;transform:translateY(-1px)}
+.sai-analyze-btn:disabled{opacity:.32;cursor:not-allowed;transform:none;box-shadow:none}
+.sai-privacy{display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;color:#9ca3af;margin-bottom:4px}
+.sai-privacy svg{width:10px;height:10px;stroke:#9ca3af;fill:none;stroke-width:2;flex-shrink:0}
+
+/* Loader */
+.sai-loader{display:none;flex-direction:column;align-items:center;gap:10px;padding:18px 0}
 .sai-loader.show{display:flex;animation:saiFade .25s ease}
-.sai-loader-ring{position:relative;width:36px;height:36px}
-.sai-ring-outer{width:36px;height:36px;border:2px solid rgba(0,113,227,.1);border-top-color:#0071e3;border-radius:50%;animation:saiSpin .85s linear infinite}
-.sai-ring-inner{position:absolute;inset:7px;border:1.5px solid rgba(201,106,46,.15);border-top-color:#C96A2E;border-radius:50%;animation:saiSpin 1.3s linear infinite reverse}
+.sai-loader-ring{position:relative;width:32px;height:32px}
+.sai-ring-outer{width:32px;height:32px;border:2px solid rgba(0,113,227,.1);border-top-color:#0071e3;border-radius:50%;animation:saiSpin .85s linear infinite}
+.sai-ring-inner{position:absolute;inset:6px;border:1.5px solid rgba(201,106,46,.12);border-top-color:#C96A2E;border-radius:50%;animation:saiSpin 1.3s linear infinite reverse}
 @keyframes saiSpin{to{transform:rotate(360deg)}}
 .sai-loader-label{font-size:13px;color:#6b7280;font-weight:500}
 .sai-loader-dots{display:flex;gap:4px}
-.sai-loader-dot{width:5px;height:5px;border-radius:50%;background:rgba(0,0,0,.1);animation:saiDot 1.4s ease-in-out infinite}
+.sai-loader-dot{width:4px;height:4px;border-radius:50%;background:rgba(0,0,0,.1);animation:saiDot 1.4s ease-in-out infinite}
 .sai-loader-dot:nth-child(2){animation-delay:.2s}
 .sai-loader-dot:nth-child(3){animation-delay:.4s}
 @keyframes saiDot{0%,80%,100%{background:rgba(0,0,0,.1);transform:scale(.85)}40%{background:#0071e3;transform:scale(1)}}
-.sai-gate{display:none;text-align:center;padding:8px 0}
+
+/* Gate */
+.sai-gate{display:none;text-align:center;padding:4px 0}
 .sai-gate.show{display:block;animation:saiFade .35s ease}
-.sai-gate-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0071e3,#0b2545);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 12px rgba(0,113,227,.25)}
-.sai-gate-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.75}
-.sai-gate-heading{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:20px;font-weight:700;color:#0a0e14;letter-spacing:-.02em;margin-bottom:6px}
-.sai-gate-sub{font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:20px}
-.sai-gate-field{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;font-size:14px;color:#0a0e14;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;margin-bottom:10px;box-sizing:border-box;font-family:inherit}
+.sai-gate-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#0071e3,#0b2545);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 12px rgba(0,113,227,.22)}
+.sai-gate-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.75}
+.sai-gate-heading{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:18px;font-weight:700;color:#111827;letter-spacing:-.02em;margin-bottom:5px}
+.sai-gate-sub{font-size:13.5px;color:#6b7280;line-height:1.6;margin-bottom:18px}
+.sai-gate-field{width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid #e5e7eb;background:#fff;font-size:14px;color:#111827;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;margin-bottom:9px;box-sizing:border-box;font-family:inherit}
 .sai-gate-field::placeholder{color:#9ca3af}
 .sai-gate-field:focus{border-color:#0071e3;box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .sai-gate-field.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.08)}
-.sai-gate-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sai-gate-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .sai-gate-row .sai-gate-field{margin-bottom:0}
-.sai-gate-submit{width:100%;padding:14px;border-radius:12px;background:#0071e3;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:600;letter-spacing:-.01em;border:none;cursor:pointer;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 14px rgba(0,113,227,.28)}
+.sai-gate-submit{width:100%;padding:13px;border-radius:10px;background:#0071e3;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14.5px;font-weight:600;letter-spacing:-.01em;border:none;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;box-shadow:0 4px 14px rgba(0,113,227,.26)}
 .sai-gate-submit:hover{background:#0058b0;transform:translateY(-1px)}
-.sai-gate-submit:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.sai-gate-legal{font-size:11px;color:#9ca3af;text-align:center;line-height:1.5;margin-top:10px}
+.sai-gate-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.sai-gate-legal{font-size:10.5px;color:#9ca3af;text-align:center;line-height:1.5;margin-top:8px}
+
+/* ── RESULT — new layout order ────────────────────────── */
 .sai-result{display:none}
 .sai-result.show{display:block;animation:saiFade .4s ease}
-.sai-urgency{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px}
-.sai-urgency.recommended{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
-.sai-urgency.priority{background:#fff1f0;color:#991b1b;border:1px solid #fecaca}
-.sai-urg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.recommended .sai-urg-dot{background:#f59e0b;animation:saiDotPulse 2s infinite}
-.priority .sai-urg-dot{background:#ef4444;animation:saiDotPulse 1.5s infinite}
-@keyframes saiDotPulse{0%,100%{opacity:1}50%{opacity:.3}}
-.sai-assess-head{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#0071e3;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.sai-assess-head::before{content:'';width:14px;height:1.5px;background:#0071e3;flex-shrink:0}
-.sai-obs-text{font-size:15px;line-height:1.82;color:#374151;margin-bottom:20px}
-.sai-obs-text p{margin-bottom:10px}
-.sai-obs-text p:last-child{margin-bottom:0}
-.sai-rec-block{background:linear-gradient(135deg,#0b2545,#1a3f6e);border-radius:16px;padding:24px 26px;margin-bottom:20px}
-.sai-rec-eyebrow{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
-.sai-rec-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.01em}
-.sai-rec-items{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
-.sai-rec-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(255,255,255,.85);line-height:1.55}
-.sai-rec-check{width:18px;height:18px;border-radius:50%;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.sai-rec-check svg{width:9px;height:9px;stroke:#f59e0b;fill:none;stroke-width:3}
-.sai-rec-impact{font-size:13px;color:rgba(255,255,255,.45);padding-top:12px;border-top:1px solid rgba(255,255,255,.08);line-height:1.6;font-style:italic}
-.sai-tx-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.sai-tx-label{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#9ca3af}
-.sai-tx-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
-.sai-tx-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:100px;font-size:13px;font-weight:500;background:#f3f4f6;color:#374151;border:1px solid transparent;cursor:pointer;transition:all .2s}
-.sai-tx-chip:hover{background:#0071e3;color:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,113,227,.2)}
-.sai-tx-chip.active{background:#0071e3;color:#fff;box-shadow:0 4px 12px rgba(0,113,227,.22)}
-.sai-chip-mark{width:5px;height:5px;border-radius:50%;background:#C96A2E;flex-shrink:0;transition:background .2s}
-.sai-tx-chip:hover .sai-chip-mark,.sai-tx-chip.active .sai-chip-mark{background:rgba(255,255,255,.6)}
-.sai-deepdive-wrap{background:#f8f9fb;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:20px}
-.sai-dd-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f3f4f6;border-bottom:1px solid #e5e7eb}
-.sai-dd-icon{width:26px;height:26px;border-radius:7px;background:#0071e3;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sai-dd-icon svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2}
-.sai-dd-title{font-size:12.5px;font-weight:600;color:#0a0e14}
+
+/* 1. Headline */
+.sai-headline{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:17px;font-weight:700;color:#111827;line-height:1.45;letter-spacing:-.02em;margin-bottom:16px}
+
+/* 2. Bullets */
+.sai-bullets{list-style:none;padding:0;margin:0 0 18px;display:flex;flex-direction:column;gap:8px}
+.sai-bullet{display:flex;align-items:flex-start;gap:9px;font-size:14px;color:#374151;line-height:1.55}
+.sai-bullet-dot{width:20px;height:20px;border-radius:50%;background:#f0f4ff;border:1px solid #c7d7fc;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sai-bullet-dot svg{width:9px;height:9px;stroke:#3b82f6;fill:none;stroke-width:2.5}
+
+/* 3. Recommended Plan — HIGH VISIBILITY */
+.sai-plan{background:linear-gradient(135deg,#0b2545,#1e4d8c);border-radius:14px;padding:20px 22px;margin-bottom:18px}
+.sai-plan-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
+.sai-plan-items{display:flex;flex-direction:column;gap:10px}
+.sai-plan-item{display:flex;align-items:flex-start;gap:12px}
+.sai-plan-badge{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:2px 7px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fbbf24;white-space:nowrap;margin-top:2px;flex-shrink:0}
+.sai-plan-info{}
+.sai-plan-name{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14.5px;font-weight:700;color:#fff;margin-bottom:2px}
+.sai-plan-detail{font-size:13px;color:rgba(255,255,255,.6);line-height:1.5}
+
+/* 4. Ideal Result */
+.sai-ideal{background:#f8f9fb;border-radius:12px;padding:16px 18px;margin-bottom:18px;border-left:3px solid #fbbf24}
+.sai-ideal-label{font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#92400e;margin-bottom:8px}
+.sai-ideal-text{font-size:14px;color:#374151;line-height:1.72}
+
+/* Deep dive chips */
+.sai-tx-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.sai-tx-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:100px;font-size:12.5px;font-weight:500;background:#f3f4f6;color:#374151;border:1px solid transparent;cursor:pointer;transition:all .18s}
+.sai-tx-chip:hover{background:#0071e3;color:#fff;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,113,227,.2)}
+.sai-tx-chip.active{background:#0071e3;color:#fff;box-shadow:0 3px 10px rgba(0,113,227,.2)}
+.sai-chip-dot{width:5px;height:5px;border-radius:50%;background:#C96A2E;flex-shrink:0;transition:background .2s}
+.sai-tx-chip:hover .sai-chip-dot,.sai-tx-chip.active .sai-chip-dot{background:rgba(255,255,255,.6)}
+.sai-tx-label-row{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;margin-bottom:7px}
+
+/* Deep dive panel */
+.sai-deepdive-wrap{background:#f8f9fb;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:18px}
+.sai-dd-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f3f4f6;border-bottom:1px solid #e5e7eb}
+.sai-dd-icon{width:24px;height:24px;border-radius:6px;background:#0071e3;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sai-dd-icon svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2}
+.sai-dd-title{font-size:12px;font-weight:600;color:#111827}
 .sai-dd-body{padding:14px 16px}
-.sai-dd-spin{display:none;align-items:center;gap:8px}
+.sai-dd-spin{display:none;align-items:center;gap:7px}
 .sai-dd-spin.show{display:flex}
-.sai-dd-ring{width:16px;height:16px;border:1.5px solid rgba(0,113,227,.12);border-top-color:#0071e3;border-radius:50%;animation:saiSpin .7s linear infinite;flex-shrink:0}
-.sai-dd-text{font-size:14px;line-height:1.75;color:#374151}
-.sai-dd-text p{margin-bottom:10px}
+.sai-dd-ring{width:14px;height:14px;border:1.5px solid rgba(0,113,227,.1);border-top-color:#0071e3;border-radius:50%;animation:saiSpin .7s linear infinite;flex-shrink:0}
+.sai-dd-text{font-size:13.5px;line-height:1.72;color:#374151}
+.sai-dd-text p{margin-bottom:9px}
 .sai-dd-text p:last-child{margin-bottom:0}
-.sai-cta-block{text-align:center}
-.sai-book-cta{width:100%;padding:16px 24px;border-radius:12px;background:linear-gradient(135deg,#0071e3,#0058b0);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:16px;font-weight:700;letter-spacing:-.02em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .2s;box-shadow:0 4px 16px rgba(0,113,227,.35);margin-bottom:8px}
-.sai-book-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,113,227,.45)}
-.sai-book-cta svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;transition:transform .2s}
+
+/* 5. CTA */
+.sai-book-cta{width:100%;padding:15px 20px;border-radius:11px;background:linear-gradient(135deg,#0071e3,#0058b0);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15.5px;font-weight:700;letter-spacing:-.02em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 16px rgba(0,113,227,.32);margin-bottom:8px}
+.sai-book-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,113,227,.42)}
+.sai-book-cta svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5;transition:transform .2s}
 .sai-book-cta:hover svg{transform:translateX(3px)}
-.sai-cta-sub{font-size:12px;color:#9ca3af;margin-bottom:12px}
-.sai-cta-phone{font-size:13px;color:#9ca3af;display:block;text-align:center;text-decoration:none;transition:color .2s}
+.sai-cta-text{font-size:12px;color:#9ca3af;text-align:center;margin-bottom:10px;line-height:1.5}
+.sai-cta-phone{font-size:12.5px;color:#9ca3af;display:block;text-align:center;text-decoration:none;transition:color .2s}
 .sai-cta-phone:hover{color:#0071e3}
-.sai-reset-btn{background:none;border:none;font-size:12px;color:#9ca3af;cursor:pointer;padding:14px 0 0;display:none;align-items:center;justify-content:center;gap:5px;transition:color .2s;width:100%}
+.sai-reset-btn{background:none;border:none;font-size:11.5px;color:#9ca3af;cursor:pointer;padding:14px 0 0;display:none;align-items:center;justify-content:center;gap:5px;transition:color .2s;width:100%}
 .sai-reset-btn:hover{color:#374151}
-.sai-reset-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.sai-reset-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
 .sai-reset-btn.visible{display:flex}
-.sai-emergency-banner{display:none;background:#fff1f0;border:1.5px solid #fecaca;border-radius:16px;padding:22px;margin-bottom:16px}
+
+/* Emergency */
+.sai-emergency-banner{display:none;background:#fff1f0;border:1.5px solid #fecaca;border-radius:14px;padding:20px;margin-bottom:14px}
 .sai-emergency-banner.show{display:block;animation:saiFade .4s ease}
-.sai-emrg-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.sai-emrg-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 10px rgba(239,68,68,.3)}
-.sai-emrg-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
-.sai-emrg-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:16px;font-weight:700;color:#991b1b;letter-spacing:-.02em}
-.sai-emrg-subtitle{font-size:12px;color:#b91c1c;margin-top:2px}
-.sai-emrg-body{font-size:14px;line-height:1.75;color:#374151;margin-bottom:16px}
-.sai-emrg-body p{margin-bottom:10px}
+.sai-emrg-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sai-emrg-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 8px rgba(239,68,68,.28)}
+.sai-emrg-icon svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5}
+.sai-emrg-title{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:700;color:#991b1b;letter-spacing:-.02em}
+.sai-emrg-subtitle{font-size:11.5px;color:#b91c1c;margin-top:1px}
+.sai-emrg-body{font-size:13.5px;line-height:1.72;color:#374151;margin-bottom:14px}
+.sai-emrg-body p{margin-bottom:8px}
 .sai-emrg-body p:last-child{margin-bottom:0}
-.sai-emrg-cta{width:100%;padding:14px;border-radius:10px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.01em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 12px rgba(239,68,68,.35);margin-bottom:10px}
+.sai-emrg-cta{width:100%;padding:13px;border-radius:9px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;box-shadow:0 3px 10px rgba(239,68,68,.3);margin-bottom:8px}
 .sai-emrg-cta:hover{transform:translateY(-2px)}
-.sai-emrg-phone{display:flex;align-items:center;justify-content:center;gap:5px;font-size:13px;font-weight:500;color:#991b1b;text-decoration:none}
+.sai-emrg-phone{display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:500;color:#991b1b;text-decoration:none}
+
 @keyframes saiFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media(max-width:680px){.sai-header{padding:24px}.sai-body{padding:24px 20px}.sai-gate-row{grid-template-columns:1fr}}
+@media(max-width:680px){.sai-header,.sai-body{padding-left:20px;padding-right:20px}.sai-gate-row{grid-template-columns:1fr}}
+.sai-body{padding:24px 20px}.sai-gate-row{grid-template-columns:1fr}}
 .sai-left{padding:32px 20px}.sai-gate-row{grid-template-columns:1fr}.sai-trust{gap:8px}}
 
 </style>
@@ -782,28 +805,28 @@ button { font-family: var(--sans); }
   </div>
 </section>
 
-<!-- AI SMILE ANALYSIS v6 -->
+<!-- AI SMILE ANALYSIS v7 -->
 <section class="sai-section" id="smileAnalysis">
   <div class="wrap">
     <div class="sai-card">
       <div class="sai-header">
-        <div class="sai-header-eyebrow">AI-Powered &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp; Private</div>
-        <div class="sai-header-title">See What&rsquo;s <em>Possible</em><br/>for Your Smile</div>
-        <p class="sai-header-sub">Upload a photo. Get a personalized plan in 30 seconds.</p>
+        <div class="sai-header-eyebrow">AI Smile Analysis &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp; Private</div>
+        <div class="sai-header-title">See What&rsquo;s <em>Possible</em> for Your Smile</div>
+        <p class="sai-header-sub">Upload a photo. Get your personalized plan in 30 seconds.</p>
       </div>
       <div class="sai-body">
         <div class="sai-drop" id="saiDrop">
           <input type="file" class="sai-drop-input" id="saiFile" accept="image/jpeg,image/png,image/webp"/>
           <div class="sai-drop-icon">
-            <svg id="saiIconUp" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.75" width="20" height="20"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <svg id="saiIconOk" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" width="20" height="20" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg id="saiIconUp" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.75" width="18" height="18"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <svg id="saiIconOk" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" width="18" height="18" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <div class="sai-drop-title" id="saiDropTitle">Upload Your Smile Photo</div>
           <div class="sai-drop-sub">JPG, PNG or WebP &nbsp;&middot;&nbsp; Drag &amp; drop or click</div>
         </div>
         <div class="sai-preview" id="saiPreview"><img id="saiPreviewImg" src="" alt="Your smile"/><span class="sai-preview-badge">Ready</span></div>
         <button class="sai-analyze-btn" id="saiAnalyzeBtn" disabled>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           Analyze My Smile &mdash; Free
         </button>
         <div class="sai-privacy"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Photo analyzed privately &amp; immediately discarded</div>
@@ -815,44 +838,52 @@ button { font-family: var(--sans); }
         <div class="sai-gate" id="saiGate">
           <div class="sai-gate-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
           <div class="sai-gate-heading" id="saiGateHeading">Your Results Are Ready</div>
-          <p class="sai-gate-sub" id="saiGateSub">Enter your details and Drs. Matian will personally review your analysis before your visit.</p>
+          <p class="sai-gate-sub" id="saiGateSub">Enter your details and Drs. Matian will personally review your results before your visit.</p>
           <div class="sai-gate-row">
             <input class="sai-gate-field" id="saiGateName" type="text" placeholder="First name" autocomplete="given-name"/>
             <input class="sai-gate-field" id="saiGateEmail" type="email" placeholder="Email address" autocomplete="email"/>
           </div>
-          <input class="sai-gate-field" id="saiGatePhone" type="tel" placeholder="Phone (optional)" autocomplete="tel" style="margin-top:10px"/>
+          <input class="sai-gate-field" id="saiGatePhone" type="tel" placeholder="Phone (optional)" autocomplete="tel" style="margin-top:9px"/>
           <button class="sai-gate-submit" id="saiGateSubmit">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Show My Smile Report</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Show My Results</span>
           </button>
           <p class="sai-gate-legal">We never spam. Unsubscribe anytime.</p>
         </div>
         <div class="sai-emergency-banner" id="saiEmrgBanner">
           <div class="sai-emrg-header">
             <div class="sai-emrg-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-            <div><div class="sai-emrg-title">This Needs Attention Soon</div><div class="sai-emrg-subtitle">Early care keeps options open and costs lower.</div></div>
+            <div><div class="sai-emrg-title">This Needs Attention Soon</div><div class="sai-emrg-subtitle">Early care keeps costs lower and options open.</div></div>
           </div>
           <div class="sai-emrg-body" id="saiEmrgBody"></div>
           <button class="sai-emrg-cta" id="saiEmrgCta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.59a19.79 19.79 0 01-3.07-8.65A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.16a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 15.92z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.59a19.79 19.79 0 01-3.07-8.65A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.16a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 15.92z"/></svg>
             Call Now &mdash; Same-Day Available: (818) 706-6077
           </button>
           <a href="tel:+18187066077" class="sai-emrg-phone">Or tap to call directly</a>
         </div>
+        <!-- RESULT — layout order: headline → bullets → plan → ideal → chips → deepdive → CTA -->
         <div class="sai-result" id="saiResult">
-          <div id="saiUrgency"></div>
-          <div class="sai-assess-head">Your Smile Assessment</div>
-          <div class="sai-obs-text" id="saiResultText"></div>
-          <div class="sai-rec-block" id="saiRecBlock" style="display:none">
-            <div class="sai-rec-eyebrow">What We Recommend</div>
-            <div class="sai-rec-title">Your Personalized Plan</div>
-            <div class="sai-rec-items" id="saiRecItems"></div>
-            <div class="sai-rec-impact" id="saiRecImpact"></div>
+          <!-- 1. Headline -->
+          <div class="sai-headline" id="saiHeadline"></div>
+          <!-- 2. What I See bullets -->
+          <ul class="sai-bullets" id="saiBullets"></ul>
+          <!-- 3. Recommended Plan — HIGH VISIBILITY -->
+          <div class="sai-plan" id="saiPlan" style="display:none">
+            <div class="sai-plan-eyebrow">Recommended Plan</div>
+            <div class="sai-plan-items" id="saiPlanItems"></div>
           </div>
+          <!-- 4. Ideal Result -->
+          <div class="sai-ideal" id="saiIdeal" style="display:none">
+            <div class="sai-ideal-label">Your Ideal Result</div>
+            <div class="sai-ideal-text" id="saiIdealText"></div>
+          </div>
+          <!-- 5. Deep dive chips -->
           <div id="saiTxWrap" style="display:none">
-            <div class="sai-tx-header"><span class="sai-tx-label">Tap to learn more</span></div>
-            <div class="sai-tx-chips" id="saiTxChips"></div>
+            <div class="sai-tx-label-row">Tap to learn more</div>
+            <div class="sai-tx-row" id="saiTxChips"></div>
           </div>
+          <!-- Deep dive panel -->
           <div class="sai-deepdive-wrap" id="saiDeepdive" style="display:none">
             <div class="sai-dd-header">
               <div class="sai-dd-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6M9 16h6M9 8h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg></div>
@@ -863,17 +894,17 @@ button { font-family: var(--sans); }
               <div class="sai-dd-text" id="saiDdText"></div>
             </div>
           </div>
-          <div class="sai-cta-block">
-            <button class="sai-book-cta" id="saiBookCta">Book Your Free Consultation<svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-            <div class="sai-cta-sub">Free &nbsp;&middot;&nbsp; No pressure &nbsp;&middot;&nbsp; Takes 15 minutes</div>
-            <a href="tel:+18187066077" class="sai-cta-phone">(818) 706-6077</a>
-          </div>
+          <!-- 6. CTA -->
+          <button class="sai-book-cta" id="saiBookCta">Book Your Free Consultation<svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          <div class="sai-cta-text">Free &nbsp;&middot;&nbsp; No pressure &nbsp;&middot;&nbsp; 15 minutes</div>
+          <a href="tel:+18187066077" class="sai-cta-phone">(818) 706-6077</a>
         </div>
         <button class="sai-reset-btn" id="saiReset"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Analyze another photo</button>
       </div>
     </div>
   </div>
 </section>
+
 
 
 <!-- FAQ -->
@@ -1047,23 +1078,28 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     priority:   {label:'Schedule Soon', cls:'priority'}
   };
   function $$(id){return document.getElementById(id)}
-  var fileInput=$$('saiFile'),analyzeBtn=$$('saiAnalyzeBtn');
-  var dropzone=$$('saiDrop'),dropTitle=$$('saiDropTitle');
-  var iconUp=$$('saiIconUp'),iconOk=$$('saiIconOk');
+  function stripMd(t){return(t||'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/#{1,6}\s/g,'').trim();}
+
+  // DOM references
+  var fileInput=$$('saiFile'), analyzeBtn=$$('saiAnalyzeBtn');
+  var dropzone=$$('saiDrop'),  dropTitle=$$('saiDropTitle');
+  var iconUp=$$('saiIconUp'),  iconOk=$$('saiIconOk');
   var preview=$$('saiPreview'),previewImg=$$('saiPreviewImg');
   var loader=$$('saiLoader');
-  var gate=$$('saiGate'),gateHeading=$$('saiGateHeading'),gateSub=$$('saiGateSub');
-  var gateName=$$('saiGateName'),gateEmail=$$('saiGateEmail'),gatePhone=$$('saiGatePhone');
+  var gate=$$('saiGate'),      gateHeading=$$('saiGateHeading'), gateSub=$$('saiGateSub');
+  var gateName=$$('saiGateName'),gateEmail=$$('saiGateEmail'),   gatePhone=$$('saiGatePhone');
   var gateSubmit=$$('saiGateSubmit');
   var emrgBanner=$$('saiEmrgBanner'),emrgBody=$$('saiEmrgBody'),emrgCta=$$('saiEmrgCta');
-  var resultWrap=$$('saiResult'),urgencyEl=$$('saiUrgency');
+  var resultWrap=$$('saiResult'), urgencyEl=$$('saiUrgency');
   var resultText=$$('saiResultText');
-  var txWrap=$$('saiTxWrap'),txChips=$$('saiTxChips');
+  var txWrap=$$('saiTxWrap'),   txChips=$$('saiTxChips');
   var deepdive=$$('saiDeepdive'),ddTitle=$$('saiDdTitle');
-  var ddLoad=$$('saiDdLoad'),ddText=$$('saiDdText');
-  var bookCta=$$('saiBookCta'),resetBtn=$$('saiReset');
+  var ddLoad=$$('saiDdLoad'),   ddText=$$('saiDdText');
+  var bookCta=$$('saiBookCta'), resetBtn=$$('saiReset');
   if(!fileInput)return;
   var selFile=null,b64=null,mime=null,activeChip=null,pendingData=null;
+
+  // File handling
   fileInput.addEventListener('change',function(){pick(fileInput.files&&fileInput.files[0])});
   dropzone.addEventListener('dragover',function(e){e.preventDefault();dropzone.classList.add('drag')});
   dropzone.addEventListener('dragleave',function(){dropzone.classList.remove('drag')});
@@ -1076,41 +1112,48 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     iconUp.style.display='none';iconOk.style.display='block';
     var r=new FileReader();r.onload=function(ev){previewImg.src=ev.target.result;preview.classList.add('show');};r.readAsDataURL(f);
   }
+
   analyzeBtn.addEventListener('click',function(){if(selFile)run()});
+
   function run(){
-    analyzeBtn.disabled=true;analyzeBtn.classList.add('done');loader.classList.add('show');
+    analyzeBtn.disabled=true;loader.classList.add('show');
     gate.classList.remove('show');emrgBanner.classList.remove('show');
     resultWrap.classList.remove('show');deepdive.style.display='none';
-    txWrap.style.display='none';txChips.innerHTML='';urgencyEl.innerHTML='';
-    resetBtn.classList.remove('visible');
-    pendingData=null;activeChip=null;
+    txWrap.style.display='none';txChips.innerHTML='';
+    if($$('saiPlan'))$$('saiPlan').style.display='none';
+    if($$('saiIdeal'))$$('saiIdeal').style.display='none';
+    if(urgencyEl)urgencyEl.innerHTML='';
+    resetBtn.classList.remove('visible');pendingData=null;activeChip=null;
     var reader=new FileReader();
     reader.onload=function(ev){
       b64=ev.target.result.split(',')[1];mime=selFile.type||'image/jpeg';
       fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime})})
       .then(function(r){return r.json()})
       .then(function(data){loader.classList.remove('show');if(data.error){showErr(data.error);return;}pendingData=data;showGate(data);})
-      .catch(function(){loader.classList.remove('show');showErr('We could not complete the analysis right now. Please call (818) 706-6077.');});
+      .catch(function(){loader.classList.remove('show');showErr('We could not complete the analysis. Please call (818) 706-6077.');});
     };
     reader.readAsDataURL(selFile);
   }
+
   function hasFullMouth(data){if(!data||!data.treatments)return false;var ids=(data.treatments||[]).map(function(t){return t.id});return ids.includes('full_crowns')||ids.includes('makeover')||(ids.length>=3);}
+
   function showGate(data){
     var isEmrg=data.emergency,isFull=hasFullMouth(data);
-    if(isEmrg){gateHeading.textContent='This Looks Urgent - Your Results Are Ready';gateSub.textContent='Enter your details so our team can reach you immediately. Same-day care is available.';}
-    else if(isFull){gateHeading.textContent='Your Full Smile Report Is Ready';gateSub.textContent='This is a comprehensive assessment. Enter your details and Drs. Matian will review it personally.';}
-    else{gateHeading.textContent='Your Results Are Ready';gateSub.textContent='Enter your info and Drs. Matian will personally review your analysis before your consultation.';}
+    if(isEmrg){if(gateHeading)gateHeading.textContent='This Looks Urgent - Your Results Are Ready';if(gateSub)gateSub.textContent='Enter your details so our team can reach you immediately.';}
+    else if(isFull){if(gateHeading)gateHeading.textContent='Your Full Smile Report Is Ready';if(gateSub)gateSub.textContent='Drs. Matian will review your results personally before your visit.';}
+    else{if(gateHeading)gateHeading.textContent='Your Results Are Ready';if(gateSub)gateSub.textContent='Enter your details and Drs. Matian will personally review your results before your visit.';}
     gate.classList.add('show');resetBtn.classList.add('visible');
-    setTimeout(function(){gate.scrollIntoView({behavior:'smooth',block:'start'})},80);
+    setTimeout(function(){gate.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
   }
+
   gateSubmit.addEventListener('click',function(){
     var name=(gateName.value||'').trim(),email=(gateEmail.value||'').trim(),phone=(gatePhone.value||'').trim();
     gateName.classList.remove('error');gateEmail.classList.remove('error');
     if(!name){gateName.classList.add('error');gateName.focus();return;}
     if(!email||!email.includes('@')){gateEmail.classList.add('error');gateEmail.focus();return;}
     gateSubmit.disabled=true;
-    gateSubmit.style.background='rgba(0,0,0,.08)';
-    gateSubmit.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#0a0e14;font-size:13px">Sent — loading your report…</span>';
+    gateSubmit.style.opacity='0.6';
+    gateSubmit.querySelector('span').textContent='Sending...';
     var data=pendingData||{},isFull=hasFullMouth(data);
     var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
     var payload={
@@ -1118,21 +1161,13 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       email:email,phone:phone,
       tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]),
       source:'Smile Analysis Widget',
-      customField:{smile_analysis_result:(data.analysis||JSON.stringify(data.sections||{}))||'',treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
+      customField:{smile_analysis_result:JSON.stringify(data).substring(0,500),treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
     };
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){
-      // Fade gate out, show result
-      gate.style.transition='opacity .3s ease';gate.style.opacity='0';
-      setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},320);
+      gate.style.transition='opacity .3s';gate.style.opacity='0';
+      setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},300);
     });
-  });
-  function $$(id){return document.getElementById(id)}
-  function stripMd(t){return(t||'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/#{1,6}\s/g,'').trim();}
-
-  function sectionsToHtml(s){
-    var obs=[s.first_impression,s.observations].filter(Boolean).map(stripMd);
-    return obs.map(function(p){return'<p>'+p+'</p>';}).join('');
-  }
+  });(t){return(t||'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/#{1,6}\s/g,'').trim();}
 
   function renderResult(data){
     resetBtn.classList.add('visible');
@@ -1142,34 +1177,48 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       emrgBanner.classList.add('show');
       setTimeout(function(){emrgBanner.scrollIntoView({behavior:'smooth',block:'nearest'})},80);return;
     }
-    var u=UC[data.urgency]||{label:'',cls:''};
-    urgencyEl.innerHTML=u.label?'<div class="sai-urgency '+u.cls+'"><span class="sai-urg-dot"></span>'+u.label+'</div>':'';
-    var s=data.sections||{};
-    if(Object.keys(s).length){
-      resultText.innerHTML=sectionsToHtml(s);
-    } else {
-      var paras=(data.analysis||'').split(/\n\n+/).filter(Boolean);
-      resultText.innerHTML=paras.slice(0,2).map(function(p){return'<p>'+stripMd(p)+'</p>';}).join('');
-    }
-    var recBlock=$$('saiRecBlock'),recItems=$$('saiRecItems'),recImpact=$$('saiRecImpact');
-    if(data.treatments&&data.treatments.length){
-      recItems.innerHTML='';
-      data.treatments.forEach(function(t){
-        var meta=TX[t.id];if(!meta)return;
-        var item=document.createElement('div');item.className='sai-rec-item';
-        item.innerHTML='<div class="sai-rec-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span>'+(t.reason||t.label||meta.label)+'</span>';
-        recItems.appendChild(item);
+
+    // 1. Headline
+    var headlineEl=$$('saiHeadline');
+    if(headlineEl)headlineEl.textContent=stripMd(data.headline||'');
+
+    // 2. Bullets
+    var bulletsEl=$$('saiBullets');
+    if(bulletsEl){
+      bulletsEl.innerHTML='';
+      (data.bullets||[]).forEach(function(b){
+        var li=document.createElement('li');li.className='sai-bullet';
+        li.innerHTML='<div class="sai-bullet-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span>'+stripMd(b)+'</span>';
+        bulletsEl.appendChild(li);
       });
-      var impact=stripMd(s.biggest_impact||'');
-      if(impact){recImpact.textContent=impact;recImpact.style.display='block';}
-      else{recImpact.style.display='none';}
-      recBlock.style.display='block';
-    } else {recBlock.style.display='none';}
+    }
+
+    // 3. Plan — HIGH VISIBILITY
+    var planEl=$$('saiPlan'),planItems=$$('saiPlanItems');
+    if(planEl&&planItems&&data.plan&&data.plan.length){
+      planItems.innerHTML='';
+      data.plan.forEach(function(p){
+        var div=document.createElement('div');div.className='sai-plan-item';
+        div.innerHTML='<div class="sai-plan-badge">'+stripMd(p.label||'Best option')+'</div>'
+          +'<div class="sai-plan-info"><div class="sai-plan-name">'+stripMd(p.treatment||'')+'</div>'
+          +'<div class="sai-plan-detail">'+stripMd(p.detail||'')+'</div></div>';
+        planItems.appendChild(div);
+      });
+      planEl.style.display='block';
+    } else if(planEl){planEl.style.display='none';}
+
+    // 4. Ideal result
+    var idealEl=$$('saiIdeal'),idealText=$$('saiIdealText');
+    var ideal=stripMd(data.ideal_result||'');
+    if(idealEl&&ideal){idealText.textContent=ideal;idealEl.style.display='block';}
+    else if(idealEl){idealEl.style.display='none';}
+
+    // 5. Deep dive chips
     txChips.innerHTML='';
     (data.treatments||[]).forEach(function(t){
       var meta=TX[t.id];if(!meta)return;
       var chip=document.createElement('button');chip.className='sai-tx-chip';
-      chip.innerHTML='<span class="sai-chip-mark"></span><span>'+(t.label||meta.label)+'</span>';
+      chip.innerHTML='<span class="sai-chip-dot"></span><span>'+(t.label||meta.label)+'</span>';
       chip.addEventListener('click',function(){
         if(activeChip===chip&&deepdive.style.display!=='none'){deepdive.style.display='none';activeChip=null;chip.classList.remove('active');return;}
         document.querySelectorAll('.sai-tx-chip').forEach(function(c){c.classList.remove('active')});
@@ -1178,10 +1227,11 @@ function escBook(e){if(e.key==='Escape')closeBook();}
       txChips.appendChild(chip);
     });
     if(data.treatments&&data.treatments.length)txWrap.style.display='block';
+
     resultWrap.classList.add('show');
     setTimeout(function(){resultWrap.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
   }
-  function showErr(msg){urgencyEl.innerHTML='';resultText.textContent=msg;txWrap.style.display='none';resultWrap.classList.add('show');analyzeBtn.disabled=false;resetBtn.classList.add('visible');}
+  function showErr(msg){if(urgencyEl)urgencyEl.innerHTML='';if($$('saiHeadline'))$$('saiHeadline').textContent=msg;txWrap.style.display='none';resultWrap.classList.add('show');analyzeBtn.disabled=false;resetBtn.classList.add('visible');}
   function openDeepdive(label){
     if(!b64)return;deepdive.style.display='block';ddTitle.textContent=label;ddLoad.classList.add('show');ddText.textContent='';
     fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,mode:'deep_dive',treatmentLabel:label})})
