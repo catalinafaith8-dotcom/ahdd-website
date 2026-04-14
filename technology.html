@@ -150,6 +150,14 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .cc-icon svg{width:21px;height:21px;fill:var(--navy)}
 .cc h3{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--graphite);margin-bottom:8px}
 .cc p{font-size:13px;line-height:1.65;color:var(--slate)}
+#virtual-tour{background:#fff;padding:88px 0}
+.vt-header{text-align:center;max-width:640px;margin:0 auto 48px}
+.vt-header .section-h2{margin-bottom:14px}
+.vt-header p{font-size:16px;line-height:1.75;color:var(--slate)}
+.vt-embed-wrap{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 8px 48px rgba(29,62,92,.14);margin-bottom:24px}
+.vt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.vt-hint{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px;font-size:13px;color:var(--slate);text-align:center;flex-wrap:wrap}
+.vt-hint svg{width:16px;height:16px;stroke:var(--slate);fill:none;stroke-width:1.5;flex-shrink:0}
 #tech-cta{background:var(--navy);padding:80px 0}
 .cta-inner{text-align:center;max-width:600px;margin:0 auto}
 .cta-ey{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
@@ -225,6 +233,8 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   .wt-float{display:none}
   .comfort-grid{grid-template-columns:repeat(2,1fr)}
   .footer-grid{grid-template-columns:1fr 1fr}
+  #virtual-tour{padding:72px 0}
+  .vt-header{margin-bottom:40px}
 }
 @media(max-width:768px){
   .wrap{padding:0 20px}
@@ -234,12 +244,18 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   .tr-body{padding:36px 28px}
   .tg-grid{grid-template-columns:1fr}
   .comfort-grid{grid-template-columns:1fr}
+  #virtual-tour{padding:56px 0}
+  .vt-header{margin-bottom:32px}
+  .vt-hint{gap:12px;padding:12px;font-size:12px}
 }
 @media(max-width:480px){
   .footer-grid{grid-template-columns:1fr}
   .cta-btns{flex-direction:column;align-items:center}
   .stats-bar-grid{grid-template-columns:repeat(2,1fr)}
   .sb-stat{border-bottom:1px solid rgba(29,62,92,.08)}
+  #virtual-tour{padding:48px 0}
+  .vt-header{margin-bottom:24px}
+  .vt-hint{flex-direction:column;gap:8px;padding:10px}
 }
 </style>
 </head>
@@ -458,6 +474,37 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   </div>
 </section>
 
+<section id="virtual-tour" aria-label="Virtual tour of office">
+  <div class="wrap">
+    <div class="vt-header reveal">
+      <span class="section-label">Explore Our Space</span>
+      <h2 class="section-h2">Take a Virtual Tour of Our Office</h2>
+      <p>Step inside our modern dental practice from anywhere. Explore our treatment rooms, advanced technology suite, and welcoming reception area with this interactive 3D walkthrough — no appointment needed.</p>
+    </div>
+    <div class="vt-embed-wrap reveal">
+      <iframe src="https://my.matterport.com/show/?m=aHWzkSjqLBP&brand=0&play=1&qs=1"
+        title="Virtual Tour of Agoura Hills Dental Designs"
+        allow="autoplay; fullscreen; web-share; xr-spatial-tracking"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <div class="vt-hint reveal">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+        <span>Use your mouse or finger to navigate</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Click hotspots to move between rooms</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 3l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Scroll to zoom</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="tech-cta" aria-label="Book consultation">
   <div class="wrap">
     <div class="cta-inner reveal">
@@ -496,11 +543,11 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 <div id="chat-wrap">
   <div id="chat-win">
     <div id="chat-hd">
-      <div id="chat-hd-info"><div id="chat-hd-title">Agoura Hills Dental Designs<br>Patient Concierge</div><div id="chat-status">Online &mdash; Ready to help</div></div>
+      <div id="chat-hd-info"><div id="chat-hd-title">Agoura Hills Dental Designs<br>Patient Concierge</div><div id="chat-status">Online — Ready to help</div></div>
       <button id="chat-cls" style="background:rgba(255,255,255,.15);border:none;color:#fff;width:27px;height:27px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
     </div>
     <div id="chat-msgs"></div>
-    <div id="chat-inp-area"><input type="text" id="chat-inp" placeholder="Ask me anything&hellip;"/><button id="chat-send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button></div>
+    <div id="chat-inp-area"><input type="text" id="chat-inp" placeholder="Ask me anything..."/><button id="chat-send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button></div>
   </div>
   <button id="chat-tog"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg></button>
 </div>
