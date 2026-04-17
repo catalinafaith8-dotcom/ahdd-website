@@ -136,73 +136,86 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ══════════════════════════════════════════════
    SERVICES — Apple bento grid, all white
 ══════════════════════════════════════════════ */
-#services{background:var(--paper);padding:140px 0 120px}
-.svc-header{max-width:680px;margin-bottom:64px}
+#services{background:var(--paper);padding:104px 0}
+.svc-header{max-width:680px;margin-bottom:48px}
 .svc-header .section-h2{max-width:620px}
 .svc-trust-inline{display:inline-flex;align-items:center;gap:10px;margin-top:24px;padding:8px 16px;background:var(--white);border:1px solid var(--hairline);border-radius:100px;font-size:12px;color:var(--ink-soft);font-weight:500}
 .svc-trust-dot{width:6px;height:6px;border-radius:50%;background:#1A8C61;animation:pulse-soft 2.4s ease-in-out infinite}
 @keyframes pulse-soft{0%,100%{opacity:1}50%{opacity:.45}}
 
-/* Bento grid: hero (2x2) + 5 smaller cards */
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:16px}
-.svc-card{background:var(--white);border:1px solid var(--hairline-soft);border-radius:20px;padding:32px;display:flex;flex-direction:column;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .4s;min-height:220px}
+/* Balanced grid: 4 columns × 2 rows, hero spans 2×1 (landscape) */
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.svc-card{background:var(--white);border:1px solid var(--hairline-soft);border-radius:18px;padding:28px;display:flex;flex-direction:column;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .4s;min-height:240px}
 .svc-card:hover{transform:translateY(-3px);border-color:var(--hairline);box-shadow:0 12px 40px rgba(15,30,51,0.06)}
-.svc-num{font-family:var(--serif);font-size:12px;font-weight:400;color:var(--ink-faint);letter-spacing:0.1em;margin-bottom:auto;display:block}
-.svc-name{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);line-height:1.15;letter-spacing:-0.02em;margin:20px 0 10px}
-.svc-desc{font-size:14px;font-weight:300;color:var(--ink-soft);line-height:1.6;margin-bottom:24px}
-.svc-explore{font-size:12px;font-weight:500;letter-spacing:0.06em;color:var(--ink);display:inline-flex;align-items:center;gap:8px;margin-top:auto;transition:gap .3s}
+.svc-num{font-family:var(--serif);font-size:12px;font-weight:400;color:var(--ink-faint);letter-spacing:0.08em;display:block}
+.svc-name{font-family:var(--serif);font-size:21px;font-weight:400;color:var(--ink);line-height:1.18;letter-spacing:-0.02em;margin:16px 0 10px}
+.svc-desc{font-size:13.5px;font-weight:300;color:var(--ink-soft);line-height:1.55;margin-bottom:20px;flex:1}
+.svc-explore{font-size:11px;font-weight:500;letter-spacing:0.08em;color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:gap .3s;text-transform:uppercase}
 .svc-card:hover .svc-explore{gap:12px}
-.svc-explore svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform .3s}
+.svc-explore svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform .3s}
 .svc-card:hover .svc-explore svg{transform:translateX(2px)}
 
-/* Hero card — flagship (Dental Implants) spans 2 cols */
-.svc-card.hero-card{grid-column:span 2;grid-row:span 2;min-height:464px;background:var(--white);padding:44px;position:relative;overflow:hidden}
-.svc-card.hero-card .svc-tooth{position:absolute;right:-60px;bottom:-80px;opacity:0.04;width:460px;height:460px;pointer-events:none}
-.svc-card.hero-card .svc-name{font-size:44px;margin:24px 0 16px;max-width:480px}
-.svc-card.hero-card .svc-desc{font-size:16px;max-width:440px;margin-bottom:32px}
-.svc-card.hero-card .svc-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:var(--paper-warm);border-radius:100px;font-size:11px;font-weight:500;letter-spacing:0.1em;color:var(--ink-soft);text-transform:uppercase;margin-top:16px}
+/* Hero card — flagship spans 2 cols (landscape, same row height) */
+.svc-card.hero-card{grid-column:span 2;background:var(--ink);color:var(--white);border-color:var(--ink);padding:36px 32px;position:relative;overflow:hidden;min-height:240px}
+.svc-card.hero-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(15,30,51,0.18)}
+.svc-card.hero-card .svc-tooth{position:absolute;right:-40px;bottom:-60px;opacity:0.08;width:280px;height:280px;pointer-events:none}
+.svc-card.hero-card .svc-tooth path{fill:var(--white)}
+.svc-card.hero-card .svc-num{color:rgba(255,255,255,0.45);position:relative;z-index:1}
+.svc-card.hero-card .svc-name{font-size:32px;margin:14px 0 12px;max-width:380px;color:var(--white);position:relative;z-index:1;line-height:1.1}
+.svc-card.hero-card .svc-desc{font-size:14px;max-width:380px;margin-bottom:18px;color:rgba(255,255,255,0.7);position:relative;z-index:1}
+.svc-card.hero-card .svc-explore{color:var(--white);position:relative;z-index:1}
+.svc-card.hero-card .svc-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:100px;font-size:10px;font-weight:500;letter-spacing:0.1em;color:rgba(255,255,255,0.85);text-transform:uppercase;margin-top:14px;align-self:flex-start;position:relative;z-index:1}
 
-/* Consultation CTA card — single accent, placed strategically */
-.svc-card.consult-card{background:var(--ink);color:var(--white);border-color:var(--ink);grid-column:span 1;padding:32px;position:relative;overflow:hidden}
-.svc-card.consult-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(15,30,51,0.18)}
-.svc-card.consult-card .svc-num{color:rgba(255,255,255,0.35)}
-.svc-card.consult-card .svc-name{color:var(--white);font-size:22px}
-.svc-card.consult-card .svc-desc{color:rgba(255,255,255,0.65)}
-.svc-card.consult-card .svc-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:var(--white);color:var(--ink);border-radius:100px;font-size:13px;font-weight:500;margin-top:auto;transition:transform .2s,box-shadow .2s;align-self:flex-start}
-.svc-card.consult-card:hover .svc-btn{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+/* Consultation CTA card — light accent, one column */
+.svc-card.consult-card{background:var(--paper-warm);border-color:var(--hairline);padding:28px;grid-column:span 1}
+.svc-card.consult-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(15,30,51,0.08)}
+.svc-card.consult-card .svc-num{color:var(--ink-mute)}
+.svc-card.consult-card .svc-name{color:var(--ink);font-size:21px}
+.svc-card.consult-card .svc-desc{color:var(--ink-soft)}
+.svc-card.consult-card .svc-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--ink);color:var(--white);border-radius:100px;font-size:12px;font-weight:500;transition:transform .2s;align-self:flex-start;margin-top:auto}
+.svc-card.consult-card:hover .svc-btn{transform:translateY(-1px)}
 
-/* Bottom section CTA (all services) */
-.svc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:56px;padding-top:32px;border-top:1px solid var(--hairline)}
-.svc-footer-text{font-size:15px;color:var(--ink-soft);font-weight:300}
-.svc-footer-link{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:-0.005em;display:inline-flex;align-items:center;gap:8px;transition:gap .3s}
-.svc-footer-link:hover{gap:12px}
-.svc-footer-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+/* Full-width consult bar below grid */
+.svc-consult-bar{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-top:32px;padding:28px 36px;background:var(--white);border:1px solid var(--hairline-soft);border-radius:18px;text-decoration:none;transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
+.svc-consult-bar:hover{transform:translateY(-2px);border-color:var(--hairline);box-shadow:0 12px 40px rgba(15,30,51,0.06)}
+.svc-consult-left{flex:1;min-width:0}
+.svc-consult-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-mute);display:block;margin-bottom:6px}
+.svc-consult-title{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);letter-spacing:-0.02em;margin-bottom:4px}
+.svc-consult-desc{font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.5;margin:0}
+.svc-consult-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:var(--ink);color:var(--white);border-radius:100px;font-size:13px;font-weight:500;flex-shrink:0;transition:background .2s,transform .2s;letter-spacing:-0.005em}
+.svc-consult-bar:hover .svc-consult-btn{background:#1A2D4A}
+
+/* View all services link below consult bar */
+.svc-view-all{text-align:center;margin-top:36px}
+.svc-view-all-link{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:-0.005em;display:inline-flex;align-items:center;gap:8px;transition:gap .3s;padding-bottom:3px;border-bottom:1px solid var(--ink)}
+.svc-view-all-link:hover{gap:12px}
+.svc-view-all-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5}
 
 /* ══════════════════════════════════════════════
    DOCTORS — Editorial split
 ══════════════════════════════════════════════ */
 #doctors{background:var(--white);overflow:hidden}
-.doc-outer{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:680px}
-.doc-text{padding:120px 72px 120px 80px;display:flex;flex-direction:column;justify-content:center}
-.doc-text .eyebrow{margin-bottom:24px}
-.doc-h2{font-family:var(--serif);font-size:clamp(34px,3.8vw,52px);font-weight:400;color:var(--ink);line-height:1.05;margin-bottom:8px;letter-spacing:-0.025em}
-.doc-h2-em{font-family:var(--serif);font-size:clamp(34px,3.8vw,52px);font-weight:300;font-style:italic;color:var(--ink-soft);display:block;margin-bottom:36px;line-height:1.05;letter-spacing:-0.025em}
-.doc-p{font-size:16px;line-height:1.75;color:var(--ink-soft);margin-bottom:18px;font-weight:300}
-.doc-sig{display:flex;align-items:center;gap:12px;margin-top:16px;margin-bottom:32px}
-.doc-sig-line{width:32px;height:1px;background:var(--ink)}
-.doc-sig-name{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink);font-weight:400}
-.doc-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
-.btn-primary{padding:14px 28px;border-radius:100px;background:var(--ink);color:var(--white);font-size:14px;font-weight:500;transition:background .2s,transform .2s;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;letter-spacing:-0.005em}
+.doc-outer{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;min-height:auto;max-width:1240px;margin:0 auto}
+.doc-text{padding:96px 64px 96px 72px;display:flex;flex-direction:column;justify-content:center}
+.doc-text .eyebrow{margin-bottom:20px}
+.doc-h2{font-family:var(--serif);font-size:clamp(32px,3.4vw,46px);font-weight:400;color:var(--ink);line-height:1.05;margin-bottom:4px;letter-spacing:-0.025em}
+.doc-h2-em{font-family:var(--serif);font-size:clamp(32px,3.4vw,46px);font-weight:300;font-style:italic;color:var(--ink-soft);display:block;margin-bottom:28px;line-height:1.05;letter-spacing:-0.025em}
+.doc-p{font-size:15px;line-height:1.7;color:var(--ink-soft);margin-bottom:16px;font-weight:300}
+.doc-sig{display:flex;align-items:center;gap:12px;margin-top:20px;margin-bottom:28px}
+.doc-sig-line{width:28px;height:1px;background:var(--ink)}
+.doc-sig-name{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink);font-weight:400}
+.doc-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.btn-primary{padding:13px 26px;border-radius:100px;background:var(--ink);color:var(--white);font-size:13px;font-weight:500;transition:background .2s,transform .2s;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;letter-spacing:-0.005em}
 .btn-primary:hover{background:#1A2D4A;transform:translateY(-1px)}
-.btn-secondary{padding:14px 28px;border-radius:100px;background:transparent;color:var(--ink);border:1px solid var(--hairline);font-size:14px;font-weight:500;transition:all .2s;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;letter-spacing:-0.005em}
+.btn-secondary{padding:13px 26px;border-radius:100px;background:transparent;color:var(--ink);border:1px solid var(--hairline);font-size:13px;font-weight:500;transition:all .2s;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;letter-spacing:-0.005em}
 .btn-secondary:hover{background:var(--ink);color:var(--white);border-color:var(--ink)}
-.doc-photo{position:relative;overflow:hidden;background:var(--paper-warm)}
-.doc-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left center;display:block}
+.doc-photo{position:relative;overflow:hidden;background:var(--paper-warm);border-radius:24px;aspect-ratio:4/5;max-height:640px;margin:48px 72px 48px 0}
+.doc-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block}
 
 /* ══════════════════════════════════════════════
    VIRTUAL TOUR — Clean white, rounded embed
 ══════════════════════════════════════════════ */
-#virtual-tour{background:var(--paper);padding:120px 0}
+#virtual-tour{background:var(--paper);padding:104px 0}
 .vt-header{text-align:center;margin-bottom:48px}
 .vt-embed-wrap{position:relative;width:100%;padding-bottom:56.25%;height:0;border-radius:24px;overflow:hidden;box-shadow:0 2px 4px rgba(15,30,51,0.04),0 24px 80px rgba(15,30,51,0.12);background:var(--paper-warm);margin-bottom:32px;border:1px solid var(--hairline-soft)}
 .vt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
@@ -213,7 +226,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ══════════════════════════════════════════════
    TECHNOLOGY — Clean card grid
 ══════════════════════════════════════════════ */
-#tech{background:var(--white);padding:120px 0;border-top:1px solid var(--hairline-soft)}
+#tech{background:var(--white);padding:104px 0;border-top:1px solid var(--hairline-soft)}
 .tech-hd{text-align:center;margin-bottom:64px}
 .tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
 .tech-card{border-radius:20px;overflow:hidden;background:var(--white);cursor:pointer;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;border:1px solid var(--hairline-soft)}
@@ -233,24 +246,27 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ══════════════════════════════════════════════
    TEAM — Refined grid
 ══════════════════════════════════════════════ */
-#team{background:var(--paper-warm);padding:120px 0}
-.team-hd{text-align:center;margin-bottom:64px}
-.team-docs{display:flex;justify-content:center;gap:48px;margin-bottom:72px;flex-wrap:wrap}
-.team-staff{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+#team{background:var(--paper-warm);padding:104px 0}
+.team-hd{text-align:center;margin-bottom:56px}
+.team-docs{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:56px;max-width:680px;margin-left:auto;margin-right:auto}
+.team-docs .team-card{width:100%}
+.team-docs .team-photo{width:100%;aspect-ratio:4/5;height:auto;max-height:420px}
+.team-staff{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
 .team-staff .team-card{width:100%}
 .team-staff .team-photo{width:100%;aspect-ratio:3/4}
 .team-card{display:flex;flex-direction:column;align-items:center;text-align:center}
-.team-photo{overflow:hidden;border-radius:18px;background:var(--white);margin-bottom:14px;border:1px solid var(--hairline-soft)}
-.team-docs .team-photo{width:200px;height:260px}
+.team-photo{overflow:hidden;border-radius:16px;background:var(--white);margin-bottom:12px;border:1px solid var(--hairline-soft)}
 .team-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);transform-origin:center 20%}
-.team-card:hover .team-photo img{transform:scale(1.06)}
-.team-n{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ink);margin-bottom:4px;letter-spacing:-0.015em}
-.team-r{font-size:11px;font-weight:500;color:var(--ink-mute);letter-spacing:0.08em;text-transform:uppercase}
+.team-card:hover .team-photo img{transform:scale(1.04)}
+.team-n{font-family:var(--serif);font-size:16px;font-weight:400;color:var(--ink);margin-bottom:3px;letter-spacing:-0.015em}
+.team-docs .team-n{font-size:20px;margin-bottom:4px}
+.team-r{font-size:10px;font-weight:500;color:var(--ink-mute);letter-spacing:0.1em;text-transform:uppercase}
+.team-docs .team-r{font-size:11px}
 
 /* ══════════════════════════════════════════════
    REVIEWS — Editorial carousel
 ══════════════════════════════════════════════ */
-#reviews{background:var(--white);padding:120px 0}
+#reviews{background:var(--white);padding:104px 0}
 .rev-top{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:64px;flex-wrap:wrap}
 .rev-top-left{max-width:600px}
 .stars-row{display:flex;align-items:center;gap:8px;margin-top:20px}
@@ -260,7 +276,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .goog-btn:hover{background:var(--ink);color:var(--white);border-color:var(--ink)}
 .car-outer{overflow:hidden}
 .car-track{display:flex;gap:20px;transition:transform .5s cubic-bezier(.16,1,.3,1);touch-action:pan-y;padding-top:36px}
-.rev-card{flex:0 0 calc(33.333% - 14px);background:var(--white);border:1px solid var(--hairline-soft);border-radius:20px;padding:32px 28px 28px;position:relative;display:flex;flex-direction:column;gap:16px;transition:border-color .3s,box-shadow .3s}
+.rev-card{flex:0 0 calc(33.333% - 14px);background:var(--white);border:1px solid var(--hairline-soft);border-radius:18px;padding:36px 26px 24px;position:relative;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,box-shadow .3s;min-height:280px}
 .rev-card:hover{border-color:var(--hairline);box-shadow:0 8px 32px rgba(15,30,51,0.05)}
 .rev-av{position:absolute;top:-26px;left:32px;width:52px;height:52px;border-radius:50%;background:var(--ink);border:4px solid var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px;font-weight:400;color:var(--white)}
 .rev-stars{display:flex;gap:3px;margin-top:16px}
@@ -280,7 +296,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ══════════════════════════════════════════════
    INSURANCE — Refined (keep functional JS)
 ══════════════════════════════════════════════ */
-#ins{background:var(--paper);padding:120px 0;border-top:1px solid var(--hairline-soft)}
+#ins{background:var(--paper);padding:104px 0;border-top:1px solid var(--hairline-soft)}
 .ins-inner{max-width:1040px;margin:0 auto;padding:0 32px}
 .ins-header{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:56px;flex-wrap:wrap}
 .ins-header-left{max-width:520px}
@@ -305,11 +321,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 @keyframes insPanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .ins-instruction{font-size:15px;color:var(--ink-soft);margin-bottom:24px;font-weight:300;text-align:center}
 .ins-plan-btns{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.ins-plan-btn{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px 20px 26px;background:var(--paper);border:1px solid var(--hairline-soft);border-radius:18px;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);color:var(--ink-soft);text-align:center}
+.ins-plan-btn{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 20px 22px;background:var(--paper);border:1px solid var(--hairline-soft);border-radius:16px;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);color:var(--ink-soft);text-align:center}
 .ins-plan-btn:hover{border-color:var(--ink);background:var(--white);color:var(--ink);transform:translateY(-2px);box-shadow:0 8px 28px rgba(15,30,51,0.06)}
 .ins-plan-btn.selected{border-color:var(--ink);background:var(--white);color:var(--ink);box-shadow:0 4px 20px rgba(15,30,51,0.08)}
 .ins-plan-icon{color:inherit}
-.ins-plan-name{font-family:var(--serif);font-size:26px;font-weight:400;letter-spacing:-0.02em;color:var(--ink);transition:color .3s}
+.ins-plan-name{font-family:var(--serif);font-size:20px;font-weight:400;letter-spacing:-0.01em;color:var(--ink);transition:color .3s}
 .ins-plan-desc{font-size:11px;color:var(--ink-mute);line-height:1.5;font-weight:400;letter-spacing:0.02em}
 .ins-plan-check{position:absolute;top:14px;right:14px;color:var(--ink);opacity:0;transition:opacity .2s}
 .ins-plan-btn.selected .ins-plan-check{opacity:1}
@@ -384,17 +400,19 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ══════════════════════════════════════════════
    CTA BAND — Monochromatic finale
 ══════════════════════════════════════════════ */
-#cta{background:var(--ink);color:var(--white);padding:140px 0;text-align:center;position:relative;overflow:hidden}
-#cta .eyebrow{color:rgba(255,255,255,0.55)}
-.cta-h2{font-family:var(--serif);font-size:clamp(40px,5.5vw,72px);font-weight:300;color:var(--white);letter-spacing:-0.03em;line-height:1.02;margin-bottom:24px}
-.cta-h2 em{font-style:italic;font-weight:300;color:rgba(255,255,255,0.7)}
-.cta-sub{font-size:17px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:48px;font-weight:300;max-width:520px;margin-left:auto;margin-right:auto}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
-.cta-book{padding:16px 40px;border-radius:100px;background:var(--white);color:var(--ink);border:none;font-size:14px;font-weight:500;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;letter-spacing:-0.005em}
-.cta-book:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,255,255,0.2)}
-.cta-call{padding:16px 40px;border-radius:100px;background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.25);font-size:14px;font-weight:500;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;letter-spacing:-0.005em}
+#cta{background:var(--ink);color:var(--white);padding:104px 0;text-align:center;position:relative;overflow:hidden}
+#cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 60%);pointer-events:none}
+#cta .wrap{position:relative;z-index:1}
+#cta .eyebrow{color:rgba(255,255,255,0.5);margin-bottom:20px}
+.cta-h2{font-family:var(--serif);font-size:clamp(36px,4.6vw,60px);font-weight:300;color:var(--white);letter-spacing:-0.025em;line-height:1.05;margin-bottom:20px}
+.cta-h2 em{font-style:italic;font-weight:300;color:rgba(255,255,255,0.65)}
+.cta-sub{font-size:16px;color:rgba(255,255,255,0.65);line-height:1.6;margin-bottom:36px;font-weight:300;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.cta-book{padding:14px 32px;border-radius:100px;background:var(--white);color:var(--ink);border:none;font-size:14px;font-weight:500;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;letter-spacing:-0.005em}
+.cta-book:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,255,255,0.18)}
+.cta-call{padding:14px 32px;border-radius:100px;background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.22);font-size:14px;font-weight:500;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;letter-spacing:-0.005em}
 .cta-call:hover{background:var(--white);color:var(--ink);border-color:var(--white);transform:translateY(-2px)}
-.cta-info{font-size:12px;color:rgba(255,255,255,0.45);font-weight:300;letter-spacing:0.02em}
+.cta-info{font-size:12px;color:rgba(255,255,255,0.4);font-weight:300;letter-spacing:0.02em}
 
 /* ══════════════════════════════════════════════
    FOOTER — Refined dark
@@ -475,17 +493,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 @media(max-width:1024px){
   .wrap,.wrap-narrow{padding:0 24px}
   .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
-  .doc-text{padding:88px 48px 88px 56px}
-  .loc-text{padding:88px 48px}
-  .section-pad,.section-pad-lg{padding:96px 0}
-  #services,#doctors,#virtual-tour,#tech,#team,#reviews,#ins,#cta{padding-top:96px;padding-bottom:96px}
+  .doc-text{padding:72px 48px 72px 56px}
+  .doc-photo{margin:32px 48px 32px 0}
+  .loc-text{padding:72px 48px}
+  .svc-grid{grid-template-columns:repeat(3,1fr)}
+  .svc-card.hero-card{grid-column:span 3}
+  .section-pad,.section-pad-lg{padding:80px 0}
+  #services,#doctors,#virtual-tour,#tech,#team,#reviews,#ins,#cta{padding-top:88px;padding-bottom:88px}
 }
 @media(max-width:960px){
   .svc-grid{grid-template-columns:repeat(2,1fr)}
-  .svc-card.hero-card{grid-column:span 2;grid-row:auto;min-height:320px}
-  .svc-card.hero-card .svc-name{font-size:34px}
-  .svc-card.consult-card{grid-column:span 2}
+  .svc-card.hero-card{grid-column:span 2}
   .tech-grid{grid-template-columns:1fr;gap:16px}
+  .doc-outer{grid-template-columns:1fr}
+  .doc-text{padding:64px 24px 32px}
+  .doc-photo{margin:0 24px 64px;aspect-ratio:4/3;max-height:480px}
 }
 @media(max-width:768px){
   .wrap,.wrap-narrow{padding:0 20px}
@@ -495,44 +517,41 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .trust-item:nth-child(2){border-right:none}
   .trust-item:nth-child(3){border-right:1px solid var(--hairline-soft);border-top:1px solid var(--hairline-soft)}
   .trust-item:nth-child(4){border-right:none;border-top:1px solid var(--hairline-soft)}
-  .doc-outer{grid-template-columns:1fr}
-  .doc-text{padding:64px 24px 48px}
-  .doc-photo{min-height:380px;aspect-ratio:unset}
   .loc-outer{grid-template-columns:1fr}
-  .loc-text{padding:64px 24px 48px}
-  .map-wrap{min-height:360px}
+  .loc-text{padding:56px 24px 40px}
+  .map-wrap{min-height:340px}
   .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
   .footer-brand-col{grid-column:1/-1}
   .cta-btns{flex-direction:column;align-items:stretch;max-width:320px;margin-left:auto;margin-right:auto}
   .rev-top{flex-direction:column;align-items:flex-start;gap:20px}
-  .rev-card{flex:0 0 calc(80vw - 40px)}
-  .team-docs{gap:28px}
+  .rev-card{flex:0 0 calc(80vw - 40px);min-height:260px}
+  .team-docs{grid-template-columns:repeat(2,1fr);gap:16px;max-width:520px}
   .team-staff{grid-template-columns:repeat(3,1fr);gap:14px}
-  .svc-footer{flex-direction:column;align-items:flex-start;gap:16px}
+  .svc-consult-bar{flex-direction:column;align-items:flex-start;gap:20px;padding:24px 22px}
+  .svc-consult-btn{width:100%;justify-content:center}
   .ins-header{flex-direction:column;align-items:stretch}
   .ins-header-badge{align-self:flex-start}
 }
 @media(max-width:600px){
-  .section-pad,.section-pad-lg{padding:72px 0}
-  #services,#doctors,#virtual-tour,#tech,#team,#reviews,#ins,#cta{padding-top:72px;padding-bottom:72px}
-  .svc-grid{grid-template-columns:1fr;gap:12px}
-  .svc-card{padding:26px;min-height:auto}
-  .svc-card.hero-card{padding:32px;min-height:280px}
-  .svc-card.hero-card .svc-name{font-size:28px}
-  .svc-card.consult-card,.svc-card.hero-card{grid-column:span 1}
+  #services,#doctors,#virtual-tour,#tech,#team,#reviews,#ins,#cta{padding-top:64px;padding-bottom:64px}
+  .svc-grid{grid-template-columns:1fr;gap:10px}
+  .svc-card{padding:24px;min-height:auto}
+  .svc-card.hero-card{grid-column:span 1;padding:28px}
+  .svc-card.hero-card .svc-name{font-size:26px}
   .vt-hint{flex-direction:column;align-items:stretch;gap:8px}
   .vt-hint-pill{justify-content:flex-start}
   .ins-inner{padding:0 20px}
   .ins-card{padding:28px 22px}
   .ins-plan-btns{gap:12px}
-  .ins-plan-btn{padding:24px 14px 20px}
-  .ins-plan-name{font-size:22px}
+  .ins-plan-btn{padding:22px 14px 18px}
+  .ins-plan-name{font-size:18px}
   .ins-banner{padding:18px 22px}
   .ins-step-line{min-width:28px}
   .ins-no-insurance-inner{flex-direction:column;align-items:flex-start;padding:20px 22px;gap:14px}
   .ins-no-ins-btn{width:100%;justify-content:center}
-  .section-h2{font-size:32px}
+  .section-h2{font-size:30px}
   .rev-card{flex:0 0 calc(88vw - 40px)}
+  .team-docs .team-n{font-size:17px}
 }
 @media(max-width:480px){
   .footer-grid{grid-template-columns:1fr}
@@ -637,70 +656,74 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     </div>
 
     <div class="svc-grid">
-      <!-- Hero card: Dental Implants flagship -->
+      <!-- Row 1: Hero (2 cols) + Restorative + Veneers -->
       <a href="/services/dental-implants" class="svc-card hero-card reveal">
         <svg class="svc-tooth" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50 12 C34 12 26 26 26 42 C26 56 30 67 34 77 C36 84 39 90 44 90 C48 90 48 84 50 78 C52 84 52 90 56 90 C61 90 64 84 66 77 C70 67 74 56 74 42 C74 26 66 12 50 12 Z" fill="var(--ink)"/>
+          <path d="M50 12 C34 12 26 26 26 42 C26 56 30 67 34 77 C36 84 39 90 44 90 C48 90 48 84 50 78 C52 84 52 90 56 90 C61 90 64 84 66 77 C70 67 74 56 74 42 C74 26 66 12 50 12 Z"/>
         </svg>
         <span class="svc-num">Featured · 01</span>
         <div class="svc-name">Dental Implants</div>
-        <p class="svc-desc">Permanent, natural-looking replacement backed by 3D CBCT planning and precision placement. The closest thing to your own tooth — built to last a lifetime.</p>
+        <p class="svc-desc">Permanent, natural-looking replacement backed by 3D CBCT planning and precision placement.</p>
         <span class="svc-explore">Explore implants <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-        <span class="svc-tag">3D CBCT · Precision placement · Lifetime results</span>
+        <span class="svc-tag">3D CBCT · Precision · Lifetime results</span>
       </a>
 
-      <!-- Restorative -->
       <a href="/services/restorative-dentistry" class="svc-card reveal d1">
         <span class="svc-num">02</span>
         <div class="svc-name">Restorative Dentistry</div>
-        <p class="svc-desc">Crowns, bridges, fillings, and full-mouth rehabilitation. Restore both function and confidence.</p>
+        <p class="svc-desc">Crowns, bridges, fillings, and full-mouth rehabilitation.</p>
         <span class="svc-explore">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </a>
 
-      <!-- Veneers -->
       <a href="/services/veneers" class="svc-card reveal d2">
         <span class="svc-num">03</span>
         <div class="svc-name">Porcelain Veneers</div>
-        <p class="svc-desc">Ultra-thin ceramic shells crafted for a natural, luminous appearance. The smile you've always wanted.</p>
+        <p class="svc-desc">Ultra-thin ceramic shells for a natural, luminous appearance.</p>
         <span class="svc-explore">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </a>
 
-      <!-- Whitening -->
-      <a href="/services/teeth-whitening" class="svc-card reveal d1">
+      <!-- Row 2: Whitening + Invisalign + Emergency + Sedation + Consult -->
+      <a href="/services/teeth-whitening" class="svc-card reveal">
         <span class="svc-num">04</span>
         <div class="svc-name">Teeth Whitening</div>
-        <p class="svc-desc">Professional in-office whitening — up to 8 shades brighter in a single appointment.</p>
+        <p class="svc-desc">Professional whitening — up to 8 shades brighter in one visit.</p>
         <span class="svc-explore">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </a>
 
-      <!-- Consultation CTA card -->
-      <a href="#" class="svc-card consult-card reveal d2" onclick="doBook(event)">
-        <span class="svc-num">Not sure where to start?</span>
-        <div class="svc-name">Free consultation.</div>
-        <p class="svc-desc">We'll build a plan around your goals, timeline, and budget. Same-day appointments available.</p>
-        <span class="svc-btn">Book free consult <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-
-      <!-- Emergency -->
-      <a href="/services/emergency-dentistry" class="svc-card reveal d3">
+      <a href="/services/invisalign" class="svc-card reveal d1">
         <span class="svc-num">05</span>
-        <div class="svc-name">Emergency &amp; Sedation</div>
-        <p class="svc-desc">Same-day emergency care and sedation options for anxious patients. We're here when you need us most.</p>
+        <div class="svc-name">Invisalign</div>
+        <p class="svc-desc">Discreet aligners with iTero digital scanning and outcome previews.</p>
         <span class="svc-explore">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </a>
 
-      <!-- Invisalign -->
-      <a href="/services/invisalign" class="svc-card reveal d4">
+      <a href="/services/emergency-dentistry" class="svc-card reveal d2">
         <span class="svc-num">06</span>
-        <div class="svc-name">Invisalign</div>
-        <p class="svc-desc">Discreet, removable aligners with iTero digital scanning. See your final smile before starting a single tray.</p>
+        <div class="svc-name">Emergency Care</div>
+        <p class="svc-desc">Same-day emergency appointments. We're here when you need us most.</p>
+        <span class="svc-explore">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </a>
+
+      <a href="/services/sedation-dentistry" class="svc-card reveal d3">
+        <span class="svc-num">07</span>
+        <div class="svc-name">Sedation Dentistry</div>
+        <p class="svc-desc">Calm, comfortable options for patients with dental anxiety.</p>
         <span class="svc-explore">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </a>
     </div>
 
-    <div class="svc-footer reveal">
-      <span class="svc-footer-text">Every treatment, every technology — all under one roof.</span>
-      <a href="/services" class="svc-footer-link">View all services <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    <!-- Full-width consult CTA bar below grid -->
+    <a href="#" class="svc-consult-bar reveal" onclick="doBook(event)">
+      <div class="svc-consult-left">
+        <span class="svc-consult-eyebrow">Not sure where to start?</span>
+        <div class="svc-consult-title">Book a free consultation.</div>
+        <p class="svc-consult-desc">We'll build a plan around your goals, timeline, and budget. Same-day appointments available.</p>
+      </div>
+      <div class="svc-consult-btn">Book free consult <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <div class="svc-view-all reveal">
+      <a href="/services" class="svc-view-all-link">View all services <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     </div>
   </div>
 </section>
