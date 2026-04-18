@@ -402,18 +402,27 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .map-wrap{position:relative;overflow:hidden;background:var(--sky);width:100%;height:100%;min-height:520px}
 .map-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
 
-/* ── CTA — LIGHT ── */
-#cta{background:var(--cloud);padding:100px 0;text-align:center;border-top:1px solid rgba(29,62,92,.07)}
+/* ── CTA — 2-column: content + virtual tour ── */
+#cta{background:var(--cloud);padding:100px 0;border-top:1px solid rgba(29,62,92,.07)}
+.cta-split{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:center}
+.cta-left{text-align:left}
+.cta-right{position:relative}
 .cta-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--copper);margin-bottom:18px;font-family:var(--sans)}
-.cta-h2{font-family:var(--serif);font-size:clamp(34px,5vw,60px);font-weight:400;color:var(--graphite);letter-spacing:-.01em;line-height:1.05;margin-bottom:18px}
+.cta-h2{font-family:var(--serif);font-size:clamp(32px,4.2vw,52px);font-weight:400;color:var(--graphite);letter-spacing:-.01em;line-height:1.05;margin-bottom:18px}
 .cta-h2 em{color:var(--steel);font-style:italic}
-.cta-sub{font-size:16px;color:var(--slate);line-height:1.75;margin-bottom:44px;font-weight:300;max-width:480px;margin-left:auto;margin-right:auto;font-family:var(--sans)}
-.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
-.cta-book{padding:15px 36px;border-radius:10px;background:var(--navy);color:#fff;border:none;font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer;transition:all .22s;box-shadow:0 4px 18px rgba(29,62,92,.22);display:inline-flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.cta-sub{font-size:15px;color:var(--slate);line-height:1.7;margin-bottom:32px;font-weight:300;max-width:480px;font-family:var(--sans)}
+.cta-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.cta-book{padding:14px 32px;border-radius:10px;background:var(--navy);color:#fff;border:none;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;transition:all .22s;box-shadow:0 4px 18px rgba(29,62,92,.22);display:inline-flex;align-items:center;gap:8px;letter-spacing:-.01em}
 .cta-book:hover{background:var(--steel);transform:translateY(-2px);box-shadow:0 7px 26px rgba(29,62,92,.3)}
-.cta-call{padding:15px 36px;border-radius:10px;background:#fff;color:var(--navy);border:1.5px solid rgba(29,62,92,.2);font-size:15px;font-weight:600;font-family:var(--sans);cursor:pointer;transition:all .22s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.cta-call{padding:14px 32px;border-radius:10px;background:#fff;color:var(--navy);border:1.5px solid rgba(29,62,92,.2);font-size:14px;font-weight:600;font-family:var(--sans);cursor:pointer;transition:all .22s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;letter-spacing:-.01em}
 .cta-call:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-2px)}
-.cta-info{font-size:13px;color:var(--slate);font-weight:300;font-family:var(--sans)}
+.cta-info{font-size:12.5px;color:var(--slate);font-weight:300;font-family:var(--sans);line-height:1.5}
+
+/* Virtual tour embed on right side of CTA */
+.cta-tour-label{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:7px 14px;border-radius:100px;background:#fff;border:1px solid rgba(29,62,92,.1);font-size:11.5px;font-weight:600;color:var(--slate);font-family:var(--sans);letter-spacing:.02em}
+.cta-tour-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:nr-pulse 2.2s ease-in-out infinite}
+.cta-tour-wrap{position:relative;width:100%;padding-bottom:62%;height:0;border-radius:16px;overflow:hidden;box-shadow:0 2px 4px rgba(29,62,92,.06),0 16px 48px rgba(29,62,92,.14);background:#e8ecf0}
+.cta-tour-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
 
 /* ── FOOTER ── */
 #footer{background:#0f1520;border-top:1px solid rgba(255,255,255,.05);padding:60px 0 32px}
@@ -490,19 +499,22 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   .svc-card.hero-card{grid-column:span 3}
   .svc-consult-bar{padding:24px 28px}
 }
+@media(max-width:960px){
+  .cta-split{grid-template-columns:1fr;gap:40px}
+  .cta-left{text-align:left}
+  .cta-sub{max-width:100%}
+}
 @media(max-width:768px){
   .wrap{padding:0 20px}.nav-links,.nav-right{display:none}.hamburger{display:flex}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .stat:nth-child(2){border-right:none}
-  .stat:nth-child(3){border-right:1px solid rgba(29,62,92,.07);border-top:1px solid rgba(29,62,92,.07)}
-  .stat:nth-child(4){border-right:none;border-top:1px solid rgba(29,62,92,.07)}
   .doc-outer{grid-template-columns:1fr}.doc-text{padding:56px 24px 40px 24px}
   .doc-photo{min-height:320px;aspect-ratio:unset}
   .vt-hint{gap:12px}
   .loc-outer{grid-template-columns:1fr}.loc-text{padding:56px 24px 40px 24px}
   .map-wrap{min-height:320px}
   .footer-grid{grid-template-columns:1fr 1fr;gap:22px}.footer-brand-col{grid-column:1/-1}
-  .cta-btns{flex-direction:column;align-items:center}
+  .cta-btns{flex-direction:column;align-items:stretch;max-width:320px}
+  .cta-book,.cta-call{justify-content:center}
+  .cta-tour-wrap{padding-bottom:65%}
   .rev-top{flex-direction:column;gap:12px}.rev-card{flex:0 0 calc(76vw - 36px)}
   .team-docs{gap:28px}.team-staff{grid-template-columns:repeat(3,1fr);gap:14px}
   .tech-grid{grid-template-columns:1fr}
@@ -594,17 +606,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
         <a href="/financing" class="pill">Financing from $35/mo</a>
         <a href="#" class="pill" onclick="doBook(event)">Free Consultations</a>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="stats">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat reveal"><div class="stat-n">2</div><div class="stat-l">Brothers</div></div>
-      <div class="stat reveal d1"><div class="stat-n">331+</div><div class="stat-l">5-Star Reviews</div></div>
-      <div class="stat reveal d2"><div class="stat-n">20+</div><div class="stat-l">Years Experience</div></div>
-      <div class="stat reveal d3"><div class="stat-n">15K+</div><div class="stat-l">Smiles Created</div></div>
     </div>
   </div>
 </section>
@@ -705,44 +706,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
     </div>
     <div class="doc-photo reveal d2">
       <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/doctors-sign.png" alt="Dr. Shawn and Dr. David Matian" loading="lazy" onerror="this.parentElement.style.background='#e8f0f9'"/>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════
-     VIRTUAL TOUR
-════════════════════════════════════════ -->
-<section id="virtual-tour" aria-label="Virtual tour of office">
-  <div class="wrap">
-    <div class="vt-header reveal">
-      <span class="vt-eyebrow">Explore Our Space</span>
-      <h2 class="vt-h2">Take a Virtual Tour of <em>Our Office</em></h2>
-      <p class="vt-sub">Step inside our modern dental practice from anywhere. Explore our treatment rooms, advanced technology suite, and welcoming reception area — no appointment needed.</p>
-    </div>
-
-    <div class="vt-embed-wrap reveal d1">
-      <iframe
-        src="https://my.matterport.com/show/?m=tR9ZpcsXb9S&brand=0&play=1&qs=1&ui=0"
-        title="Virtual Tour of Agoura Hills Dental Designs"
-        allow="autoplay; fullscreen; web-share; xr-spatial-tracking"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
-    </div>
-
-    <div class="vt-hint reveal d2">
-      <div class="vt-hint-pill">
-        <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="var(--copper)" stroke="none"/></svg>
-        Use your mouse or finger to navigate
-      </div>
-      <div class="vt-hint-pill">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7v5h3" stroke-linecap="round"/></svg>
-        Click hotspots to move between rooms
-      </div>
-      <div class="vt-hint-pill">
-        <svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6" stroke-linecap="round"/><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-        Scroll to zoom in and out
-      </div>
     </div>
   </div>
 </section>
@@ -881,6 +844,38 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   </div>
 </section>
 
+<section id="cta">
+  <div class="wrap">
+    <div class="cta-split">
+      <div class="cta-left reveal">
+        <span class="cta-eyebrow">Ready When You Are</span>
+        <h2 class="cta-h2">Ready to Transform<br>Your <em>Smile?</em></h2>
+        <p class="cta-sub">Book your free consultation and take the first step toward the smile you deserve. Or take a virtual tour of our office first — explore it from anywhere.</p>
+        <div class="cta-btns">
+          <button class="cta-book" onclick="doBook(event)">Book Free Consultation</button>
+          <a href="tel:+18187066077" class="cta-call"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>Call (818) 706-6077</a>
+        </div>
+        <p class="cta-info">28632 Roadside Dr Suite 270B, Agoura Hills, CA 91301 · Mon–Thu 8am–5pm · Fri 8am–4pm</p>
+      </div>
+      <div class="cta-right reveal d1">
+        <div class="cta-tour-label">
+          <span class="cta-tour-dot"></span>
+          <span>Virtual Tour · Explore our office</span>
+        </div>
+        <div class="cta-tour-wrap">
+          <iframe
+            src="https://my.matterport.com/show/?m=tR9ZpcsXb9S&brand=0&play=1&qs=1&ui=0"
+            title="Virtual Tour of Agoura Hills Dental Designs"
+            allow="autoplay; fullscreen; web-share; xr-spatial-tracking"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="loc">
   <div class="loc-outer">
     <div class="loc-text reveal">
@@ -897,19 +892,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
     <div class="map-wrap">
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.8!2d-118.7636!3d34.1475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e8230c0c5ca4bf%3A0x3fb6b9fe8d9c9cc1!2s28632%20Roadside%20Dr%20%23270%2C%20Agoura%20Hills%2C%20CA%2091301!5e0!3m2!1sen!2sus!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Agoura Hills Dental Designs"></iframe>
     </div>
-  </div>
-</section>
-
-<section id="cta">
-  <div class="wrap">
-    <span class="cta-eyebrow">Ready When You Are</span>
-    <h2 class="cta-h2">Ready to Transform<br>Your <em>Smile?</em></h2>
-    <p class="cta-sub">Book your free consultation and take the first step toward the smile you deserve.</p>
-    <div class="cta-btns">
-      <button class="cta-book" onclick="doBook(event)">Book Free Consultation</button>
-      <a href="tel:+18187066077" class="cta-call"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>Call (818) 706-6077</a>
-    </div>
-    <p class="cta-info">28632 Roadside Dr Suite 270B, Agoura Hills, CA 91301 · Mon–Thu 8am–5pm · Fri 8am–4pm</p>
   </div>
 </section>
 
