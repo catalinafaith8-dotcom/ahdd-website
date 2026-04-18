@@ -85,9 +85,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .svc-hero-badge-lbl{font-size:11px;color:var(--slate);margin-top:3px;font-family:var(--sans)}
 
 /* ══════════════════════════════════════════
-   STATS BAR — RECOMMENDATION #2
-   Doubled padding, 2.5x numeral size,
-   headline-level presence
+   STATS BAR
 ══════════════════════════════════════════ */
 .stats-bar{background:#fff;border-bottom:1px solid rgba(29,62,92,.08)}
 .stats-bar-grid{display:grid;grid-template-columns:repeat(4,1fr)}
@@ -105,7 +103,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .section-h2 em{font-style:italic;color:var(--steel)}
 
 /* ══════════════════════════════════════════
-   STANDARD TECH ROWS (modules 3,5,6,7)
+   STANDARD TECH ROWS
 ══════════════════════════════════════════ */
 #tech-features{padding:96px 0;background:#fff}
 .tf-intro{text-align:center;max-width:640px;margin:0 auto 88px}
@@ -129,8 +127,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .tr-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:12px;font-family:var(--sans)}
 .tr-h3{font-family:var(--serif);font-size:clamp(22px,2.4vw,32px);font-weight:400;color:var(--graphite);line-height:1.1;margin-bottom:16px}
 .tr-p{font-size:15px;line-height:1.8;color:var(--slate);margin-bottom:28px;font-weight:300;font-family:var(--sans)}
-
-/* Reduced bullets — RECOMMENDATION #3 */
 .tr-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
 .tr-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--slate);line-height:1.55;font-weight:300;font-family:var(--sans)}
 .tr-list li::before{content:'';width:18px;height:18px;flex-shrink:0;margin-top:1px;border-radius:50%;background:var(--sky) url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' fill='%231D3E5C'/%3E%3C/svg%3E") center/11px no-repeat}
@@ -140,8 +136,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .tr-link:hover svg{transform:translateX(3px)}
 
 /* ══════════════════════════════════════════
-   RECOMMENDATION #1A — VideaAI FULL-BLEED
-   Marquee section, edge-to-edge media
+   VideaAI FULL-BLEED
 ══════════════════════════════════════════ */
 #videa-feature{background:#fff;padding:0;margin-bottom:48px}
 .videa-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:600px;align-items:stretch;overflow:hidden;border-radius:0}
@@ -161,23 +156,19 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .videa-cta:hover{background:var(--steel);transform:translateY(-2px);box-shadow:0 7px 22px rgba(29,62,92,.3)}
 
 /* ══════════════════════════════════════════
-   RECOMMENDATION #1B — Outcome Simulator
-   Full-bleed + draggable before/after
-   RECOMMENDATION #4 — Signature interaction
+   Outcome Simulator — UPDATED: white bg, no CTA
 ══════════════════════════════════════════ */
 #simulator-feature{background:#fff;padding:0;margin-bottom:48px}
 .sim-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:600px;align-items:stretch;overflow:hidden}
-.sim-body{background:var(--navy);padding:80px 72px;display:flex;flex-direction:column;justify-content:center;order:1}
+.sim-body{background:#fff;padding:80px 72px;display:flex;flex-direction:column;justify-content:center;order:1}
 .sim-media{position:relative;overflow:hidden;background:var(--graphite);order:2}
-.sim-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;font-family:var(--sans)}
-.sim-h2{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:400;color:#fff;line-height:1.1;margin-bottom:20px}
-.sim-h2 em{font-style:italic;color:var(--amber)}
-.sim-p{font-size:16px;line-height:1.8;color:rgba(255,255,255,.72);margin-bottom:14px;font-weight:300;font-family:var(--sans)}
-.sim-p2{font-size:15px;line-height:1.75;color:rgba(255,255,255,.6);margin-bottom:36px;font-weight:300;font-family:var(--sans)}
-.sim-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;background:var(--copper);color:#fff;font-size:14px;font-weight:600;font-family:var(--sans);box-shadow:0 4px 18px rgba(201,106,46,.35);transition:all .22s;border:none;cursor:pointer}
-.sim-cta:hover{background:#b85a24;transform:translateY(-2px);box-shadow:0 7px 24px rgba(201,106,46,.45)}
+.sim-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--copper);margin-bottom:16px;font-family:var(--sans)}
+.sim-h2{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:400;color:var(--graphite);line-height:1.1;margin-bottom:20px}
+.sim-h2 em{font-style:italic;color:var(--steel)}
+.sim-p{font-size:16px;line-height:1.8;color:var(--slate);margin-bottom:14px;font-weight:300;font-family:var(--sans)}
+.sim-p2{font-size:15px;line-height:1.75;color:var(--slate);margin-bottom:0;font-weight:300;font-family:var(--sans)}
 
-/* Before/After drag — RECOMMENDATION #4 */
+/* Before/After drag */
 .ba-wrap{position:relative;width:100%;height:100%;min-height:600px;user-select:none;cursor:col-resize;overflow:hidden;background:var(--graphite)}
 .ba-before,.ba-after{position:absolute;inset:0}
 .ba-before video,.ba-after video,.ba-before img,.ba-after img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
@@ -192,9 +183,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 .ba-hint.hidden{opacity:0}
 
 /* ══════════════════════════════════════════
-   RECOMMENDATION #5 — Why It Matters
-   Horizontal 3-column with icons
-   replacing stacked text blocks
+   WHY IT MATTERS
 ══════════════════════════════════════════ */
 #why-tech{padding:104px 0;background:var(--cloud);border-top:1px solid rgba(29,62,92,.07)}
 .wt-header{text-align:center;max-width:560px;margin:0 auto 72px}
@@ -398,10 +387,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     STATS BAR — RECOMMENDATION #2
-     Doubled padding, massive numerals
-════════════════════════════════════════════ -->
+<!-- STATS BAR -->
 <div class="stats-bar">
   <div class="wrap">
     <div class="stats-bar-grid">
@@ -436,10 +422,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     RECOMMENDATION #1A — VideaAI FULL-BLEED
-     Marquee section — breaks the format
-════════════════════════════════════════════ -->
+<!-- VideaAI FULL-BLEED -->
 <section id="videa-feature" aria-label="VideaAI diagnostics">
   <div class="videa-wrap reveal">
     <div class="videa-media">
@@ -464,7 +447,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 <section style="background:#fff;padding:0 0 48px">
   <div class="wrap">
 
-    <!-- ROW: 3D CBCT — image left, text right -->
     <article class="tech-row flip reveal" style="margin-top:48px">
       <div class="tr-media">
         <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/CBCT%20Image.jpg" alt="3D CBCT Cone Beam dental imaging scan" loading="lazy"/>
@@ -482,7 +464,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
       </div>
     </article>
 
-    <!-- ROW: iTero Scanner — image right, text left -->
     <article class="tech-row reveal">
       <div class="tr-media">
         <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Smile%20Simulator%20Dr%20David.JPG" alt="Dr. David using the iTero intraoral scanner" loading="lazy"/>
@@ -504,9 +485,8 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 </section>
 
 <!-- ══════════════════════════════════════════
-     RECOMMENDATION #1B + #4
-     Outcome Simulator FULL-BLEED
-     + Draggable before/after interaction
+     OUTCOME SIMULATOR — UPDATED
+     White background, image before/after, no CTA
 ════════════════════════════════════════════ -->
 <section id="simulator-feature" aria-label="Invisalign Outcome Simulator">
   <div class="sim-wrap reveal">
@@ -515,35 +495,22 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
       <h2 class="sim-h2">See Your New Smile<br>Before You <em>Commit</em></h2>
       <p class="sim-p">The iTero Outcome Simulator uses your own 3D scan to generate a real preview of your post-Invisalign smile — side-by-side with your current one.</p>
       <p class="sim-p2">Drag the slider to compare. Make your decision with confidence, before a single aligner is made.</p>
-      <button class="sim-cta" onclick="doBook(event)">Preview your new smile →</button>
     </div>
     <div class="sim-media">
-      <!-- ── DRAGGABLE BEFORE / AFTER ── -->
       <div class="ba-wrap" id="baWrap" aria-label="Before and after smile comparison">
-        <!-- BEFORE: current smile (video playing) -->
         <div class="ba-before">
-          <video autoplay muted loop playsinline aria-hidden="true">
-            <source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Itero%20Outcome%20Simulator.mp4" type="video/mp4"/>
-          </video>
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Technology%20Page%20Before.png" alt="Patient smile before Invisalign treatment" loading="lazy"/>
         </div>
-        <!-- AFTER: outcome simulator video (same, represents "after" state) -->
         <div class="ba-after" id="baAfter">
-          <video autoplay muted loop playsinline aria-hidden="true">
-            <source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Itero%20Outcome%20Simulator.mp4" type="video/mp4"/>
-          </video>
-          <!-- Tinted overlay to visually differentiate the after state -->
-          <div style="position:absolute;inset:0;background:rgba(29,62,92,.18);mix-blend-mode:multiply;pointer-events:none"></div>
+          <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Technology%20Page%20After.png" alt="Simulated patient smile after Invisalign treatment"/>
         </div>
-        <!-- Labels -->
         <div class="ba-label before" id="baLabelBefore">Before</div>
         <div class="ba-label after" id="baLabelAfter">After</div>
-        <!-- Handle -->
         <div class="ba-handle" id="baHandle">
           <div class="ba-handle-circle">
             <svg viewBox="0 0 24 24"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg>
           </div>
         </div>
-        <!-- Hint — fades out after first drag -->
         <div class="ba-hint" id="baHint">← Drag to compare →</div>
       </div>
     </div>
@@ -554,7 +521,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 <section style="background:#fff;padding:48px 0">
   <div class="wrap">
 
-    <!-- ROW: Paperless Office -->
     <article class="tech-row reveal">
       <div class="tr-media">
         <video autoplay muted loop playsinline aria-hidden="true"><source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Paperless%20Forms.mp4" type="video/mp4"/></video>
@@ -572,7 +538,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
       </div>
     </article>
 
-    <!-- ROW: Intraoral Cameras -->
     <article class="tech-row flip reveal">
       <div class="tr-media placeholder ph-copper">
         <div class="ph-inner">
@@ -598,7 +563,6 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
       </div>
     </article>
 
-    <!-- ROW: Soft Tissue Laser -->
     <article class="tech-row reveal">
       <div class="tr-media placeholder ph-green">
         <div class="ph-inner">
@@ -628,11 +592,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     RECOMMENDATION #5 — WHY IT MATTERS
-     Horizontal 3-column with icons
-     replacing stacked text wall
-════════════════════════════════════════════ -->
+<!-- WHY IT MATTERS -->
 <section id="why-tech" aria-label="Why technology matters">
   <div class="wrap">
     <div class="wt-header reveal">
@@ -687,7 +647,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
       <p>Step inside our modern dental practice from anywhere. Explore our treatment rooms, advanced technology suite, and welcoming reception area with this interactive 3D walkthrough — no appointment needed.</p>
     </div>
     <div class="vt-embed-wrap reveal d1">
-      <iframe src="https://my.matterport.com/show/?m=aHWzkSjqLBP&brand=0&play=1&qs=1&ui=0"
+      <iframe src="https://my.matterport.com/show/?m=tR9ZpcsXb9S&brand=0&play=1&qs=1&ui=0"
         title="Virtual Tour of Agoura Hills Dental Designs"
         allow="autoplay; fullscreen; web-share; xr-spatial-tracking"
         allowfullscreen loading="lazy">
@@ -770,10 +730,8 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 </div>
 
 <script>
-/* Nav scroll shadow */
 window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.pageYOffset>16);},{passive:true});
 
-/* Mobile nav */
 (function(){
   var b=document.getElementById('hbg'),m=document.getElementById('mobile-nav');
   if(!b)return;
@@ -781,7 +739,6 @@ window.addEventListener('scroll',function(){document.getElementById('nav').class
   m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
 })();
 
-/* Scroll reveal */
 (function(){
   var els=document.querySelectorAll('.reveal');
   if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
@@ -789,7 +746,6 @@ window.addEventListener('scroll',function(){document.getElementById('nav').class
   els.forEach(function(el){io.observe(el);});
 })();
 
-/* ── Before/After drag interaction ── */
 (function(){
   var wrap=document.getElementById('baWrap');
   var after=document.getElementById('baAfter');
@@ -818,13 +774,11 @@ window.addEventListener('scroll',function(){document.getElementById('nav').class
   setPos(wrap.getBoundingClientRect().left+wrap.getBoundingClientRect().width*0.5);
 })();
 
-/* Booking */
 var BOOK_URL='https://bookit.dentrixascend.com/soe/new/dental?pid=ASC64000000019461&mode=externalLink';
 function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=document.getElementById('bk-modal'),cont=document.getElementById('bk-container');cont.innerHTML='';var fr=document.createElement('iframe');fr.src=BOOK_URL;fr.title='Book Appointment Online';fr.allow='payment';fr.style.cssText='width:100%;height:100%;min-height:580px;border:none;display:block;';cont.appendChild(fr);modal.classList.add('open');document.body.style.overflow='hidden';document.addEventListener('keydown',escBook);}
 function closeBook(){document.getElementById('bk-modal').classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){document.getElementById('bk-container').innerHTML='';},300);}
 function escBook(e){if(e.key==='Escape')closeBook();}
 
-/* Chatbot */
 (function(){
   var API='https://www.agourahillsdentaldesigns.com/_functions/chatbot';
   var PID='pmpt_697e26a72ae08196b5379c8e008cdf7d0788a8b3a856f5d1',PV='6';
