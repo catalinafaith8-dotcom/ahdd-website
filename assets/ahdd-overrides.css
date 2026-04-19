@@ -1,0 +1,390 @@
+/* ──────────────────────────────────────────────────────────
+   AHDD — 2026-04-19 revisions override stylesheet
+   Applied on every page. Original styles preserved above.
+   Order of concerns:
+     1. Nav: enlarge logo, Services dropdown, mobile dropdown
+     2. Home: hide hero pills, hide in-house pill, 1-col virtual tour,
+              section padding reductions, mobile hero fix
+     3. About: remove gradient overlay, title below hero, round team photos
+     4. Technology: hide stats bar, hide hero badge pill, paperless video fix,
+                    hide redundant doc+stat section, padding reductions
+     5. Sitewide mobile friendliness (375–768px)
+   ────────────────────────────────────────────────────────── */
+
+/* 1 — NAV: logo enlarged, Services dropdown ─────────────── */
+#nav .nav-logo img{height:50px !important;width:auto}
+@media(min-width:1200px){ #nav .nav-logo img{height:56px !important} }
+#nav{height:72px !important}
+#nav.scrolled{height:72px !important}
+#nav .nav-wrap{height:72px !important}
+.hero-inner{padding-top:72px !important}
+
+/* Services dropdown (desktop) — injected via JS */
+.nav-links li.has-dropdown{position:relative}
+.nav-links li.has-dropdown > a::after{
+  content:'';display:inline-block;width:6px;height:6px;margin-left:6px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);transition:transform .2s;vertical-align:middle;
+}
+.nav-links li.has-dropdown:hover > a::after,
+.nav-links li.has-dropdown.open > a::after{transform:rotate(-135deg) translateY(-1px)}
+.nav-dropdown{
+  position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);
+  background:rgba(255,255,255,.96);backdrop-filter:saturate(1.8) blur(20px);
+  -webkit-backdrop-filter:saturate(1.8) blur(20px);
+  border:1px solid rgba(15,30,51,.08);border-radius:14px;
+  box-shadow:0 12px 40px rgba(15,30,51,.12);
+  padding:10px;min-width:260px;list-style:none;
+  opacity:0;visibility:hidden;transition:opacity .18s ease,transform .18s ease,visibility .18s;
+  z-index:1200;
+}
+.nav-links li.has-dropdown:hover .nav-dropdown,
+.nav-links li.has-dropdown:focus-within .nav-dropdown,
+.nav-links li.has-dropdown.open .nav-dropdown{
+  opacity:1;visibility:visible;transform:translateX(-50%) translateY(2px);
+}
+.nav-dropdown li{list-style:none}
+.nav-dropdown a{
+  display:block;padding:10px 14px;font-size:13px;color:#1A2D4A;
+  border-radius:8px;transition:background .15s,color .15s;
+  font-weight:500;letter-spacing:-.005em;white-space:nowrap;
+}
+.nav-dropdown a::after{display:none !important}
+.nav-dropdown a:hover{background:rgba(15,30,51,.06);color:#0F1E33}
+
+/* Mobile nav submenu (collapsible) */
+#mobile-nav .mob-sub-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 0;font-size:15px;color:#0F1E33;width:100%;
+  border-bottom:1px solid rgba(15,30,51,.04);background:none;border-top:none;
+  border-left:none;border-right:none;cursor:pointer;font-family:inherit;
+}
+#mobile-nav .mob-sub-toggle::after{
+  content:'';width:8px;height:8px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg);transition:transform .2s;
+}
+#mobile-nav .mob-sub-toggle.open::after{transform:rotate(-135deg)}
+#mobile-nav .mob-sub{
+  display:none;padding-left:16px;margin-bottom:4px;
+  border-bottom:1px solid rgba(15,30,51,.04);
+}
+#mobile-nav .mob-sub.open{display:block}
+#mobile-nav .mob-sub a{padding:11px 0;font-size:14px;color:#3B4A5C;border-bottom:none}
+
+/* 2 — HOME ──────────────────────────────────────────────── */
+
+/* Hide hero pills entirely (preserved in markup) */
+body .hero-pills{display:none !important}
+
+/* Hide the in-house pill in services header */
+#services .svc-norefs{display:none !important}
+
+/* Reduce dead space between home sections */
+#services{padding:64px 0 !important}
+#doctors .doc-text{padding-top:56px !important;padding-bottom:56px !important}
+#tech{padding:64px 0 !important}
+#virtual-tour{padding:64px 0 !important}
+#team{padding:64px 0 !important}
+#reviews{padding:56px 0 64px !important}
+#ins{padding:56px 0 48px !important}
+#cta{padding:64px 0 !important}
+.vt-header{margin-bottom:36px !important}
+.svc-header{margin-bottom:32px !important}
+.tech-hd{margin-bottom:36px !important}
+.team-hd{margin-bottom:36px !important}
+.team-docs{margin-bottom:36px !important}
+
+/* Virtual tour in CTA: 1-column stacked */
+#cta .cta-split{grid-template-columns:1fr !important;gap:36px !important}
+#cta .cta-left,#cta .cta-right{max-width:840px;margin:0 auto;width:100%}
+#cta .cta-sub{max-width:100% !important}
+#cta .cta-tour-wrap{padding-bottom:56.25% !important}
+
+/* Mobile hero fix — ensure hero photo renders and is visible on phone */
+@media (max-width:768px){
+  #hero{height:auto !important;min-height:480px !important}
+  #hero-img{
+    position:relative !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:480px !important;
+    max-height:640px !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+  #hero-overlay{
+    background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,0,0,.55) 70%,rgba(0,0,0,.78) 100%) !important;
+  }
+  .hero-inner{position:absolute;inset:0;padding-top:72px}
+  .hero-content{
+    right:auto !important;left:20px !important;top:auto !important;bottom:32px !important;
+    transform:none !important;width:calc(100% - 40px) !important;max-width:560px;
+  }
+  .hero-h1{font-size:28px !important;line-height:1.15 !important}
+  .hero-line1,.hero-line2{white-space:normal !important}
+  .hero-sub{font-size:14px !important;line-height:1.6 !important}
+}
+@media (max-width:480px){
+  #hero{min-height:460px !important}
+  #hero-img{min-height:460px !important}
+  .hero-content{left:16px !important;bottom:24px !important;width:calc(100% - 32px) !important}
+  .hero-h1{font-size:24px !important}
+  .hero-sub{font-size:13.5px !important}
+}
+
+/* 3 — ABOUT ─────────────────────────────────────────────── */
+
+/* Remove gradient overlay on the hero photo */
+.about-hero-overlay{display:none !important}
+
+/* Title moves BELOW hero photo */
+.about-hero .about-hero-content{display:none !important}
+.about-hero-caption{
+  background:#fff;padding:36px 80px 12px;max-width:1200px;margin:0 auto;
+}
+.about-hero-caption .about-hero-eyebrow{
+  display:block;font-size:11px;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--copper);margin-bottom:12px;
+}
+.about-hero-caption .about-hero-h1{
+  font-family:var(--serif,-apple-system,BlinkMacSystemFont);
+  font-size:clamp(30px,4vw,52px);font-weight:500;color:#0F1E33;
+  line-height:1.1;letter-spacing:-.02em;margin-bottom:14px;
+}
+.about-hero-caption .about-hero-sub{
+  font-size:16px;color:#3B4A5C;line-height:1.65;max-width:640px;font-weight:300;
+}
+@media(max-width:768px){
+  .about-hero-caption{padding:28px 24px 8px}
+  .about-hero-caption .about-hero-h1{font-size:28px}
+  .about-hero-caption .about-hero-sub{font-size:14px}
+}
+
+/* Shrink the about hero photo slightly so the title has breathing room below */
+.about-hero{height:auto !important;min-height:0 !important}
+.about-hero img{
+  position:relative !important;inset:auto !important;
+  width:100% !important;height:auto !important;max-height:480px;
+  object-fit:cover !important;object-position:center 32% !important;
+}
+@media(max-width:768px){
+  .about-hero img{max-height:320px}
+}
+
+/* Team photos: circle frames */
+body .team-photo,
+body .team-photo-wrap{
+  border-radius:50% !important;aspect-ratio:1/1 !important;
+  width:190px !important;height:190px !important;
+}
+body .team-staff .team-photo,
+body .team-grid-staff .team-photo-wrap{
+  width:100% !important;max-width:180px;height:auto !important;
+  aspect-ratio:1/1 !important;margin-left:auto;margin-right:auto;
+}
+body .team-photo img,
+body .team-photo-wrap img{
+  border-radius:50% !important;object-position:center 20% !important;
+}
+@media(max-width:768px){
+  body .team-photo,body .team-photo-wrap{width:150px !important;height:150px !important}
+  body .team-staff .team-photo,body .team-grid-staff .team-photo-wrap{max-width:140px}
+}
+@media(max-width:480px){
+  body .team-photo,body .team-photo-wrap{width:130px !important;height:130px !important}
+}
+
+/* 4 — TECHNOLOGY ────────────────────────────────────────── */
+
+/* Hide stats bar entirely (preserved in markup) */
+body .stats-bar{display:none !important}
+
+/* Hide hero video pill/badge */
+body .svc-hero-badge{display:none !important}
+
+/* Swap before/after: the markup says before=before, but visually the
+   clip-path makes the .ba-after show on the RIGHT. The user says they are
+   reversed — so swap the images via CSS-level rename is not clean; instead
+   we swap via a small data attribute hook (applied by ahdd-enhance.js).  */
+
+/* Paperless-forms video sizing fix — the .tr-media expects consistent aspect
+   and the inline video has no sizing rules. Force cover fit. */
+.tech-row .tr-media video,
+.tech-row .tr-media img{
+  position:absolute !important;inset:0 !important;
+  width:100% !important;height:100% !important;
+  object-fit:cover !important;object-position:center center !important;
+  display:block;
+}
+.tech-row .tr-media{position:relative;overflow:hidden;aspect-ratio:4/3;background:#f0f3f7}
+@media (max-width:768px){ .tech-row .tr-media{aspect-ratio:16/10} }
+
+/* Hide redundant doctor + stat footer on Technology page */
+body .wt-footer{display:none !important}
+
+/* Reduce technology section padding */
+#videa-feature{padding:48px 0 !important}
+#simulator-feature{padding:48px 0 !important}
+#tech-features{padding-top:56px !important;padding-bottom:0 !important}
+#why-tech{padding:64px 0 !important}
+#tech-cta{padding:64px 0 !important}
+#virtual-tour{padding:56px 0 !important}
+.wt-header{margin-bottom:32px !important}
+.tf-intro{margin-bottom:28px !important}
+
+/* 5 — SITEWIDE MOBILE (375–768px) ──────────────────────── */
+
+html,body{overflow-x:hidden}
+img,video,iframe{max-width:100%}
+
+/* Section padding trims on phone */
+@media (max-width:768px){
+  section{padding-left:0;padding-right:0}
+  .wrap{padding:0 20px !important}
+
+  /* Booking modal full-bleed */
+  #bk-modal{padding:0}
+  .bk-box{max-width:100% !important;border-radius:16px 16px 0 0;max-height:98vh}
+
+  /* Touch target min-size */
+  a.nav-book,.nav-book,.btn-dark,.btn-outline,.cta-book,.cta-call,
+  .btn-primary,.btn-secondary,.loc-btn-dir,.loc-btn-book,
+  .ins-cta-primary,.ins-cta-secondary,.ins-check-btn,
+  .svc-consult-btn,.pill,.team-card{min-height:44px}
+
+  /* Chatbot full width on small phones */
+  #chat-win{width:calc(100vw - 24px) !important;height:min(72vh,560px) !important}
+
+  /* Virtual tour iframe: keep 16:9 */
+  .vt-embed-wrap,.cta-tour-wrap{padding-bottom:56.25% !important}
+
+  /* About/Tech two-column sections to stack */
+  .intro-grid,.doctor-layout,.svc-hero,.videa-wrap,.sim-wrap,.tech-row,.tech-row.flip{
+    grid-template-columns:1fr !important;
+  }
+  .tech-row,.tech-row.flip{gap:16px !important}
+
+  /* Smile analysis widget 1-column (see dedicated rules below) */
+  .sai-grid{grid-template-columns:1fr !important}
+
+  /* Insurance widget breathing room */
+  .ins-plan-btns{grid-template-columns:1fr 1fr !important}
+
+  /* Footer tighten */
+  #footer{padding:44px 0 24px}
+  .footer-grid{gap:24px !important}
+
+  /* Team wrap */
+  .team-staff,.team-grid-staff{grid-template-columns:repeat(3,1fr) !important;gap:14px !important}
+  .team-docs,.team-grid-docs{gap:24px !important;flex-wrap:wrap}
+}
+@media (max-width:480px){
+  .team-staff,.team-grid-staff{grid-template-columns:repeat(2,1fr) !important}
+  .wrap{padding:0 16px !important}
+  .ins-plan-btns{grid-template-columns:1fr !important}
+  .foot-bot{flex-direction:column;align-items:flex-start}
+  .tech-grid{grid-template-columns:1fr !important}
+  .svc-grid{grid-template-columns:1fr !important}
+  .svc-card.hero-card{grid-column:span 1 !important}
+  /* Ensure no heading overflows at small phone widths */
+  .page-hero h1,.svc-hero-h1,.about-hero-h1,
+  .hero-h1,.tr-h3,.sim-h2,.videa-h2,
+  .section-h2,.section-h,.sai-h2,.svc-h2,.team-title,
+  .rev-h2,.cta-h2,.doc-h2,.tech-title,.vt-h2,.loc-h2{
+    font-size:clamp(22px,7vw,28px) !important;
+    line-height:1.18 !important;
+    word-break:break-word;
+    hyphens:auto;
+  }
+  .page-hero p,.svc-hero-p,.about-hero-sub,
+  .hero-sub,.tr-p,.videa-p,.videa-p2,.sim-p,.sim-p2{
+    font-size:14px !important;line-height:1.6 !important;
+  }
+  /* Service pages often use page-hero with big padding */
+  .page-hero{padding:48px 0 32px !important}
+}
+
+/* Smile-analysis widget visual refresh — Apple-meets-dentist ─── */
+.sai-section{
+  background:linear-gradient(180deg,#ffffff 0%,#f7f9fc 100%) !important;
+  padding:80px 0 !important;
+}
+.sai-section::before{display:none !important}
+.sai-card{
+  background:#ffffff !important;
+  backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
+  border:1px solid rgba(15,30,51,.06) !important;
+  border-radius:24px !important;
+  box-shadow:
+    0 1px 2px rgba(15,30,51,.04),
+    0 12px 32px rgba(15,30,51,.06),
+    0 32px 64px rgba(15,30,51,.04) !important;
+}
+.sai-left{border-right:1px solid rgba(15,30,51,.05) !important}
+.sai-eyebrow{color:#0071e3 !important}
+.sai-eyebrow-line{background:#0071e3 !important}
+.sai-h2 em{color:#0071e3 !important}
+.sai-chip{
+  background:#f5f7fa !important;border:1px solid rgba(15,30,51,.06) !important;
+  box-shadow:none !important;color:#2d3340 !important;
+}
+.sai-chip-dot{background:#34c759 !important}
+.sai-drop{
+  background:#fafbfd !important;
+  border:1.5px dashed rgba(15,30,51,.14) !important;
+  border-radius:18px !important;transition:border-color .2s,background .2s;
+}
+.sai-drop:hover,.sai-drop.drag{
+  background:#f0f6ff !important;border-color:#0071e3 !important;
+}
+.sai-cta,.sai-btn-primary,button.sai-btn-primary{
+  background:#0071e3 !important;color:#fff !important;
+  border-radius:100px !important;font-weight:600 !important;
+  letter-spacing:-.01em !important;
+  box-shadow:0 4px 14px rgba(0,113,227,.24) !important;
+}
+.sai-cta:hover,.sai-btn-primary:hover{
+  background:#0058b0 !important;transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(0,113,227,.32) !important;
+}
+.sai-preview-badge{background:#0071e3 !important;color:#fff !important;letter-spacing:-.01em !important}
+.sai-analyze-btn{
+  background:#0071e3 !important;color:#fff !important;
+  border-radius:100px !important;font-weight:600 !important;
+  padding:14px 28px !important;
+  box-shadow:0 4px 14px rgba(0,113,227,.24) !important;
+  letter-spacing:-.01em !important;
+}
+.sai-analyze-btn:hover:not(:disabled){
+  background:#0058b0 !important;transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(0,113,227,.32) !important;
+}
+.sai-gate-icon{background:linear-gradient(135deg,#0071e3,#4a9fd4) !important}
+.sai-gate-field{
+  background:#fafbfd !important;border:1.5px solid rgba(15,30,51,.08) !important;
+  border-radius:12px !important;color:#0a0e14 !important;
+}
+.sai-gate-field:focus{border-color:#0071e3 !important;box-shadow:0 0 0 3px rgba(0,113,227,.12) !important}
+.sai-gate-submit,.sai-primary-btn,button.sai-gate-submit{
+  background:#0071e3 !important;color:#fff !important;border-radius:100px !important;
+  font-weight:600 !important;letter-spacing:-.01em !important;
+  box-shadow:0 4px 14px rgba(0,113,227,.24) !important;
+}
+.sai-gate-submit:hover,.sai-primary-btn:hover{
+  background:#0058b0 !important;
+}
+.sai-drop-icon{
+  background:#fafbfd !important;border:1px solid rgba(15,30,51,.08) !important;
+  box-shadow:0 1px 2px rgba(15,30,51,.04) !important;
+}
+.sai-trust,.sai-privacy{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif !important}
+
+@media (max-width:768px){
+  .sai-section{padding:48px 0 !important}
+  .sai-grid{grid-template-columns:1fr !important}
+  .sai-left{padding:32px 24px !important;border-right:none !important;
+    border-bottom:1px solid rgba(15,30,51,.05) !important}
+  .sai-right{padding:32px 24px !important}
+  .sai-card{border-radius:20px !important}
+}
