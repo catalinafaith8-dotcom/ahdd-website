@@ -6,6 +6,7 @@
     { "source": "/services/emergency-dentistry",   "destination": "/emergency-dentistry" },
     { "source": "/services/invisalign",            "destination": "/invisalign" },
     { "source": "/services/restorative-dentistry", "destination": "/restorative-dentistry" },
+    { "source": "/services/sedation-dentistry",    "destination": "/sedation-dentistry" },
     { "source": "/services/teeth-whitening",       "destination": "/teeth-whitening" },
     { "source": "/services/veneers",               "destination": "/veneers" },
     { "source": "/insurance-checker",              "destination": "/insurance-checker-ahdd__4_" },
