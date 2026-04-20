@@ -202,11 +202,34 @@ body .team-photo-wrap img{
   body .team-photo,body .team-photo-wrap{width:130px !important;height:130px !important}
 }
 
-/* 2026-04-20: Home page STAFF photos revert to rectangles (portrait
-   3/4, 14px radius). Doctors on the home page + all photos on the
-   about page stay circular. Targets only `.team-staff .team-photo`
-   which exists on index.html only (about.html uses
-   `.team-grid-staff .team-photo-wrap`). */
+/* 2026-04-20: Home page team photos (BOTH doctors and staff) revert
+   to rectangles with a 14px radius. About page stays circular.
+   Targets the home-only selectors `.team-docs .team-photo` and
+   `.team-staff .team-photo` (about.html uses `.team-grid-*
+   .team-photo-wrap`, which is left circular). */
+
+/* Home DOCTORS — 200x260 portrait rectangle */
+body .team-docs .team-photo{
+  border-radius:14px !important;
+  aspect-ratio:auto !important;
+  width:200px !important;
+  height:260px !important;
+  max-width:none !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+body .team-docs .team-photo img{
+  border-radius:14px !important;
+  object-position:center top !important;
+}
+@media(max-width:768px){
+  body .team-docs .team-photo{ width:180px !important; height:234px !important; }
+}
+@media(max-width:480px){
+  body .team-docs .team-photo{ width:160px !important; height:208px !important; }
+}
+
+/* Home STAFF — 3/4 portrait rectangle, fills grid cell */
 body .team-staff .team-photo{
   border-radius:14px !important;
   aspect-ratio:3/4 !important;
