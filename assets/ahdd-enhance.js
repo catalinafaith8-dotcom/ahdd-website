@@ -221,7 +221,7 @@
     afterImg.setAttribute('alt', bAlt);
   }
 
-// 2026-04-20: tag the Paperless Forms tech-row so CSS fallback can
+  // 2026-04-20: tag the Paperless Forms tech-row so CSS fallback can
   // target it in browsers that don't support :has() (older iOS).
   function tagPaperlessCard(){
     var rows = document.querySelectorAll('article.tech-row');
@@ -249,7 +249,5 @@
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
-  }
-})();
   }
 })();
