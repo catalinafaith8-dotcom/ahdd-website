@@ -124,36 +124,61 @@ body .hero-pills{display:none !important}
 #cta .cta-sub{max-width:100% !important}
 #cta .cta-tour-wrap{padding-bottom:56.25% !important}
 
-/* Mobile hero fix — ensure hero photo renders and is visible on phone */
+/* Mobile hero — 2026-04-20 v3: the source photo is wide landscape
+   (both doctors side-by-side). With `object-fit:cover` on a portrait
+   phone the browser scales to fill height and crops the sides, cutting
+   off one or both doctors. Fix: `contain` the full photo on a navy
+   backdrop so no one is cropped; push the overlay text into the navy
+   area below the image. */
 @media (max-width:768px){
-  #hero{height:auto !important;min-height:480px !important}
+  #hero{
+    height:auto !important;
+    min-height:auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    background:#1D3E5C !important; /* navy brand fill under/around the photo */
+  }
   #hero-img{
     position:relative !important;
     width:100% !important;
     height:auto !important;
-    min-height:480px !important;
-    max-height:640px !important;
-    object-fit:cover !important;
+    max-height:none !important;
+    min-height:0 !important;
+    aspect-ratio:3 / 2 !important;    /* common landscape; contain guarantees no crop */
+    object-fit:contain !important;    /* show the WHOLE photo; no side cropping */
     object-position:center center !important;
+    background:#1D3E5C !important;
+    display:block !important;
   }
   #hero-overlay{
-    background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,0,0,.55) 70%,rgba(0,0,0,.78) 100%) !important;
+    display:none !important;           /* dark gradient no longer needed */
   }
-  .hero-inner{position:absolute;inset:0;padding-top:72px}
+  .hero-inner{
+    position:relative !important;
+    inset:auto !important;
+    padding:28px 20px 36px !important; /* text sits on navy, below the photo */
+    display:block !important;
+  }
   .hero-content{
-    right:auto !important;left:20px !important;top:auto !important;bottom:32px !important;
-    transform:none !important;width:calc(100% - 40px) !important;max-width:560px;
+    position:static !important;
+    right:auto !important;left:auto !important;top:auto !important;bottom:auto !important;
+    transform:none !important;
+    width:100% !important;max-width:none !important;
+    padding:0 !important;margin:0 !important;
   }
-  .hero-h1{font-size:28px !important;line-height:1.15 !important}
+  /* Text + pills re-color for navy bg */
+  .hero-badge,.hero-h1,.hero-line1,.hero-line2,.hero-sub,
+  #typed-word,#tw-cursor{color:#fff !important}
+  .hero-sub{color:rgba(255,255,255,0.82) !important}
+  .hero-h1{font-size:30px !important;line-height:1.15 !important;margin:0 0 12px !important}
+  .hero-sub{font-size:14.5px !important;line-height:1.6 !important;margin:0 0 20px !important}
   .hero-line1,.hero-line2{white-space:normal !important}
-  .hero-sub{font-size:14px !important;line-height:1.6 !important}
 }
 @media (max-width:480px){
-  #hero{min-height:460px !important}
-  #hero-img{min-height:460px !important}
-  .hero-content{left:16px !important;bottom:24px !important;width:calc(100% - 32px) !important}
-  .hero-h1{font-size:24px !important}
-  .hero-sub{font-size:13.5px !important}
+  #hero-img{ aspect-ratio:4 / 3 !important; }
+  .hero-inner{ padding:24px 16px 32px !important; }
+  .hero-h1{ font-size:26px !important; }
+  .hero-sub{ font-size:13.5px !important; }
 }
 
 /* 3 — ABOUT ─────────────────────────────────────────────── */
