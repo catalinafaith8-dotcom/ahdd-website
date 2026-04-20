@@ -251,23 +251,34 @@ button{font-family:'Open Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Robot
 .tech-cta-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .2s}
 .tech-cta-link:hover svg{transform:translateX(3px)}
 
-/* ── TEAM ── */
-#team{background:var(--cloud);padding:96px 0 108px}
-.team-hd{text-align:center;margin-bottom:56px}
-.team-label{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--steel);margin-bottom:12px;font-family:var(--sans)}
-.team-title{font-family:var(--display);font-size:clamp(28px,3vw,40px);font-weight:600;color:var(--graphite);letter-spacing:-0.03em}
-.team-title em{color:var(--steel);font-style:normal;font-weight:500}
-.team-docs{display:flex;justify-content:center;gap:44px;margin-bottom:52px;flex-wrap:wrap}
-.team-staff{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;padding:0 1px}
-.team-staff .team-card{width:100%}
-.team-staff .team-photo{width:100%;aspect-ratio:3/4;height:auto}
-.team-card{display:flex;flex-direction:column;align-items:center;text-align:center}
-.team-photo{overflow:hidden;border-radius:14px;background:#e8ecf0;margin-bottom:12px}
-.team-docs .team-photo{width:190px;height:240px}
-.team-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .45s ease;transform-origin:center 15%}
-.team-card:hover .team-photo img{transform:scale(1.06)}
-.team-n{font-family:var(--display);font-size:14px;font-weight:600;color:var(--graphite);margin-bottom:3px;letter-spacing:-.015em}
-.team-r{font-size:11px;font-weight:500;color:var(--copper);letter-spacing:.02em;font-family:var(--sans)}
+/* ── TEAM PHOTOS — rectangular frames ── */
+.team-photo{
+  overflow:hidden;
+  border-radius:14px;
+  background:#e8ecf0;
+  margin-bottom:12px;
+}
+.team-docs .team-photo{
+  width:200px;
+  height:260px;
+}
+.team-staff .team-photo{
+  width:100%;
+  aspect-ratio:3/4;
+  height:auto;
+}
+.team-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  display:block;
+  transition:transform .45s ease;
+  transform-origin:center 15%;
+}
+.team-card:hover .team-photo img{
+  transform:scale(1.06);
+}
 
 /* ── REVIEWS ── */
 #reviews{background:#fff;padding:88px 0 96px}
