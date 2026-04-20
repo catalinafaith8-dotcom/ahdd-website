@@ -12,38 +12,19 @@
    ────────────────────────────────────────────────────────── */
 
 /* 1 — NAV: logo enlarged, Services dropdown ─────────────── */
-/* 2026-04-20: bumped logo + nav height so the mark actually reads. */
-#nav{height:96px !important}
-#nav.scrolled{height:96px !important}
-#nav .nav-wrap{height:96px !important}
-#nav .nav-logo img{height:72px !important;width:auto}
+/* 2026-04-20: scaled up ONLY the logo; nav height stays 72px. The logo
+   is allowed to exceed the nav bar slightly — the image is displayed as
+   block with overflow:visible so it extends a few px above/below. */
+#nav{height:72px !important}
+#nav.scrolled{height:72px !important}
+#nav .nav-wrap{height:72px !important;overflow:visible !important}
+#nav .nav-logo{display:flex;align-items:center;overflow:visible}
+#nav .nav-logo img{height:72px !important;width:auto;max-height:none !important}
 @media(min-width:1200px){ #nav .nav-logo img{height:84px !important} }
-
-/* Tablet: nav 88px, logo 64px */
-@media(max-width:1024px){
-  #nav, #nav.scrolled, #nav .nav-wrap{height:88px !important}
-  #nav .nav-logo img{height:64px !important}
-}
-
-/* Phone: nav 80px, logo 56px (keeps screen real-estate reasonable) */
-@media(max-width:768px){
-  #nav, #nav.scrolled, #nav .nav-wrap{height:80px !important}
-  #nav .nav-logo img{height:56px !important}
-  /* Mobile-nav panel sits just below the nav bar */
-  #mobile-nav{top:80px !important}
-}
-
-/* Shift anything that was pinned to the old 64/72 nav height */
-.hero-inner{padding-top:96px !important}
-.about-hero{margin-top:96px !important}
-@media(max-width:1024px){
-  .hero-inner{padding-top:88px !important}
-  .about-hero{margin-top:88px !important}
-}
-@media(max-width:768px){
-  .hero-inner{padding-top:80px !important}
-  .about-hero{margin-top:80px !important}
-}
+@media(max-width:1024px){ #nav .nav-logo img{height:64px !important} }
+@media(max-width:768px){  #nav .nav-logo img{height:56px !important} }
+@media(max-width:480px){  #nav .nav-logo img{height:48px !important} }
+.hero-inner{padding-top:72px !important}
 
 /* Services dropdown (desktop) — injected via JS */
 .nav-links li.has-dropdown{position:relative}
