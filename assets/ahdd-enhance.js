@@ -221,15 +221,35 @@
     afterImg.setAttribute('alt', bAlt);
   }
 
-  /* ── Init ──────────────────────────────────────────────── */
+// 2026-04-20: tag the Paperless Forms tech-row so CSS fallback can
+  // target it in browsers that don't support :has() (older iOS).
+  function tagPaperlessCard(){
+    var rows = document.querySelectorAll('article.tech-row');
+    for (var i = 0; i < rows.length; i++){
+      var row = rows[i];
+      var vid = row.querySelector('video');
+      var src = vid && (vid.currentSrc || '');
+      if (!src){
+        var s = row.querySelector('video source');
+        src = s && s.getAttribute('src') || '';
+      }
+      if (/Paperless/i.test(src) || /paperless\s*office/i.test(row.textContent || '')){
+        row.classList.add('paperless');
+      }
+    }
+  }
+
   function init(){
     try { enhanceNav(); } catch(e){ console && console.warn && console.warn('[ahdd] nav', e); }
     try { enhanceChatbot(); } catch(e){ console && console.warn && console.warn('[ahdd] chat', e); }
     try { swapBeforeAfter(); } catch(e){ console && console.warn && console.warn('[ahdd] ba', e); }
+    try { tagPaperlessCard(); } catch(e){ console && console.warn && console.warn('[ahdd] paperless', e); }
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
+  }
+})();
   }
 })();

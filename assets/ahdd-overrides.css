@@ -388,3 +388,76 @@ img,video,iframe{max-width:100%}
   .sai-right{padding:32px 24px !important}
   .sai-card{border-radius:20px !important}
 }
+/* ──────────────────────────────────────────────────────────
+   6 — 2026-04-20 mobile fit patch
+   Originals above preserved. Adds fixes for:
+     a) Technology cards: .tr-media was overflowing the card on phone.
+     b) Paperless Forms card: portrait video, contain-fit, navy letterbox.
+     c) Small-phone tap-target polish on mobile nav + footer links.
+   ────────────────────────────────────────────────────────── */
+
+/* a) Stop .tr-media from overflowing its card on mobile + tablet */
+@media (max-width:1024px){
+  .tech-row .tr-media{
+    min-height:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+  .tech-row,
+  .tech-row.flip{
+    max-width:100% !important;
+    overflow:hidden;
+  }
+  .tech-row .tr-media video,
+  .tech-row .tr-media img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:100% !important;
+    max-height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+}
+
+/* b) Paperless Forms card — portrait video, contain-fit, letterbox */
+@supports selector(:has(*)){
+  .tech-row:has(video source[src*="Paperless"]) .tr-media,
+  .tech-row:has(video[src*="Paperless"]) .tr-media{
+    background:#0F1E33 !important;
+    aspect-ratio: 9 / 12 !important;
+  }
+  .tech-row:has(video source[src*="Paperless"]) .tr-media video,
+  .tech-row:has(video[src*="Paperless"]) .tr-media video{
+    object-fit:contain !important;
+    object-position:center center !important;
+  }
+  @media (min-width:769px){
+    .tech-row:has(video source[src*="Paperless"]) .tr-media,
+    .tech-row:has(video[src*="Paperless"]) .tr-media{
+      aspect-ratio: 4 / 3 !important;
+    }
+  }
+}
+.tech-row.paperless .tr-media{
+  background:#0F1E33 !important;
+  aspect-ratio: 9 / 12 !important;
+}
+.tech-row.paperless .tr-media video{
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+@media (min-width:769px){
+  .tech-row.paperless .tr-media{ aspect-ratio: 4 / 3 !important; }
+}
+
+/* c) Small-phone tap-target polish */
+@media (max-width:768px){
+  .tech-row > *,
+  .tr-media,
+  .tr-body{ max-width:100% !important; }
+
+  #mobile-nav a{ min-height:44px !important; display:flex !important; align-items:center !important; }
+  .foot-links a{ padding:8px 0 !important; display:inline-block !important; }
+}
