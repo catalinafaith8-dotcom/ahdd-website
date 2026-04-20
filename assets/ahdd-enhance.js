@@ -16,6 +16,7 @@
     { label:'Teeth Whitening',        href:'/services/teeth-whitening' },
     { label:'Invisalign',             href:'/services/invisalign' },
     { label:'Restorative Dentistry',  href:'/services/restorative-dentistry' },
+    { label:'Sedation Dentistry',     href:'/services/sedation-dentistry' },
     { label:'Emergency Dentistry',    href:'/services/emergency-dentistry' }
   ];
 
