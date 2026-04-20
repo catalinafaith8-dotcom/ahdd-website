@@ -12,19 +12,20 @@
    ────────────────────────────────────────────────────────── */
 
 /* 1 — NAV: logo enlarged, Services dropdown ─────────────── */
-/* 2026-04-20: scaled up ONLY the logo; nav height stays 72px. The logo
-   is allowed to exceed the nav bar slightly — the image is displayed as
-   block with overflow:visible so it extends a few px above/below. */
-#nav{height:72px !important}
-#nav.scrolled{height:72px !important}
-#nav .nav-wrap{height:72px !important;overflow:visible !important}
-#nav .nav-logo{display:flex;align-items:center;overflow:visible}
-#nav .nav-logo img{height:72px !important;width:auto;max-height:none !important}
-@media(min-width:1200px){ #nav .nav-logo img{height:84px !important} }
-@media(max-width:1024px){ #nav .nav-logo img{height:64px !important} }
-@media(max-width:768px){  #nav .nav-logo img{height:56px !important} }
-@media(max-width:480px){  #nav .nav-logo img{height:48px !important} }
-.hero-inner{padding-top:72px !important}
+/* 2026-04-20 v2: nav bar restored to the original 64px. The logo is
+   intentionally LARGER than the bar — `overflow:visible` lets it extend
+   above and below the nav so the mark reads as the hero element while
+   the bar itself stays slim. */
+#nav{height:64px !important}
+#nav.scrolled{height:64px !important}
+#nav .nav-wrap{height:64px !important;overflow:visible !important}
+#nav .nav-logo{display:flex;align-items:center;overflow:visible;z-index:2}
+#nav .nav-logo img{height:100px !important;width:auto;max-height:none !important}
+@media(min-width:1200px){ #nav .nav-logo img{height:120px !important} }
+@media(max-width:1024px){ #nav .nav-logo img{height:88px !important} }
+@media(max-width:768px){  #nav .nav-logo img{height:72px !important} }
+@media(max-width:480px){  #nav .nav-logo img{height:60px !important} }
+.hero-inner{padding-top:64px !important}
 
 /* Services dropdown (desktop) — injected via JS */
 .nav-links li.has-dropdown{position:relative}
