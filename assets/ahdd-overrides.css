@@ -27,6 +27,21 @@
 @media(max-width:480px){  #nav .nav-logo img{height:60px !important} }
 .hero-inner{padding-top:64px !important}
 
+/* 2026-04-20: HOME-ONLY translucent glass nav. Other pages keep the
+   solid off-white bar. Target home via `body:has(#hero)` — #hero is
+   unique to index.html. When the user scrolls, bump opacity so nav
+   text stays legible against arbitrary page content. */
+body:has(#hero) #nav{
+  background:rgba(255,255,255,0.55) !important;
+  backdrop-filter:blur(18px) saturate(1.8) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.8) !important;
+  border-bottom:1px solid rgba(29,62,92,0.06) !important;
+}
+body:has(#hero) #nav.scrolled{
+  background:rgba(255,255,255,0.82) !important;
+  box-shadow:0 2px 20px rgba(29,62,92,0.10) !important;
+}
+
 /* Services dropdown (desktop) — injected via JS */
 .nav-links li.has-dropdown{position:relative}
 .nav-links li.has-dropdown > a::after{
@@ -243,6 +258,19 @@ body .team-staff .team-photo{
 body .team-staff .team-photo img{
   border-radius:14px !important;
   object-position:center top !important;
+}
+
+/* 2026-04-20: Dr. David's source photo is cropped tighter than
+   Dr. Shawn's, so `object-fit:cover` scales him up more and he
+   visually "fills" the frame while Shawn has headroom. Switch David
+   to `contain` with a matching background so both doctors read at
+   comparable scale. Applies to home (small portrait frames) and
+   about (large sticky column). Targets David by image filename. */
+body .team-docs .team-photo img[src*="David"],
+body .doc-photo-wrap img[src*="David"]{
+  object-fit:contain !important;
+  object-position:center center !important;
+  background:#eef1f5 !important;
 }
 
 /* 4 — TECHNOLOGY ────────────────────────────────────────── */
