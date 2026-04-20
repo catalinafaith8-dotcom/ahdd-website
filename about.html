@@ -234,6 +234,8 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
   .btn-dark,.btn-ghost{justify-content:center}
 }
 </style>
+  <link rel="stylesheet" href="/assets/ahdd-overrides.css"/>
+  <script src="/assets/ahdd-enhance.js" defer></script>
 </head>
 <body>
 
@@ -276,6 +278,7 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
 <!-- HERO -->
 <section class="about-hero">
   <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Team%20Photo.JPG" alt="The Agoura Hills Dental Designs team" loading="eager"/>
+  <!-- Overlay + overlaid content preserved but hidden via ahdd-overrides.css; title now renders in .about-hero-caption below (2026-04-19 revisions) -->
   <div class="about-hero-overlay"></div>
   <div class="about-hero-content">
     <span class="about-hero-eyebrow">Our Practice</span>
@@ -283,6 +286,12 @@ button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;bac
     <p class="about-hero-sub">Third-generation dentists delivering precision, artistry, and genuine care to Agoura Hills and the surrounding communities.</p>
   </div>
 </section>
+<!-- HERO CAPTION — title below photo (2026-04-19 revisions) -->
+<div class="about-hero-caption">
+  <span class="about-hero-eyebrow">Our Practice</span>
+  <h1 class="about-hero-h1">Built on Family.<br/>Driven by Craft.</h1>
+  <p class="about-hero-sub">Third-generation dentists delivering precision, artistry, and genuine care to Agoura Hills and the surrounding communities.</p>
+</div>
 
 <!-- PRACTICE INTRO -->
 <section id="intro">
