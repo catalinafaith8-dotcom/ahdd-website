@@ -12,11 +12,18 @@
    ────────────────────────────────────────────────────────── */
 
 /* 1 — NAV: logo enlarged, Services dropdown ─────────────── */
-#nav .nav-logo img{height:50px !important;width:auto}
-@media(min-width:1200px){ #nav .nav-logo img{height:56px !important} }
+/* 2026-04-20: scaled up ONLY the logo; nav height stays 72px. The logo
+   is allowed to exceed the nav bar slightly — the image is displayed as
+   block with overflow:visible so it extends a few px above/below. */
 #nav{height:72px !important}
 #nav.scrolled{height:72px !important}
-#nav .nav-wrap{height:72px !important}
+#nav .nav-wrap{height:72px !important;overflow:visible !important}
+#nav .nav-logo{display:flex;align-items:center;overflow:visible}
+#nav .nav-logo img{height:72px !important;width:auto;max-height:none !important}
+@media(min-width:1200px){ #nav .nav-logo img{height:84px !important} }
+@media(max-width:1024px){ #nav .nav-logo img{height:64px !important} }
+@media(max-width:768px){  #nav .nav-logo img{height:56px !important} }
+@media(max-width:480px){  #nav .nav-logo img{height:48px !important} }
 .hero-inner{padding-top:72px !important}
 
 /* Services dropdown (desktop) — injected via JS */
@@ -193,6 +200,48 @@ body .team-photo-wrap img{
 }
 @media(max-width:480px){
   body .team-photo,body .team-photo-wrap{width:130px !important;height:130px !important}
+}
+
+/* 2026-04-20: Home page team photos (BOTH doctors and staff) revert
+   to rectangles with a 14px radius. About page stays circular.
+   Targets the home-only selectors `.team-docs .team-photo` and
+   `.team-staff .team-photo` (about.html uses `.team-grid-*
+   .team-photo-wrap`, which is left circular). */
+
+/* Home DOCTORS — 200x260 portrait rectangle */
+body .team-docs .team-photo{
+  border-radius:14px !important;
+  aspect-ratio:auto !important;
+  width:200px !important;
+  height:260px !important;
+  max-width:none !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+body .team-docs .team-photo img{
+  border-radius:14px !important;
+  object-position:center top !important;
+}
+@media(max-width:768px){
+  body .team-docs .team-photo{ width:180px !important; height:234px !important; }
+}
+@media(max-width:480px){
+  body .team-docs .team-photo{ width:160px !important; height:208px !important; }
+}
+
+/* Home STAFF — 3/4 portrait rectangle, fills grid cell */
+body .team-staff .team-photo{
+  border-radius:14px !important;
+  aspect-ratio:3/4 !important;
+  width:100% !important;
+  max-width:none !important;
+  height:auto !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+body .team-staff .team-photo img{
+  border-radius:14px !important;
+  object-position:center top !important;
 }
 
 /* 4 — TECHNOLOGY ────────────────────────────────────────── */
