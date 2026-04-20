@@ -202,6 +202,25 @@ body .team-photo-wrap img{
   body .team-photo,body .team-photo-wrap{width:130px !important;height:130px !important}
 }
 
+/* 2026-04-20: Home page STAFF photos revert to rectangles (portrait
+   3/4, 14px radius). Doctors on the home page + all photos on the
+   about page stay circular. Targets only `.team-staff .team-photo`
+   which exists on index.html only (about.html uses
+   `.team-grid-staff .team-photo-wrap`). */
+body .team-staff .team-photo{
+  border-radius:14px !important;
+  aspect-ratio:3/4 !important;
+  width:100% !important;
+  max-width:none !important;
+  height:auto !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+body .team-staff .team-photo img{
+  border-radius:14px !important;
+  object-position:center top !important;
+}
+
 /* 4 — TECHNOLOGY ────────────────────────────────────────── */
 
 /* Hide stats bar entirely (preserved in markup) */
