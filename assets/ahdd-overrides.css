@@ -830,3 +830,15 @@ body .city-hero h1 em{
     line-height:1.12 !important;
   }
 }
+
+/* ──────────────────────────────────────────────────────────
+   12 — 2026-04-21 Instagram section: full-width card
+   Instagram's embed.js swaps the blockquote with an iframe that
+   has its own inline styles. Force both to fill the section.
+   ────────────────────────────────────────────────────────── */
+#instagram .instagram-media,
+#instagram iframe.instagram-media{
+  max-width:100% !important;
+  width:100% !important;
+  min-width:0 !important;
+}
