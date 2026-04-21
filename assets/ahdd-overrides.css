@@ -564,3 +564,114 @@ img,video,iframe{max-width:100%}
   #mobile-nav a{ min-height:44px !important; display:flex !important; align-items:center !important; }
   .foot-links a{ padding:8px 0 !important; display:inline-block !important; }
 }
+
+/* ──────────────────────────────────────────────────────────
+   7 — 2026-04-20 v3: mobile padding + Matian order
+   a) On mobile, the home "Meet the Doctors" section renders
+      photo-first (image above headline), not text-first.
+   b) Cut the oversized vertical padding sitewide on phone.
+   ────────────────────────────────────────────────────────── */
+
+/* a) Home — #doctors section: photo above text on mobile */
+@media (max-width:768px){
+  #doctors .doc-outer{
+    display:flex !important;
+    flex-direction:column !important;
+    min-height:0 !important;
+    grid-template-columns:none !important;
+  }
+  #doctors .doc-photo{
+    order:1 !important;
+    position:relative !important;
+    height:auto !important;
+    aspect-ratio:4 / 3 !important;
+    width:100% !important;
+  }
+  #doctors .doc-photo img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+  #doctors .doc-text{
+    order:2 !important;
+    padding:36px 20px 44px !important;
+  }
+  #doctors .doc-text .doc-p{ font-size:15px !important; line-height:1.65 !important; margin-bottom:14px !important; }
+  #doctors .doc-btns{ margin-top:24px !important; gap:10px !important; }
+  #doctors .doc-btns > *{ flex:1 1 auto; justify-content:center; }
+}
+
+/* b) Sitewide mobile padding trim — cut all oversized section padding */
+@media (max-width:768px){
+  /* Home sections already trimmed earlier; these are additional trims */
+  #hero-below,#social-proof,#stats,#reviews,#virtual-tour,#ins,#cta,#doctors,
+  #services,#tech,#team,#process,#faq,#cta-strip,#membership,#lenders,
+  #intro,#team-section,#practice-intro,.doctor-section,
+  #videa-feature,#simulator-feature,#tech-features,#why-tech,#tech-cta{
+    padding-top:40px !important;
+    padding-bottom:40px !important;
+  }
+
+  /* Generic section padding cap — catches anything not listed above */
+  section[class*="svc-"],section[class*="sim-"],section[class*="videa-"],
+  section.about-hero-caption,section.page-hero{
+    padding-top:40px !important;
+    padding-bottom:40px !important;
+  }
+
+  /* Common hero-caption block paddings (about + other pages) */
+  .about-hero-caption{ padding:28px 20px 12px !important; }
+  .about-hero-caption .about-hero-h1{ margin-bottom:8px !important; }
+
+  /* Doctor-section on About — the intro + bio blocks still felt bloated */
+  .doctor-section{ padding:44px 0 !important; }
+  .doc-photo-col{ padding-top:0 !important; }
+  .doc-photo-wrap img{ max-height:360px !important; }
+  .doc-bio p{ margin-bottom:14px !important; }
+
+  /* Team blocks */
+  #team{ padding:44px 0 !important; }
+  .team-hdr{ margin-bottom:28px !important; }
+
+  /* CTA strips tighter */
+  #cta-strip,#cta{ padding:44px 0 !important; }
+  .cta-inner{ gap:20px !important; }
+
+  /* Footer tighter top padding on phone */
+  #footer{ padding:36px 0 22px !important; }
+  .footer-grid{ margin-bottom:28px !important; gap:20px !important; }
+
+  /* Intro cards / blocks */
+  .intro-grid{ gap:28px !important; }
+  .intro-card{ padding:32px 26px !important; }
+
+  /* Service card containers and page heroes */
+  .svc-hero{ padding:80px 0 32px !important; }
+  .svc-hero-content{ padding:0 !important; }
+  .page-hero{ padding:80px 0 28px !important; }
+
+  /* Container horizontal padding — snug, not cramped */
+  .wrap{ padding-left:16px !important; padding-right:16px !important; }
+
+  /* Headings breathing room — prevent stacked giants */
+  h1,h2,h3{ margin-top:0 !important; }
+  h2{ margin-bottom:12px !important; }
+}
+
+/* c) Tiny phone (≤480) — one more pass */
+@media (max-width:480px){
+  #doctors .doc-text{ padding:28px 16px 36px !important; }
+  #hero-below,#social-proof,#stats,#reviews,#virtual-tour,#ins,#cta,#doctors,
+  #services,#tech,#team,#process,#faq,#cta-strip,#membership,#lenders,
+  #intro,#team-section,#practice-intro,.doctor-section,
+  #videa-feature,#simulator-feature,#tech-features,#why-tech,#tech-cta{
+    padding-top:32px !important;
+    padding-bottom:32px !important;
+  }
+  .wrap{ padding-left:14px !important; padding-right:14px !important; }
+  .page-hero{ padding:64px 0 20px !important; }
+  .svc-hero{ padding:64px 0 24px !important; }
+}
