@@ -830,3 +830,31 @@ body .city-hero h1 em{
     line-height:1.12 !important;
   }
 }
+
+/* ──────────────────────────────────────────────────────────
+   12 — 2026-04-21 Instagram section: reasonable sizing
+   Cap the widget so it doesn't dominate the page. Fit nicely
+   on phones without overflow.
+   ────────────────────────────────────────────────────────── */
+#instagram .instagram-media,
+#instagram iframe.instagram-media{
+  max-width:480px !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 auto !important;
+}
+@media (max-width:768px){
+  #instagram{ padding:48px 0 !important; }
+  #instagram .instagram-media,
+  #instagram iframe.instagram-media{
+    max-width:calc(100vw - 48px) !important;
+    min-width:0 !important;
+  }
+}
+@media (max-width:480px){
+  #instagram{ padding:36px 0 !important; }
+  #instagram .instagram-media,
+  #instagram iframe.instagram-media{
+    max-width:calc(100vw - 40px) !important;
+  }
+}
