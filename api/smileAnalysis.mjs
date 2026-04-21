@@ -1,4 +1,4 @@
-// api/smileAnalysis.js
+// api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
 // v8 — Master prompt · Visually-grounded · Trust-first · Conversion-focused
 
