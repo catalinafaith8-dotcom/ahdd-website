@@ -784,3 +784,49 @@ img,video,iframe{max-width:100%}
   content:none !important;
   background:transparent !important;
 }
+
+/* ──────────────────────────────────────────────────────────
+   11 — 2026-04-21 unify page-header typography
+   Match the /financing page-hero font family, weight, and
+   tracking across every page header so the type system reads
+   consistently. The home page main hero (typed-word effect over
+   the team photo) is intentionally left alone.
+   ────────────────────────────────────────────────────────── */
+body .page-hero h1,
+body .about-hero-h1,
+body .about-hero-caption .about-hero-h1,
+body .svc-hero-h1,
+body .policy-h1,
+body .city-hero h1{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif !important;
+  font-weight:400 !important;
+  letter-spacing:-0.03em !important;
+  line-height:1.04 !important;
+  font-size:clamp(36px,5vw,64px) !important;
+  color:#0F1E33 !important;
+}
+/* Emphasis inside the headline reads lighter/softer (same pattern
+   as financing's "your budget.") */
+body .page-hero h1 em,
+body .about-hero-h1 em,
+body .about-hero-caption .about-hero-h1 em,
+body .svc-hero-h1 em,
+body .policy-h1 em,
+body .city-hero h1 em{
+  font-family:inherit !important;
+  font-style:normal !important;
+  font-weight:300 !important;
+  color:#3B4A5C !important;
+}
+/* Small-phone sizing — keep headers from overflowing narrow screens */
+@media (max-width:480px){
+  body .page-hero h1,
+  body .about-hero-h1,
+  body .about-hero-caption .about-hero-h1,
+  body .svc-hero-h1,
+  body .policy-h1,
+  body .city-hero h1{
+    font-size:clamp(28px,8vw,38px) !important;
+    line-height:1.12 !important;
+  }
+}
