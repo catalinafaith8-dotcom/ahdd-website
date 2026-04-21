@@ -12,5 +12,8 @@
     { "source": "/insurance-checker",              "destination": "/insurance-checker-ahdd__4_" },
     { "source": "/chatbot",                        "destination": "/chatbot-widget-updated" },
     { "source": "/faq",                            "destination": "/about" }
+  ],
+  "redirects": [
+    { "source": "/services",                       "destination": "/#services",           "permanent": true }
   ]
 }
