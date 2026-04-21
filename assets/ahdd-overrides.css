@@ -838,7 +838,7 @@ body .city-hero h1 em{
    ────────────────────────────────────────────────────────── */
 #instagram .instagram-media,
 #instagram iframe.instagram-media{
-  max-width:540px !important;
+  max-width:480px !important;
   width:100% !important;
   min-width:0 !important;
   margin:0 auto !important;
@@ -847,7 +847,7 @@ body .city-hero h1 em{
   #instagram{ padding:48px 0 !important; }
   #instagram .instagram-media,
   #instagram iframe.instagram-media{
-    max-width:calc(100vw - 32px) !important;
+    max-width:calc(100vw - 48px) !important;
     min-width:0 !important;
   }
 }
@@ -855,6 +855,6 @@ body .city-hero h1 em{
   #instagram{ padding:36px 0 !important; }
   #instagram .instagram-media,
   #instagram iframe.instagram-media{
-    max-width:calc(100vw - 24px) !important;
+    max-width:calc(100vw - 40px) !important;
   }
 }
