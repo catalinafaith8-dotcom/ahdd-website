@@ -832,13 +832,29 @@ body .city-hero h1 em{
 }
 
 /* ──────────────────────────────────────────────────────────
-   12 — 2026-04-21 Instagram section: full-width card
-   Instagram's embed.js swaps the blockquote with an iframe that
-   has its own inline styles. Force both to fill the section.
+   12 — 2026-04-21 Instagram section: reasonable sizing
+   Cap the widget so it doesn't dominate the page. Fit nicely
+   on phones without overflow.
    ────────────────────────────────────────────────────────── */
 #instagram .instagram-media,
 #instagram iframe.instagram-media{
-  max-width:100% !important;
+  max-width:540px !important;
   width:100% !important;
   min-width:0 !important;
+  margin:0 auto !important;
+}
+@media (max-width:768px){
+  #instagram{ padding:48px 0 !important; }
+  #instagram .instagram-media,
+  #instagram iframe.instagram-media{
+    max-width:calc(100vw - 32px) !important;
+    min-width:0 !important;
+  }
+}
+@media (max-width:480px){
+  #instagram{ padding:36px 0 !important; }
+  #instagram .instagram-media,
+  #instagram iframe.instagram-media{
+    max-width:calc(100vw - 24px) !important;
+  }
 }
