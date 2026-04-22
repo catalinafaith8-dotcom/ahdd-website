@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.agourahillsdentaldesigns.com/sitemap.xml
+
+# Don't index utility/fragment pages
+Disallow: /smile-analysis-widget
+Disallow: /insurance-checker-ahdd__4_
