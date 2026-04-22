@@ -104,14 +104,15 @@ body .hero-pills{display:none !important}
 #services .svc-norefs{display:none !important}
 
 /* Reduce dead space between home sections */
-#services{padding:64px 0 !important}
-#doctors .doc-text{padding-top:56px !important;padding-bottom:56px !important}
-#tech{padding:64px 0 !important}
-#virtual-tour{padding:64px 0 !important}
-#team{padding:64px 0 !important}
-#reviews{padding:56px 0 64px !important}
-#ins{padding:56px 0 48px !important}
-#cta{padding:64px 0 !important}
+#services{padding:52px 0 !important}
+#doctors .doc-text{padding-top:48px !important;padding-bottom:48px !important}
+#tech{padding:52px 0 !important}
+#virtual-tour{padding:52px 0 !important}
+#team{padding:52px 0 !important}
+#reviews{padding:48px 0 56px !important}
+#ins{padding:48px 0 40px !important}
+#cta{padding:52px 0 !important}
+#instagram{padding:48px 0 52px !important}
 .vt-header{margin-bottom:36px !important}
 .svc-header{margin-bottom:32px !important}
 .tech-hd{margin-bottom:36px !important}
