@@ -826,25 +826,16 @@ button { font-family: var(--sans); }
       <a href="tel:+18187066077" class="btn-secondary">Call (818) 706-6077</a>
     </div>
   </div>
-  <div class="svc-hero-img" style="background:linear-gradient(135deg,#0F2D4A 0%,#1D3E5C 55%,#2A5A82 100%);display:flex;align-items:center;justify-content:center;">
-    <video
-      id="veneerHeroVideo"
-      autoplay
-      loop
-      muted
-      playsinline
-      preload="metadata"
-      style="max-width:78%;max-height:88%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35);">
-      <source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Veneer%20Patient%20Video.MOV" type="video/mp4"/>
-      <source src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Veneer%20Patient%20Video.MOV" type="video/quicktime"/>
-    </video>
+  <div class="svc-hero-img">
+    <!-- Placeholder: swap src when photo is uploaded to R2 -->
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#ddf0fb 0%,#88c2e8 50%,#2A5A82 100%);display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center;color:#fff;padding:32px">
+        <div style="font-size:72px;margin-bottom:16px">✨</div>
+        <div style="font-family:var(--serif);font-size:22px;opacity:.9">Porcelain Veneers</div>
+        <div style="font-size:13px;opacity:.65;margin-top:6px">Service Photo Coming Soon</div>
+      </div>
+    </div>
   </div>
-  <script>
-    (function(){
-      var v=document.getElementById('veneerHeroVideo');
-      if(v){v.playbackRate=0.75;v.addEventListener('loadedmetadata',function(){v.playbackRate=0.75;});}
-    })();
-  </script>
 </section>
 
 <!-- PROCESS STEPS -->
