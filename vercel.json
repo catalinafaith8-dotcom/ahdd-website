@@ -10,8 +10,7 @@
     { "source": "/services/teeth-whitening",       "destination": "/teeth-whitening" },
     { "source": "/services/veneers",               "destination": "/veneers" },
     { "source": "/insurance-checker",              "destination": "/insurance-checker-ahdd__4_" },
-    { "source": "/chatbot",                        "destination": "/chatbot-widget-updated" },
-    { "source": "/faq",                            "destination": "/about" }
+    { "source": "/chatbot",                        "destination": "/chatbot-widget-updated" }
   ],
   "redirects": [
     { "source": "/services",                       "destination": "/#services",           "permanent": true }

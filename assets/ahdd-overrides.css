@@ -288,12 +288,11 @@ body .team-staff .team-photo img{
 
 /* 2026-04-20: Dr. David's source photo is cropped tighter than
    Dr. Shawn's, so `object-fit:cover` scales him up more and he
-   visually "fills" the frame while Shawn has headroom. Switch David
-   to `contain` with a matching background so both doctors read at
-   comparable scale. Applies to home (small portrait frames) and
-   about (large sticky column). Targets David by image filename. */
+   visually "fills" the frame while Shawn has headroom. Targets
+   ONLY the small circular frames (home team-docs + about team-grid-docs).
+   The large bio photo on /about uses the original cover rule. */
 body .team-docs .team-photo img[src*="David"],
-body .doc-photo-wrap img[src*="David"]{
+body .team-grid-docs .team-photo-wrap img[src*="David"]{
   object-fit:contain !important;
   object-position:center center !important;
   background:#eef1f5 !important;
