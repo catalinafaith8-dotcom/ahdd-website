@@ -1385,9 +1385,9 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     var reader=new FileReader();
     reader.onload=function(ev){
       b64=ev.target.result.split(',')[1];mime=selFile.type||'image/jpeg';
-      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime})})
+      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,pagePath:window.location.pathname})})
       .then(function(r){return r.json()})
-      .then(function(data){loader.classList.remove('show');if(data.error){showErr(data.error);return;}pendingData=data;showGate(data);})
+      .then(function(data){loader.classList.remove('show');if(data.error){showErr(data.error);return;}if(data.retake_required){showErr(data.hint||data.reason||"Please upload a clearer photo showing your full smile.");return;}pendingData=data;showGate(data);})
       .catch(function(){loader.classList.remove('show');showErr('We could not complete the analysis. Please call (818) 706-6077.');});
     };
     reader.readAsDataURL(selFile);
