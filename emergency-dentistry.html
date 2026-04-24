@@ -1366,7 +1366,6 @@ function escBook(e){if(e.key==='Escape')closeBook();}
   function pick(f){
     if(!f)return;
     selFile=f;analyzeBtn.disabled=false;
-    dropTitle.textContent=f.name;
     dropzone.classList.add('has-file');
     iconUp.style.display='none';iconOk.style.display='block';
     var r=new FileReader();r.onload=function(ev){previewImg.src=ev.target.result;preview.classList.add('show');};r.readAsDataURL(f);
