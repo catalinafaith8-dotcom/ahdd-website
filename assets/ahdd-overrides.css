@@ -858,3 +858,105 @@ body .city-hero h1 em{
     max-width:calc(100vw - 40px) !important;
   }
 }
+
+/* ──────────────────────────────────────────────────────────
+   13 — 2026-04-24 mobile polish pass
+   Four issues reported from live mobile testing:
+     a) Top nav logo was oversized on phones, making the bar feel huge
+     b) Mobile hamburger "Book Online" button rendered navy-on-navy
+        (invisible text) due to #mobile-nav a beating .mob-book on
+        specificity
+     c) "Speak With Our Team" insurance CTA was a tight pill on mobile;
+        should stretch full-width to match the "See Membership Plans"
+        card directly beneath it
+     d) Chat window opened too large on phones — only the top-right
+        corner was visible; needs a proper in-viewport layout
+   ────────────────────────────────────────────────────────── */
+
+/* a) Mobile nav logo — dramatically smaller so the bar reads slim */
+@media (max-width:768px){
+  #nav .nav-logo img{ height:48px !important; }
+}
+@media (max-width:480px){
+  #nav .nav-logo img{ height:42px !important; }
+}
+@media (max-width:380px){
+  #nav .nav-logo img{ height:38px !important; }
+}
+
+/* b) Book Online button in hamburger menu — force white text on navy.
+   Specificity fix: #mobile-nav a.mob-book (0,1,1,1) beats #mobile-nav a (0,1,0,1). */
+#mobile-nav a.mob-book{
+  background:#0F1E33 !important;
+  color:#FAFAF7 !important;
+  text-align:center !important;
+  padding:14px !important;
+  border-bottom:none !important;
+  border-radius:100px !important;
+  font-size:14px !important;
+  font-weight:500 !important;
+}
+#mobile-nav a.mob-book:hover{ background:#1A2D4A !important; }
+
+/* Also clean the "(818) 706-6077" line so the phone number doesn't
+   get a bottom underline that looks out of place above the pill button */
+#mobile-nav a.mob-phone{
+  border-bottom:none !important;
+  text-align:center !important;
+  padding:10px 0 !important;
+}
+
+/* c) Insurance banner — stack vertically on mobile and stretch the
+   CTA button full-width so it matches the membership card beneath it */
+@media (max-width:768px){
+  .ins-banner{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:14px !important;
+    padding:18px 20px !important;
+  }
+  .ins-banner p{
+    min-width:0 !important;
+    text-align:center !important;
+  }
+  .ins-banner-btn{
+    width:100% !important;
+    justify-content:center !important;
+    padding:14px 20px !important;
+    font-size:.9rem !important;
+    border-radius:12px !important;
+  }
+}
+
+/* d) Chat window — hard-clamp size and pin to viewport corners so it
+   NEVER overflows. Overrides earlier (less strict) rules at lines 725+. */
+@media (max-width:768px){
+  #chat-wrap{
+    bottom:16px !important;
+    right:16px !important;
+  }
+  #chat-win{
+    /* Positioned bottom-right, clamped to stay fully in viewport */
+    position:fixed !important;
+    bottom:84px !important;
+    right:12px !important;
+    left:12px !important;
+    top:auto !important;
+    width:auto !important;
+    max-width:none !important;
+    height:auto !important;
+    max-height:calc(100vh - 110px) !important;
+    /* Give it a sensible explicit height so it doesn't balloon */
+    height:min(520px, calc(100vh - 110px)) !important;
+    border-radius:16px !important;
+    box-shadow:0 16px 48px rgba(26,31,36,.22) !important;
+  }
+}
+@media (max-width:480px){
+  #chat-win{
+    bottom:78px !important;
+    left:10px !important;
+    right:10px !important;
+    height:min(480px, calc(100vh - 100px)) !important;
+  }
+}
