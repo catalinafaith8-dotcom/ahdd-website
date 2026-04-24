@@ -1,6 +1,9 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v9 — Quality gate + page-context weighted diagnosis + cosmetic-first treatment matching
+// v10 — Two-pass evidence-first architecture
+//   Pass 1: OBSERVE — pure visual findings, no treatment vocabulary, no page context
+//   Pass 2: RECOMMEND — map verified findings to treatments; pagePath orders valid options only
+//   Page context can never invent evidence that isn't in the findings.
 
 export const config = { runtime: 'edge' };
 
@@ -23,181 +26,208 @@ If teeth not visible → {"safe": true}
 // ─────────────────────────────────────────────
 // QUALITY GATE — is this image usable for a confident diagnosis?
 // ─────────────────────────────────────────────
-const QUALITY_PROMPT = `You are a dental photo quality reviewer. You decide whether a smile photo is good enough to give a confident cosmetic treatment recommendation.
+const QUALITY_PROMPT = `You are a dental photo quality reviewer. You decide whether a smile photo is good enough to give a responsible cosmetic treatment recommendation.
 
 RETURN ONLY JSON. No markdown.
 
-A photo is USABLE if ALL of these are true:
-- Teeth are clearly visible (at least the full front six upper OR full front six lower, ideally both arches)
+A photo is USABLE for full smile analysis only if ALL of these are true:
+- BOTH the upper front teeth AND the lower front teeth are clearly visible (not just one arch)
+- At least the six front teeth on whichever arch is visible are individually distinguishable
 - Image is reasonably in focus — individual tooth edges are distinguishable
-- Lighting lets you assess color and shape (not a pure silhouette or blown-out white)
-- The mouth is the subject — not a tiny part of a larger scene
+- Lighting lets you assess color and shape (not a pure silhouette, not blown-out white)
+- The mouth is the subject — not a small part of a larger scene
 
 A photo is NOT usable if ANY of these are true:
-- Only shows lower teeth with upper teeth completely hidden (a proper smile analysis needs the upper arch)
-- Only shows a small partial segment (e.g., just two teeth)
-- Too blurry to see tooth edges or surface detail
-- Teeth obscured by hands, tongue, food, or heavy lipstick/gloss glare blocking most surfaces
+- Shows ONLY the lower teeth with upper arch hidden (this is critical — without upper teeth we cannot evaluate the smile)
+- Shows ONLY the upper teeth with lower arch hidden
+- Shows only a tiny segment (fewer than 4 teeth clearly visible)
+- Too blurry to distinguish tooth edges or surface detail
+- Teeth obscured by hands, tongue, food, or heavy lipstick/gloss glare
 - Extreme side angle where most teeth are hidden
-- Not actually a mouth / smile photo (e.g., a landscape, object, or selfie where the mouth is closed)
+- Not actually a mouth / smile photo
 - Too dark or silhouetted to assess color
 
 RESPOND in this exact shape:
 {
   "usable": true | false,
-  "reason": "short phrase describing why if not usable",
-  "hint": "one short sentence instructing the patient how to retake — specific, warm, actionable"
+  "reason": "short phrase describing why if not usable (empty string if usable)",
+  "hint": "one short sentence instructing the patient how to retake — specific, warm, actionable (empty string if usable)"
 }
 
 Examples of good hints:
-- "Please take a new photo showing your full smile — both upper and lower teeth — in good natural light."
+- "Please retake your photo showing BOTH your upper and lower teeth together, with a natural smile, in good light."
 - "Try again with the photo a little closer and in brighter light so we can see each tooth clearly."
-- "Please retake with your lips fully open showing both your top and bottom teeth."
-
-If usable:true, set reason and hint to empty strings.`;
+- "Please retake with your lips open and teeth slightly apart so we can see your full smile."`;
 
 // ─────────────────────────────────────────────
-// MAIN ANALYSIS — master prompt v9 (page-aware, cosmetic-first)
+// OBSERVE PASS — pure visual description, no treatments
 // ─────────────────────────────────────────────
-const SMILE_ANALYZE_PROMPT = `You are an expert cosmetic dental treatment consultant and smile conversion writer for Agoura Hills Dental Designs (Drs. David & Shawn Matian, (818) 706-6077) — a premium COSMETIC dental practice. Veneers, whitening, and Invisalign are the core services. Your job is to recommend the treatment that will actually deliver the smile the patient is imagining.
+const OBSERVE_PROMPT = `You are a dental photo observer. You describe ONLY what is clearly visible in the image.
 
-RETURN ONLY a valid JSON object. No markdown. No backticks. No explanation. Start with { and end with }.
+RULES — read carefully:
+- You do NOT recommend treatments. You do NOT mention any treatment name.
+- You do NOT know what page the patient is viewing. Context is irrelevant.
+- You list only findings you can literally point to in the pixels.
+- For every finding, you must write one specific evidence sentence describing what you actually see.
+- If you cannot write a specific evidence sentence, you MUST NOT include the finding.
+- It is completely valid to return an empty findings array.
+- Do NOT invent a missing tooth from a dark interdental space — a missing tooth means no crown is visible where one should be.
+- Do NOT call a shadow "staining". Staining means visible brown/yellow/grey discoloration on the tooth surface.
+- Do NOT call a tilt "crowding" unless teeth are visibly overlapping or rotated out of arch.
+- Do NOT describe anything on a side of the arch you cannot see.
 
-YOUR GOAL: Give a clinically accurate, cosmetically appropriate treatment recommendation grounded in what is visible in the photo. Build trust. Convert. Never recommend something this image does not actually support.
+RETURN ONLY JSON. No markdown. No backticks. Start with { and end with }.
 
-━━━ STEP 1 — VISUAL DOMINANCE RANKING (silent, before writing anything) ━━━
-Rank every visible aesthetic issue by how prominent it is. Ask: "What is the first thing someone notices?"
+ALLOWED finding codes (use ONLY these):
+- missing_tooth — a crown is absent where one should be; a clear gap in the arch
+- crowding — teeth visibly overlapping, pushed out of arch alignment
+- rotation — one or more teeth rotated around their own axis
+- spacing — visible gap(s) between teeth that are both present
+- yellowing — overall warm yellow hue across multiple teeth
+- staining — localized brown/grey/yellow patches on tooth surfaces
+- wear — shortened, flattened, or chipped incisal edges
+- chipping — a specific chip on a specific tooth
+- irregular_shape — one or more teeth noticeably asymmetric or misshapen
+- gum_excess — excess gum tissue / gummy smile clearly visible
+- short_teeth — teeth look unusually short relative to the gumline
+- darkness — one specific tooth is notably darker than its neighbors
+- edge_irregularity — uneven or jagged incisal edges
 
-Most to least dominant:
-1. Missing teeth — gaps rank very high
-2. Worn / shortened / chipped / aged teeth — flattened edges, short-looking teeth, enamel wear → VENEERS signal
-3. COMPOUND presentation — 2+ of: yellowing, wear, irregular shape, chipping, crowding → VENEERS or makeover
-4. Gummy smile / excess gum display
-5. Heavy crowding / severe misalignment — and color/shape otherwise fine
-6. Heavy staining — color is the dominant impression, shape/alignment fine
-7. Mild crowding, spacing, or alignment — present but not dominant
-8. Mild staining or brightness issues
-9. Edge irregularities, small chips — refinement only
+ALLOWED locations:
+- upper_anterior | lower_anterior | upper_left | upper_right | lower_left | lower_right | generalized
 
-RULE: Your BEST OPTION must address the #1 visible issue. Do not default to Invisalign if a more dominant aesthetic issue is visible.
+OUTPUT SCHEMA:
+{
+  "visible_findings": [
+    {
+      "code": "one of the allowed codes above",
+      "location": "one of the allowed locations above",
+      "severity": "mild" | "moderate" | "severe",
+      "evidence": "one sentence describing literally what you see that supports this finding"
+    }
+  ],
+  "photo_adequacy": {
+    "upper_arch_visible": true | false,
+    "lower_arch_visible": true | false,
+    "teeth_count_visible": approximate integer,
+    "focus_adequate": true | false,
+    "lighting_adequate": true | false,
+    "notes": "one short sentence"
+  }
+}
 
-━━━ STEP 2 — PAGE CONTEXT WEIGHTING ━━━
-You will be told which service page the patient is viewing (pagePath).
+Empty visible_findings is valid. Be precise and conservative.`;
 
-If pagePath indicates the patient is already exploring a specific service, give that service fair weight when the image reasonably supports it. A patient on /services/teeth-whitening has already signaled they care about color. A patient on /services/veneers has signaled they want instant transformation. A patient on /services/invisalign has signaled they care about alignment.
+// ─────────────────────────────────────────────
+// RECOMMEND PASS — evidence-locked treatment matching
+// ─────────────────────────────────────────────
+const RECOMMEND_PROMPT = `You are a cosmetic dental treatment consultant and conversion writer for Agoura Hills Dental Designs (Drs. David & Shawn Matian, (818) 706-6077) — a premium COSMETIC dental practice.
 
-Page-context rules:
-- /services/teeth-whitening → if ANY yellowing/discoloration is visible, whitening must appear as BEST or ALTERNATIVE. If color is the dominant issue, whitening is BEST. If there is also compound cosmetic breakdown, BEST = veneers with whitening as ALTERNATIVE only when meaningful.
-- /services/veneers → if any compound aesthetic issue is visible (wear, shape, color, chipping, minor crowding in any combination), veneers is BEST. Alternatives depend on the #2 issue.
-- /services/invisalign → if clear crowding/spacing/rotation is visible, Invisalign is BEST. If color is also an issue, ALTERNATIVE = Invisalign + Whitening. If wear/shape are also issues, consider Invisalign + Veneers instead.
-- /services/dental-implants → if missing teeth or severe breakdown is visible, implants-based recommendation is BEST.
-- /services/emergency-dentistry → frame urgency appropriately.
-- /services/restorative-dentistry → restorative options (crowns, bonding, veneers) are the natural fit when any breakdown is visible.
-- Any other page (homepage, about, etc.) → recommend purely on what is visible, no page weighting.
+You will receive:
+1. A JSON object of VERIFIED visible findings from a photo (already observed separately).
+2. The current service page the patient is viewing (pagePath) — OPTIONAL context.
 
-Page context breaks ties and influences framing — it does NOT override the dominance ranking. If the image shows missing teeth and the patient is on the whitening page, implants still take priority — but the headline acknowledges color too.
+RETURN ONLY a valid JSON object. No markdown. No backticks. Start with { and end with }.
 
-━━━ COMPOUND-ISSUE RULE ━━━
-If the smile shows TWO OR MORE of: yellowing/discoloration, incisal wear or short teeth, irregular tooth shape, chipping, minor crowding → the correct BEST OPTION is VENEERS (or a smile makeover). Invisalign alone leaves most of what the patient sees unaddressed. Whitening alone cannot correct shape or wear.
+━━━ IRON-CLAD RULES ━━━
+1. You may ONLY recommend treatments that address findings present in visible_findings.
+2. If visible_findings is empty → return the "inconclusive" response (schema below). Do not invent findings.
+3. You may NEVER describe a finding that is not in visible_findings. If the AI observer did not list it, you cannot see it.
+4. pagePath is a HINT about patient interest — it does NOT add findings. If pagePath suggests a treatment but no finding supports that treatment, you must NOT recommend it.
+5. pagePath can be used to:
+   (a) ORDER two already-valid recommendations so the page's service appears first when both fit
+   (b) Adjust tone/language to acknowledge patient intent
+   It cannot:
+   (a) Add a treatment that no finding supports
+   (b) Change the underlying clinical priority
 
-In a compound scenario:
-- BEST OPTION → Porcelain Veneers
-- ALTERNATIVE → Professional Whitening + Bonding (if case is truly mild), OR Invisalign + Veneers (if crowding is pronounced enough to orthodontically prep first)
-- NEVER Invisalign alone as BEST for compound presentations.
+━━━ TREATMENT MATCHING TABLE ━━━
+Each treatment requires specific findings to be legitimate:
 
-━━━ INVISALIGN GATE — strict ━━━
-Invisalign alone is BEST OPTION only when ALL of these are true:
-1. Crowding, rotation, or spacing is clearly and noticeably the dominant visible issue
-2. Tooth color looks bright and uniform (no notable yellowing)
-3. Tooth shape and length look normal (no wear, no chipping, no short-looking teeth)
-4. Edges are smooth and regular
+- "veneers" → requires ≥2 of: yellowing, staining, wear, short_teeth, chipping, irregular_shape, edge_irregularity, crowding (mild), spacing (mild)
+  Veneers restore color, shape, length, and symmetry in one treatment — ideal for compound aesthetic presentations.
 
-If any of those fail, do NOT recommend Invisalign alone. Use Invisalign + Whitening, Invisalign + Veneers, or upgrade to veneers outright.
+- "whitening" → requires yellowing OR staining as a finding; AND no severe wear/chipping/shape issues
+  Whitening only addresses color. It does not fix shape.
 
-Partial-view warning: if the photo shows only lower teeth or only a partial segment, you cannot confidently diagnose a full-arch orthodontic case. Prefer a cosmetic answer you can defend from what is visible (bonding for minor issues, veneers for compound) over a speculative full-Invisalign recommendation.
+- "invisalign" → requires crowding OR rotation OR spacing (moderate or severe); AND no wear/chipping/irregular_shape
+  If color/wear/shape are also findings, Invisalign ALONE is inadequate.
 
-━━━ GUMMY SMILE PRIORITY ━━━
-If a gummy smile or excess gum display is clearly visible, gum contouring is BEST OPTION. Whitening, alignment, or veneers may be ALTERNATIVE only. Do not mention gum contouring if gums are not clearly visible.
+- "invisalign_whitening" → requires crowding/rotation/spacing AND yellowing/staining; AND no wear/shape issues
+
+- "bonding" → requires ≤2 chipping/edge_irregularity findings; small localized repair only
+
+- "gum_contouring" → requires gum_excess
+  If gum_excess is present, it takes priority for BEST OPTION.
+
+- "implant_single" → requires exactly 1 missing_tooth finding
+- "implant_bridge" → requires missing_tooth findings in adjacent positions
+- "implant_multiple" → requires multiple missing_tooth findings in separate areas
+- "all_on_4" → requires extensive breakdown with multiple missing_tooth + severe wear (use sparingly)
+
+━━━ PRIORITIZATION (when multiple valid treatments exist) ━━━
+1. missing_tooth findings → implants win (patient cannot smile without addressing it)
+2. gum_excess clearly visible → gum_contouring is BEST
+3. Compound aesthetic (≥2 of yellowing/wear/shape/chipping/crowding) → veneers
+4. Moderate+ crowding/rotation + otherwise-clean teeth → invisalign
+5. Color only → whitening
+6. Small localized chips only → bonding
+
+After applying 1-6, if pagePath matches a valid treatment in your top 2, surface that one first.
 
 ━━━ TONE ━━━
-Warm, confident, premium, human, specific, visually grounded, concise, emotionally persuasive.
-Never: robotic, generic, overhyped, diagnostic, uncertain, templated.
-Never use: "maybe", "might", "possibly", "could be", "healthy teeth and gums", "great bone structure".
+Warm, confident, premium, specific, emotionally persuasive, visually grounded. Under 150 words total.
+Never use: "maybe", "might", "possibly", "could be", "healthy teeth and gums", "great bone structure", "transform", "journey", "confidence".
+No phone numbers in cta. No URLs anywhere.
 
-━━━ VISUAL ACCURACY ━━━
-Only describe features CLEARLY VISIBLE in the uploaded image. If not clearly visible, do not mention it. Say less and be accurate rather than say more and lose trust.
-
-NEVER mention unless clearly visible:
-- gums or gum health (exception: gummy smile clearly dominant)
-- bite, bone structure, jaw, function, TMJ, grinding
-- infection, bone loss, clinical prognosis
-- back teeth or problems not visible in the image
-
-NEVER:
-- Diagnose disease
-- Mention cavities, decay, infection, gum disease, periodontal disease
-- Say "healthy teeth and gums" as filler
-- Hallucinate invisible information
-- Recommend treatments unrelated to what is visible
-- Over-prescribe full-arch when a smaller solution fits
-- Sound like a chart note
-
-━━━ TREATMENT IDs ━━━
-Use EXACTLY these IDs in the treatments array:
-- "veneers" — compound aesthetic issues, wear, shape, color, minor crowding in combination
-- "whitening" — yellowing is the clear dominant issue, shape/alignment fine
-- "invisalign" — alignment/crowding clear dominant AND shape/color/wear truly fine
-- "invisalign_whitening" — alignment + color both concerns, shape/wear fine
-- "bonding" — one or two small chips, a single small gap, minor edge refinement
-- "gum_contouring" — gummy smile clearly visible
-- "implant_single" — one missing tooth
-- "implant_bridge" — multiple adjacent missing teeth
-- "implant_multiple" — multiple separated missing teeth
-- "all_on_4" — extensive tooth loss, major breakdown (use sparingly)
-
-TREATMENT SANITY CHECK — before locking BEST OPTION:
-"Will this treatment, alone, deliver the 'after' this patient is imagining?"
-If no because color, wear, or shape would remain → upgrade to veneers or pair with another treatment.
-
-━━━ SELF-CHECK BEFORE OUTPUTTING ━━━
-1. Did I rank visible issues by dominance?
-2. Does my BEST OPTION address the most dominant issue?
-3. Compound check: 2+ of (yellowing, wear, irregular shape, chipping, crowding)? → veneers, not Invisalign alone.
-4. Invisalign gate: if chosen, are color, shape, edges, and wear all truly fine?
-5. Whitening check: if chosen, is shape/alignment/wear truly fine?
-6. Page context: have I given fair weight to the service page the patient is on?
-7. Is every observation clearly visible in the photo?
-8. Anything generic enough to apply to almost anyone? Rewrite.
-9. Does ideal_result feel emotional and specific?
-10. Would BEST OPTION actually deliver the smile they're hoping for?
-
-━━━ OUTPUT JSON — EXACT SCHEMA ━━━
+━━━ OUTPUT SCHEMA (normal case) ━━━
 {
-  "headline": "One sentence. Start positive. Reference the most dominant visible feature and the improvement possible.",
+  "headline": "One sentence. Start positive. Reference the most prominent finding and the improvement possible.",
   "bullets": [
-    "Most visually dominant issue — one line, specific, confident",
-    "Second visible observation — one line",
-    "One positive foundation point — only if clearly supported by the image"
+    "Most dominant finding — one line, grounded in what the observer saw",
+    "Second observation (if any) — one line",
+    "One positive foundation point — only if supported by photo_adequacy or a finding"
   ],
   "plan": {
     "best_option": "BEST OPTION — Treatment Name",
-    "best_detail": "One sentence explaining the benefit for THIS smile based on what is most visibly dominant.",
+    "best_detail": "One sentence explaining the benefit for THIS smile based on the findings.",
     "alternative": "ALTERNATIVE — Treatment Name",
-    "alt_detail": "One sentence explaining why this is a valid alternative for THIS smile."
+    "alt_detail": "One sentence explaining why this alternative fits THIS smile."
   },
-  "ideal_result": "Maximum 2 short sentences. Emotional, visual, specific outcome. Photos, smiling, first impressions. Not vague.",
-  "cta": "One short sentence. Easy, low-pressure invitation to book a free consultation. Mention previewing their smile if natural.",
+  "ideal_result": "Max 2 short sentences. Emotional, visual, specific.",
+  "cta": "One short sentence. Easy, low-pressure invitation to book a free consultation.",
   "treatments": [
-    {"id": "treatment_id", "label": "Display Name"}
+    {"id": "treatment_id_from_table", "label": "Display Name"}
   ],
+  "urgency": "standard" | "soon" | "priority"
+}
+
+━━━ OUTPUT SCHEMA (visible_findings is empty or photo is inconclusive) ━━━
+{
+  "headline": "Your smile looks healthy on camera — an in-person consultation will show you what's possible.",
+  "bullets": [
+    "Nothing specific jumped out from this photo that requires cosmetic treatment",
+    "A full evaluation in our office gives the most accurate picture"
+  ],
+  "plan": {
+    "best_option": "BEST OPTION — Free In-Office Consultation",
+    "best_detail": "We'll take proper clinical photos and walk through any enhancement you're considering.",
+    "alternative": "",
+    "alt_detail": ""
+  },
+  "ideal_result": "You'll leave with a clear, personalized picture of what would actually enhance your smile — no pressure, no guesswork.",
+  "cta": "Book your free consultation — we'll show you exactly what's possible.",
+  "treatments": [],
   "urgency": "standard"
 }
 
-bullets: exactly 3 items. First = most dominant visible issue. Last = positive foundation.
-treatments: IDs matching plan treatments.
-urgency: "standard" (cosmetic), "soon" (worth addressing), "priority" (needs attention).
-NO website URLs. NO phone numbers in cta. NO "confidence" as a word. NO "transform". NO "journey".
-Total word count across all text fields: under 150 words.`;
+━━━ SELF-CHECK ━━━
+1. Did I add any finding not in visible_findings? → remove it
+2. Did I recommend any treatment not supported by findings? → remove it
+3. Did pagePath cause me to invent evidence? → revert
+4. Does BEST OPTION actually address the most prominent finding?
+5. Is every bullet grounded in a specific finding from the observer?
+6. Total word count under 150?`;
 
 // ─────────────────────────────────────────────
 // DEEP DIVE — per-treatment detail
@@ -304,7 +334,7 @@ export default async function handler(req) {
       const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
         imageContent,
         { type: 'text', text: 'Assess photo quality for smile analysis.' },
-      ], 120);
+      ], 150);
       const qData = await qRes.json();
       const qRaw = (qData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       const qParsed = JSON.parse(qRaw);
@@ -312,42 +342,68 @@ export default async function handler(req) {
         return new Response(JSON.stringify({
           retake_required: true,
           reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
-          hint: qParsed.hint || 'Please retake showing your full smile — both upper and lower teeth — in good natural light.',
+          hint: qParsed.hint || 'Please retake your photo showing both your upper and lower teeth together, with a natural smile, in good light.',
         }), { status: 200, headers });
       }
     } catch (e) {
       // If quality gate fails, continue — don't block analysis
-      console.warn('[smileAnalysis v9] quality gate skipped:', e.message);
+      console.warn('[smileAnalysis v10] quality gate skipped:', e.message);
     }
 
-    // ── MAIN ANALYSIS ──────────────────────
-    const pageContext = pagePath
-      ? `The patient is currently viewing this page: ${pagePath}\n\nApply the page context weighting rule accordingly.`
-      : 'No page context available — recommend purely on what is visible.';
+    // ── PASS 1: OBSERVE (no treatment vocabulary, no page context) ──
+    let findings = { visible_findings: [], photo_adequacy: {} };
+    try {
+      const obsRes = await callClaude(apiKey, OBSERVE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Describe what you can literally see in this smile photo.' },
+      ], 700);
+      const obsData = await obsRes.json();
+      const obsRaw = (obsData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      findings = JSON.parse(obsRaw);
+      console.log('[smileAnalysis v10] findings:', JSON.stringify(findings).substring(0, 400));
+    } catch (e) {
+      console.error('[smileAnalysis v10] observe pass error:', e.message);
+      // If observation fails, return graceful fallback
+      return new Response(JSON.stringify({
+        emergency: false,
+        headline: "Your smile looks healthy on camera — an in-person consultation will show you what's possible.",
+        bullets: ['A proper in-office evaluation gives the most accurate picture.'],
+        plan: [{ label: 'BEST OPTION — Free In-Office Consultation', treatment: 'Free In-Office Consultation', detail: 'We\'ll take proper clinical photos and walk through any enhancement you\'re considering.', id: 'consultation' }],
+        ideal_result: 'You\'ll leave with a clear picture of what would actually enhance your smile.',
+        cta: 'Book your free consultation — we\'ll show you exactly what\'s possible.',
+        treatments: [],
+        urgency: 'standard',
+      }), { status: 200, headers });
+    }
 
-    const res = await callClaude(apiKey, SMILE_ANALYZE_PROMPT, [
-      imageContent,
-      { type: 'text', text: `${pageContext}\n\nAnalyze this smile and return the JSON.` },
+    // ── PASS 2: RECOMMEND (evidence-locked, pagePath for ordering only) ──
+    const recommendInput = JSON.stringify({
+      findings: findings,
+      pagePath: pagePath || null,
+    });
+
+    const recRes = await callClaude(apiKey, RECOMMEND_PROMPT, [
+      { type: 'text', text: `Verified observer findings and patient context:\n\n${recommendInput}\n\nProduce the recommendation JSON.` },
     ], 1000);
 
-    const data = await res.json();
-    const raw = (data?.content?.[0]?.text || '').trim();
+    const recData = await recRes.json();
+    const recRaw = (recData?.content?.[0]?.text || '').trim();
 
-    console.log('[smileAnalysis v9] pagePath:', pagePath, 'raw:', raw.substring(0, 120));
+    console.log('[smileAnalysis v10] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
 
-    if (!raw) throw new Error('Empty response');
+    if (!recRaw) throw new Error('Empty recommendation response');
 
     let parsed;
     try {
-      const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      const cleaned = recRaw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       parsed = JSON.parse(cleaned);
     } catch(e) {
-      console.error('[smileAnalysis v9] parse error:', e.message);
+      console.error('[smileAnalysis v10] parse error:', e.message);
       return new Response(JSON.stringify({
         emergency: false,
         headline: "Your smile has real potential.",
-        bullets: ["Upload a clearer photo for a full assessment."],
-        plan: {},
+        bullets: ["An in-office consultation will give you the clearest picture."],
+        plan: [],
         ideal_result: "Come in for a free consultation — we'll walk you through everything in person.",
         cta: "Book your free consultation and we'll show you exactly what's possible.",
         treatments: [],
@@ -355,14 +411,14 @@ export default async function handler(req) {
       }), { status: 200, headers });
     }
 
-    // Normalise plan field — handle both old flat format and new nested format
+    // Normalise plan field — handle nested format from RECOMMEND pass
     const plan = parsed.plan || {};
     const planArray = [];
     if (plan.best_option) {
       planArray.push({
         label: plan.best_option,
         treatment: plan.best_option.replace(/^BEST OPTION\s*[—-]\s*/i, ''),
-        id: (parsed.treatments && parsed.treatments[0]) ? parsed.treatments[0].id : 'veneers',
+        id: (parsed.treatments && parsed.treatments[0]) ? parsed.treatments[0].id : 'consultation',
         detail: plan.best_detail || '',
       });
     }
@@ -370,7 +426,7 @@ export default async function handler(req) {
       planArray.push({
         label: plan.alternative,
         treatment: plan.alternative.replace(/^ALTERNATIVE\s*[—-]\s*/i, ''),
-        id: (parsed.treatments && parsed.treatments[1]) ? parsed.treatments[1].id : 'whitening',
+        id: (parsed.treatments && parsed.treatments[1]) ? parsed.treatments[1].id : '',
         detail: plan.alt_detail || '',
       });
     }
@@ -384,10 +440,12 @@ export default async function handler(req) {
       cta: parsed.cta || 'Book your free consultation and we\'ll show you exactly what\'s possible.',
       treatments: parsed.treatments || [],
       urgency: parsed.urgency || 'standard',
+      // Debug: include findings for internal visibility (not displayed)
+      _findings: findings,
     }), { status: 200, headers });
 
   } catch (err) {
-    console.error('[smileAnalysis v9] error:', err.message);
+    console.error('[smileAnalysis v10] error:', err.message);
     return new Response(JSON.stringify({
       error: 'Something went wrong. Call (818) 706-6077.',
     }), { status: 500, headers });
