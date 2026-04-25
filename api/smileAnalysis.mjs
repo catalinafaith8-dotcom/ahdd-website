@@ -1,8 +1,12 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v10 — Two-pass evidence-first architecture
-//   Pass 1: OBSERVE — pure visual findings, no treatment vocabulary, no page context
-//   Pass 2: RECOMMEND — map verified findings to treatments; pagePath orders valid options only
+// v11 — Three-pass: HEALTH triage + evidence-first cosmetic
+//   Pass 0: TRIAGE — frank emergency screen (trauma, swelling, bleeding)
+//   Pass 0b: HEALTH — pathology screen (perio, decay, recession) [NEW v11]
+//             routes pathology cases to urgent-care messaging instead
+//             of cosmetic "soon" badge — fixes mistriage of perio disease
+//   Pass 1: OBSERVE — pure visual findings, no treatment vocabulary
+//   Pass 2: RECOMMEND — map verified findings to treatments
 //   Page context can never invent evidence that isn't in the findings.
 
 export const config = { runtime: 'edge' };
@@ -22,6 +26,56 @@ If unsure → {"safe": true}
 If teeth not visible → {"safe": true}
 
 {"safe": true} or {"safe": false}`;
+
+// ─────────────────────────────────────────────
+// HEALTH TRIAGE — pathology screen [v11]
+// Catches periodontal disease, recession, decay, and other
+// dental health concerns that are NOT cosmetic. Without this
+// pass, pathology cases were routed through the cosmetic
+// OBSERVE/RECOMMEND pipeline and rendered as mild "spacing"
+// with a misleading "soon" urgency badge.
+// ─────────────────────────────────────────────
+const HEALTH_TRIAGE_PROMPT = `You are a dental health pathology screener. You assess whether a smile photo shows signs of disease that need professional evaluation BEFORE any cosmetic conversation.
+
+Respond ONLY with JSON. No markdown. No backticks.
+
+Flag pathology=true if you can clearly see ANY of these:
+- Gingival recession: gum line has receded, exposing root surfaces or making teeth look unusually elongated
+- Generalized spacing in adult dentition that suggests pathologic tooth migration (not orthodontic baseline gaps in a young patient)
+- "Black triangles" between teeth indicating papilla loss / interproximal bone loss
+- Visible plaque or calculus accumulation at the gumline
+- Gum redness, swelling, or visible inflammation indicating gingivitis or periodontitis
+- Visible decay (dark cavitation, brown/black holes, or shadow indicating caries on tooth surface)
+- A single tooth notably darker than its neighbors (suggests non-vital tooth needing endodontic evaluation)
+- A tooth visibly displaced or out of arch position in a way that suggests pathology (not just orthodontic crowding)
+
+If pathology IS clearly visible, return:
+{
+  "pathology": true,
+  "category": "periodontal" | "decay" | "endodontic" | "mixed",
+  "severity": "moderate" | "advanced",
+  "primary_concern": "one short factual sentence describing what you see"
+}
+
+If no pathology visible (purely cosmetic concerns like color, alignment, shape only):
+{ "pathology": false }
+
+Be honest and clinically conservative. A patient with periodontal disease deserves to be told their gums need evaluation — not handed a veneers recommendation. When uncertain between mild/moderate, pick moderate. When in doubt about whether it's pathology vs cosmetic, lean pathology.`;
+
+// ─────────────────────────────────────────────
+// PATHOLOGY MESSAGE — warm, direct, non-alarming [v11]
+// ─────────────────────────────────────────────
+const PATHOLOGY_PROMPT_BUILDER = (flag) => `You are a caring dentist at Agoura Hills Dental Designs. The patient's photo shows ${flag.category} concerns at ${flag.severity} severity. Specifically: ${flag.primary_concern}
+
+Write 3 short paragraphs. Plain text only — no asterisks, no bold, no markdown, no headers.
+
+Paragraph 1: Describe what you see in plain everyday language. Direct but warm. Do not say "you have disease." Describe what is visible (e.g., "your gums have pulled back from your teeth" rather than "you have periodontal disease").
+
+Paragraph 2: Why this is worth getting evaluated soon — gently explain that what is visible can progress without care. Frame around protecting the smile and teeth that are there. Calm, never alarming.
+
+Paragraph 3: The path forward — a comprehensive evaluation, not a sales pitch for a cosmetic treatment. End with exactly: Call (818) 706-6077 — same-week appointments available, your consultation is free.
+
+Under 110 words total. No cosmetic talk. No mention of veneers, whitening, Invisalign, or aesthetics. This is a health conversation.`;
 
 // ─────────────────────────────────────────────
 // QUALITY GATE — is this image usable for a confident diagnosis?
@@ -329,6 +383,43 @@ export default async function handler(req) {
       }), { status: 200, headers });
     }
 
+    // ── HEALTH TRIAGE — pathology screen [v11] ────
+    // Catches periodontal disease, recession, decay before
+    // routing to cosmetic pipeline. Pathology cases get the
+    // urgent-care UI with health-focused messaging instead
+    // of a misleading cosmetic "soon" badge.
+    let healthFlag = null;
+    try {
+      const hRes = await callClaude(apiKey, HEALTH_TRIAGE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Screen for visible dental pathology.' },
+      ], 200);
+      const hData = await hRes.json();
+      const hRaw = (hData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      healthFlag = JSON.parse(hRaw);
+      console.log('[smileAnalysis v11] health triage:', JSON.stringify(healthFlag));
+    } catch (e) {
+      console.warn('[smileAnalysis v11] health triage skipped:', e.message);
+      healthFlag = null;
+    }
+
+    if (healthFlag && healthFlag.pathology === true) {
+      const res = await callClaude(apiKey, PATHOLOGY_PROMPT_BUILDER(healthFlag), [
+        imageContent,
+        { type: 'text', text: 'Write the patient message.' },
+      ], 400);
+      const data = await res.json();
+      const text = (data?.content?.[0]?.text || '').trim()
+        || 'Your photo shows something we should look at in person. Call (818) 706-6077 — same-week appointments available, your consultation is free.';
+      return new Response(JSON.stringify({
+        emergency: true,
+        urgency: 'priority',
+        analysis: text,
+        treatments: [],
+        _pathology: healthFlag,
+      }), { status: 200, headers });
+    }
+
     // ── QUALITY GATE ───────────────────────
     try {
       const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
@@ -347,7 +438,7 @@ export default async function handler(req) {
       }
     } catch (e) {
       // If quality gate fails, continue — don't block analysis
-      console.warn('[smileAnalysis v10] quality gate skipped:', e.message);
+      console.warn('[smileAnalysis v11] quality gate skipped:', e.message);
     }
 
     // ── PASS 1: OBSERVE (no treatment vocabulary, no page context) ──
@@ -360,9 +451,9 @@ export default async function handler(req) {
       const obsData = await obsRes.json();
       const obsRaw = (obsData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       findings = JSON.parse(obsRaw);
-      console.log('[smileAnalysis v10] findings:', JSON.stringify(findings).substring(0, 400));
+      console.log('[smileAnalysis v11] findings:', JSON.stringify(findings).substring(0, 400));
     } catch (e) {
-      console.error('[smileAnalysis v10] observe pass error:', e.message);
+      console.error('[smileAnalysis v11] observe pass error:', e.message);
       // If observation fails, return graceful fallback
       return new Response(JSON.stringify({
         emergency: false,
@@ -389,7 +480,7 @@ export default async function handler(req) {
     const recData = await recRes.json();
     const recRaw = (recData?.content?.[0]?.text || '').trim();
 
-    console.log('[smileAnalysis v10] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
+    console.log('[smileAnalysis v11] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
 
     if (!recRaw) throw new Error('Empty recommendation response');
 
@@ -398,7 +489,7 @@ export default async function handler(req) {
       const cleaned = recRaw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       parsed = JSON.parse(cleaned);
     } catch(e) {
-      console.error('[smileAnalysis v10] parse error:', e.message);
+      console.error('[smileAnalysis v11] parse error:', e.message);
       return new Response(JSON.stringify({
         emergency: false,
         headline: "Your smile has real potential.",
@@ -445,7 +536,7 @@ export default async function handler(req) {
     }), { status: 200, headers });
 
   } catch (err) {
-    console.error('[smileAnalysis v10] error:', err.message);
+    console.error('[smileAnalysis v11] error:', err.message);
     return new Response(JSON.stringify({
       error: 'Something went wrong. Call (818) 706-6077.',
     }), { status: 500, headers });
