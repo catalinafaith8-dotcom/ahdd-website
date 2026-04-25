@@ -998,3 +998,147 @@ body .city-hero h1 em{
   #nav .nav-logo img{ height:34px !important; }
   #mobile-nav{ top:48px !important; }
 }
+
+/* ──────────────────────────────────────────────────────────
+   14 — 2026-04-24 Insurance pill: force single-line on mobile
+   Prior `<br>{display:inline}` hack (section 8a) was unreliable
+   across iOS Safari + Chrome mobile — browsers render <br> as
+   a hard line break in flow content regardless of inline
+   display. Fix: zero out the original text content and inject
+   a single-line replacement via ::before so the pill stays one
+   row at every width down to 360px.
+   ────────────────────────────────────────────────────────── */
+@media (max-width:768px){
+  .ins-header-badge .ins-badge-text{
+    font-size:0 !important;
+    line-height:1 !important;
+  }
+  .ins-header-badge .ins-badge-text::before{
+    content:"Private & Secure · 100% Client-Side";
+    font-size:11.5px !important;
+    line-height:1.35 !important;
+    white-space:nowrap !important;
+    display:inline !important;
+    color:#475569 !important;
+    font-family:'Plus Jakarta Sans', sans-serif !important;
+  }
+  .ins-header-badge .ins-badge-text br{ display:none !important; }
+}
+@media (max-width:480px){
+  .ins-header-badge .ins-badge-text::before{ font-size:10.5px !important; }
+}
+@media (max-width:380px){
+  .ins-header-badge .ins-badge-text::before{
+    content:"Private · 100% Client-Side";
+    font-size:10px !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   15 — 2026-04-24 Chat panel mobile: dvh + safe-area + keyboard
+   Prior rule (section 8b) used `vh` which iOS Safari does not
+   recompute when the on-screen keyboard opens — bottom of the
+   panel slides off-screen and the input field appears detached
+   mid-viewport. Switch to `dvh` (dynamic viewport height) +
+   env(safe-area-inset-bottom) so the input stays pinned above
+   the keyboard. Enforces flex layout so messages scroll while
+   header, quick-pick chips, and input stay anchored.
+   ────────────────────────────────────────────────────────── */
+@media (max-width:768px){
+  #chat-win{
+    width:min(94vw, 380px) !important;
+    height:min(70dvh, 540px) !important;
+    max-height:calc(100dvh - 90px) !important;
+    bottom:calc(72px + env(safe-area-inset-bottom)) !important;
+    right:8px !important;
+    border-radius:16px !important;
+    flex-direction:column !important;
+  }
+  #chat-win.open{ display:flex !important; }
+  #chat-msgs{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  #ahdd-qp{
+    flex:0 0 auto !important;
+    max-height:84px !important;
+    overflow-y:auto !important;
+  }
+  #chat-inp-area{
+    flex:0 0 auto !important;
+    padding-bottom:max(11px, env(safe-area-inset-bottom)) !important;
+  }
+  #chat-wrap{
+    bottom:max(16px, env(safe-area-inset-bottom)) !important;
+    right:16px !important;
+  }
+}
+@media (max-width:480px){
+  #chat-win{
+    width:calc(100vw - 24px) !important;
+    height:min(72dvh, 500px) !important;
+    right:12px !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   16 — 2026-04-24 Nav final mobile sizing (authoritative)
+   Resolves cascade conflicts from prior nav iterations
+   (sections 1, 7-a, 13). Final values:
+     - Bar 56px @ ≤768px, 52px @ ≤480px, 50px @ ≤380px
+     - Logo proportional, hamburger 44×44 tap target (Apple HIG)
+     - Mobile menu drawer top edge synced to bar height
+   This block must remain LAST in the file to win the cascade.
+   ────────────────────────────────────────────────────────── */
+@media (max-width:768px){
+  #nav,
+  #nav.scrolled,
+  #nav .nav-wrap{
+    height:56px !important;
+    min-height:56px !important;
+  }
+  .hero-inner{ padding-top:56px !important; }
+  #nav .nav-wrap{ padding:0 16px !important; }
+  #nav .nav-logo img{ height:42px !important; }
+  #nav .hamburger,
+  #nav #hbg{
+    display:flex !important;
+    width:44px !important;
+    height:44px !important;
+    padding:11px !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin-right:-8px !important;
+    gap:5px !important;
+  }
+  #nav .hamburger span,
+  #nav #hbg span{
+    width:22px !important;
+    height:2px !important;
+  }
+  #mobile-nav{ top:56px !important; }
+}
+@media (max-width:480px){
+  #nav,
+  #nav.scrolled,
+  #nav .nav-wrap{
+    height:52px !important;
+    min-height:52px !important;
+  }
+  .hero-inner{ padding-top:52px !important; }
+  #nav .nav-logo img{ height:38px !important; }
+  #mobile-nav{ top:52px !important; }
+}
+@media (max-width:380px){
+  #nav,
+  #nav.scrolled,
+  #nav .nav-wrap{
+    height:50px !important;
+    min-height:50px !important;
+  }
+  .hero-inner{ padding-top:50px !important; }
+  #nav .nav-logo img{ height:34px !important; }
+  #mobile-nav{ top:50px !important; }
+}
