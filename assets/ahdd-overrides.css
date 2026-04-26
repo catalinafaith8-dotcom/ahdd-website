@@ -1406,3 +1406,163 @@ body .city-hero h1 em{
   }
   #mobile-nav{ top:56px !important; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   20 — 2026-04-26 MOBILE NAV FINAL POLISH
+   ══════════════════════════════════════════════════════════
+   Section 19 fixed the invisible logo (width-based sizing
+   succeeded) but introduced 5 specific problems visible in
+   live testing:
+     1. Logo at 200px is too dominant for the bar
+     2. Nav sits flush against iOS status bar — no breathing
+        room above hamburger/logo (notch overlap risk)
+     3. Hamburger lines render uneven thickness because
+        section 17's span rules partially fight section 19's
+        (both target spans, cascade is muddled)
+     4. Logo's natural aspect ratio + 200px width = ~80px
+        tall, overflows the 64px bar, breaking vertical
+        alignment with the 44px hamburger button
+     5. #services padding-top eats vertical space on mobile
+
+   Fix strategy:
+     - Shrink logo to 150px width / clamp height to bar height
+     - Add safe-area-inset-top padding to #nav itself
+     - Nuke ALL hamburger span rules with body-prefix
+       specificity boost, force identical sizing
+     - Trim #services top padding on mobile
+   AUTHORITATIVE — must remain LAST in this file.
+   ══════════════════════════════════════════════════════════ */
+
+/* TABLET — ≤768px */
+@media (max-width:768px){
+
+  /* Bar: respect iOS notch / Dynamic Island via safe-area inset */
+  body #nav,
+  body #nav.scrolled{
+    height:auto !important;
+    min-height:0 !important;
+    padding-top:env(safe-area-inset-top) !important;
+  }
+  body #nav .nav-wrap{
+    height:60px !important;
+    min-height:60px !important;
+    padding:0 18px !important;
+  }
+  .hero-inner{
+    padding-top:calc(60px + env(safe-area-inset-top)) !important;
+  }
+
+  /* Logo: smaller width, height clamped to bar so it stays
+     vertically centered with the hamburger button */
+  body #nav .nav-logo img{
+    width:150px !important;
+    height:auto !important;
+    max-height:48px !important;
+    max-width:50vw !important;
+    object-fit:contain !important;
+    object-position:left center !important;
+  }
+
+  /* HAMBURGER — nuclear reset.
+     The triple-nested selector forces highest specificity to
+     beat every prior rule (sections 1, 13, 16, 17, 19).
+     All three lines forced to identical pixel dimensions. */
+  html body #nav .hamburger,
+  html body #nav #hbg{
+    position:static !important;
+    top:auto !important;
+    transform:none !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:44px !important;
+    height:44px !important;
+    margin:0 !important;
+    padding:0 !important;
+    gap:5px !important;
+    flex-shrink:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    cursor:pointer !important;
+  }
+  html body #nav .hamburger > span,
+  html body #nav #hbg > span,
+  html body #nav .hamburger span:nth-child(1),
+  html body #nav .hamburger span:nth-child(2),
+  html body #nav .hamburger span:nth-child(3),
+  html body #nav #hbg span:nth-child(1),
+  html body #nav #hbg span:nth-child(2),
+  html body #nav #hbg span:nth-child(3){
+    display:block !important;
+    width:22px !important;
+    height:2px !important;
+    min-height:2px !important;
+    max-height:2px !important;
+    background:#0F1E33 !important;
+    border-radius:2px !important;
+    margin:0 !important;
+    padding:0 !important;
+    flex:0 0 2px !important;
+    flex-shrink:0 !important;
+    transition:transform .25s, opacity .25s !important;
+  }
+  /* X-state animation (preserved from section 17) */
+  html body #nav .hamburger.open span:nth-child(1),
+  html body #nav #hbg.open span:nth-child(1){
+    transform:translateY(7px) rotate(45deg) !important;
+  }
+  html body #nav .hamburger.open span:nth-child(2),
+  html body #nav #hbg.open span:nth-child(2){
+    opacity:0 !important;
+  }
+  html body #nav .hamburger.open span:nth-child(3),
+  html body #nav #hbg.open span:nth-child(3){
+    transform:translateY(-7px) rotate(-45deg) !important;
+  }
+
+  /* Mobile menu drawer below the new bar+notch height */
+  #mobile-nav{
+    top:calc(60px + env(safe-area-inset-top)) !important;
+  }
+
+  /* Trim #services and other section-top padding on mobile */
+  #services{ padding-top:32px !important; }
+}
+
+/* PHONE — ≤480px */
+@media (max-width:480px){
+  body #nav .nav-wrap{
+    height:56px !important;
+    min-height:56px !important;
+    padding:0 16px !important;
+  }
+  .hero-inner{
+    padding-top:calc(56px + env(safe-area-inset-top)) !important;
+  }
+  body #nav .nav-logo img{
+    width:140px !important;
+    max-height:44px !important;
+    max-width:55vw !important;
+  }
+  #mobile-nav{ top:calc(56px + env(safe-area-inset-top)) !important; }
+  #services{ padding-top:28px !important; }
+}
+
+/* SMALL PHONE — ≤380px */
+@media (max-width:380px){
+  body #nav .nav-wrap{
+    height:52px !important;
+    min-height:52px !important;
+    padding:0 14px !important;
+  }
+  .hero-inner{
+    padding-top:calc(52px + env(safe-area-inset-top)) !important;
+  }
+  body #nav .nav-logo img{
+    width:128px !important;
+    max-height:40px !important;
+    max-width:58vw !important;
+  }
+  #mobile-nav{ top:calc(52px + env(safe-area-inset-top)) !important; }
+}
