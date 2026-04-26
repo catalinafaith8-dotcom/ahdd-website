@@ -1252,3 +1252,157 @@ body .city-hero h1 em{
   #nav .nav-logo img{ height:62px !important; }
   #mobile-nav{ top:54px !important; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   19 — 2026-04-25 v3 MOBILE NAV CLEAN RESET
+   ══════════════════════════════════════════════════════════
+   Authoritative mobile nav rules. Resets all prior mobile
+   nav overrides (sections 1 mobile, 7-a, 13, 16, 17) with a
+   single clean flex-based layout. Specificity boosted with
+   `body` prefix to win cascade against prior rules.
+
+   Architecture (per the standard mobile-header pattern):
+     - #nav: fixed top, fixed height, padding handles edges
+     - .nav-wrap: flex / align-center / space-between
+     - .nav-logo: NO absolute positioning, NO margin/padding
+     - .nav-logo img: WIDTH-based sizing (not height) because
+       the Logo.png asset has heavy transparent padding which
+       makes height-based rules render the visible mark tiny
+     - .hamburger: flex column, justify-center, 44×44 tap
+
+   This block must remain LAST in the file.
+   ══════════════════════════════════════════════════════════ */
+
+/* TABLET — ≤768px */
+@media (max-width:768px){
+
+  /* Bar itself: clean flex, no overflow tricks */
+  body #nav,
+  body #nav.scrolled{
+    height:64px !important;
+    min-height:64px !important;
+    padding:0 !important;
+  }
+  body #nav .nav-wrap{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    height:64px !important;
+    min-height:64px !important;
+    padding:0 18px !important;
+    overflow:visible !important;
+  }
+  .hero-inner{ padding-top:64px !important; }
+
+  /* Logo wrapper: no positioning, sized by content */
+  body #nav .nav-logo{
+    position:static !important;
+    display:flex !important;
+    align-items:center !important;
+    margin:0 !important;
+    padding:0 !important;
+    flex-shrink:0 !important;
+    overflow:visible !important;
+  }
+
+  /* Logo image: WIDTH-based sizing solves the transparent-padding
+     issue. The visible wordmark fills horizontal space regardless
+     of how much empty pixel padding the PNG contains. */
+  body #nav .nav-logo img{
+    width:200px !important;
+    height:auto !important;
+    max-height:120px !important;
+    max-width:55vw !important;
+    display:block !important;
+    object-fit:contain !important;
+  }
+
+  /* Hamburger: clean flex column, perfectly centered, 44×44 */
+  body #nav .hamburger,
+  body #nav #hbg{
+    position:static !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:44px !important;
+    height:44px !important;
+    margin:0 !important;
+    padding:0 !important;
+    gap:5px !important;
+    flex-shrink:0 !important;
+    background:transparent !important;
+    border:none !important;
+    cursor:pointer !important;
+  }
+  body #nav .hamburger span,
+  body #nav #hbg span{
+    display:block !important;
+    width:24px !important;
+    height:2px !important;
+    background:#0F1E33 !important;
+    border-radius:1px !important;
+    margin:0 !important;
+    padding:0 !important;
+    flex-shrink:0 !important;
+    transition:transform .25s, opacity .25s !important;
+  }
+  /* Open-state X animation: gap 5px + line height 2px → 7px translate */
+  body #nav .hamburger.open span:nth-child(1),
+  body #nav #hbg.open span:nth-child(1){
+    transform:translateY(7px) rotate(45deg) !important;
+  }
+  body #nav .hamburger.open span:nth-child(2),
+  body #nav #hbg.open span:nth-child(2){
+    opacity:0 !important;
+  }
+  body #nav .hamburger.open span:nth-child(3),
+  body #nav #hbg.open span:nth-child(3){
+    transform:translateY(-7px) rotate(-45deg) !important;
+  }
+
+  /* Mobile menu drawer below nav */
+  #mobile-nav{ top:64px !important; }
+}
+
+/* PHONE — ≤480px */
+@media (max-width:480px){
+  body #nav,
+  body #nav.scrolled{
+    height:60px !important;
+    min-height:60px !important;
+  }
+  body #nav .nav-wrap{
+    height:60px !important;
+    min-height:60px !important;
+    padding:0 16px !important;
+  }
+  .hero-inner{ padding-top:60px !important; }
+  body #nav .nav-logo img{
+    width:180px !important;
+    max-height:110px !important;
+    max-width:60vw !important;
+  }
+  #mobile-nav{ top:60px !important; }
+}
+
+/* SMALL PHONE — ≤380px */
+@media (max-width:380px){
+  body #nav,
+  body #nav.scrolled{
+    height:56px !important;
+    min-height:56px !important;
+  }
+  body #nav .nav-wrap{
+    height:56px !important;
+    min-height:56px !important;
+    padding:0 14px !important;
+  }
+  .hero-inner{ padding-top:56px !important; }
+  body #nav .nav-logo img{
+    width:160px !important;
+    max-height:100px !important;
+    max-width:62vw !important;
+  }
+  #mobile-nav{ top:56px !important; }
+}
