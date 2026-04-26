@@ -1566,3 +1566,53 @@ body .city-hero h1 em{
   }
   #mobile-nav{ top:calc(52px + env(safe-area-inset-top)) !important; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   21 — 2026-04-26 v2 logo bigger + hero-below padding
+   Section 20 over-shrunk the logo (150/140/128px) and didn't
+   address the section directly under the hero photo. This
+   patch:
+     - Logo bumped up: 175px tablet / 165px phone / 150px small
+       max-height raised so it can fill more of the bar
+     - Trim padding ABOVE "The Last Dentist" / hero-below copy
+       on mobile (the dark-navy block, not #services)
+   AUTHORITATIVE — must remain LAST.
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width:768px){
+  body #nav .nav-logo img{
+    width:175px !important;
+    max-height:54px !important;
+    max-width:55vw !important;
+  }
+  /* Trim top padding on the navy block under the hero photo */
+  #hero-below,
+  body .hero-inner,
+  #hero .hero-inner{
+    padding-top:24px !important;
+  }
+  /* Also trim the navy section padding bottom for breathing balance */
+  #hero-below{ padding-bottom:32px !important; }
+}
+
+@media (max-width:480px){
+  body #nav .nav-logo img{
+    width:165px !important;
+    max-height:50px !important;
+    max-width:62vw !important;
+  }
+  #hero-below,
+  body .hero-inner,
+  #hero .hero-inner{
+    padding-top:20px !important;
+  }
+  #hero-below{ padding-bottom:28px !important; }
+}
+
+@media (max-width:380px){
+  body #nav .nav-logo img{
+    width:150px !important;
+    max-height:46px !important;
+    max-width:65vw !important;
+  }
+}
