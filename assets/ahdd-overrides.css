@@ -1289,3 +1289,160 @@ body .city-hero h1 em{
     padding:14px 16px 22px !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   23 — 2026-04-26 ABOUT page polish
+   ══════════════════════════════════════════════════════════
+   Three targeted fixes for the About Us page only:
+     1. Remove the soft drop-shadow on .about-hero-h1 / .about-
+        hero-sub. The base about.html stylesheet (line 199)
+        applied text-shadow assuming the title rendered over
+        the dark hero photo; since section 3's "title moves
+        below hero photo" override moved it to a white card,
+        the shadow now reads as a smudge behind the text.
+     2. Dr David's photo appears too zoomed-out vs Dr Shawn
+        because David's source image has more whitespace
+        around the subject. Apply targeted scale + adjusted
+        object-position to the David photo only.
+     3. Style the new "Connect With Us" section (#connect)
+        added before the footer on /about.
+   ══════════════════════════════════════════════════════════ */
+
+/* — 1. Kill the title shadow site-wide on hero/page headings — */
+body .page-hero h1,
+body .about-hero-h1,
+body .about-hero-caption .about-hero-h1,
+body .about-hero-caption .about-hero-sub,
+body .svc-hero-h1,
+body .policy-h1,
+body .city-hero h1{
+  text-shadow:none !important;
+}
+
+/* — 2. Dr David photo: zoom in to match Dr Shawn's framing — */
+.doc-photo-david img{
+  transform:scale(1.18) !important;
+  transform-origin:center 28% !important;
+  object-position:center 22% !important;
+}
+@media (max-width:768px){
+  .doc-photo-david img{
+    transform:scale(1.14) !important;
+    transform-origin:center 30% !important;
+  }
+}
+
+/* — 3. Connect With Us section styling — */
+.connect-section{
+  background:#FAFAF7;
+  padding:80px 0 96px;
+  border-top:1px solid rgba(15,30,51,.06);
+}
+.connect-section .connect-inner{
+  text-align:center;
+  max-width:1080px;
+  margin:0 auto;
+}
+.connect-section .connect-eyebrow{
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#C97B5C; /* copper accent */
+  margin-bottom:14px;
+}
+.connect-section .connect-h2{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;
+  font-size:clamp(30px,4vw,46px);
+  font-weight:400;
+  letter-spacing:-0.025em;
+  color:#0F1E33;
+  margin:0 0 14px;
+  line-height:1.08;
+}
+.connect-section .connect-sub{
+  font-size:16px;
+  font-weight:300;
+  line-height:1.65;
+  color:#3B4A5C;
+  max-width:600px;
+  margin:0 auto 40px;
+}
+.connect-section .connect-sub strong{
+  font-weight:500;
+  color:#0F1E33;
+}
+.connect-section .connect-grid{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:16px;
+  max-width:920px;
+  margin:0 auto;
+}
+.connect-section .connect-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:8px;
+  padding:24px 14px;
+  background:#fff;
+  border:1px solid rgba(15,30,51,.08);
+  border-radius:14px;
+  text-decoration:none;
+  color:#0F1E33;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  min-height:148px;
+}
+.connect-section .connect-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 28px rgba(15,30,51,.10);
+  border-color:rgba(201,123,92,.4);
+}
+.connect-section .connect-icon{
+  width:32px;
+  height:32px;
+  color:#0F1E33;
+  margin-bottom:4px;
+}
+.connect-section .connect-label{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  color:#0F1E33;
+}
+.connect-section .connect-handle{
+  font-size:11.5px;
+  font-weight:400;
+  color:#6B7989;
+  letter-spacing:0;
+  word-break:break-word;
+  text-align:center;
+  line-height:1.35;
+}
+
+/* Tablet: 5 → 3 columns (Yelp + Google wrap to row 2) */
+@media (max-width:900px){
+  .connect-section .connect-grid{
+    grid-template-columns:repeat(3, 1fr);
+    max-width:560px;
+  }
+}
+/* Phone: 3 → 2 columns */
+@media (max-width:520px){
+  .connect-section{ padding:56px 0 64px; }
+  .connect-section .connect-grid{
+    grid-template-columns:repeat(2, 1fr);
+    gap:12px;
+    max-width:380px;
+  }
+  .connect-section .connect-card{
+    padding:20px 12px;
+    min-height:128px;
+  }
+  .connect-section .connect-icon{ width:28px; height:28px; }
+  .connect-section .connect-label{ font-size:13px; }
+  .connect-section .connect-handle{ font-size:10.5px; }
+  .connect-section .connect-sub{ margin-bottom:28px; padding:0 16px; }
+}
