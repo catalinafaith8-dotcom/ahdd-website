@@ -1216,13 +1216,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     gateSubmit.querySelector('span').textContent='Sending...';
     var data=pendingData||{},isFull=hasFullMouth(data);
     var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
-    var payload={
-      firstName:name.split(' ')[0],lastName:name.split(' ').slice(1).join(' ')||'',
-      email:email,phone:phone,
-      tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]),
-      source:'Smile Analysis Widget',
-      customField:{smile_analysis_result:JSON.stringify(data).substring(0,500),treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString()}
-    };
+    var pathFlag=(data._pathology_flag||{});var hasPathology=pathFlag.pathology===true;var findingsCodes=((data._findings&&data._findings.visible_findings)||[]).map(function(f){return f.code}).join(',');var payload={firstName:name.split(' ')[0],lastName:name.split(' ').slice(1).join(' ')||'',email:email,phone:phone,tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]).concat(hasPathology?['pathology-review-needed']:[]).concat(hasPathology&&pathFlag.category?['pathology-'+pathFlag.category]:[]),source:'Smile Analysis Widget',customField:{smile_analysis_result:JSON.stringify(data).substring(0,500),treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString(),pathology_flag:hasPathology.toString(),pathology_category:(pathFlag.category||''),pathology_severity:(pathFlag.severity||''),pathology_concern:(pathFlag.primary_concern||''),findings_codes:findingsCodes}};
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){
       gate.style.transition='opacity .3s';gate.style.opacity='0';
       setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},300);

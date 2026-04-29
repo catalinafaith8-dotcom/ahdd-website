@@ -1,14 +1,28 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v12.1 — v11 baseline + tightened pathology + missing-tooth bypass
-//   Reverted from v12 dual-mode (which broke widget rendering).
-//   Pass 0:  TRIAGE  — frank emergency screen
-//   Pass 1:  OBSERVE — pure visual findings, no treatment vocab
-//   Pass 1b: HEALTH  — pathology screen (TIGHTENED — soft signs
-//             require 2+ co-occurring; missing-tooth bypasses
-//             the pathology gate so replacement leads convert)
-//   Pass 2:  RECOMMEND — map verified findings to treatments
-//   Same response shape as v11 — widget unchanged.
+// v13 — Patient-cosmetic-only, pathology as silent backend signal
+//   Architectural shift: phone-photo pathology triage is fundamentally
+//   unreliable for consumer-facing UX. v13 removes it from the patient
+//   experience entirely while preserving it as a private signal the
+//   practice can use during chart prep.
+//
+//   Patient experience:
+//     - Pass 0:  TRIAGE — true emergency only (trauma/broken tooth/visible
+//                blood). Still surfaces urgent UI when warranted.
+//     - Pass 1:  OBSERVE — visual findings only.
+//     - Pass 2:  RECOMMEND — cosmetic recommendations.
+//     Patient NEVER sees a "needs attention soon" pathology banner.
+//
+//   Practice signal (silent):
+//     - HEALTH_TRIAGE still runs and the result attaches to the response
+//       as `_pathology_flag` and `_findings`. GHL webhook payload from
+//       the widget captures these into customFields so Drs. Matian can
+//       flag any lead for clinical review before the visit.
+//     - Patient never sees these fields.
+//
+//   missing_tooth handling (v12.x → v13):
+//     - Still forces implant/bridge recommendation via RECOMMEND prompt.
+//     - No special bypass needed since pathology never blocks patient UX.
 
 export const config = { runtime: 'edge' };
 
@@ -418,7 +432,7 @@ export default async function handler(req) {
       }
     } catch (e) {
       // If quality gate fails, continue — don't block analysis
-      console.warn('[smileAnalysis v12] quality gate skipped:', e.message);
+      console.warn('[smileAnalysis v13] quality gate skipped:', e.message);
     }
 
     // ── PASS 1: OBSERVE (no treatment vocabulary, no page context) ──
@@ -431,9 +445,9 @@ export default async function handler(req) {
       const obsData = await obsRes.json();
       const obsRaw = (obsData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       findings = JSON.parse(obsRaw);
-      console.log('[smileAnalysis v12] findings:', JSON.stringify(findings).substring(0, 400));
+      console.log('[smileAnalysis v13] findings:', JSON.stringify(findings).substring(0, 400));
     } catch (e) {
-      console.error('[smileAnalysis v12] observe pass error:', e.message);
+      console.error('[smileAnalysis v13] observe pass error:', e.message);
       // If observation fails, return graceful fallback
       return new Response(JSON.stringify({
         emergency: false,
@@ -447,11 +461,12 @@ export default async function handler(req) {
       }), { status: 200, headers });
     }
 
-    // ── HEALTH TRIAGE — pathology screen [v12] ────
-    // Runs BEFORE recommend but AFTER observe so we can
-    // check for missing_tooth and bypass pathology gating
-    // for replacement cases (don't lose implant leads to
-    // false perio flags).
+    // ── HEALTH TRIAGE — silent backend signal only [v13] ─────────
+    // Runs after OBSERVE. Result is NEVER shown to the patient —
+    // it's attached to the response as a private `_pathology_flag`
+    // that the widget forwards to GHL via webhook customField.
+    // The practice can use this during chart prep to flag a lead
+    // for clinical review. Patient experience stays cosmetic.
     let healthFlag = null;
     try {
       const hRes = await callClaude(apiKey, HEALTH_TRIAGE_PROMPT, [
@@ -461,35 +476,15 @@ export default async function handler(req) {
       const hData = await hRes.json();
       const hRaw = (hData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       healthFlag = JSON.parse(hRaw);
-      console.log('[smileAnalysis v12] health triage:', JSON.stringify(healthFlag));
+      console.log('[smileAnalysis v13] health triage (backend-only):', JSON.stringify(healthFlag));
     } catch (e) {
-      console.warn('[smileAnalysis v12] health triage skipped:', e.message);
+      console.warn('[smileAnalysis v13] health triage skipped:', e.message);
       healthFlag = null;
     }
 
-    // Missing-tooth bypass: if a missing tooth is visible,
-    // skip the pathology gate even if perio flags fire. The
-    // patient cannot improve their smile without addressing
-    // it, and it is the highest-priority finding by far.
-    const hasMissingTooth = Array.isArray(findings?.visible_findings)
-      && findings.visible_findings.some(f => f.code === 'missing_tooth');
-
-    if (healthFlag && healthFlag.pathology === true && !hasMissingTooth) {
-      const res = await callClaude(apiKey, PATHOLOGY_PROMPT_BUILDER(healthFlag), [
-        imageContent,
-        { type: 'text', text: 'Write the patient message.' },
-      ], 400);
-      const data = await res.json();
-      const text = (data?.content?.[0]?.text || '').trim()
-        || 'Your photo shows something we should look at in person. Call (818) 706-6077 — same-week appointments available, your consultation is free.';
-      return new Response(JSON.stringify({
-        emergency: true,
-        urgency: 'priority',
-        analysis: text,
-        treatments: [],
-        _pathology: healthFlag,
-      }), { status: 200, headers });
-    }
+    // NOTE: missing_tooth is handled by the RECOMMEND_PROMPT itself
+    // (see treatment matching table). No special bypass needed at
+    // the handler level since pathology no longer blocks UX.
 
     // ── PASS 2: RECOMMEND (evidence-locked, pagePath for ordering only) ──
     const recommendInput = JSON.stringify({
@@ -504,7 +499,7 @@ export default async function handler(req) {
     const recData = await recRes.json();
     const recRaw = (recData?.content?.[0]?.text || '').trim();
 
-    console.log('[smileAnalysis v12] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
+    console.log('[smileAnalysis v13] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
 
     if (!recRaw) throw new Error('Empty recommendation response');
 
@@ -513,7 +508,7 @@ export default async function handler(req) {
       const cleaned = recRaw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       parsed = JSON.parse(cleaned);
     } catch(e) {
-      console.error('[smileAnalysis v12] parse error:', e.message);
+      console.error('[smileAnalysis v13] parse error:', e.message);
       return new Response(JSON.stringify({
         emergency: false,
         headline: "Your smile has real potential.",
@@ -555,12 +550,15 @@ export default async function handler(req) {
       cta: parsed.cta || 'Book your free consultation and we\'ll show you exactly what\'s possible.',
       treatments: parsed.treatments || [],
       urgency: parsed.urgency || 'standard',
-      // Debug: include findings for internal visibility (not displayed)
+      // ─── BACKEND SIGNALS (not rendered to patient) ───
+      // Widget forwards these to GHL via webhook customField
+      // so the practice can flag leads for clinical review.
       _findings: findings,
+      _pathology_flag: healthFlag,
     }), { status: 200, headers });
 
   } catch (err) {
-    console.error('[smileAnalysis v12] error:', err.message);
+    console.error('[smileAnalysis v13] error:', err.message);
     return new Response(JSON.stringify({
       error: 'Something went wrong. Call (818) 706-6077.',
     }), { status: 500, headers });

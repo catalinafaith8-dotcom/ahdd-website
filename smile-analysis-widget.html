@@ -1000,6 +1000,12 @@
     var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
     var isFull=hasFullMouth(data);
 
+    // v13 silent backend signals (not shown to patient)
+    var pathFlag=(data._pathology_flag||{});
+    var hasPathology=pathFlag.pathology===true;
+    var findingsCodes=((data._findings&&data._findings.visible_findings)||[])
+      .map(function(f){return f.code}).join(',');
+
     var payload={
       firstName:name.split(' ')[0],
       lastName:name.split(' ').slice(1).join(' ')||'',
@@ -1008,7 +1014,9 @@
       tags:['smile-analysis','web-lead']
         .concat((data.treatments||[]).map(function(t){return'treatment-'+t.id}))
         .concat(data.emergency?['emergency-flag']:[])
-        .concat(isFull?['full-mouth-candidate']:[]),
+        .concat(isFull?['full-mouth-candidate']:[])
+        .concat(hasPathology?['pathology-review-needed']:[])
+        .concat(hasPathology&&pathFlag.category?['pathology-'+pathFlag.category]:[]),
       source:'Smile Analysis Widget',
       customField:{
         smile_analysis_result:(data.analysis)||'',
@@ -1017,7 +1025,12 @@
         emergency:(data.emergency||false).toString(),
         full_mouth_candidate:isFull.toString(),
         source_page:window.location.pathname,
-        analysis_date:new Date().toISOString()
+        analysis_date:new Date().toISOString(),
+        pathology_flag:hasPathology.toString(),
+        pathology_category:(pathFlag.category||''),
+        pathology_severity:(pathFlag.severity||''),
+        pathology_concern:(pathFlag.primary_concern||''),
+        findings_codes:findingsCodes
       }
     };
 
