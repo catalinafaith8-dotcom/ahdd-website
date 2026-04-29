@@ -1,28 +1,19 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v13 — Patient-cosmetic-only, pathology as silent backend signal
-//   Architectural shift: phone-photo pathology triage is fundamentally
-//   unreliable for consumer-facing UX. v13 removes it from the patient
-//   experience entirely while preserving it as a private signal the
-//   practice can use during chart prep.
-//
-//   Patient experience:
-//     - Pass 0:  TRIAGE — true emergency only (trauma/broken tooth/visible
-//                blood). Still surfaces urgent UI when warranted.
-//     - Pass 1:  OBSERVE — visual findings only.
-//     - Pass 2:  RECOMMEND — cosmetic recommendations.
-//     Patient NEVER sees a "needs attention soon" pathology banner.
-//
-//   Practice signal (silent):
-//     - HEALTH_TRIAGE still runs and the result attaches to the response
-//       as `_pathology_flag` and `_findings`. GHL webhook payload from
-//       the widget captures these into customFields so Drs. Matian can
-//       flag any lead for clinical review before the visit.
-//     - Patient never sees these fields.
-//
-//   missing_tooth handling (v12.x → v13):
-//     - Still forces implant/bridge recommendation via RECOMMEND prompt.
-//     - No special bypass needed since pathology never blocks patient UX.
+// v13.1 — Whitening-first prioritization + veneers guardrail
+//   v13 still recommended veneers as BEST for color+alignment cases.
+//   Per practice direction: veneers are permanent and expensive — the
+//   in-person exam decides whether they're appropriate, not a phone
+//   photo. v13.1 changes:
+//   - RECOMMEND prompt: rewrote prioritization. Color+alignment now
+//     yields Whitening (BEST) + Invisalign (ALT). Veneers reserved
+//     for cases with ≥2 structural findings (wear/chipping/shape).
+//   - Code-level guardrail: even if AI picks veneers, the handler
+//     verifies structural findings exist; if not, silently swaps
+//     to Whitening + Invisalign / Whitening + Take-Home / etc.
+//   - Pathology still runs as silent backend signal (v13 architecture
+//     preserved). Patient experience stays cosmetic.
+//   Same response shape as v13 — widget unchanged.
 
 export const config = { runtime: 'edge' };
 
@@ -229,7 +220,7 @@ RETURN ONLY a valid JSON object. No markdown. No backticks. Start with { and end
 ━━━ TREATMENT MATCHING TABLE ━━━
 Each treatment requires specific findings to be legitimate:
 
-- "veneers" → requires ≥2 of: yellowing, staining, wear, short_teeth, chipping, irregular_shape, edge_irregularity, crowding (mild), spacing (mild)
+- "veneers" → requires ≥2 STRUCTURAL findings: wear, chipping, irregular_shape, edge_irregularity, short_teeth. Color (yellowing/staining) and alignment (crowding/spacing/rotation) DO NOT count toward this threshold — those are addressable with whitening + Invisalign respectively.
   Veneers restore color, shape, length, and symmetry in one treatment — ideal for compound aesthetic presentations.
 
 - "whitening" → requires yellowing OR staining as a finding; AND no severe wear/chipping/shape issues
@@ -251,14 +242,38 @@ Each treatment requires specific findings to be legitimate:
 - "all_on_4" → requires extensive breakdown with multiple missing_tooth + severe wear (use sparingly)
 
 ━━━ PRIORITIZATION (when multiple valid treatments exist) ━━━
-1. missing_tooth findings → implants win (patient cannot smile without addressing it)
-2. gum_excess clearly visible → gum_contouring is BEST
-3. Compound aesthetic (≥2 of yellowing/wear/shape/chipping/crowding) → veneers
-4. Moderate+ crowding/rotation + otherwise-clean teeth → invisalign
-5. Color only → whitening
-6. Small localized chips only → bonding
 
-After applying 1-6, if pagePath matches a valid treatment in your top 2, surface that one first.
+CORE PRINCIPLE: Recommend the LEAST INVASIVE path that addresses the visible findings. Veneers are a permanent, expensive procedure — only recommend them as BEST when conservative options can't address the actual findings. The practice's in-person exam is what determines whether veneers are appropriate; a phone photo is not enough to commit a patient to drilling down their natural teeth.
+
+1. missing_tooth findings → implants win (patient cannot smile without addressing it)
+
+2. gum_excess clearly visible → gum_contouring is BEST
+
+3. Color + alignment combo (yellowing/staining AND crowding/rotation/spacing):
+   → BEST: "Professional Whitening"
+   → ALTERNATIVE: "Invisalign"
+   → Rationale: address color first (low effort, fast result), straighten with clear aligners if patient wants alignment fixed too. The dentist will determine in-person whether veneers are warranted.
+
+4. Color only (yellowing/staining, no alignment issues, no shape/wear):
+   → BEST: "Professional Whitening"
+   → ALTERNATIVE: "Take-Home Whitening Trays"
+
+5. Alignment only (crowding/rotation/spacing, no color, no shape/wear):
+   → BEST: "Invisalign"
+   → ALTERNATIVE: "Professional Whitening" (mention it as a fast cosmetic boost)
+
+6. Structural findings present (wear, chipping, irregular_shape, edge_irregularity, short_teeth):
+   → BEST: "Bonding" (for small localized issues) OR "Porcelain Veneers" (for multiple structural findings affecting front teeth)
+   → ALTERNATIVE: another conservative option (whitening, contouring)
+   → Veneers are appropriate here because conservative options cannot reshape teeth.
+
+7. Compound case (color + alignment + structural):
+   → BEST: "Porcelain Veneers" only if structural issues affect 2+ front teeth visibly
+   → Otherwise: BEST = "Professional Whitening", ALTERNATIVE = "Invisalign", and mention veneers as something to discuss at the in-person exam
+
+VENEERS GUARDRAIL: Never recommend veneers as BEST when the only findings are color + alignment. Color and alignment are reversible/correctable conservatively. Veneers must be reserved for cases with visible STRUCTURAL findings (wear, chipping, shape).
+
+After applying 1-7, if pagePath matches a valid treatment in your top 2, surface that one first.
 
 ━━━ TONE ━━━
 Warm, confident, premium, specific, emotionally persuasive, visually grounded. Under 150 words total.
@@ -519,6 +534,71 @@ export default async function handler(req) {
         treatments: [],
         urgency: 'standard',
       }), { status: 200, headers });
+    }
+
+    // ── VENEERS GUARDRAIL [v13.1] ──────────────────────────
+    // Even with the prompt update, the AI sometimes still picks
+    // veneers as BEST when the only findings are color + alignment.
+    // Veneers are permanent and expensive — only the in-person exam
+    // should commit a patient to that path. If we detect the AI
+    // recommended veneers without supporting STRUCTURAL findings,
+    // we silently swap to Whitening (BEST) + Invisalign (ALT).
+    try {
+      const findingCodes = (findings?.visible_findings || []).map(f => f.code || '');
+      const STRUCTURAL = ['wear', 'chipping', 'irregular_shape', 'edge_irregularity', 'short_teeth'];
+      const structuralCount = findingCodes.filter(c => STRUCTURAL.includes(c)).length;
+
+      const hasColor = findingCodes.includes('yellowing') || findingCodes.includes('staining');
+      const hasAlignment = findingCodes.includes('crowding') || findingCodes.includes('rotation') || findingCodes.includes('spacing');
+
+      const bestRaw = ((parsed.plan && parsed.plan.best_option) || '').toLowerCase();
+      const bestIsVeneers = bestRaw.includes('veneer');
+
+      // Trigger swap: AI picked veneers but findings don't support it
+      if (bestIsVeneers && structuralCount < 2) {
+        console.log('[smileAnalysis v13.1] veneers guardrail tripped — swapping to whitening/invisalign');
+
+        if (hasColor && hasAlignment) {
+          // Color + alignment → whitening best, invisalign alt
+          parsed.plan = {
+            best_option: 'BEST OPTION — Professional Whitening',
+            best_detail: 'A professional whitening treatment can dramatically brighten the visible discoloration in just one or two visits, addressing the color concern as the first step.',
+            alternative: 'ALTERNATIVE — Invisalign',
+            alt_detail: 'Clear aligners gently and discreetly correct alignment over time. Many patients combine the two for a complete refresh — your in-office consultation will confirm the right path for you.',
+          };
+          parsed.treatments = [
+            { id: 'whitening', label: 'Professional Whitening' },
+            { id: 'invisalign', label: 'Invisalign' },
+          ];
+        } else if (hasColor) {
+          // Color only → whitening best, take-home alt
+          parsed.plan = {
+            best_option: 'BEST OPTION — Professional Whitening',
+            best_detail: 'In-office whitening delivers the most dramatic results in a single visit, addressing the visible discoloration directly.',
+            alternative: 'ALTERNATIVE — Take-Home Whitening Trays',
+            alt_detail: 'Custom trays let you whiten gradually at home over a few weeks for the same end result with more flexibility.',
+          };
+          parsed.treatments = [
+            { id: 'whitening', label: 'Professional Whitening' },
+            { id: 'whitening_takehome', label: 'Take-Home Whitening Trays' },
+          ];
+        } else if (hasAlignment) {
+          // Alignment only → invisalign best
+          parsed.plan = {
+            best_option: 'BEST OPTION — Invisalign',
+            best_detail: 'Clear aligners discreetly correct the alignment over time without metal brackets, producing a straighter, more even smile.',
+            alternative: 'ALTERNATIVE — Professional Whitening',
+            alt_detail: 'A whitening treatment can be a complementary cosmetic boost during or after orthodontic treatment.',
+          };
+          parsed.treatments = [
+            { id: 'invisalign', label: 'Invisalign' },
+            { id: 'whitening', label: 'Professional Whitening' },
+          ];
+        }
+        // If no clear findings at all, leave parsed as-is (rare edge case)
+      }
+    } catch (e) {
+      console.warn('[smileAnalysis v13.1] guardrail error:', e.message);
     }
 
     // Normalise plan field — handle nested format from RECOMMEND pass
