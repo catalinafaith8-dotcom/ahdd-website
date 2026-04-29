@@ -1,19 +1,19 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v13.1 — Whitening-first prioritization + veneers guardrail
-//   v13 still recommended veneers as BEST for color+alignment cases.
-//   Per practice direction: veneers are permanent and expensive — the
-//   in-person exam decides whether they're appropriate, not a phone
-//   photo. v13.1 changes:
-//   - RECOMMEND prompt: rewrote prioritization. Color+alignment now
-//     yields Whitening (BEST) + Invisalign (ALT). Veneers reserved
-//     for cases with ≥2 structural findings (wear/chipping/shape).
-//   - Code-level guardrail: even if AI picks veneers, the handler
-//     verifies structural findings exist; if not, silently swaps
-//     to Whitening + Invisalign / Whitening + Take-Home / etc.
-//   - Pathology still runs as silent backend signal (v13 architecture
-//     preserved). Patient experience stays cosmetic.
-//   Same response shape as v13 — widget unchanged.
+// v13.2 — Quality gate loosened (anti-false-rejection)
+//   v13.1 was rejecting valid casual selfies as "needs both arches
+//   visible" — destroying conversion. v13.2 changes:
+//   - QUALITY_PROMPT rewritten to default to usable=true. Only
+//     reject for hard cases (not a mouth, pitch black, motion blur,
+//     mouth closed with no teeth showing).
+//   - Code-level whitelist: even if AI flags usable=false, the
+//     handler only honors rejections matching hard-reject keywords.
+//     False positives ("only lower teeth visible", "side angle",
+//     "lips partially covering") are silently ignored and analysis
+//     proceeds.
+//   - Whitening-first prioritization preserved from v13.1
+//   - Pathology silent-signal preserved from v13
+//   Same response shape — widget unchanged.
 
 export const config = { runtime: 'edge' };
 
@@ -102,38 +102,44 @@ Under 110 words total. No cosmetic talk. No mention of veneers, whitening, Invis
 // ─────────────────────────────────────────────
 // QUALITY GATE — is this image usable for a confident diagnosis?
 // ─────────────────────────────────────────────
-const QUALITY_PROMPT = `You are a dental photo quality reviewer. You decide whether a smile photo is good enough to give a responsible cosmetic treatment recommendation.
+const QUALITY_PROMPT = `You are a dental photo quality reviewer. Your ONLY job is to reject photos that are SO unusable that no analysis is possible. You are NOT a clinical photo reviewer — patients are sending casual smartphone selfies, not orthodontic records.
 
 RETURN ONLY JSON. No markdown.
 
-A photo is USABLE for full smile analysis only if ALL of these are true:
-- BOTH the upper front teeth AND the lower front teeth are clearly visible (not just one arch)
-- At least the six front teeth on whichever arch is visible are individually distinguishable
-- Image is reasonably in focus — individual tooth edges are distinguishable
-- Lighting lets you assess color and shape (not a pure silhouette, not blown-out white)
-- The mouth is the subject — not a small part of a larger scene
+═══ CRITICAL RULE ═══
+DEFAULT TO usable=true. The OBSERVE pass downstream is fine working with partial visibility — it will simply return fewer findings if it can't see everything. False rejections destroy patient trust and conversion. ONLY reject in the cases listed below.
 
-A photo is NOT usable if ANY of these are true:
-- Shows ONLY the lower teeth with upper arch hidden (this is critical — without upper teeth we cannot evaluate the smile)
-- Shows ONLY the upper teeth with lower arch hidden
-- Shows only a tiny segment (fewer than 4 teeth clearly visible)
-- Too blurry to distinguish tooth edges or surface detail
-- Teeth obscured by hands, tongue, food, or heavy lipstick/gloss glare
-- Extreme side angle where most teeth are hidden
-- Not actually a mouth / smile photo
-- Too dark or silhouetted to assess color
+═══ ONLY REJECT (usable=false) IF ═══
+1. Photo does not show a mouth at all (e.g., it's a ceiling, food, a pet, a closed-mouth selfie with NO teeth visible)
+2. Photo is so blurry that teeth are unrecognizable as teeth (motion blur, completely out of focus)
+3. Photo is so dark you cannot tell teeth from gums (pure silhouette / black frame)
+4. Mouth is closed with no teeth visible at all
 
-RESPOND in this exact shape:
+═══ ALWAYS ACCEPT (usable=true) IF ═══
+- ANY teeth are visible, even partial — even if just upper OR just lower
+- The smile is at any angle (slight tilt, side angle, head turned)
+- Lighting is imperfect but teeth are still distinguishable
+- The photo is a casual selfie, not a clinical photo
+- Lips are partially covering the teeth but some teeth are still showing
+- The image quality is "phone-grade" rather than "studio-grade"
+
+When in doubt: usable=true. The cost of letting a borderline photo through is minor — the cost of rejecting a valid one is a lost lead.
+
+═══ OUTPUT ═══
 {
   "usable": true | false,
   "reason": "short phrase describing why if not usable (empty string if usable)",
   "hint": "one short sentence instructing the patient how to retake — specific, warm, actionable (empty string if usable)"
 }
 
-Examples of good hints:
-- "Please retake your photo showing BOTH your upper and lower teeth together, with a natural smile, in good light."
-- "Try again with the photo a little closer and in brighter light so we can see each tooth clearly."
-- "Please retake with your lips open and teeth slightly apart so we can see your full smile."`;
+Default response: { "usable": true, "reason": "", "hint": "" }
+
+Examples of when to REJECT (these are rare):
+- An image of a wall or ceiling → usable: false, hint: "It looks like the photo didn't capture your smile — please try again with your mouth in the frame."
+- A completely black image → usable: false, hint: "The photo came out too dark to see your teeth — please retake in better light."
+- A pet or food photo → usable: false, hint: "We can only analyze photos of a smile — please upload a photo of your teeth."
+
+Default to usable: true for everything else.`;
 
 // ─────────────────────────────────────────────
 // OBSERVE PASS — pure visual description, no treatments
@@ -429,7 +435,10 @@ export default async function handler(req) {
       }), { status: 200, headers });
     }
 
-    // ── QUALITY GATE ───────────────────────
+    // ── QUALITY GATE [v13.2] ───────────────────────
+    // Only honor AI rejections that match the hard-reject categories.
+    // The AI vision model has a strong bias toward rejecting casual
+    // selfies that ARE usable; we filter those false positives here.
     try {
       const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
         imageContent,
@@ -439,15 +448,37 @@ export default async function handler(req) {
       const qRaw = (qData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       const qParsed = JSON.parse(qRaw);
       if (qParsed && qParsed.usable === false) {
-        return new Response(JSON.stringify({
-          retake_required: true,
-          reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
-          hint: qParsed.hint || 'Please retake your photo showing both your upper and lower teeth together, with a natural smile, in good light.',
-        }), { status: 200, headers });
+        // Hard-reject whitelist: only honor rejections for these reasons.
+        // Patterns that trigger legitimate rejections — anything else
+        // (e.g. "only lower teeth visible", "side angle", "lips covering")
+        // is a false positive and we let the analysis continue.
+        const reason = (qParsed.reason || '').toLowerCase();
+        const hint = (qParsed.hint || '').toLowerCase();
+        const combined = reason + ' ' + hint;
+        const HARD_REJECT_KEYWORDS = [
+          'not a mouth', 'not a smile', 'no teeth visible', 'mouth is closed',
+          'completely closed', 'no mouth', 'wall', 'ceiling', 'food', 'pet',
+          'too dark', 'pure black', 'silhouette', 'pitch black',
+          'unrecognizable', 'extremely blurry', 'completely out of focus',
+          'motion blur',
+        ];
+        const isHardReject = HARD_REJECT_KEYWORDS.some(kw => combined.includes(kw));
+
+        if (isHardReject) {
+          console.log('[smileAnalysis v13.2] quality gate rejected (hard):', reason);
+          return new Response(JSON.stringify({
+            retake_required: true,
+            reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
+            hint: qParsed.hint || 'Please retake your photo showing your smile clearly.',
+          }), { status: 200, headers });
+        } else {
+          console.log('[smileAnalysis v13.2] quality gate rejection IGNORED (false positive):', reason);
+          // Fall through to analysis
+        }
       }
     } catch (e) {
       // If quality gate fails, continue — don't block analysis
-      console.warn('[smileAnalysis v13] quality gate skipped:', e.message);
+      console.warn('[smileAnalysis v13.2] quality gate skipped:', e.message);
     }
 
     // ── PASS 1: OBSERVE (no treatment vocabulary, no page context) ──
