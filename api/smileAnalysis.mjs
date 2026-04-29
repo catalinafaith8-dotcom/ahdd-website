@@ -1,18 +1,14 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v12 — Dual-mode architecture (cosmetic preview + clinical triage)
-//   Mode A: cosmetic_preview — top-funnel lead capture, positive tone,
-//             no pathology language, ungated by health flags
-//   Mode B: clinical_triage  — full safety pipeline (existing behavior)
-//   Pass 0:  TRIAGE — frank emergency screen
-//   Pass 0b: HEALTH — pathology screen (TIGHTENED — 2+ indicators
-//             required for soft signs; missing-tooth bypasses pathology
-//             gate so replacement cases convert)
-//   Pass 1:  OBSERVE — pure visual findings, no treatment vocabulary
+// v12.1 — v11 baseline + tightened pathology + missing-tooth bypass
+//   Reverted from v12 dual-mode (which broke widget rendering).
+//   Pass 0:  TRIAGE  — frank emergency screen
+//   Pass 1:  OBSERVE — pure visual findings, no treatment vocab
+//   Pass 1b: HEALTH  — pathology screen (TIGHTENED — soft signs
+//             require 2+ co-occurring; missing-tooth bypasses
+//             the pathology gate so replacement leads convert)
 //   Pass 2:  RECOMMEND — map verified findings to treatments
-//   Missing-tooth override: enforces implant + bridge as the answer,
-//   regardless of what RECOMMEND returns. Prevents the AI from
-//   defaulting to whitening/Invisalign when a tooth is missing.
+//   Same response shape as v11 — widget unchanged.
 
 export const config = { runtime: 'edge' };
 
@@ -81,7 +77,7 @@ If pathology IS clearly visible per the rules above, return:
 Otherwise (cosmetic concerns only, OR insufficient indicators):
 { "pathology": false }
 
-Be honest and clinically conservative. When uncertain whether a soft sign is real or just photo artifact, return pathology:false. The cosmetic and clinical pipelines downstream will handle ambiguous cases appropriately.`;
+Be honest and clinically conservative. When uncertain whether a soft sign is real or just photo artifact, return pathology:false. The cosmetic pipeline downstream will handle ambiguous cases appropriately.`;
 
 // ─────────────────────────────────────────────
 // PATHOLOGY MESSAGE — warm, direct, non-alarming [v11]
@@ -331,62 +327,6 @@ Paragraph 3: The good news — catching this early makes it simpler. End: Call (
 Under 100 words. Warm and human.`;
 
 // ─────────────────────────────────────────────
-// COSMETIC RECOMMEND — top-funnel lead capture mode [v12]
-// Positive, visually grounded, no pathology language.
-// Used by /smile-preview entry point for ungated lead capture.
-// ─────────────────────────────────────────────
-const COSMETIC_RECOMMEND_PROMPT = `You are a cosmetic smile consultant.
-
-You will receive VERIFIED visible findings from a smile photo.
-
-RETURN ONLY JSON. No markdown. No backticks.
-
-━━━ RULES ━━━
-1. You may ONLY reference findings in visible_findings.
-2. You do NOT diagnose or mention disease.
-3. You do NOT create urgency.
-4. You focus on how the smile could look more balanced, even, or refined.
-5. Be positive, specific, and visually grounded.
-
-━━━ OUTPUT ━━━
-{
-  "headline": "Positive sentence about how the smile could be improved",
-  "insights": [
-    "Observation 1 based on visible finding",
-    "Observation 2 based on visible finding"
-  ],
-  "improvements": [
-    "What could be improved visually (aligned with findings)",
-    "Another improvement angle"
-  ],
-  "options": [
-    {"id": "treatment_id", "label": "Treatment Name"}
-  ],
-  "cta": "Short curiosity-driven line inviting next step"
-}
-
-━━━ TREATMENT RULES ━━━
-- spacing/crowding → Invisalign
-- yellowing/staining → Whitening
-- shape/wear/chipping → Bonding or Veneers
-- missing_tooth → Tooth Replacement (implant or bridge)
-
-If missing_tooth is in the findings:
-- ALWAYS include BOTH in options:
-  - {"id": "implant_single", "label": "Dental Implant"}
-  - {"id": "bridge", "label": "Dental Bridge"}
-
-━━━ TONE ━━━
-- No "needs attention"
-- No "problem"
-- No "disease"
-- No "urgency"
-- Speak like a high-end cosmetic consult
-- Use language like "there appears to be" instead of "may be"
-
-Max 120 words across all fields.`;
-
-// ─────────────────────────────────────────────
 // HANDLER
 // ─────────────────────────────────────────────
 export default async function handler(req) {
@@ -403,145 +343,138 @@ export default async function handler(req) {
   }
 
   try {
-    const {
-      imageBase64,
-      mediaType,
-      mode = 'clinical_triage',
-      treatmentLabel,
-      pagePath,
-    } = await req.json();
+    const { imageBase64, mediaType, mode, treatmentLabel, pagePath } = await req.json();
 
     if (!imageBase64 || !mediaType) {
-      return new Response(JSON.stringify({
-        error: 'Missing image data. Please try again.',
-      }), { status: 400, headers });
+      return new Response(JSON.stringify({ error: 'Missing image data. Please try again.' }), { status: 400, headers });
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      return new Response(JSON.stringify({
-        error: 'Service unavailable. Call (818) 706-6077.',
-      }), { status: 500, headers });
+      return new Response(JSON.stringify({ error: 'Service unavailable. Call (818) 706-6077.' }), { status: 500, headers });
     }
 
     const imageContent = {
       type: 'image',
-      source: {
-        type: 'base64',
-        media_type: mediaType,
-        data: imageBase64,
-      },
+      source: { type: 'base64', media_type: mediaType, data: imageBase64 },
     };
 
-    // ─────────────────────────────────────
-    // DEEP DIVE — explain a specific treatment
-    // ─────────────────────────────────────
+    // ── DEEP DIVE ──────────────────────────
     if (mode === 'deep_dive' && treatmentLabel) {
       const res = await callClaude(apiKey, SMILE_DEEPDIVE_PROMPT, [
         imageContent,
         { type: 'text', text: `Explain this treatment for this patient: ${treatmentLabel}` },
       ], 500);
       const data = await res.json();
-      const text = (data?.content?.[0]?.text || '').trim()
-        || 'Call (818) 706-6077 for details.';
-      return new Response(JSON.stringify({ analysis: text }), {
-        status: 200,
-        headers,
-      });
+      const text = (data?.content?.[0]?.text || '').trim() || 'Call (818) 706-6077 for details.';
+      return new Response(JSON.stringify({ analysis: text }), { status: 200, headers });
     }
 
-    // ─────────────────────────────────────
-    // QUALITY GATE — runs in both modes
-    // ─────────────────────────────────────
-    const qualityResult = await assessPhotoQuality(apiKey, imageContent);
-    if (qualityResult?.usable === false) {
-      return new Response(JSON.stringify({
-        retake_required: true,
-        reason: qualityResult.reason || 'We need a clearer photo to give you an accurate result.',
-        hint: qualityResult.hint || 'Please retake your photo showing both your upper and lower teeth together, with a natural smile, in good light.',
-      }), { status: 200, headers });
+    // ── TRIAGE ─────────────────────────────
+    let isSafe = true;
+    try {
+      const triageRes = await callClaude(apiKey, TRIAGE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Assess this image.' },
+      ], 30);
+      const triageData = await triageRes.json();
+      const raw = (triageData?.content?.[0]?.text || '').trim().replace(/```(?:json)?/g, '').trim();
+      isSafe = JSON.parse(raw).safe === true;
+    } catch {
+      isSafe = true;
     }
 
-    // ─────────────────────────────────────
-    // OBSERVE — evidence-first, no treatment vocabulary
-    // ─────────────────────────────────────
-    const findings = await observeSmile(apiKey, imageContent);
-    const visibleFindings = Array.isArray(findings?.visible_findings)
-      ? findings.visible_findings
-      : [];
-    const hasMissingTooth = visibleFindings.some(f => f.code === 'missing_tooth');
-
-    // ═══════════════════════════════════════════════════════
-    // MODE A: COSMETIC PREVIEW
-    // Top-funnel lead capture. No emergency language. No
-    // pathology gating. Returns positive cosmetic options.
-    // ═══════════════════════════════════════════════════════
-    if (mode === 'cosmetic_preview') {
-      const cosmeticInput = JSON.stringify({
-        findings,
-        pagePath: pagePath || null,
-      });
-
-      const cosmeticRes = await callClaude(apiKey, COSMETIC_RECOMMEND_PROMPT, [
-        {
-          type: 'text',
-          text: `Verified visible findings:\n\n${cosmeticInput}\n\nProduce the cosmetic preview JSON.`,
-        },
-      ], 700);
-
-      const cosmeticData = await cosmeticRes.json();
-      const raw = (cosmeticData?.content?.[0]?.text || '').trim();
-      let parsed = safeJsonParse(raw) || buildFallbackCosmeticPreview();
-      parsed = enforceTreatmentRules(parsed, findings);
-
-      return new Response(JSON.stringify({
-        mode: 'cosmetic_preview',
-        emergency: false,
-        clinical_priority: hasMissingTooth ? 'tooth_replacement' : 'cosmetic',
-        headline: parsed.headline || '',
-        insights: parsed.insights || [],
-        improvements: parsed.improvements || [],
-        options: parsed.options || parsed.treatments || [],
-        cta: parsed.cta || 'See what your personalized smile options could look like.',
-        treatments: parsed.treatments || parsed.options || [],
-        urgency: hasMissingTooth ? 'priority' : 'standard',
-        _findings: findings,
-      }), { status: 200, headers });
-    }
-
-    // ═══════════════════════════════════════════════════════
-    // MODE B: CLINICAL TRIAGE (default)
-    // Full safety pipeline + evidence-locked treatment matching
-    // ═══════════════════════════════════════════════════════
-
-    // Pass 0: Emergency screen
-    const triage = await assessEmergencySafety(apiKey, imageContent);
-    if (triage?.safe === false) {
+    // ── EMERGENCY ──────────────────────────
+    if (!isSafe) {
       const res = await callClaude(apiKey, EMERGENCY_PROMPT, [
         imageContent,
         { type: 'text', text: 'Write the urgent message.' },
       ], 400);
       const data = await res.json();
-      const text = (data?.content?.[0]?.text || '').trim()
-        || 'Your photo shows something that should be checked promptly. Call (818) 706-6077 — same-day appointments available, consultation is free.';
+      const text = (data?.content?.[0]?.text || '').trim();
       return new Response(JSON.stringify({
-        mode: 'clinical_triage',
         emergency: true,
-        clinical_priority: 'emergency',
         urgency: 'priority',
         analysis: text,
         treatments: [],
-        _findings: findings,
       }), { status: 200, headers });
     }
 
-    // Pass 0b: Health pathology screen
-    // CRITICAL: missing-tooth bypasses pathology gate — replacement
-    // cases must continue to the recommendation pipeline so we don't
-    // lose implant/bridge leads behind generic "see us in person" copy.
-    const healthFlag = await assessHealthPathology(apiKey, imageContent);
+    // ── QUALITY GATE ───────────────────────
+    try {
+      const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Assess photo quality for smile analysis.' },
+      ], 150);
+      const qData = await qRes.json();
+      const qRaw = (qData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      const qParsed = JSON.parse(qRaw);
+      if (qParsed && qParsed.usable === false) {
+        return new Response(JSON.stringify({
+          retake_required: true,
+          reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
+          hint: qParsed.hint || 'Please retake your photo showing both your upper and lower teeth together, with a natural smile, in good light.',
+        }), { status: 200, headers });
+      }
+    } catch (e) {
+      // If quality gate fails, continue — don't block analysis
+      console.warn('[smileAnalysis v12] quality gate skipped:', e.message);
+    }
 
-    if (healthFlag?.pathology === true && !hasMissingTooth) {
+    // ── PASS 1: OBSERVE (no treatment vocabulary, no page context) ──
+    let findings = { visible_findings: [], photo_adequacy: {} };
+    try {
+      const obsRes = await callClaude(apiKey, OBSERVE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Describe what you can literally see in this smile photo.' },
+      ], 700);
+      const obsData = await obsRes.json();
+      const obsRaw = (obsData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      findings = JSON.parse(obsRaw);
+      console.log('[smileAnalysis v12] findings:', JSON.stringify(findings).substring(0, 400));
+    } catch (e) {
+      console.error('[smileAnalysis v12] observe pass error:', e.message);
+      // If observation fails, return graceful fallback
+      return new Response(JSON.stringify({
+        emergency: false,
+        headline: "Your smile looks healthy on camera — an in-person consultation will show you what's possible.",
+        bullets: ['A proper in-office evaluation gives the most accurate picture.'],
+        plan: [{ label: 'BEST OPTION — Free In-Office Consultation', treatment: 'Free In-Office Consultation', detail: 'We\'ll take proper clinical photos and walk through any enhancement you\'re considering.', id: 'consultation' }],
+        ideal_result: 'You\'ll leave with a clear picture of what would actually enhance your smile.',
+        cta: 'Book your free consultation — we\'ll show you exactly what\'s possible.',
+        treatments: [],
+        urgency: 'standard',
+      }), { status: 200, headers });
+    }
+
+    // ── HEALTH TRIAGE — pathology screen [v12] ────
+    // Runs BEFORE recommend but AFTER observe so we can
+    // check for missing_tooth and bypass pathology gating
+    // for replacement cases (don't lose implant leads to
+    // false perio flags).
+    let healthFlag = null;
+    try {
+      const hRes = await callClaude(apiKey, HEALTH_TRIAGE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Screen for visible dental pathology.' },
+      ], 200);
+      const hData = await hRes.json();
+      const hRaw = (hData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      healthFlag = JSON.parse(hRaw);
+      console.log('[smileAnalysis v12] health triage:', JSON.stringify(healthFlag));
+    } catch (e) {
+      console.warn('[smileAnalysis v12] health triage skipped:', e.message);
+      healthFlag = null;
+    }
+
+    // Missing-tooth bypass: if a missing tooth is visible,
+    // skip the pathology gate even if perio flags fire. The
+    // patient cannot improve their smile without addressing
+    // it, and it is the highest-priority finding by far.
+    const hasMissingTooth = Array.isArray(findings?.visible_findings)
+      && findings.visible_findings.some(f => f.code === 'missing_tooth');
+
+    if (healthFlag && healthFlag.pathology === true && !hasMissingTooth) {
       const res = await callClaude(apiKey, PATHOLOGY_PROMPT_BUILDER(healthFlag), [
         imageContent,
         { type: 'text', text: 'Write the patient message.' },
@@ -550,263 +483,88 @@ export default async function handler(req) {
       const text = (data?.content?.[0]?.text || '').trim()
         || 'Your photo shows something we should look at in person. Call (818) 706-6077 — same-week appointments available, your consultation is free.';
       return new Response(JSON.stringify({
-        mode: 'clinical_triage',
-        emergency: false,
-        clinical_priority: 'health_first',
+        emergency: true,
         urgency: 'priority',
         analysis: text,
         treatments: [],
         _pathology: healthFlag,
-        _findings: findings,
       }), { status: 200, headers });
     }
 
-    // Pass 2: Evidence-locked recommendation
+    // ── PASS 2: RECOMMEND (evidence-locked, pagePath for ordering only) ──
     const recommendInput = JSON.stringify({
-      findings,
+      findings: findings,
       pagePath: pagePath || null,
-      healthFlag: healthFlag || null,
     });
 
     const recRes = await callClaude(apiKey, RECOMMEND_PROMPT, [
-      {
-        type: 'text',
-        text: `Verified observer findings and patient context:\n\n${recommendInput}\n\nProduce the recommendation JSON.`,
-      },
+      { type: 'text', text: `Verified observer findings and patient context:\n\n${recommendInput}\n\nProduce the recommendation JSON.` },
     ], 1000);
 
     const recData = await recRes.json();
     const recRaw = (recData?.content?.[0]?.text || '').trim();
-    let parsed = safeJsonParse(recRaw) || buildFallbackClinicalRecommendation();
-    parsed = enforceTreatmentRules(parsed, findings);
 
-    const planArray = normalizePlan(parsed);
+    console.log('[smileAnalysis v12] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
+
+    if (!recRaw) throw new Error('Empty recommendation response');
+
+    let parsed;
+    try {
+      const cleaned = recRaw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      parsed = JSON.parse(cleaned);
+    } catch(e) {
+      console.error('[smileAnalysis v12] parse error:', e.message);
+      return new Response(JSON.stringify({
+        emergency: false,
+        headline: "Your smile has real potential.",
+        bullets: ["An in-office consultation will give you the clearest picture."],
+        plan: [],
+        ideal_result: "Come in for a free consultation — we'll walk you through everything in person.",
+        cta: "Book your free consultation and we'll show you exactly what's possible.",
+        treatments: [],
+        urgency: 'standard',
+      }), { status: 200, headers });
+    }
+
+    // Normalise plan field — handle nested format from RECOMMEND pass
+    const plan = parsed.plan || {};
+    const planArray = [];
+    if (plan.best_option) {
+      planArray.push({
+        label: plan.best_option,
+        treatment: plan.best_option.replace(/^BEST OPTION\s*[—-]\s*/i, ''),
+        id: (parsed.treatments && parsed.treatments[0]) ? parsed.treatments[0].id : 'consultation',
+        detail: plan.best_detail || '',
+      });
+    }
+    if (plan.alternative) {
+      planArray.push({
+        label: plan.alternative,
+        treatment: plan.alternative.replace(/^ALTERNATIVE\s*[—-]\s*/i, ''),
+        id: (parsed.treatments && parsed.treatments[1]) ? parsed.treatments[1].id : '',
+        detail: plan.alt_detail || '',
+      });
+    }
 
     return new Response(JSON.stringify({
-      mode: 'clinical_triage',
       emergency: false,
-      clinical_priority: hasMissingTooth ? 'tooth_replacement' : 'cosmetic',
       headline: parsed.headline || '',
       bullets: parsed.bullets || [],
       plan: planArray,
       ideal_result: parsed.ideal_result || '',
-      cta: parsed.cta || "Book your free consultation and we'll show you exactly what's possible.",
+      cta: parsed.cta || 'Book your free consultation and we\'ll show you exactly what\'s possible.',
       treatments: parsed.treatments || [],
-      urgency: hasMissingTooth ? 'priority' : (parsed.urgency || 'standard'),
-      _pathology: healthFlag || null,
+      urgency: parsed.urgency || 'standard',
+      // Debug: include findings for internal visibility (not displayed)
       _findings: findings,
     }), { status: 200, headers });
 
   } catch (err) {
-    console.error('[smileAnalysis v12] handler error:', err.message);
+    console.error('[smileAnalysis v12] error:', err.message);
     return new Response(JSON.stringify({
       error: 'Something went wrong. Call (818) 706-6077.',
     }), { status: 500, headers });
   }
-}
-
-// ─────────────────────────────────────────────
-// HELPERS [v12]
-// ─────────────────────────────────────────────
-
-async function assessPhotoQuality(apiKey, imageContent) {
-  try {
-    const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
-      imageContent,
-      { type: 'text', text: 'Assess photo quality for smile analysis.' },
-    ], 150);
-    const qData = await qRes.json();
-    const raw = (qData?.content?.[0]?.text || '').trim();
-    return safeJsonParse(raw);
-  } catch (e) {
-    console.warn('[smileAnalysis v12] quality gate skipped:', e.message);
-    return { usable: true };
-  }
-}
-
-async function observeSmile(apiKey, imageContent) {
-  try {
-    const obsRes = await callClaude(apiKey, OBSERVE_PROMPT, [
-      imageContent,
-      { type: 'text', text: 'Describe what you can literally see in this smile photo.' },
-    ], 700);
-    const obsData = await obsRes.json();
-    const raw = (obsData?.content?.[0]?.text || '').trim();
-    const parsed = safeJsonParse(raw);
-    if (!parsed) throw new Error('Invalid observe JSON');
-    return parsed;
-  } catch (e) {
-    console.error('[smileAnalysis v12] observe pass error:', e.message);
-    return {
-      visible_findings: [],
-      photo_adequacy: { notes: 'Observation could not be completed reliably.' },
-    };
-  }
-}
-
-async function assessEmergencySafety(apiKey, imageContent) {
-  try {
-    const triageRes = await callClaude(apiKey, TRIAGE_PROMPT, [
-      imageContent,
-      { type: 'text', text: 'Assess this image.' },
-    ], 30);
-    const triageData = await triageRes.json();
-    const raw = (triageData?.content?.[0]?.text || '').trim();
-    const parsed = safeJsonParse(raw);
-    return parsed || { safe: true };
-  } catch {
-    return { safe: true };
-  }
-}
-
-async function assessHealthPathology(apiKey, imageContent) {
-  try {
-    const hRes = await callClaude(apiKey, HEALTH_TRIAGE_PROMPT, [
-      imageContent,
-      { type: 'text', text: 'Screen for visible dental pathology.' },
-    ], 200);
-    const hData = await hRes.json();
-    const raw = (hData?.content?.[0]?.text || '').trim();
-    return safeJsonParse(raw);
-  } catch (e) {
-    console.warn('[smileAnalysis v12] health triage skipped:', e.message);
-    return null;
-  }
-}
-
-function safeJsonParse(raw) {
-  if (!raw || typeof raw !== 'string') return null;
-  try {
-    const cleaned = raw
-      .replace(/^```(?:json)?\s*/i, '')
-      .replace(/\s*```$/i, '')
-      .trim();
-    return JSON.parse(cleaned);
-  } catch {
-    return null;
-  }
-}
-
-function hasFinding(findings, code) {
-  return Array.isArray(findings?.visible_findings)
-    && findings.visible_findings.some(f => f.code === code);
-}
-
-function normalizePlan(parsed) {
-  if (Array.isArray(parsed.plan)) return parsed.plan;
-  const plan = parsed.plan || {};
-  const planArray = [];
-  if (plan.best_option) {
-    planArray.push({
-      label: plan.best_option,
-      treatment: plan.best_option.replace(/^BEST OPTION\s*[—-]\s*/i, ''),
-      id: parsed.treatments?.[0]?.id || '',
-      detail: plan.best_detail || '',
-    });
-  }
-  if (plan.alternative) {
-    planArray.push({
-      label: plan.alternative,
-      treatment: plan.alternative.replace(/^ALTERNATIVE\s*[—-]\s*/i, ''),
-      id: parsed.treatments?.[1]?.id || '',
-      detail: plan.alt_detail || '',
-    });
-  }
-  return planArray;
-}
-
-// Missing-tooth override: when a missing tooth is in the verified
-// findings, force implant + bridge as the recommendation. Prevents
-// the AI from defaulting to whitening/Invisalign when the actual
-// problem is a gap. Applies to both cosmetic_preview and clinical
-// modes — both should agree on the answer.
-function enforceTreatmentRules(parsed, findings) {
-  const hasMissingTooth = hasFinding(findings, 'missing_tooth');
-  if (!parsed || typeof parsed !== 'object') parsed = {};
-  if (!hasMissingTooth) return parsed;
-
-  parsed.headline = parsed.headline
-    || 'There appears to be a visible space where a tooth is missing, and replacing it could make a major difference in your smile.';
-
-  parsed.bullets = [
-    'There appears to be a visible gap where a tooth is missing',
-    'Replacing the tooth is usually the first step before cosmetic refinements',
-    'An in-person exam can confirm whether an implant or bridge is the better fit',
-  ];
-
-  parsed.plan = {
-    best_option: 'BEST OPTION — Dental Implant',
-    best_detail: 'A dental implant can replace the missing tooth with a natural-looking result that does not rely on neighboring teeth.',
-    alternative: 'ALTERNATIVE — Dental Bridge',
-    alt_detail: 'A bridge can also close the space by using the neighboring teeth for support.',
-  };
-
-  parsed.ideal_result = 'The goal is to restore the missing tooth so the smile looks complete, natural, and balanced again.';
-  parsed.cta = "Book your free consultation and we'll walk you through implant and bridge options.";
-
-  parsed.treatments = [
-    { id: 'implant_single', label: 'Dental Implant' },
-    { id: 'bridge', label: 'Dental Bridge' },
-  ];
-  parsed.options = parsed.treatments;
-  parsed.urgency = 'priority';
-
-  // Cosmetic-mode-specific fields (insights/improvements)
-  if (!parsed.insights || !parsed.insights.length) {
-    parsed.insights = [
-      'A visible space is the first thing the eye notices in a smile',
-      'Restoring it can dramatically rebalance the entire smile line',
-    ];
-  }
-  if (!parsed.improvements || !parsed.improvements.length) {
-    parsed.improvements = [
-      'A complete, even smile line',
-      'Restored confidence when speaking and smiling',
-    ];
-  }
-
-  return parsed;
-}
-
-function buildFallbackCosmeticPreview() {
-  return {
-    headline: 'Your smile has real potential, and an in-person consultation can show what would enhance it most.',
-    insights: [
-      'A photo can highlight visible cosmetic opportunities',
-      'A full evaluation gives the most accurate treatment options',
-    ],
-    improvements: [
-      'A more balanced smile appearance',
-      'A clearer plan based on professional photos and an exam',
-    ],
-    options: [
-      { id: 'consultation', label: 'Free Cosmetic Consultation' },
-    ],
-    treatments: [
-      { id: 'consultation', label: 'Free Cosmetic Consultation' },
-    ],
-    cta: 'See what your personalized smile options could look like.',
-  };
-}
-
-function buildFallbackClinicalRecommendation() {
-  return {
-    headline: "Your smile looks healthy on camera — an in-person consultation will show you what's possible.",
-    bullets: [
-      'Nothing specific jumped out from this photo that requires cosmetic treatment',
-      'A full evaluation in our office gives the most accurate picture',
-    ],
-    plan: {
-      best_option: 'BEST OPTION — Free In-Office Consultation',
-      best_detail: "We'll take proper clinical photos and walk through any enhancement you're considering.",
-      alternative: '',
-      alt_detail: '',
-    },
-    ideal_result: "You'll leave with a clear, personalized picture of what would actually enhance your smile — no pressure, no guesswork.",
-    cta: "Book your free consultation — we'll show you exactly what's possible.",
-    treatments: [],
-    urgency: 'standard',
-  };
 }
 
 // ─────────────────────────────────────────────
