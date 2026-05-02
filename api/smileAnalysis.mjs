@@ -1,19 +1,26 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v13.4 — OBSERVE accuracy fixes: missing_tooth + gum_excess
-//   v13.2 was BOTH missing obvious missing teeth AND inventing
-//   gum_excess on normal smiles. v13.4 changes:
-//   - OBSERVE_PROMPT: removed the over-cautious missing_tooth
-//     warning that was making AI skip obvious gaps. Patients with
-//     missing teeth deserve correct flags.
-//   - OBSERVE_PROMPT: gum_excess now requires DRAMATIC visible
-//     gum tissue (≥3mm band, dominates the smile). Normal gum
-//     margins explicitly rejected.
-//   - Code-level filter: drop mild gum_excess findings, drop
-//     gum_excess when it's the only finding (false-positive
-//     pattern observed in production logs).
-//   - Quality gate (v13.2), whitening-first prioritization (v13.1),
-//     and silent pathology signal (v13) all preserved.
+// v13.5 — Dedicated missing-tooth detector
+//   v13.4 still misclassified obvious missing teeth as "spacing"
+//   because OBSERVE has too many findings to weigh and the AI
+//   biases toward conservative findings. v13.5 adds a dedicated
+//   single-purpose vision pass that asks ONE question: "Is there
+//   a missing tooth in this photo?" — much higher accuracy.
+//
+//   Architecture:
+//   - MISSING_TOOTH_PROMPT runs in parallel after OBSERVE
+//   - If detector confirms missing tooth but OBSERVE missed it,
+//     spacing findings are stripped (they were misclassifications)
+//     and missing_tooth is injected into the findings array
+//   - RECOMMEND then sees the corrected findings and produces
+//     implant/bridge plan
+//
+//   This is an extra Claude API call per request (~$0.005), but
+//   the alternative is missing implant/bridge leads — by far the
+//   most valuable conversion category for the practice.
+//
+//   v13 features preserved: silent pathology signal, whitening-
+//   first prioritization, loosened quality gate, gum_excess filter.
 //   Same response shape — widget unchanged.
 
 export const config = { runtime: 'edge' };
@@ -141,6 +148,44 @@ Examples of when to REJECT (these are rare):
 - A pet or food photo → usable: false, hint: "We can only analyze photos of a smile — please upload a photo of your teeth."
 
 Default to usable: true for everything else.`;
+
+// ─────────────────────────────────────────────
+// MISSING TOOTH DETECTOR — dedicated single-purpose pass [v13.5]
+// OBSERVE alone keeps misclassifying obvious missing teeth as
+// "spacing." A dedicated, narrow vision pass with one question
+// is dramatically more accurate. Run BEFORE OBSERVE; result is
+// merged into findings if positive.
+// ─────────────────────────────────────────────
+const MISSING_TOOTH_PROMPT = `You are a dental imaging specialist. Your ONLY job is to determine if there is a MISSING TOOTH visible in this smile photo.
+
+A missing tooth means: a tooth that should be present in the dental arch is ABSENT. There is empty space (often dark, sometimes showing the tongue or lower teeth behind it) where a tooth should be. The teeth on either side of the gap are still present.
+
+CRITICAL DISTINCTION:
+- MISSING TOOTH: a wide gap in the arch where no tooth/crown is visible. Usually wider than a tooth-width. The dark space behind shows the inside of the mouth.
+- SPACING/DIASTEMA: small gap between two teeth that are BOTH PRESENT. Usually narrow (<3mm). Both teeth are clearly there, just separated.
+
+A gap is a MISSING TOOTH (not spacing) if ANY of these are true:
+- The gap is roughly the width of a normal tooth or wider
+- You can clearly see the inside of the mouth / tongue / opposite arch through the gap
+- The teeth on either side are normal-sized adult teeth (not baby teeth or natural gap)
+- The gap interrupts the smile line obviously
+
+A gap is SPACING (not missing) only if:
+- The gap is narrow (<3mm, less than half a tooth-width)
+- Two normal-sized teeth flank it and are clearly both present
+- The gap looks like a natural diastema between two complete teeth
+
+When uncertain, lean MISSING TOOTH. Patients with missing teeth deserve correct identification — implant/bridge cases get lost when this is misread as spacing.
+
+RETURN ONLY JSON. No markdown:
+{
+  "missing_tooth_present": true | false,
+  "count": integer,
+  "location": "upper_anterior" | "upper_left" | "upper_right" | "lower_anterior" | "lower_left" | "lower_right" | "generalized" | null,
+  "evidence": "one sentence describing what you see — be specific about which tooth area is empty"
+}
+
+If no missing tooth: { "missing_tooth_present": false, "count": 0, "location": null, "evidence": "" }`;
 
 // ─────────────────────────────────────────────
 // OBSERVE PASS — pure visual description, no treatments
@@ -542,6 +587,57 @@ export default async function handler(req) {
         treatments: [],
         urgency: 'standard',
       }), { status: 200, headers });
+    }
+
+    // ── DEDICATED MISSING-TOOTH DETECTION [v13.5] ─────────
+    // OBSERVE alone misclassifies obvious missing teeth as spacing.
+    // A narrow single-purpose vision pass is dramatically more
+    // accurate. We run it in parallel and override OBSERVE's
+    // spacing→missing_tooth misread when the dedicated detector
+    // confirms a missing tooth.
+    let missingToothResult = null;
+    try {
+      const mtRes = await callClaude(apiKey, MISSING_TOOTH_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Is there a missing tooth in this photo?' },
+      ], 200);
+      const mtData = await mtRes.json();
+      const mtRaw = (mtData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+      missingToothResult = JSON.parse(mtRaw);
+      console.log('[smileAnalysis v13.5] missing-tooth detector:', JSON.stringify(missingToothResult));
+    } catch (e) {
+      console.warn('[smileAnalysis v13.5] missing-tooth detector skipped:', e.message);
+      missingToothResult = null;
+    }
+
+    // Reconcile OBSERVE findings with dedicated detector
+    if (missingToothResult?.missing_tooth_present === true && findings?.visible_findings) {
+      const obsHasMissing = findings.visible_findings.some(f => f.code === 'missing_tooth');
+
+      if (!obsHasMissing) {
+        console.log('[smileAnalysis v13.5] OVERRIDE: detector found missing tooth that OBSERVE missed');
+
+        // Remove any "spacing" findings — they were misclassifications
+        const beforeCount = findings.visible_findings.length;
+        findings.visible_findings = findings.visible_findings.filter(f => {
+          if (f.code === 'spacing') {
+            console.log('[smileAnalysis v13.5] removing spurious spacing finding (was actually missing tooth)');
+            return false;
+          }
+          return true;
+        });
+
+        // Inject the missing_tooth finding from the dedicated detector
+        for (let i = 0; i < (missingToothResult.count || 1); i++) {
+          findings.visible_findings.push({
+            code: 'missing_tooth',
+            location: missingToothResult.location || 'upper_anterior',
+            severity: 'moderate',
+            evidence: missingToothResult.evidence || 'Visible gap in the dental arch where a tooth is absent.',
+          });
+        }
+        console.log('[smileAnalysis v13.5] findings adjusted: ' + beforeCount + ' -> ' + findings.visible_findings.length);
+      }
     }
 
     // ── FINDINGS GUARDRAILS [v13.4] ─────────────────────────
