@@ -1363,8 +1363,30 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     iconUp.style.display='none';iconOk.style.display='block';
     var r=new FileReader();r.onload=function(ev){previewImg.src=ev.target.result;preview.classList.add('show');};r.readAsDataURL(f);
   }
-
   analyzeBtn.addEventListener('click',function(){if(selFile)run()});
+
+  /* v13.3: compress client-side to avoid 413 errors on large iPhone photos */
+  function compressImage(file, maxDim, quality){
+    return new Promise(function(resolve, reject){
+      var url=URL.createObjectURL(file);
+      var img=new Image();
+      img.onload=function(){
+        try{
+          var w=img.naturalWidth,h=img.naturalHeight;
+          var scale=Math.min(1,maxDim/Math.max(w,h));
+          var dw=Math.round(w*scale),dh=Math.round(h*scale);
+          var canvas=document.createElement('canvas');
+          canvas.width=dw;canvas.height=dh;
+          canvas.getContext('2d').drawImage(img,0,0,dw,dh);
+          URL.revokeObjectURL(url);
+          var dataUrl=canvas.toDataURL('image/jpeg',quality);
+          resolve({b64:dataUrl.split(',')[1],mime:'image/jpeg'});
+        }catch(e){reject(e);}
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);reject(new Error('Image load failed'));};
+      img.src=url;
+    });
+  }
 
   function run(){
     analyzeBtn.disabled=true;loader.classList.add('show');
@@ -1375,15 +1397,13 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     if($$('saiIdeal'))$$('saiIdeal').style.display='none';
     if(urgencyEl)urgencyEl.innerHTML='';
     resetBtn.classList.remove('visible');pendingData=null;activeChip=null;
-    var reader=new FileReader();
-    reader.onload=function(ev){
-      b64=ev.target.result.split(',')[1];mime=selFile.type||'image/jpeg';
-      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,pagePath:window.location.pathname})})
-      .then(function(r){return r.json()})
-      .then(function(data){loader.classList.remove('show');if(data.error){showErr(data.error);return;}if(data.retake_required){showErr(data.hint||data.reason||"Please upload a clearer photo showing your full smile.");return;}pendingData=data;showGate(data);})
-      .catch(function(){loader.classList.remove('show');showErr('We could not complete the analysis. Please call (818) 706-6077.');});
-    };
-    reader.readAsDataURL(selFile);
+    compressImage(selFile,1600,0.85).then(function(out){
+      b64=out.b64;mime=out.mime;
+      return fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mediaType:mime,pagePath:window.location.pathname})});
+    })
+    .then(function(r){if(r.status===413)throw new Error('PAYLOAD_TOO_LARGE');if(!r.ok)throw new Error('HTTP_'+r.status);return r.json();})
+    .then(function(data){loader.classList.remove('show');if(data.error){showErr(data.error);return;}if(data.retake_required){showErr(data.hint||data.reason||"Please upload a clearer photo showing your full smile.");return;}pendingData=data;showGate(data);})
+    .catch(function(err){loader.classList.remove('show');var m=(err&&err.message)||'';if(m==='PAYLOAD_TOO_LARGE'){showErr('Your photo file is unusually large. Please try a different photo or one taken directly from your camera. You can also call (818) 706-6077.');}else{showErr('We could not complete the analysis. Please call (818) 706-6077.');}});
   }
 
   function hasFullMouth(data){if(!data||!data.treatments)return false;var ids=(data.treatments||[]).map(function(t){return t.id});return ids.includes('full_crowns')||ids.includes('makeover')||(ids.length>=3);}
