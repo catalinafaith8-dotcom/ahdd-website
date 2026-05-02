@@ -1,18 +1,19 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v13.2 — Quality gate loosened (anti-false-rejection)
-//   v13.1 was rejecting valid casual selfies as "needs both arches
-//   visible" — destroying conversion. v13.2 changes:
-//   - QUALITY_PROMPT rewritten to default to usable=true. Only
-//     reject for hard cases (not a mouth, pitch black, motion blur,
-//     mouth closed with no teeth showing).
-//   - Code-level whitelist: even if AI flags usable=false, the
-//     handler only honors rejections matching hard-reject keywords.
-//     False positives ("only lower teeth visible", "side angle",
-//     "lips partially covering") are silently ignored and analysis
-//     proceeds.
-//   - Whitening-first prioritization preserved from v13.1
-//   - Pathology silent-signal preserved from v13
+// v13.4 — OBSERVE accuracy fixes: missing_tooth + gum_excess
+//   v13.2 was BOTH missing obvious missing teeth AND inventing
+//   gum_excess on normal smiles. v13.4 changes:
+//   - OBSERVE_PROMPT: removed the over-cautious missing_tooth
+//     warning that was making AI skip obvious gaps. Patients with
+//     missing teeth deserve correct flags.
+//   - OBSERVE_PROMPT: gum_excess now requires DRAMATIC visible
+//     gum tissue (≥3mm band, dominates the smile). Normal gum
+//     margins explicitly rejected.
+//   - Code-level filter: drop mild gum_excess findings, drop
+//     gum_excess when it's the only finding (false-positive
+//     pattern observed in production logs).
+//   - Quality gate (v13.2), whitening-first prioritization (v13.1),
+//     and silent pathology signal (v13) all preserved.
 //   Same response shape — widget unchanged.
 
 export const config = { runtime: 'edge' };
@@ -153,7 +154,43 @@ RULES — read carefully:
 - For every finding, you must write one specific evidence sentence describing what you actually see.
 - If you cannot write a specific evidence sentence, you MUST NOT include the finding.
 - It is completely valid to return an empty findings array.
-- Do NOT invent a missing tooth from a dark interdental space — a missing tooth means no crown is visible where one should be.
+
+═══ MISSING TOOTH — be HONEST, not overly cautious ═══
+A missing_tooth IS present when:
+- You see a clear GAP in the arch where a crown is absent
+- Adjacent teeth flank a visible empty space
+- The dark space between teeth is wider than a normal interdental contact
+- A tooth that should be there clearly is not
+
+Do NOT skip a missing tooth because you're worried about being wrong.
+If you can see a gap in the arch where a tooth visibly is not present,
+flag it as missing_tooth. Patients with missing teeth deserve correct
+assessment — missing this finding is far more harmful than a rare
+false positive on dark shadows.
+
+Only AVOID flagging missing_tooth if the dark space is clearly just a
+narrow interdental shadow between two teeth that ARE both present and
+touching at the gumline.
+
+═══ GUM EXCESS — strict quantitative criteria ═══
+A gum_excess finding (gummy smile) requires you to clearly see:
+- A visibly LARGE band of pink gum tissue (≥3mm equivalent) showing
+  above the upper front teeth when the patient is smiling normally
+- The gums dominate the smile visually, drawing the eye more than the teeth
+- The teeth themselves look short relative to how much gum shows
+
+Do NOT flag gum_excess if:
+- You only see a normal thin gum margin at the top of the teeth (this is
+  anatomical baseline, EVERY mouth shows some gum margin)
+- The smile shows a healthy tooth-to-gum ratio (teeth dominate visually)
+- You're inferring "gummy smile" from minor gum visibility — the gum
+  band must be visually dramatic to qualify
+- The lip line crosses near the gum margin — that's a normal smile
+
+When in doubt, do NOT flag gum_excess. Healthy gum margins are not
+pathology and not a cosmetic concern.
+
+═══ OTHER ANTI-HALLUCINATION RULES ═══
 - Do NOT call a shadow "staining". Staining means visible brown/yellow/grey discoloration on the tooth surface.
 - Do NOT call a tilt "crowding" unless teeth are visibly overlapping or rotated out of arch.
 - Do NOT describe anything on a side of the arch you cannot see.
@@ -161,16 +198,16 @@ RULES — read carefully:
 RETURN ONLY JSON. No markdown. No backticks. Start with { and end with }.
 
 ALLOWED finding codes (use ONLY these):
-- missing_tooth — a crown is absent where one should be; a clear gap in the arch
+- missing_tooth — a clear gap in the arch where a tooth crown is absent. Flag this whenever you can identify an empty space where a tooth should be, flanked by present teeth on either side. Do NOT skip this — patients deserve to have missing teeth identified.
 - crowding — teeth visibly overlapping, pushed out of arch alignment
 - rotation — one or more teeth rotated around their own axis
-- spacing — visible gap(s) between teeth that are both present
+- spacing — visible gap(s) between teeth that are both present (NOT a missing tooth)
 - yellowing — overall warm yellow hue across multiple teeth
 - staining — localized brown/grey/yellow patches on tooth surfaces
 - wear — shortened, flattened, or chipped incisal edges
 - chipping — a specific chip on a specific tooth
 - irregular_shape — one or more teeth noticeably asymmetric or misshapen
-- gum_excess — excess gum tissue / gummy smile clearly visible
+- gum_excess — DRAMATIC excess gum tissue ("gummy smile"): ≥3mm band of pink gum above the upper teeth that visually dominates the smile. Normal thin gum margins are NOT gum_excess.
 - short_teeth — teeth look unusually short relative to the gumline
 - darkness — one specific tooth is notably darker than its neighbors
 - edge_irregularity — uneven or jagged incisal edges
@@ -505,6 +542,42 @@ export default async function handler(req) {
         treatments: [],
         urgency: 'standard',
       }), { status: 200, headers });
+    }
+
+    // ── FINDINGS GUARDRAILS [v13.4] ─────────────────────────
+    // The OBSERVE pass has high false-positive rates on certain
+    // findings when the photo doesn't clearly show them. We filter
+    // those out here at the code level rather than trying to fight
+    // the AI through prompts alone.
+    if (findings && Array.isArray(findings.visible_findings)) {
+      const before = findings.visible_findings.length;
+
+      // Drop mild gum_excess findings — these are almost always
+      // false positives. Real gum_excess (gummy smile) is dramatic
+      // and the AI will mark it as moderate or severe.
+      findings.visible_findings = findings.visible_findings.filter(f => {
+        if (f.code === 'gum_excess' && f.severity === 'mild') {
+          console.log('[smileAnalysis v13.4] dropped mild gum_excess (false-positive filter)');
+          return false;
+        }
+        return true;
+      });
+
+      // If gum_excess is the ONLY finding, drop it. Real gummy
+      // smiles co-occur with at least one other finding (short_teeth,
+      // edge_irregularity, etc.) and a smile with literally nothing
+      // else wrong wouldn't trigger a cosmetic consultation anyway.
+      const gumExcessOnly = findings.visible_findings.length === 1
+        && findings.visible_findings[0].code === 'gum_excess';
+      if (gumExcessOnly) {
+        console.log('[smileAnalysis v13.4] dropped solo gum_excess (likely false positive)');
+        findings.visible_findings = [];
+      }
+
+      const after = findings.visible_findings.length;
+      if (after !== before) {
+        console.log('[smileAnalysis v13.4] findings filtered: ' + before + ' -> ' + after);
+      }
     }
 
     // ── HEALTH TRIAGE — silent backend signal only [v13] ─────────
