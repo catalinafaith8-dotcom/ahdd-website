@@ -1,6 +1,47 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v14 — Clean separation: AI observes, code routes, templates speak
+// v15 — Full clinical hierarchy per advisor audit
+//
+//   Builds on v14 architecture (AI observes, code routes, templates speak).
+//   v14.1 added failing_restoration + decay. v15 expands to the full
+//   advisor-prescribed routing hierarchy:
+//
+//   New finding codes:
+//     - dark_single_tooth (split from generic darkness — clinical signal)
+//     - severe_wear (vs minor wear)
+//     - major_chip (vs small chipping)
+//     - recession (gum recession / black triangles)
+//     - mismatched_dentistry (intact but cosmetically inconsistent)
+//     - decay_severe (multiple decayed teeth)
+//     - extensive_breakdown (full-arch territory)
+//
+//   Findings now carry a "count" field (for missing_tooth, decay,
+//   chipping, mismatched_dentistry) so the router can distinguish
+//   single vs multiple cases.
+//
+//   New router scenarios in priority order:
+//     1. full_arch_consultation (extensive missing + failing)
+//     2. comprehensive_evaluation (severe decay)
+//     3. multiple_implants (4+ missing or scattered)
+//     4. implant_bridge (2-3 adjacent missing)
+//     5. missing_tooth (single)
+//     6. restoration_needed (failing crowns or single decay)
+//     7. severe_structural (major chip / severe wear)
+//     8. recession_eval (gum-first evaluation)
+//     9. gum_excess (true gummy smile)
+//    10. dark_tooth (single dark — clinical first)
+//    11. smile_makeover (mismatched old work)
+//    12. structural_compound (>=2 minor structural)
+//    13. color_alignment / color_only / alignment_only
+//    14. structural_minor (1 minor)
+//    15. inconclusive (page-aware fallback — never "looks healthy"
+//        on a service page)
+//
+//   Page-aware inconclusive: pagePath is now passed through and used
+//   to surface a service-specific consultation when no findings are
+//   detected. Implants page never says "your smile looks healthy".
+//
+//   Architectural principle preserved: AI never sees treatment names.
 //
 //   Architectural rewrite. v13.x grew to 910 lines of layered overrides
 //   because the AI was making business decisions ("recommend Invisalign
@@ -129,15 +170,32 @@ yellowing — Overall warm yellow hue across multiple teeth
 
 staining — Localized brown/grey/yellow patches on specific tooth surfaces
 
-wear — Shortened, flattened, or worn-down incisal edges
+dark_single_tooth — ONE specific tooth notably darker than ALL its
+  neighbors (suggests non-vital/dead tooth from old trauma). This is
+  CLINICALLY DIFFERENT from yellowing. Use this code when one tooth is
+  visibly darker than the others, NOT when multiple teeth share a
+  yellow tint.
 
-chipping — Specific visible chip on a specific tooth
+wear — Shortened, flattened, or worn-down incisal edges across multiple
+  teeth (suggests grinding/bruxism pattern)
 
-irregular_shape — Tooth visibly asymmetric or misshapen
+severe_wear — Pronounced wear where multiple teeth look dramatically
+  shorter than they should, with flat or chipped edges across the front.
+  Use when wear is the dominant visible feature, not just a minor finding.
 
-short_teeth — Teeth appear unusually short relative to gum line
+chipping — Specific visible chip on a specific tooth (small, localized)
 
-darkness — One specific tooth notably darker than its neighbors
+major_chip — A large fracture or visible break on a front tooth where a
+  significant portion of the tooth is missing or broken. NOT a small chip.
+  This is structural damage that warrants restorative consultation.
+
+irregular_shape — Tooth visibly asymmetric or misshapen (peg-shaped lateral,
+  small tooth that looks underdeveloped, baby-tooth-like appearance in
+  an adult). Use this for tooth SHAPE issues, not gum coverage issues.
+
+short_teeth — Teeth appear unusually short relative to gum line. May be
+  due to gum coverage (use gum_excess if gums are also clearly excessive)
+  or actual tooth shape issue (use irregular_shape if teeth are truly small).
 
 edge_irregularity — Uneven or jagged incisal edges
 
@@ -145,6 +203,46 @@ gum_excess — DRAMATIC excess gum tissue: a band of gum visible above
   the upper teeth that visually dominates the smile and makes the teeth
   look short. Normal thin gum margins are NOT gum_excess. Do not flag
   unless it is unmistakable.
+
+recession — Gum recession with visibly exposed yellow root surface, or
+  "black triangles" (dark spaces between teeth at the gumline indicating
+  papilla loss / interproximal bone loss). Patients with visible recession
+  need a gum-health evaluation BEFORE any cosmetic work.
+
+failing_restoration — Existing dental work (crowns, veneers, bridges, large
+  fillings) that is visibly compromised. Look for:
+  - Dark margins where the crown/restoration meets the natural tooth or gumline
+    (suggesting decay underneath or seal failure)
+  - Visible gap between the restoration and adjacent tooth
+  - Color mismatch indicating the restoration is older or breaking down
+  - A crown that looks dramatically different in shade from neighbors
+  - Visible chipping or fracture on what is clearly a crown/veneer
+  When patients have multiple existing crowns AND you see ANY of these signs,
+  flag it. Patients with failing crowns need replacement, not whitening.
+
+mismatched_dentistry — Existing dental work (crowns, veneers, fillings) that
+  is INTACT but visibly mismatched in color, shape, or size from surrounding
+  natural teeth. Different from failing_restoration: the work is sound but
+  cosmetically inconsistent. Common in patients who had old dentistry that
+  no longer matches their current smile aesthetic. Do not flag the same
+  area as both failing_restoration and mismatched_dentistry — pick one.
+
+decay — Visible tooth decay: brown/black cavitation or hole on a tooth surface,
+  dark shadow indicating caries, or breakdown along the gumline. This is
+  distinct from staining (which is surface-level) — decay implies structural
+  loss or active disease. Flag when clearly visible, especially under or
+  around existing dental work.
+
+decay_severe — Multiple teeth (≥3) with visible decay, OR a single tooth
+  with extensive breakdown showing more than half the visible tooth structure
+  affected. Use this code instead of decay when the pattern is clearly more
+  serious than a single small cavity. Routes to comprehensive evaluation.
+
+extensive_breakdown — A pattern of widespread missing AND failing teeth
+  visible across an entire arch (3+ missing combined with multiple failing
+  restorations or decayed teeth). This is the highest-severity finding —
+  use it ONLY when the visible state of the arch is dramatically compromised.
+  Do not use for partial issues or single-area concerns.
 
 ═══ DECISION RULES FOR AMBIGUOUS GAPS ═══
 
@@ -177,6 +275,7 @@ generalized — finding affects most teeth
       "location": "<from location codes>",
       "severity": "mild" | "moderate" | "severe",
       "confidence": "high" | "medium" | "low",
+      "count": <integer, ONLY for missing_tooth, decay, chipping, mismatched_dentistry — how many teeth are affected>,
       "evidence": "<one specific sentence describing what you see in pixels>"
     }
   ],
@@ -214,59 +313,103 @@ Under 130 words. Warm, real, never salesy.`;
 // Pure JS. No LLM. Maps findings -> scenario key.
 // ═══════════════════════════════════════════════════════════════
 
-const STRUCTURAL = new Set(['wear', 'chipping', 'irregular_shape', 'edge_irregularity', 'short_teeth']);
-const COLOR      = new Set(['yellowing', 'staining', 'darkness']);
+const STRUCTURAL = new Set(['wear', 'chipping', 'irregular_shape', 'edge_irregularity', 'short_teeth', 'major_chip', 'severe_wear']);
+const COLOR      = new Set(['yellowing', 'staining']);
 const ALIGNMENT  = new Set(['crowding', 'rotation', 'spacing']);
 
 /**
  * Route findings to a treatment scenario key.
  * Priority order is deliberate — earlier rules win.
  *
- * Returns one of:
- *   missing_tooth         — implant + bridge
- *   gum_excess            — gum contouring
- *   structural_compound   — veneers + bonding (multiple structural findings)
- *   color_alignment       — whitening + Invisalign
- *   color_only            — whitening + take-home trays
- *   alignment_only        — Invisalign + whitening
- *   structural_minor      — bonding + whitening
- *   inconclusive          — free consultation (no clear findings)
+ * Final priority hierarchy (per v15 advisor audit):
+ *   1. Photo unusable -> retake (handled at quality gate, not here)
+ *   2. Emergency / trauma / swelling / abscess -> handled at TRIAGE pass
+ *   3. Obvious pathology / decay / extensive breakdown
+ *   4. Missing teeth (single, adjacent, multiple, full arch)
+ *   5. Major chips / severe wear / structural damage
+ *   6. Recession / black triangles -> gum eval before cosmetic
+ *   7. Gummy smile / excess gum / short teeth from gum coverage
+ *   8. Mismatched old dentistry -> smile makeover
+ *   9. Multiple structural minor findings -> veneers
+ *  10. Single dark tooth -> evaluation before whitening
+ *  11. Color + alignment combo
+ *  12. Color only
+ *  13. Alignment only
+ *  14. Single structural finding -> bonding
+ *  15. Inconclusive -> page-aware fallback
+ *
+ * Returns the scenario key string.
  */
 function routeScenario(findings) {
-  const codes = (findings.visible_findings || []).map(f => f.code);
+  const visible = findings.visible_findings || [];
+  const codes = visible.map(f => f.code);
   const codeSet = new Set(codes);
   const has = (c) => codeSet.has(c);
   const countIn = (set) => codes.filter(c => set.has(c)).length;
+  const find = (c) => visible.find(f => f.code === c);
 
-  // P1: Missing tooth — highest-value, deterministic. Patient cannot
-  // smile without addressing it; no other scenario takes precedence.
-  if (has('missing_tooth')) return 'missing_tooth';
+  // ─── PRIORITY 1: Extensive breakdown (full-arch evaluation) ───
+  // Trumps everything else. AI explicitly flagged dramatic widespread
+  // damage, OR we infer it from many missing + many failing/decay.
+  if (has('extensive_breakdown')) return 'full_arch_consultation';
 
-  // P2: True gummy smile (only fires when AI flagged DRAMATIC gum excess
-  // per the strict prompt definition; mild/solo cases are filtered earlier)
+  const missingCount = (find('missing_tooth')?.count) || (has('missing_tooth') ? 1 : 0);
+  const decayCount = (find('decay')?.count) || (has('decay') ? 1 : 0);
+  const failingCount = visible.filter(f => f.code === 'failing_restoration').length;
+  if (missingCount >= 3 && (has('decay_severe') || decayCount + failingCount >= 2)) {
+    return 'full_arch_consultation';
+  }
+
+  // ─── PRIORITY 2: Severe decay -> comprehensive evaluation ───
+  if (has('decay_severe')) return 'comprehensive_evaluation';
+
+  // ─── PRIORITY 3: Missing teeth (varies by count and adjacency) ───
+  if (has('missing_tooth')) {
+    const missingFinding = find('missing_tooth');
+    const c = (missingFinding && missingFinding.count) || 1;
+    // Multiple in one location vs scattered across arches
+    const missingFindings = visible.filter(f => f.code === 'missing_tooth');
+    const distinctLocations = new Set(missingFindings.map(f => f.location).filter(Boolean));
+    const isScattered = distinctLocations.size >= 2;
+
+    if (c >= 4 || isScattered) return 'multiple_implants';
+    if (c === 2 || c === 3)    return 'implant_bridge';
+    return 'missing_tooth'; // single
+  }
+
+  // ─── PRIORITY 4: Failing restorations or single-tooth decay ───
+  if (has('failing_restoration') || has('decay')) return 'restoration_needed';
+
+  // ─── PRIORITY 5: Major chip / severe wear -> restorative consultation ───
+  if (has('major_chip') || has('severe_wear')) return 'severe_structural';
+
+  // ─── PRIORITY 6: Recession / black triangles -> gum eval first ───
+  if (has('recession')) return 'recession_eval';
+
+  // ─── PRIORITY 7: True gummy smile (gum_excess prompt is strict) ───
   if (has('gum_excess')) return 'gum_excess';
 
-  // P3: Multiple structural findings -> veneers territory.
-  // Veneers require structural justification (not just color/alignment).
+  // ─── PRIORITY 8: Single dark tooth (clinical, not cosmetic whitening) ───
+  if (has('dark_single_tooth')) return 'dark_tooth';
+
+  // ─── PRIORITY 9: Mismatched old dentistry -> smile makeover ───
+  if (has('mismatched_dentistry')) return 'smile_makeover';
+
+  // ─── PRIORITY 10: Multiple structural minor findings -> veneers ───
   const structuralCount = countIn(STRUCTURAL);
   if (structuralCount >= 2) return 'structural_compound';
 
+  // ─── PRIORITY 11-13: Color + Alignment combinations ───
   const hasColor     = countIn(COLOR) >= 1;
   const hasAlignment = countIn(ALIGNMENT) >= 1;
-
-  // P4: Color + alignment -> whitening (best) + Invisalign (alt)
   if (hasColor && hasAlignment) return 'color_alignment';
-
-  // P5: Color only
   if (hasColor) return 'color_only';
-
-  // P6: Alignment only
   if (hasAlignment) return 'alignment_only';
 
-  // P7: Single structural finding -> bonding territory
+  // ─── PRIORITY 14: Single structural finding -> bonding ───
   if (structuralCount === 1) return 'structural_minor';
 
-  // Fallback: nothing visible warranted treatment
+  // ─── FALLBACK: nothing visible -> page-specific consultation ───
   return 'inconclusive';
 }
 
@@ -275,7 +418,7 @@ function routeScenario(findings) {
 // Fixed patient-facing copy per scenario. No AI prose generation.
 // ═══════════════════════════════════════════════════════════════
 
-function buildResponse(scenario, findings, healthFlag) {
+function buildResponse(scenario, findings, healthFlag, pagePath) {
   const visible = findings.visible_findings || [];
   const evidenceFor = (code) => {
     const f = visible.find(x => x.code === code);
@@ -290,6 +433,144 @@ function buildResponse(scenario, findings, healthFlag) {
   };
 
   switch (scenario) {
+
+    case 'full_arch_consultation': {
+      return {
+        ...baseSignals,
+        headline: "Your photo shows several teeth that may need restorative attention — a full-mouth consultation is the right starting point.",
+        bullets: [
+          'Multiple areas in your smile appear to need replacement, repair, or evaluation.',
+          'A comprehensive in-person exam will determine whether individual repairs, multiple implants, or a full-arch solution is the right path.',
+          'There are excellent options available for restoring even extensive tooth loss or breakdown — the consultation is where we map out exactly what you need.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Full-Mouth Restorative Consultation',
+            treatment: 'Full-Mouth Restorative Consultation',
+            id: 'full_mouth_consult',
+            detail: "We'll take complete clinical photos and X-rays to fully understand the condition of every tooth and create a personalized restoration plan.",
+          },
+          {
+            label: 'POSSIBLE PATH — Full-Arch Implant Solution',
+            treatment: 'Full-Arch Implant / All-on-4 Discussion',
+            id: 'full_arch_implants',
+            detail: 'For extensive tooth loss combined with failing teeth, full-arch implant solutions can replace an entire arch with a fixed, natural-looking result. This is one option among several we will discuss together.',
+          },
+        ],
+        ideal_result: 'A renewed, complete smile with restored function — chewing, speaking, and smiling with confidence again.',
+        cta: "Book your free consultation — we will take the time to understand your full situation and walk through every option.",
+        treatments: [
+          { id: 'full_mouth_consult',  label: 'Full-Mouth Consultation' },
+          { id: 'full_arch_implants',  label: 'Full-Arch Implant Discussion' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'comprehensive_evaluation': {
+      const decayEv = evidenceFor('decay_severe') || evidenceFor('decay')
+        || 'Multiple teeth appear to need restorative attention.';
+      return {
+        ...baseSignals,
+        headline: "This looks like something worth checking in person before discussing cosmetic options.",
+        bullets: [
+          decayEv,
+          'A comprehensive evaluation lets us identify exactly which teeth need attention and in what order.',
+          'Restoring health and structure first protects your investment in any cosmetic work that follows.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Comprehensive Restorative Consultation',
+            treatment: 'Comprehensive Restorative Consultation',
+            id: 'comprehensive_eval',
+            detail: 'A thorough exam with full clinical photos and X-rays to identify and prioritize all teeth needing care.',
+          },
+          {
+            label: 'NEXT STEP — Treatment Plan Discussion',
+            treatment: 'Treatment Plan Discussion',
+            id: 'treatment_plan',
+            detail: 'Once we know exactly what needs attention, we will discuss restorative options including crowns, fillings, and any needed replacement work.',
+          },
+        ],
+        ideal_result: 'A healthy, restored mouth where every tooth is structurally sound — the foundation for any cosmetic enhancements you may want next.',
+        cta: 'Book your free consultation — we will examine carefully and explain exactly what each tooth needs.',
+        treatments: [
+          { id: 'comprehensive_eval', label: 'Restorative Consultation' },
+          { id: 'treatment_plan',     label: 'Treatment Plan Discussion' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'multiple_implants': {
+      const ev = evidenceFor('missing_tooth')
+        || 'Multiple visible gaps where teeth are missing.';
+      return {
+        ...baseSignals,
+        headline: "There are visible gaps where multiple teeth are missing — a tailored implant plan can fully restore your smile.",
+        bullets: [
+          ev,
+          'Replacing multiple missing teeth restores both function and the natural appearance of your smile.',
+          'An in-person consultation will determine the best combination of implants, bridges, or implant-supported restorations for your specific situation.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Multiple Implant Consultation',
+            treatment: 'Multiple Implant Consultation',
+            id: 'implants_multiple',
+            detail: 'Individual or strategically placed implants replace each missing tooth with a permanent, natural-looking result.',
+          },
+          {
+            label: 'ALTERNATIVE — Implant Bridge or Partial',
+            treatment: 'Implant Bridge or Partial',
+            id: 'implant_bridge',
+            detail: 'Depending on the locations of the missing teeth, an implant-supported bridge or partial denture may be a more efficient solution.',
+          },
+        ],
+        ideal_result: 'Your smile looks complete and natural again — every tooth restored, full chewing function returned, and lasting confidence.',
+        cta: "Book your free consultation and we will design a personalized restoration plan.",
+        treatments: [
+          { id: 'implants_multiple', label: 'Multiple Implants' },
+          { id: 'implant_bridge',    label: 'Implant Bridge' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'implant_bridge': {
+      const ev = evidenceFor('missing_tooth')
+        || 'A visible gap spanning multiple adjacent positions in the dental arch.';
+      return {
+        ...baseSignals,
+        headline: "Multiple adjacent missing teeth can be beautifully restored with an implant-supported bridge.",
+        bullets: [
+          ev,
+          'When several teeth are missing in a row, an implant bridge provides a stable, long-lasting restoration that looks and feels natural.',
+          'An in-person exam will confirm whether implants, a traditional bridge, or another approach is the best fit.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Implant Bridge',
+            treatment: 'Implant Bridge',
+            id: 'implant_bridge',
+            detail: 'Implants placed at strategic positions support a multi-tooth bridge, replacing all the missing teeth in a single connected restoration.',
+          },
+          {
+            label: 'ALTERNATIVE — Traditional Dental Bridge',
+            treatment: 'Traditional Dental Bridge',
+            id: 'bridge_traditional',
+            detail: 'A traditional bridge anchors the replacement teeth to the natural teeth on either side of the gap — faster placement and a more affordable path.',
+          },
+        ],
+        ideal_result: 'A complete, balanced smile with restored chewing strength and a natural appearance.',
+        cta: "Book your free consultation to map out your bridge or implant options.",
+        treatments: [
+          { id: 'implant_bridge',     label: 'Implant Bridge' },
+          { id: 'bridge_traditional', label: 'Dental Bridge' },
+        ],
+        urgency: 'priority',
+      };
+    }
 
     case 'missing_tooth': {
       const ev = evidenceFor('missing_tooth')
@@ -323,6 +604,199 @@ function buildResponse(scenario, findings, healthFlag) {
           { id: 'implant_bridge', label: 'Dental Bridge' },
         ],
         urgency: 'priority',
+      };
+    }
+
+    case 'restoration_needed': {
+      const restoEvidence = evidenceFor('failing_restoration');
+      const decayEvidence = evidenceFor('decay');
+      // Prefer the more specific evidence; fall back gracefully
+      const primaryEvidence = restoEvidence
+        || decayEvidence
+        || 'Existing dental work appears to be breaking down or showing signs of decay underneath.';
+      const secondaryEvidence = (restoEvidence && decayEvidence)
+        ? decayEvidence
+        : 'Updating the affected areas will protect the underlying tooth and restore your smile.';
+      const hasFailingResto = !!restoEvidence;
+      const hasDecay = !!decayEvidence;
+
+      return {
+        ...baseSignals,
+        headline: hasFailingResto
+          ? "Your existing dental work shows signs of needing attention — replacing it will protect your teeth and refresh your smile."
+          : "There are visible signs that some teeth need restorative attention before any cosmetic treatment.",
+        bullets: [
+          primaryEvidence,
+          secondaryEvidence,
+          'An in-person exam is essential here — we need clinical photos and X-rays to confirm what is happening underneath the existing work.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — In-Office Evaluation',
+            treatment: 'In-Office Evaluation',
+            id: 'consultation_priority',
+            detail: "We'll take proper clinical photos and X-rays to confirm the condition of your existing dental work and identify any decay underneath. This is the right first step.",
+          },
+          {
+            label: 'LIKELY PATH — New Crowns or Restorations',
+            treatment: 'Crowns / Restorations',
+            id: 'crowns',
+            detail: 'New crowns or restorations replace failing dental work with fresh materials, protecting the underlying tooth and restoring both function and appearance.',
+          },
+        ],
+        ideal_result: 'Your existing dental work is replaced with fresh, well-fitted restorations — your smile looks renewed and the underlying teeth are protected for the long term.',
+        cta: 'Book your free consultation — we will examine the existing work and map out exactly what needs replacing.',
+        treatments: [
+          { id: 'crowns', label: 'Crowns / Restorations' },
+          { id: 'consultation_priority', label: 'In-Office Evaluation' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'severe_structural': {
+      const ev = evidenceFor('major_chip') || evidenceFor('severe_wear')
+        || visible.find(f => STRUCTURAL.has(f.code))?.evidence
+        || 'Visible structural damage on a front tooth.';
+      const isMajorChip = !!evidenceFor('major_chip');
+      return {
+        ...baseSignals,
+        headline: isMajorChip
+          ? "There's a noticeable break or fracture on your front teeth that warrants a restorative consultation."
+          : "Significant wear on your front teeth can be beautifully restored with porcelain veneers or crowns.",
+        bullets: [
+          ev,
+          'Damage of this scale typically needs more than cosmetic bonding to restore both appearance and strength.',
+          'An in-person exam will confirm whether veneers, crowns, or another restorative approach is the right fit.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Veneers or Crown Consultation',
+            treatment: 'Veneers or Crown Consultation',
+            id: 'veneers_or_crown',
+            detail: 'Custom porcelain restorations that rebuild both the appearance and the structural integrity of damaged front teeth.',
+          },
+          {
+            label: 'ALTERNATIVE — Cosmetic Bonding (for Minor Areas)',
+            treatment: 'Cosmetic Bonding',
+            id: 'bonding',
+            detail: 'For minor damage in specific spots, bonding may be a more conservative option — your dentist will confirm whether this is enough.',
+          },
+        ],
+        ideal_result: 'Your front teeth look complete, even, and strong — your smile fully restored.',
+        cta: "Book your free consultation to evaluate the right restorative approach.",
+        treatments: [
+          { id: 'veneers',  label: 'Porcelain Veneers' },
+          { id: 'crowns',   label: 'Crowns' },
+          { id: 'bonding',  label: 'Cosmetic Bonding' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'recession_eval': {
+      const ev = evidenceFor('recession')
+        || 'Visible gum recession or "black triangles" between teeth.';
+      return {
+        ...baseSignals,
+        headline: "Before any cosmetic work, your gums deserve a careful evaluation — they are the foundation of every smile.",
+        bullets: [
+          ev,
+          'Visible recession or black triangles between teeth can indicate gum-health issues that should be assessed first.',
+          'Once gum health is confirmed, we can confidently discuss any cosmetic enhancements you are considering.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Comprehensive Gum Evaluation',
+            treatment: 'Comprehensive Gum Evaluation',
+            id: 'gum_eval',
+            detail: 'A thorough periodontal exam confirms the health of your gums and underlying bone — the right first step before any cosmetic work.',
+          },
+          {
+            label: 'NEXT STEP — Cosmetic Consultation After Gum Health Confirmed',
+            treatment: 'Cosmetic Consultation',
+            id: 'cosmetic_consult',
+            detail: 'Once we have confirmed your gums are healthy, we can discuss cosmetic options like veneers, whitening, or bonding with confidence.',
+          },
+        ],
+        ideal_result: 'Healthy, stable gums that frame a beautiful smile — and a clear path to any cosmetic enhancements you want.',
+        cta: 'Book your free consultation — we will start with the foundation and build from there.',
+        treatments: [
+          { id: 'gum_eval',         label: 'Gum Evaluation' },
+          { id: 'cosmetic_consult', label: 'Cosmetic Consultation' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'dark_tooth': {
+      const ev = evidenceFor('dark_single_tooth')
+        || 'One tooth appears notably darker than the surrounding teeth.';
+      return {
+        ...baseSignals,
+        headline: "One tooth appears darker than the others — an in-person evaluation is the right first step before whitening.",
+        bullets: [
+          ev,
+          'A single dark tooth is different from general yellowing — it can indicate the tooth needs evaluation rather than cosmetic whitening.',
+          "Once we have evaluated the cause, we will discuss the right approach: internal whitening, a veneer, or another option.",
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Dental Evaluation First',
+            treatment: 'Dental Evaluation',
+            id: 'dental_eval',
+            detail: "We will examine the tooth and confirm what is causing the discoloration before recommending any treatment.",
+          },
+          {
+            label: 'POSSIBLE PATHS — Internal Whitening or Veneer',
+            treatment: 'Internal Whitening or Veneer',
+            id: 'internal_or_veneer',
+            detail: 'Depending on the cause, options may include internal bleaching of the affected tooth or a porcelain veneer to match the surrounding teeth.',
+          },
+        ],
+        ideal_result: 'A balanced, even-shade smile where every tooth matches harmoniously.',
+        cta: 'Book your free consultation and we will examine carefully before recommending the right path.',
+        treatments: [
+          { id: 'dental_eval',        label: 'Dental Evaluation' },
+          { id: 'internal_or_veneer', label: 'Internal Whitening or Veneer' },
+        ],
+        urgency: 'priority',
+      };
+    }
+
+    case 'smile_makeover': {
+      const ev = evidenceFor('mismatched_dentistry')
+        || 'Existing dental work appears mismatched in color, shape, or size.';
+      return {
+        ...baseSignals,
+        headline: "Updating older dental work can transform a smile that has gradually become uneven over the years.",
+        bullets: [
+          ev,
+          'When natural teeth are healthy but old crowns or fillings no longer match, replacing them creates a unified, fresh appearance.',
+          'A smile-makeover consultation maps out exactly which restorations to update and in what order.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Smile Makeover Consultation',
+            treatment: 'Smile Makeover Consultation',
+            id: 'smile_makeover',
+            detail: 'A comprehensive cosmetic evaluation that identifies which existing restorations to update for a balanced, natural-looking result.',
+          },
+          {
+            label: 'LIKELY PATHS — Veneers and Updated Crowns',
+            treatment: 'Veneers and Updated Crowns',
+            id: 'veneers_crowns',
+            detail: 'Replacing mismatched older dentistry with new porcelain veneers or crowns that match in color, shape, and proportion.',
+          },
+        ],
+        ideal_result: 'A unified, harmonious smile where every tooth blends naturally — old and new work indistinguishable from each other.',
+        cta: "Book your free consultation and we will design a smile-makeover plan tailored to you.",
+        treatments: [
+          { id: 'smile_makeover',  label: 'Smile Makeover' },
+          { id: 'veneers',         label: 'Porcelain Veneers' },
+          { id: 'crowns',          label: 'Crowns' },
+        ],
+        urgency: 'standard',
       };
     }
 
@@ -434,7 +908,7 @@ function buildResponse(scenario, findings, healthFlag) {
     }
 
     case 'color_only': {
-      const ev = evidenceFor('yellowing') || evidenceFor('staining') || evidenceFor('darkness')
+      const ev = evidenceFor('yellowing') || evidenceFor('staining')
         || 'Visible discoloration across multiple teeth.';
       return {
         ...baseSignals,
@@ -542,25 +1016,66 @@ function buildResponse(scenario, findings, healthFlag) {
 
     case 'inconclusive':
     default: {
+      // Page-aware fallback: when nothing specific is detected,
+      // surface a consultation type that matches the page the
+      // patient came from. Never say "your smile looks healthy"
+      // on a service page where the patient is actively interested.
+      const pageMap = {
+        '/services/dental-implants':       { label: 'Implant Consultation',         id: 'consultation_implants',   tname: 'Dental Implant Consultation' },
+        '/services/veneers':                { label: 'Smile Makeover Consultation',  id: 'consultation_makeover',   tname: 'Smile Makeover Consultation' },
+        '/services/invisalign':             { label: 'Invisalign Consultation',      id: 'consultation_invisalign', tname: 'Invisalign Consultation' },
+        '/services/teeth-whitening':        { label: 'Whitening Consultation',       id: 'consultation_whitening',  tname: 'Whitening Consultation' },
+        '/services/restorative-dentistry':  { label: 'Restorative Consultation',     id: 'consultation_restorative',tname: 'Restorative Consultation' },
+        '/services/emergency-dentistry':    { label: 'Same-Day Evaluation',          id: 'consultation_emergency',  tname: 'Emergency Evaluation' },
+      };
+      // Match pagePath case-insensitively, allow trailing slash
+      const cleanPath = (pagePath || '').toLowerCase().replace(/\/$/, '');
+      const ctx = pageMap[cleanPath];
+
+      if (ctx) {
+        return {
+          ...baseSignals,
+          headline: `Your photo did not show specific findings, but a ${ctx.label.toLowerCase()} can confirm what is possible for your smile.`,
+          bullets: [
+            'A casual phone photo cannot capture every detail — clinical photos and an in-person exam tell us much more.',
+            'A consultation is the right next step to understand your specific situation and walk through your options.',
+            'There is no pressure and no commitment — just a clear picture of what is possible.',
+          ],
+          plan: [
+            {
+              label: `BEST OPTION — ${ctx.label}`,
+              treatment: ctx.tname,
+              id: ctx.id,
+              detail: "We'll take proper clinical photos and walk you through your options based on what we actually see in person.",
+            },
+          ],
+          ideal_result: "You'll leave with a clear, personalized picture of what would actually enhance your smile.",
+          cta: "Book your free consultation — we'll show you exactly what's possible.",
+          treatments: [{ id: ctx.id, label: ctx.label }],
+          urgency: 'standard',
+        };
+      }
+
+      // Generic fallback (homepage, unknown page)
       return {
         ...baseSignals,
         headline: "Your smile looks healthy on camera — an in-person consultation can show you what's possible.",
         bullets: [
-          'Nothing specific jumped out from this photo that requires cosmetic treatment.',
-          'A full evaluation in our office gives the most accurate picture.',
-          "We'll take proper clinical photos and walk through any enhancement you're considering.",
+          'A casual phone photo can only show so much — clinical photos and an exam tell the full story.',
+          'A free consultation is the right next step to understand any enhancements you may be considering.',
+          "We'll take proper clinical photos and walk through any cosmetic options you're interested in.",
         ],
         plan: [
           {
-            label: 'BEST OPTION — Free In-Office Consultation',
-            treatment: 'Consultation',
+            label: 'BEST OPTION — Free Cosmetic Consultation',
+            treatment: 'Cosmetic Consultation',
             id: 'consultation',
             detail: "We'll take proper clinical photos and walk through any enhancement you're considering — no pressure, no guesswork.",
           },
         ],
         ideal_result: "You'll leave with a clear, personalized picture of what would actually enhance your smile.",
         cta: "Book your free consultation — we'll show you exactly what's possible.",
-        treatments: [],
+        treatments: [{ id: 'consultation', label: 'Free Cosmetic Consultation' }],
         urgency: 'standard',
       };
     }
@@ -682,7 +1197,7 @@ export default async function handler(req) {
   }
 
   try {
-    const { imageBase64, mediaType, mode, treatmentLabel } = await req.json();
+    const { imageBase64, mediaType, mode, treatmentLabel, pagePath } = await req.json();
 
     if (!imageBase64 || !mediaType) {
       return new Response(JSON.stringify({ error: 'Missing image data. Please try again.' }), { status: 400, headers });
@@ -791,7 +1306,7 @@ export default async function handler(req) {
     console.log('[v14] routed to scenario:', scenario);
 
     // ── BUILD RESPONSE ── from template
-    const response = buildResponse(scenario, findings, healthFlag);
+    const response = buildResponse(scenario, findings, healthFlag, pagePath);
 
     return new Response(JSON.stringify(response), { status: 200, headers });
 
