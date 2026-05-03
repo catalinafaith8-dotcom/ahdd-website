@@ -1,6 +1,30 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v15 — Full clinical hierarchy per advisor audit
+// v15.1 — Dedicated restoration detector (decay-under-crowns case)
+//
+//   v15 added failing_restoration as a finding code, but OBSERVE
+//   alone failed to flag it on the decay-under-crowns photo —
+//   AI saw "yellow lower teeth," called it yellowing, and routed
+//   to whitening. Same architectural issue as missing-tooth in v13:
+//   a multi-finding prompt is too diffuse for a specific clinical
+//   signal.
+//
+//   v15.1 adds a dedicated detector following the v13.6 pattern:
+//   - RESTORATION_DETECTOR_PROMPT runs in parallel after OBSERVE
+//   - Single-purpose: "does patient have existing crowns/veneers,
+//     and are any of them compromised?"
+//   - Aggressive: "false positives are far less costly than false
+//     negatives" (lost crown-replacement lead = $1500-3000)
+//   - Result merged into findings:
+//     * Compromised restoration → inject failing_restoration finding
+//     * Sound restorations → drop color findings (whitening doesn't
+//       work on porcelain), inject mismatched_dentistry as fallback
+//
+//   Also fixes log labels: all console messages now correctly say
+//   [v15] instead of stale [v14] from the v14→v15 rewrite.
+//
+//   Architecture preserved: AI never sees treatment names. Detector
+//   returns observation flags only. Code routes; templates speak.
 //
 //   Builds on v14 architecture (AI observes, code routes, templates speak).
 //   v14.1 added failing_restoration + decay. v15 expands to the full
@@ -134,6 +158,43 @@ Output if pathology found:
 Otherwise: { "pathology": false }
 
 When in doubt, return pathology:false.`;
+
+const RESTORATION_DETECTOR_PROMPT = `You are a dental imaging specialist. Your ONLY job is to determine if this photo shows EXISTING DENTAL WORK (crowns, veneers, bridges) and whether any of it appears compromised.
+
+═══ STEP 1: DOES THIS PATIENT HAVE EXISTING CROWNS OR VENEERS? ═══
+
+Strong signals that teeth ARE restored (crowns/veneers):
+- A row of teeth that all look UNIFORM in color, shape, and size — natural teeth always have small variations, restored teeth often look "perfectly even"
+- Color mismatch between upper and lower arches (e.g., bright white upper teeth, naturally yellow lower teeth) — this strongly suggests the upper arch is restored
+- Teeth that look unusually opaque or porcelain-like
+- Teeth with no visible texture or surface detail
+
+═══ STEP 2: IF YES, ARE THE RESTORATIONS COMPROMISED? ═══
+
+Look for failure signals:
+- DARK MARGINS: dark line, shadow, or visible staining where the crown meets the gumline (suggests decay underneath, marginal seal failure, or recession exposing the crown edge)
+- COLOR MISMATCH within the upper or lower arch (one or two crowns look different in shade from the others)
+- Visible CHIPPING or wear on what appears to be a crown/veneer
+- A GAP between the restoration and adjacent tooth or gum
+- Old crown showing dark line at the gumline — even if subtle
+
+═══ DECISIVE INSTRUCTION ═══
+
+The biggest failure mode is missing patients who already have crowns and routing them to whitening — whitening does NOT work on porcelain restorations and the patient gets a useless recommendation.
+
+When you see what looks like existing dental work AND ANY signs of compromise (especially dark margins at the gumline), flag it. False positives are far less costly than false negatives — a patient sent to in-office evaluation can always be redirected to whitening; a patient sent to whitening for failing crowns is a lost lead.
+
+═══ OUTPUT (RETURN ONLY JSON) ═══
+
+{
+  "has_existing_restorations": true | false,
+  "restoration_appears_compromised": true | false,
+  "confidence": "high" | "medium" | "low",
+  "evidence": "<one specific sentence describing what you see>",
+  "indicator": "dark_margins" | "color_mismatch" | "chipping" | "gap" | "wear" | null
+}
+
+Defaults if uncertain: { "has_existing_restorations": false, "restoration_appears_compromised": false, "confidence": "low", "evidence": "", "indicator": null }`;
 
 const OBSERVE_PROMPT = `You are a dental photo classifier. Your ONLY job is to identify visible findings and report them with confidence scores.
 
@@ -1115,7 +1176,7 @@ function postProcessFindings(findings) {
     if (f.code === 'spacing'
         && f.severity === 'severe'
         && (f.location === 'upper_anterior' || f.location === 'generalized')) {
-      console.log('[v14] promoting severe anterior spacing to missing_tooth');
+      console.log('[v15] promoting severe anterior spacing to missing_tooth');
       return {
         ...f,
         code: 'missing_tooth',
@@ -1232,7 +1293,7 @@ export default async function handler(req) {
       ], 150);
       const qParsed = parseJsonSafe((await qRes.json())?.content?.[0]?.text);
       if (qParsed && qParsed.usable === false && isHardReject(qParsed)) {
-        console.log('[v14] quality gate hard-rejected:', qParsed.reason);
+        console.log('[v15] quality gate hard-rejected:', qParsed.reason);
         return new Response(JSON.stringify({
           retake_required: true,
           reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
@@ -1240,7 +1301,7 @@ export default async function handler(req) {
         }), { status: 200, headers });
       }
     } catch (e) {
-      console.warn('[v14] quality gate skipped:', e.message);
+      console.warn('[v15] quality gate skipped:', e.message);
     }
 
     // ── EMERGENCY TRIAGE ──
@@ -1252,7 +1313,7 @@ export default async function handler(req) {
       ], 50);
       triage = parseJsonSafe((await tRes.json())?.content?.[0]?.text) || { safe: true };
     } catch (e) {
-      console.warn('[v14] triage skipped:', e.message);
+      console.warn('[v15] triage skipped:', e.message);
     }
 
     if (triage.safe === false) {
@@ -1279,14 +1340,76 @@ export default async function handler(req) {
       ], 800);
       const parsed = parseJsonSafe((await oRes.json())?.content?.[0]?.text);
       if (parsed) findings = parsed;
-      console.log('[v14] raw findings:', JSON.stringify(findings).substring(0, 600));
+      console.log('[v15] raw findings:', JSON.stringify(findings).substring(0, 600));
     } catch (e) {
-      console.error('[v14] observe error:', e.message);
+      console.error('[v15] observe error:', e.message);
     }
 
     // Apply known-bias filters
     findings = postProcessFindings(findings);
-    console.log('[v14] cleaned findings:', JSON.stringify(findings).substring(0, 600));
+    console.log('[v15] cleaned findings:', JSON.stringify(findings).substring(0, 600));
+
+    // ── DEDICATED RESTORATION DETECTOR [v15.1] ──
+    // OBSERVE alone does not reliably flag failing restorations on
+    // patients who have crowns. A single-purpose detector with a narrow
+    // question is dramatically more accurate. If detector confirms
+    // compromised restoration, inject failing_restoration into findings
+    // so the router routes to restoration_needed instead of color_only.
+    let restoDetector = null;
+    try {
+      const rdRes = await callClaude(apiKey, RESTORATION_DETECTOR_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Does this photo show existing dental work, and is it compromised?' },
+      ], 250);
+      restoDetector = parseJsonSafe((await rdRes.json())?.content?.[0]?.text);
+      console.log('[v15] restoration detector:', JSON.stringify(restoDetector));
+    } catch (e) {
+      console.warn('[v15] restoration detector skipped:', e.message);
+    }
+
+    // Inject finding if detector confirms compromised restoration
+    if (restoDetector?.has_existing_restorations === true
+        && restoDetector?.restoration_appears_compromised === true) {
+      const alreadyFlagged = findings.visible_findings.some(f => f.code === 'failing_restoration');
+      if (!alreadyFlagged) {
+        console.log('[v15] OVERRIDE: detector found failing restoration that OBSERVE missed');
+        findings.visible_findings.push({
+          code: 'failing_restoration',
+          location: 'generalized',
+          severity: 'moderate',
+          confidence: restoDetector.confidence || 'medium',
+          evidence: restoDetector.evidence
+            || 'Existing dental work shows signs of compromise (dark margins or color mismatch).',
+        });
+      }
+    }
+
+    // If patient has restorations but they appear sound, drop any
+    // pure-color findings — whitening will not work on porcelain. Route
+    // such cases to smile_makeover (mismatched cosmetic) or inconclusive
+    // page-aware fallback instead of suggesting whitening for crowns.
+    if (restoDetector?.has_existing_restorations === true
+        && restoDetector?.restoration_appears_compromised === false) {
+      const beforeLen = findings.visible_findings.length;
+      findings.visible_findings = findings.visible_findings.filter(f => {
+        if (f.code === 'yellowing' || f.code === 'staining') {
+          console.log('[v15] dropping color finding because patient has existing restorations (whitening will not work)');
+          return false;
+        }
+        return true;
+      });
+      // If nothing else remains, force smile_makeover signal
+      if (findings.visible_findings.length === 0 && beforeLen > 0) {
+        findings.visible_findings.push({
+          code: 'mismatched_dentistry',
+          location: 'generalized',
+          severity: 'moderate',
+          confidence: restoDetector.confidence || 'medium',
+          evidence: restoDetector.evidence
+            || 'Existing dental work is intact but the smile may benefit from cosmetic refinement.',
+        });
+      }
+    }
 
     // ── HEALTH TRIAGE — silent backend signal only ──
     let healthFlag = null;
@@ -1296,14 +1419,14 @@ export default async function handler(req) {
         { type: 'text', text: 'Screen for visible dental pathology.' },
       ], 200);
       healthFlag = parseJsonSafe((await hRes.json())?.content?.[0]?.text);
-      console.log('[v14] pathology flag (backend-only):', JSON.stringify(healthFlag));
+      console.log('[v15] pathology flag (backend-only):', JSON.stringify(healthFlag));
     } catch (e) {
-      console.warn('[v14] pathology screen skipped:', e.message);
+      console.warn('[v15] pathology screen skipped:', e.message);
     }
 
     // ── ROUTE ── deterministic, no LLM
     const scenario = routeScenario(findings);
-    console.log('[v14] routed to scenario:', scenario);
+    console.log('[v15] routed to scenario:', scenario);
 
     // ── BUILD RESPONSE ── from template
     const response = buildResponse(scenario, findings, healthFlag, pagePath);
@@ -1311,7 +1434,7 @@ export default async function handler(req) {
     return new Response(JSON.stringify(response), { status: 200, headers });
 
   } catch (err) {
-    console.error('[v14] handler error:', err.message);
+    console.error('[v15] handler error:', err.message);
     return new Response(JSON.stringify({
       error: 'Something went wrong. Call (818) 706-6077.',
     }), { status: 500, headers });
