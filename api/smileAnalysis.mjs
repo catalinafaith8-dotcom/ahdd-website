@@ -1,26 +1,28 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v13.5 — Dedicated missing-tooth detector
-//   v13.4 still misclassified obvious missing teeth as "spacing"
-//   because OBSERVE has too many findings to weigh and the AI
-//   biases toward conservative findings. v13.5 adds a dedicated
-//   single-purpose vision pass that asks ONE question: "Is there
-//   a missing tooth in this photo?" — much higher accuracy.
+// v13.6.1 — Missing-tooth SHORT-CIRCUIT (decisive routing) + audit fixes
+//   v13.5 ran detector but still trusted OBSERVE/RECOMMEND for the
+//   final answer. Result: detector saw missing tooth, OBSERVE missed it,
+//   RECOMMEND returned generic "consult" fallback. Patient saw
+//   "Your smile looks healthy" on a photo with an obvious missing tooth.
 //
-//   Architecture:
-//   - MISSING_TOOTH_PROMPT runs in parallel after OBSERVE
-//   - If detector confirms missing tooth but OBSERVE missed it,
-//     spacing findings are stripped (they were misclassifications)
-//     and missing_tooth is injected into the findings array
-//   - RECOMMEND then sees the corrected findings and produces
-//     implant/bridge plan
+//   v13.6 strategy: when dedicated detector confirms missing tooth,
+//   SHORT-CIRCUIT to a hard-coded implant/bridge response. Don't trust
+//   OBSERVE/RECOMMEND for missing-tooth cases at all — they are not
+//   reliable for this finding category.
 //
-//   This is an extra Claude API call per request (~$0.005), but
-//   the alternative is missing implant/bridge leads — by far the
-//   most valuable conversion category for the practice.
+//   v13.6.1 audit fixes:
+//   - Treatment ID corrected: "bridge" → "implant_bridge" to match
+//     existing GHL tags and RECOMMEND treatment vocabulary
+//   - Detector prompt stronger: "False positives acceptable, false
+//     negatives are not" instead of "When uncertain, FLAG IT"
 //
-//   v13 features preserved: silent pathology signal, whitening-
-//   first prioritization, loosened quality gate, gum_excess filter.
+//   Detector prompt is aggressive: false positives are far less costly
+//   than false negatives for missing-tooth detection (lost implant/
+//   bridge case = $3-5K loss vs. minor friction on a diastema case).
+//
+//   v13 features preserved: silent pathology, whitening-first,
+//   loosened quality gate, gum_excess filter.
 //   Same response shape — widget unchanged.
 
 export const config = { runtime: 'edge' };
@@ -156,36 +158,46 @@ Default to usable: true for everything else.`;
 // is dramatically more accurate. Run BEFORE OBSERVE; result is
 // merged into findings if positive.
 // ─────────────────────────────────────────────
-const MISSING_TOOTH_PROMPT = `You are a dental imaging specialist. Your ONLY job is to determine if there is a MISSING TOOTH visible in this smile photo.
+const MISSING_TOOTH_PROMPT = `You are a dental imaging specialist. Your ONLY job: determine if there is a MISSING TOOTH in this smile photo.
 
-A missing tooth means: a tooth that should be present in the dental arch is ABSENT. There is empty space (often dark, sometimes showing the tongue or lower teeth behind it) where a tooth should be. The teeth on either side of the gap are still present.
+A missing tooth = a tooth that should be in the dental arch is ABSENT. There is empty space where a tooth should be. Adjacent teeth are present and flank the gap.
 
-CRITICAL DISTINCTION:
-- MISSING TOOTH: a wide gap in the arch where no tooth/crown is visible. Usually wider than a tooth-width. The dark space behind shows the inside of the mouth.
-- SPACING/DIASTEMA: small gap between two teeth that are BOTH PRESENT. Usually narrow (<3mm). Both teeth are clearly there, just separated.
+═══ DECISIVE DETECTION RULES ═══
 
-A gap is a MISSING TOOTH (not spacing) if ANY of these are true:
-- The gap is roughly the width of a normal tooth or wider
-- You can clearly see the inside of the mouth / tongue / opposite arch through the gap
-- The teeth on either side are normal-sized adult teeth (not baby teeth or natural gap)
-- The gap interrupts the smile line obviously
+You MUST flag missing_tooth_present=true if you see ANY of:
+1. A clearly visible empty space in the upper or lower arch where a tooth is absent
+2. A gap that is approximately the width of a normal tooth (or wider) between two present teeth
+3. The tongue, palate, opposite arch, or inside-of-mouth darkness visible THROUGH a gap in the dental arch
+4. A dramatic interruption in the smile line caused by an obvious missing tooth
 
-A gap is SPACING (not missing) only if:
-- The gap is narrow (<3mm, less than half a tooth-width)
-- Two normal-sized teeth flank it and are clearly both present
-- The gap looks like a natural diastema between two complete teeth
+═══ DO NOT BE OVERLY CAUTIOUS ═══
 
-When uncertain, lean MISSING TOOTH. Patients with missing teeth deserve correct identification — implant/bridge cases get lost when this is misread as spacing.
+The biggest failure mode is missing an obvious missing tooth and calling it "spacing." This costs the practice high-value implant cases. Patients with visible missing teeth deserve correct identification.
+
+When you see what LOOKS like a missing tooth, flag it. **When uncertain, classify as missing_tooth_present = true. False positives are acceptable — false negatives are not.**
+
+Only return false if:
+- The smile clearly has all teeth present and the only "gaps" are small (<2mm) interdental contacts
+- It's obviously a young patient with primary teeth
+- There is no gap visible at all in the visible portion of the arch
+
+═══ OUTPUT ═══
 
 RETURN ONLY JSON. No markdown:
 {
   "missing_tooth_present": true | false,
+  "confidence": "high" | "medium" | "low",
   "count": integer,
-  "location": "upper_anterior" | "upper_left" | "upper_right" | "lower_anterior" | "lower_left" | "lower_right" | "generalized" | null,
-  "evidence": "one sentence describing what you see — be specific about which tooth area is empty"
+  "location": "upper_anterior" | "upper_left" | "upper_right" | "lower_anterior" | "lower_left" | "lower_right" | null,
+  "evidence": "specific sentence describing exactly what you see — which area is empty and why this is a missing tooth, not spacing"
 }
 
-If no missing tooth: { "missing_tooth_present": false, "count": 0, "location": null, "evidence": "" }`;
+confidence rubric:
+- "high" — the gap is unmistakable and tooth-width or wider
+- "medium" — there is a visible gap that probably is missing tooth (treat as positive)
+- "low" — uncertain whether gap is missing tooth or wide spacing (still flag as positive if any doubt)
+
+If no missing tooth: { "missing_tooth_present": false, "confidence": "high", "count": 0, "location": null, "evidence": "" }`;
 
 // ─────────────────────────────────────────────
 // OBSERVE PASS — pure visual description, no treatments
@@ -589,55 +601,87 @@ export default async function handler(req) {
       }), { status: 200, headers });
     }
 
-    // ── DEDICATED MISSING-TOOTH DETECTION [v13.5] ─────────
-    // OBSERVE alone misclassifies obvious missing teeth as spacing.
-    // A narrow single-purpose vision pass is dramatically more
-    // accurate. We run it in parallel and override OBSERVE's
-    // spacing→missing_tooth misread when the dedicated detector
-    // confirms a missing tooth.
+    // ── DEDICATED MISSING-TOOTH DETECTION [v13.6] ─────────
+    // OBSERVE keeps misclassifying obvious missing teeth (as spacing
+    // or by returning empty findings entirely). v13.6 strategy:
+    // - Run dedicated detector
+    // - If it confirms missing tooth (high or medium confidence),
+    //   SHORT-CIRCUIT to a hard-coded implant/bridge response.
+    //   Don't trust OBSERVE → RECOMMEND for missing tooth cases at all.
+    // - OBSERVE/RECOMMEND only run for non-missing-tooth cases.
     let missingToothResult = null;
     try {
       const mtRes = await callClaude(apiKey, MISSING_TOOTH_PROMPT, [
         imageContent,
         { type: 'text', text: 'Is there a missing tooth in this photo?' },
-      ], 200);
+      ], 250);
       const mtData = await mtRes.json();
       const mtRaw = (mtData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
       missingToothResult = JSON.parse(mtRaw);
-      console.log('[smileAnalysis v13.5] missing-tooth detector:', JSON.stringify(missingToothResult));
+      console.log('[smileAnalysis v13.6.1] missing-tooth detector:', JSON.stringify(missingToothResult));
     } catch (e) {
-      console.warn('[smileAnalysis v13.5] missing-tooth detector skipped:', e.message);
+      console.warn('[smileAnalysis v13.6.1] missing-tooth detector skipped:', e.message);
       missingToothResult = null;
     }
 
-    // Reconcile OBSERVE findings with dedicated detector
-    if (missingToothResult?.missing_tooth_present === true && findings?.visible_findings) {
-      const obsHasMissing = findings.visible_findings.some(f => f.code === 'missing_tooth');
+    // SHORT-CIRCUIT: detector confirmed missing tooth → return implant/bridge
+    // recommendation directly. This bypasses OBSERVE/RECOMMEND entirely
+    // because those passes have proven unreliable on missing-tooth cases.
+    if (missingToothResult?.missing_tooth_present === true) {
+      console.log('[smileAnalysis v13.6.1] SHORT-CIRCUIT: missing tooth detected, returning implant/bridge response');
 
-      if (!obsHasMissing) {
-        console.log('[smileAnalysis v13.5] OVERRIDE: detector found missing tooth that OBSERVE missed');
+      const evidence = missingToothResult.evidence
+        || 'A visible gap in the dental arch where a tooth is absent.';
+      const count = missingToothResult.count || 1;
+      const isMultiple = count > 1;
 
-        // Remove any "spacing" findings — they were misclassifications
-        const beforeCount = findings.visible_findings.length;
-        findings.visible_findings = findings.visible_findings.filter(f => {
-          if (f.code === 'spacing') {
-            console.log('[smileAnalysis v13.5] removing spurious spacing finding (was actually missing tooth)');
-            return false;
-          }
-          return true;
-        });
+      // Inject missing_tooth into findings so GHL signals capture it
+      const findingsWithMissing = {
+        visible_findings: [{
+          code: 'missing_tooth',
+          location: missingToothResult.location || 'upper_anterior',
+          severity: 'moderate',
+          evidence: evidence,
+        }],
+        photo_adequacy: findings?.photo_adequacy || {},
+      };
 
-        // Inject the missing_tooth finding from the dedicated detector
-        for (let i = 0; i < (missingToothResult.count || 1); i++) {
-          findings.visible_findings.push({
-            code: 'missing_tooth',
-            location: missingToothResult.location || 'upper_anterior',
-            severity: 'moderate',
-            evidence: missingToothResult.evidence || 'Visible gap in the dental arch where a tooth is absent.',
-          });
-        }
-        console.log('[smileAnalysis v13.5] findings adjusted: ' + beforeCount + ' -> ' + findings.visible_findings.length);
-      }
+      return new Response(JSON.stringify({
+        emergency: false,
+        headline: isMultiple
+          ? "There appear to be visible gaps where teeth are missing — replacing them can transform your smile."
+          : "There appears to be a visible gap where a tooth is missing — replacing it can make a major difference in your smile.",
+        bullets: [
+          evidence,
+          'Replacing a missing tooth restores function as well as appearance — chewing, speaking, and smile balance.',
+          'An in-person exam will determine the best path forward and confirm everything visible in this photo.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Dental Implant',
+            treatment: 'Dental Implant',
+            id: 'implant_single',
+            detail: 'A dental implant replaces the missing tooth with a natural-looking, fully functional result that does not rely on neighboring teeth.',
+          },
+          {
+            label: 'ALTERNATIVE — Dental Bridge',
+            treatment: 'Dental Bridge',
+            id: 'implant_bridge',
+            detail: 'A bridge can also close the space by anchoring a replacement tooth to the neighboring teeth.',
+          },
+        ],
+        ideal_result: 'Restore the missing tooth so the smile looks complete, balanced, and confident again.',
+        cta: "Book your free consultation and we'll walk you through implant and bridge options.",
+        treatments: [
+          { id: 'implant_single', label: 'Dental Implant' },
+          { id: 'implant_bridge', label: 'Dental Bridge' },
+        ],
+        urgency: 'priority',
+        // Backend signals
+        _findings: findingsWithMissing,
+        _pathology_flag: null,
+        _missing_tooth_detector: missingToothResult,
+      }), { status: 200, headers });
     }
 
     // ── FINDINGS GUARDRAILS [v13.4] ─────────────────────────
