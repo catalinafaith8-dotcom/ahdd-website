@@ -1,450 +1,196 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v13.6.1 — Missing-tooth SHORT-CIRCUIT (decisive routing) + audit fixes
-//   v13.5 ran detector but still trusted OBSERVE/RECOMMEND for the
-//   final answer. Result: detector saw missing tooth, OBSERVE missed it,
-//   RECOMMEND returned generic "consult" fallback. Patient saw
-//   "Your smile looks healthy" on a photo with an obvious missing tooth.
+// v14 — Clean separation: AI observes, code routes, templates speak
 //
-//   v13.6 strategy: when dedicated detector confirms missing tooth,
-//   SHORT-CIRCUIT to a hard-coded implant/bridge response. Don't trust
-//   OBSERVE/RECOMMEND for missing-tooth cases at all — they are not
-//   reliable for this finding category.
+//   Architectural rewrite. v13.x grew to 910 lines of layered overrides
+//   because the AI was making business decisions ("recommend Invisalign
+//   for spacing"). Every override added complexity but didn't fix the
+//   underlying problem.
 //
-//   v13.6.1 audit fixes:
-//   - Treatment ID corrected: "bridge" → "implant_bridge" to match
-//     existing GHL tags and RECOMMEND treatment vocabulary
-//   - Detector prompt stronger: "False positives acceptable, false
-//     negatives are not" instead of "When uncertain, FLAG IT"
+//   v14 enforces strict layer separation:
+//     LAYER 1 — AI vision: classify findings ONLY (code, location,
+//               severity, confidence, evidence). No treatment vocabulary.
+//     LAYER 2 — Code router: deterministic mapping from findings to
+//               treatment scenario. Pure JS, no LLM.
+//     LAYER 3 — Templates: fixed patient-facing copy per scenario,
+//               parameterized by findings. No AI prose generation
+//               for the recommendation.
 //
-//   Detector prompt is aggressive: false positives are far less costly
-//   than false negatives for missing-tooth detection (lost implant/
-//   bridge case = $3-5K loss vs. minor friction on a diastema case).
+//   Result: predictable, testable, debuggable. A finding cannot
+//   "reason itself" into the wrong recommendation because the AI
+//   never sees treatment names.
 //
-//   v13 features preserved: silent pathology, whitening-first,
-//   loosened quality gate, gum_excess filter.
-//   Same response shape — widget unchanged.
+//   Preserved from v13.x:
+//     - Quality gate (loosened, hard-reject keyword whitelist)
+//     - True emergency triage (broken tooth, blood, swelling)
+//     - Pathology as silent backend signal for GHL (never patient UI)
+//     - Image compression at widget layer (4.5MB Vercel limit)
+//     - Same response shape — widgets unchanged
+//
+//   Removed from v13.x:
+//     - RECOMMEND prompt (AI generated treatment names)
+//     - COSMETIC_RECOMMEND_PROMPT (never used in production)
+//     - Multiple competing override blocks (veneers guardrail,
+//       gum_excess filter, missing-tooth short-circuit, structural
+//       heuristic) — all replaced by one deterministic router
+//     - Inline buildFallback functions
 
 export const config = { runtime: 'edge' };
 
-// ─────────────────────────────────────────────
-// TRIAGE — safety screen only
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// LAYER 1 — AI VISION PROMPTS (classify only, no treatment talk)
+// ═══════════════════════════════════════════════════════════════
+
 const TRIAGE_PROMPT = `You are a dental image safety screener.
 
 Respond ONLY with JSON. Mark unsafe ONLY if clearly visible:
-- Large broken tooth with missing structure
-- Obvious facial swelling
-- Active bleeding or trauma
-- Visible infection-like bump near tooth root
+- Broken/fractured tooth showing dentin or pulp
+- Visible bleeding or active swelling
+- Trauma (split lip with tooth damage, displaced tooth)
+- Deep cavity with visible decay structure
 
-If unsure → {"safe": true}
-If teeth not visible → {"safe": true}
+If unsafe: { "safe": false, "concern": "<short clinical phrase>" }
+If smile photo with no urgent issue: { "safe": true }
+If not a mouth photo: { "safe": true }
 
-{"safe": true} or {"safe": false}`;
+Default: { "safe": true }`;
 
-// ─────────────────────────────────────────────
-// HEALTH TRIAGE — pathology screen [v11]
-// Catches periodontal disease, recession, decay, and other
-// dental health concerns that are NOT cosmetic. Without this
-// pass, pathology cases were routed through the cosmetic
-// OBSERVE/RECOMMEND pipeline and rendered as mild "spacing"
-// with a misleading "soon" urgency badge.
-// ─────────────────────────────────────────────
-const HEALTH_TRIAGE_PROMPT = `You are a dental health pathology screener. You assess whether a smile photo shows clear signs of disease that need professional evaluation BEFORE any cosmetic conversation.
+const QUALITY_PROMPT = `You are a photo quality reviewer for casual smartphone smile selfies.
 
-Respond ONLY with JSON. No markdown. No backticks.
+RETURN ONLY JSON.
 
-You must distinguish CLEAR pathology from cosmetic concerns. Be conservative — false positives kill legitimate cosmetic leads.
+DEFAULT TO usable=true. Only reject for these hard cases:
+1. Photo is not a mouth at all (wall, ceiling, food, pet)
+2. Photo is so blurry teeth are unrecognizable as teeth
+3. Photo is pitch black / pure silhouette
+4. Mouth is completely closed with NO teeth visible
 
-═══ HARD SIGNS — single indicator is sufficient ═══
-Flag pathology=true if you can clearly see ANY ONE of:
-- Frank gingival recession with visible exposed root surface (not just "long-looking teeth")
-- "Black triangles" between teeth indicating papilla loss / interproximal bone loss
-- Visible decay: dark cavitation, brown/black holes, clear shadow indicating caries
-- A single tooth notably darker than its neighbors (suggests non-vital tooth)
-- A tooth visibly displaced out of arch position in a way that suggests pathology (not orthodontic crowding)
+Everything else: usable=true. Lighting, angle, partial visibility, lip
+coverage — all acceptable. The downstream system handles partial info.
+
+Output:
+{ "usable": true | false, "reason": "<short>", "hint": "<actionable retake instruction>" }
+
+Default: { "usable": true, "reason": "", "hint": "" }`;
+
+const HEALTH_TRIAGE_PROMPT = `You are screening a casual phone-photo smile for clearly visible dental pathology.
+
+This is NOT a clinical photo. Pink gum color, slight swelling appearance,
+yellowing teeth, mild plaque film — these are normal phone-photo artifacts.
+DO NOT flag them.
+
+Only flag pathology=true for unmistakable signs:
+- Frank tooth decay (visible cavitation, brown/black hole on tooth surface)
+- Severe gingival recession with VISIBLY EXPOSED yellow root surface
+- One tooth dramatically darker than ALL neighbors (non-vital)
 - Visible abscess, fistula, or pus
+- Tooth visibly displaced from arch in pathologic way
 
-═══ SOFT SIGNS — require TWO or more co-occurring ═══
-For these, ONE indicator alone is NOT enough. You must see at least 2 together:
-- Gum redness
-- Visible swelling at the gumline
-- Plaque or calculus accumulation at the gumline
-- Generalized spacing in adult dentition
+Output if pathology found:
+{ "pathology": true, "category": "decay" | "endodontic" | "periodontal" | "abscess",
+  "severity": "moderate" | "advanced", "primary_concern": "<short factual sentence>" }
 
-Examples:
-- redness alone → NOT pathology (could be lighting, lipstick reflection, normal vascularity)
-- redness + visible plaque buildup → pathology=true (gingivitis)
-- redness + frank swelling → pathology=true (gingivitis)
-- spacing alone → NOT pathology (could be orthodontic baseline)
-- spacing + recession → pathology=true (periodontitis suggested)
+Otherwise: { "pathology": false }
 
-═══ OUTPUT ═══
-If pathology IS clearly visible per the rules above, return:
-{
-  "pathology": true,
-  "category": "periodontal" | "decay" | "endodontic" | "mixed",
-  "severity": "moderate" | "advanced",
-  "primary_concern": "one short factual sentence describing what you see"
-}
+When in doubt, return pathology:false.`;
 
-Otherwise (cosmetic concerns only, OR insufficient indicators):
-{ "pathology": false }
+const OBSERVE_PROMPT = `You are a dental photo classifier. Your ONLY job is to identify visible findings and report them with confidence scores.
 
-Be honest and clinically conservative. When uncertain whether a soft sign is real or just photo artifact, return pathology:false. The cosmetic pipeline downstream will handle ambiguous cases appropriately.`;
+YOU DO NOT:
+- Recommend any treatment
+- Use any treatment vocabulary (no "Invisalign", "veneers", "implant", "whitening", "bonding")
+- Suggest what should be done about findings
+- Try to be helpful beyond classifying what is visible
 
-// ─────────────────────────────────────────────
-// PATHOLOGY MESSAGE — warm, direct, non-alarming [v11]
-// ─────────────────────────────────────────────
-const PATHOLOGY_PROMPT_BUILDER = (flag) => `You are a caring dentist at Agoura Hills Dental Designs. The patient's photo shows ${flag.category} concerns at ${flag.severity} severity. Specifically: ${flag.primary_concern}
+YOU ONLY:
+- Look at the image
+- Identify findings from the allowed code list below
+- Score your confidence
+- Provide one specific evidence sentence per finding
 
-Write 3 short paragraphs. Plain text only — no asterisks, no bold, no markdown, no headers.
+═══ ALLOWED FINDING CODES ═══
 
-Paragraph 1: Describe what you see in plain everyday language. Direct but warm. Do not say "you have disease." Describe what is visible (e.g., "your gums have pulled back from your teeth" rather than "you have periodontal disease").
+missing_tooth — A tooth-width or wider gap in the dental arch where no
+  crown is present. The teeth flanking the gap are present. The dark
+  space behind the gap may show tongue, opposite arch, or mouth interior.
+  RULE: A gap of approximately tooth-width or wider counts as missing_tooth
+  even if you cannot be 100% certain whether it's spacing or absence.
+  False positives are acceptable; false negatives are not.
 
-Paragraph 2: Why this is worth getting evaluated soon — gently explain that what is visible can progress without care. Frame around protecting the smile and teeth that are there. Calm, never alarming.
+spacing — Narrow gap between two teeth that are clearly both present with
+  full crowns visible. NOT a missing tooth. Use only when both flanking
+  teeth are unambiguously complete.
 
-Paragraph 3: The path forward — a comprehensive evaluation, not a sales pitch for a cosmetic treatment. End with exactly: Call (818) 706-6077 — same-week appointments available, your consultation is free.
+crowding — Teeth visibly overlapping or pushed out of arch alignment
 
-Under 110 words total. No cosmetic talk. No mention of veneers, whitening, Invisalign, or aesthetics. This is a health conversation.`;
+rotation — One or more teeth visibly rotated around their own axis
 
-// ─────────────────────────────────────────────
-// QUALITY GATE — is this image usable for a confident diagnosis?
-// ─────────────────────────────────────────────
-const QUALITY_PROMPT = `You are a dental photo quality reviewer. Your ONLY job is to reject photos that are SO unusable that no analysis is possible. You are NOT a clinical photo reviewer — patients are sending casual smartphone selfies, not orthodontic records.
+yellowing — Overall warm yellow hue across multiple teeth
 
-RETURN ONLY JSON. No markdown.
+staining — Localized brown/grey/yellow patches on specific tooth surfaces
 
-═══ CRITICAL RULE ═══
-DEFAULT TO usable=true. The OBSERVE pass downstream is fine working with partial visibility — it will simply return fewer findings if it can't see everything. False rejections destroy patient trust and conversion. ONLY reject in the cases listed below.
+wear — Shortened, flattened, or worn-down incisal edges
 
-═══ ONLY REJECT (usable=false) IF ═══
-1. Photo does not show a mouth at all (e.g., it's a ceiling, food, a pet, a closed-mouth selfie with NO teeth visible)
-2. Photo is so blurry that teeth are unrecognizable as teeth (motion blur, completely out of focus)
-3. Photo is so dark you cannot tell teeth from gums (pure silhouette / black frame)
-4. Mouth is closed with no teeth visible at all
+chipping — Specific visible chip on a specific tooth
 
-═══ ALWAYS ACCEPT (usable=true) IF ═══
-- ANY teeth are visible, even partial — even if just upper OR just lower
-- The smile is at any angle (slight tilt, side angle, head turned)
-- Lighting is imperfect but teeth are still distinguishable
-- The photo is a casual selfie, not a clinical photo
-- Lips are partially covering the teeth but some teeth are still showing
-- The image quality is "phone-grade" rather than "studio-grade"
+irregular_shape — Tooth visibly asymmetric or misshapen
 
-When in doubt: usable=true. The cost of letting a borderline photo through is minor — the cost of rejecting a valid one is a lost lead.
+short_teeth — Teeth appear unusually short relative to gum line
 
-═══ OUTPUT ═══
-{
-  "usable": true | false,
-  "reason": "short phrase describing why if not usable (empty string if usable)",
-  "hint": "one short sentence instructing the patient how to retake — specific, warm, actionable (empty string if usable)"
-}
+darkness — One specific tooth notably darker than its neighbors
 
-Default response: { "usable": true, "reason": "", "hint": "" }
+edge_irregularity — Uneven or jagged incisal edges
 
-Examples of when to REJECT (these are rare):
-- An image of a wall or ceiling → usable: false, hint: "It looks like the photo didn't capture your smile — please try again with your mouth in the frame."
-- A completely black image → usable: false, hint: "The photo came out too dark to see your teeth — please retake in better light."
-- A pet or food photo → usable: false, hint: "We can only analyze photos of a smile — please upload a photo of your teeth."
+gum_excess — DRAMATIC excess gum tissue: a band of gum visible above
+  the upper teeth that visually dominates the smile and makes the teeth
+  look short. Normal thin gum margins are NOT gum_excess. Do not flag
+  unless it is unmistakable.
 
-Default to usable: true for everything else.`;
+═══ DECISION RULES FOR AMBIGUOUS GAPS ═══
 
-// ─────────────────────────────────────────────
-// MISSING TOOTH DETECTOR — dedicated single-purpose pass [v13.5]
-// OBSERVE alone keeps misclassifying obvious missing teeth as
-// "spacing." A dedicated, narrow vision pass with one question
-// is dramatically more accurate. Run BEFORE OBSERVE; result is
-// merged into findings if positive.
-// ─────────────────────────────────────────────
-const MISSING_TOOTH_PROMPT = `You are a dental imaging specialist. Your ONLY job: determine if there is a MISSING TOOTH in this smile photo.
+If you see a gap in the upper or lower anterior arch:
+- Is it roughly tooth-width or wider? --> missing_tooth
+- Is it narrow with two clearly complete teeth on either side? --> spacing
+- Uncertain? --> missing_tooth (false positives are acceptable)
 
-A missing tooth = a tooth that should be in the dental arch is ABSENT. There is empty space where a tooth should be. Adjacent teeth are present and flank the gap.
+═══ CONFIDENCE SCORING ═══
 
-═══ DECISIVE DETECTION RULES ═══
+For each finding, score confidence:
+- "high"   --> unmistakable, you would bet money on it
+- "medium" --> clearly visible but some ambiguity
+- "low"    --> suggestive but uncertain (still report it, downstream may filter)
 
-You MUST flag missing_tooth_present=true if you see ANY of:
-1. A clearly visible empty space in the upper or lower arch where a tooth is absent
-2. A gap that is approximately the width of a normal tooth (or wider) between two present teeth
-3. The tongue, palate, opposite arch, or inside-of-mouth darkness visible THROUGH a gap in the dental arch
-4. A dramatic interruption in the smile line caused by an obvious missing tooth
+═══ LOCATION CODES ═══
 
-═══ DO NOT BE OVERLY CAUTIOUS ═══
+upper_anterior — front upper teeth (incisors, canines)
+upper_left, upper_right — back upper teeth on respective side
+lower_anterior — front lower teeth
+lower_left, lower_right — back lower teeth
+generalized — finding affects most teeth
 
-The biggest failure mode is missing an obvious missing tooth and calling it "spacing." This costs the practice high-value implant cases. Patients with visible missing teeth deserve correct identification.
+═══ OUTPUT (RETURN ONLY JSON) ═══
 
-When you see what LOOKS like a missing tooth, flag it. **When uncertain, classify as missing_tooth_present = true. False positives are acceptable — false negatives are not.**
-
-Only return false if:
-- The smile clearly has all teeth present and the only "gaps" are small (<2mm) interdental contacts
-- It's obviously a young patient with primary teeth
-- There is no gap visible at all in the visible portion of the arch
-
-═══ OUTPUT ═══
-
-RETURN ONLY JSON. No markdown:
-{
-  "missing_tooth_present": true | false,
-  "confidence": "high" | "medium" | "low",
-  "count": integer,
-  "location": "upper_anterior" | "upper_left" | "upper_right" | "lower_anterior" | "lower_left" | "lower_right" | null,
-  "evidence": "specific sentence describing exactly what you see — which area is empty and why this is a missing tooth, not spacing"
-}
-
-confidence rubric:
-- "high" — the gap is unmistakable and tooth-width or wider
-- "medium" — there is a visible gap that probably is missing tooth (treat as positive)
-- "low" — uncertain whether gap is missing tooth or wide spacing (still flag as positive if any doubt)
-
-If no missing tooth: { "missing_tooth_present": false, "confidence": "high", "count": 0, "location": null, "evidence": "" }`;
-
-// ─────────────────────────────────────────────
-// OBSERVE PASS — pure visual description, no treatments
-// ─────────────────────────────────────────────
-const OBSERVE_PROMPT = `You are a dental photo observer. You describe ONLY what is clearly visible in the image.
-
-RULES — read carefully:
-- You do NOT recommend treatments. You do NOT mention any treatment name.
-- You do NOT know what page the patient is viewing. Context is irrelevant.
-- You list only findings you can literally point to in the pixels.
-- For every finding, you must write one specific evidence sentence describing what you actually see.
-- If you cannot write a specific evidence sentence, you MUST NOT include the finding.
-- It is completely valid to return an empty findings array.
-
-═══ MISSING TOOTH — be HONEST, not overly cautious ═══
-A missing_tooth IS present when:
-- You see a clear GAP in the arch where a crown is absent
-- Adjacent teeth flank a visible empty space
-- The dark space between teeth is wider than a normal interdental contact
-- A tooth that should be there clearly is not
-
-Do NOT skip a missing tooth because you're worried about being wrong.
-If you can see a gap in the arch where a tooth visibly is not present,
-flag it as missing_tooth. Patients with missing teeth deserve correct
-assessment — missing this finding is far more harmful than a rare
-false positive on dark shadows.
-
-Only AVOID flagging missing_tooth if the dark space is clearly just a
-narrow interdental shadow between two teeth that ARE both present and
-touching at the gumline.
-
-═══ GUM EXCESS — strict quantitative criteria ═══
-A gum_excess finding (gummy smile) requires you to clearly see:
-- A visibly LARGE band of pink gum tissue (≥3mm equivalent) showing
-  above the upper front teeth when the patient is smiling normally
-- The gums dominate the smile visually, drawing the eye more than the teeth
-- The teeth themselves look short relative to how much gum shows
-
-Do NOT flag gum_excess if:
-- You only see a normal thin gum margin at the top of the teeth (this is
-  anatomical baseline, EVERY mouth shows some gum margin)
-- The smile shows a healthy tooth-to-gum ratio (teeth dominate visually)
-- You're inferring "gummy smile" from minor gum visibility — the gum
-  band must be visually dramatic to qualify
-- The lip line crosses near the gum margin — that's a normal smile
-
-When in doubt, do NOT flag gum_excess. Healthy gum margins are not
-pathology and not a cosmetic concern.
-
-═══ OTHER ANTI-HALLUCINATION RULES ═══
-- Do NOT call a shadow "staining". Staining means visible brown/yellow/grey discoloration on the tooth surface.
-- Do NOT call a tilt "crowding" unless teeth are visibly overlapping or rotated out of arch.
-- Do NOT describe anything on a side of the arch you cannot see.
-
-RETURN ONLY JSON. No markdown. No backticks. Start with { and end with }.
-
-ALLOWED finding codes (use ONLY these):
-- missing_tooth — a clear gap in the arch where a tooth crown is absent. Flag this whenever you can identify an empty space where a tooth should be, flanked by present teeth on either side. Do NOT skip this — patients deserve to have missing teeth identified.
-- crowding — teeth visibly overlapping, pushed out of arch alignment
-- rotation — one or more teeth rotated around their own axis
-- spacing — visible gap(s) between teeth that are both present (NOT a missing tooth)
-- yellowing — overall warm yellow hue across multiple teeth
-- staining — localized brown/grey/yellow patches on tooth surfaces
-- wear — shortened, flattened, or chipped incisal edges
-- chipping — a specific chip on a specific tooth
-- irregular_shape — one or more teeth noticeably asymmetric or misshapen
-- gum_excess — DRAMATIC excess gum tissue ("gummy smile"): ≥3mm band of pink gum above the upper teeth that visually dominates the smile. Normal thin gum margins are NOT gum_excess.
-- short_teeth — teeth look unusually short relative to the gumline
-- darkness — one specific tooth is notably darker than its neighbors
-- edge_irregularity — uneven or jagged incisal edges
-
-ALLOWED locations:
-- upper_anterior | lower_anterior | upper_left | upper_right | lower_left | lower_right | generalized
-
-OUTPUT SCHEMA:
 {
   "visible_findings": [
     {
-      "code": "one of the allowed codes above",
-      "location": "one of the allowed locations above",
+      "code": "<from allowed list>",
+      "location": "<from location codes>",
       "severity": "mild" | "moderate" | "severe",
-      "evidence": "one sentence describing literally what you see that supports this finding"
+      "confidence": "high" | "medium" | "low",
+      "evidence": "<one specific sentence describing what you see in pixels>"
     }
   ],
   "photo_adequacy": {
-    "upper_arch_visible": true | false,
-    "lower_arch_visible": true | false,
-    "teeth_count_visible": approximate integer,
-    "focus_adequate": true | false,
-    "lighting_adequate": true | false,
-    "notes": "one short sentence"
+    "view": "front" | "side" | "partial",
+    "lighting": "good" | "acceptable" | "poor",
+    "notes": "<optional short note>"
   }
 }
 
-Empty visible_findings is valid. Be precise and conservative.`;
+Empty visible_findings array is valid. Be precise. If you cannot write
+a specific evidence sentence pointing to actual pixels, do NOT include
+the finding.`;
 
-// ─────────────────────────────────────────────
-// RECOMMEND PASS — evidence-locked treatment matching
-// ─────────────────────────────────────────────
-const RECOMMEND_PROMPT = `You are a cosmetic dental treatment consultant and conversion writer for Agoura Hills Dental Designs (Drs. David & Shawn Matian, (818) 706-6077) — a premium COSMETIC dental practice.
-
-You will receive:
-1. A JSON object of VERIFIED visible findings from a photo (already observed separately).
-2. The current service page the patient is viewing (pagePath) — OPTIONAL context.
-
-RETURN ONLY a valid JSON object. No markdown. No backticks. Start with { and end with }.
-
-━━━ IRON-CLAD RULES ━━━
-1. You may ONLY recommend treatments that address findings present in visible_findings.
-2. If visible_findings is empty → return the "inconclusive" response (schema below). Do not invent findings.
-3. You may NEVER describe a finding that is not in visible_findings. If the AI observer did not list it, you cannot see it.
-4. pagePath is a HINT about patient interest — it does NOT add findings. If pagePath suggests a treatment but no finding supports that treatment, you must NOT recommend it.
-5. pagePath can be used to:
-   (a) ORDER two already-valid recommendations so the page's service appears first when both fit
-   (b) Adjust tone/language to acknowledge patient intent
-   It cannot:
-   (a) Add a treatment that no finding supports
-   (b) Change the underlying clinical priority
-
-━━━ TREATMENT MATCHING TABLE ━━━
-Each treatment requires specific findings to be legitimate:
-
-- "veneers" → requires ≥2 STRUCTURAL findings: wear, chipping, irregular_shape, edge_irregularity, short_teeth. Color (yellowing/staining) and alignment (crowding/spacing/rotation) DO NOT count toward this threshold — those are addressable with whitening + Invisalign respectively.
-  Veneers restore color, shape, length, and symmetry in one treatment — ideal for compound aesthetic presentations.
-
-- "whitening" → requires yellowing OR staining as a finding; AND no severe wear/chipping/shape issues
-  Whitening only addresses color. It does not fix shape.
-
-- "invisalign" → requires crowding OR rotation OR spacing (moderate or severe); AND no wear/chipping/irregular_shape
-  If color/wear/shape are also findings, Invisalign ALONE is inadequate.
-
-- "invisalign_whitening" → requires crowding/rotation/spacing AND yellowing/staining; AND no wear/shape issues
-
-- "bonding" → requires ≤2 chipping/edge_irregularity findings; small localized repair only
-
-- "gum_contouring" → requires gum_excess
-  If gum_excess is present, it takes priority for BEST OPTION.
-
-- "implant_single" → requires exactly 1 missing_tooth finding
-- "implant_bridge" → requires missing_tooth findings in adjacent positions
-- "implant_multiple" → requires multiple missing_tooth findings in separate areas
-- "all_on_4" → requires extensive breakdown with multiple missing_tooth + severe wear (use sparingly)
-
-━━━ PRIORITIZATION (when multiple valid treatments exist) ━━━
-
-CORE PRINCIPLE: Recommend the LEAST INVASIVE path that addresses the visible findings. Veneers are a permanent, expensive procedure — only recommend them as BEST when conservative options can't address the actual findings. The practice's in-person exam is what determines whether veneers are appropriate; a phone photo is not enough to commit a patient to drilling down their natural teeth.
-
-1. missing_tooth findings → implants win (patient cannot smile without addressing it)
-
-2. gum_excess clearly visible → gum_contouring is BEST
-
-3. Color + alignment combo (yellowing/staining AND crowding/rotation/spacing):
-   → BEST: "Professional Whitening"
-   → ALTERNATIVE: "Invisalign"
-   → Rationale: address color first (low effort, fast result), straighten with clear aligners if patient wants alignment fixed too. The dentist will determine in-person whether veneers are warranted.
-
-4. Color only (yellowing/staining, no alignment issues, no shape/wear):
-   → BEST: "Professional Whitening"
-   → ALTERNATIVE: "Take-Home Whitening Trays"
-
-5. Alignment only (crowding/rotation/spacing, no color, no shape/wear):
-   → BEST: "Invisalign"
-   → ALTERNATIVE: "Professional Whitening" (mention it as a fast cosmetic boost)
-
-6. Structural findings present (wear, chipping, irregular_shape, edge_irregularity, short_teeth):
-   → BEST: "Bonding" (for small localized issues) OR "Porcelain Veneers" (for multiple structural findings affecting front teeth)
-   → ALTERNATIVE: another conservative option (whitening, contouring)
-   → Veneers are appropriate here because conservative options cannot reshape teeth.
-
-7. Compound case (color + alignment + structural):
-   → BEST: "Porcelain Veneers" only if structural issues affect 2+ front teeth visibly
-   → Otherwise: BEST = "Professional Whitening", ALTERNATIVE = "Invisalign", and mention veneers as something to discuss at the in-person exam
-
-VENEERS GUARDRAIL: Never recommend veneers as BEST when the only findings are color + alignment. Color and alignment are reversible/correctable conservatively. Veneers must be reserved for cases with visible STRUCTURAL findings (wear, chipping, shape).
-
-After applying 1-7, if pagePath matches a valid treatment in your top 2, surface that one first.
-
-━━━ TONE ━━━
-Warm, confident, premium, specific, emotionally persuasive, visually grounded. Under 150 words total.
-Never use: "maybe", "might", "possibly", "could be", "healthy teeth and gums", "great bone structure", "transform", "journey", "confidence".
-No phone numbers in cta. No URLs anywhere.
-
-━━━ OUTPUT SCHEMA (normal case) ━━━
-{
-  "headline": "One sentence. Start positive. Reference the most prominent finding and the improvement possible.",
-  "bullets": [
-    "Most dominant finding — one line, grounded in what the observer saw",
-    "Second observation (if any) — one line",
-    "One positive foundation point — only if supported by photo_adequacy or a finding"
-  ],
-  "plan": {
-    "best_option": "BEST OPTION — Treatment Name",
-    "best_detail": "One sentence explaining the benefit for THIS smile based on the findings.",
-    "alternative": "ALTERNATIVE — Treatment Name",
-    "alt_detail": "One sentence explaining why this alternative fits THIS smile."
-  },
-  "ideal_result": "Max 2 short sentences. Emotional, visual, specific.",
-  "cta": "One short sentence. Easy, low-pressure invitation to book a free consultation.",
-  "treatments": [
-    {"id": "treatment_id_from_table", "label": "Display Name"}
-  ],
-  "urgency": "standard" | "soon" | "priority"
-}
-
-━━━ OUTPUT SCHEMA (visible_findings is empty or photo is inconclusive) ━━━
-{
-  "headline": "Your smile looks healthy on camera — an in-person consultation will show you what's possible.",
-  "bullets": [
-    "Nothing specific jumped out from this photo that requires cosmetic treatment",
-    "A full evaluation in our office gives the most accurate picture"
-  ],
-  "plan": {
-    "best_option": "BEST OPTION — Free In-Office Consultation",
-    "best_detail": "We'll take proper clinical photos and walk through any enhancement you're considering.",
-    "alternative": "",
-    "alt_detail": ""
-  },
-  "ideal_result": "You'll leave with a clear, personalized picture of what would actually enhance your smile — no pressure, no guesswork.",
-  "cta": "Book your free consultation — we'll show you exactly what's possible.",
-  "treatments": [],
-  "urgency": "standard"
-}
-
-━━━ SELF-CHECK ━━━
-1. Did I add any finding not in visible_findings? → remove it
-2. Did I recommend any treatment not supported by findings? → remove it
-3. Did pagePath cause me to invent evidence? → revert
-4. Does BEST OPTION actually address the most prominent finding?
-5. Is every bullet grounded in a specific finding from the observer?
-6. Total word count under 150?`;
-
-// ─────────────────────────────────────────────
-// DEEP DIVE — per-treatment detail
-// ─────────────────────────────────────────────
-const SMILE_DEEPDIVE_PROMPT = `You are a cosmetic dentist at Agoura Hills Dental Designs explaining a treatment to a patient.
-
-Write 3 short paragraphs. Plain text only — no asterisks, no bold, no markdown, no headers.
-
-Paragraph 1: What the treatment involves. Plain language. Specific realistic timeline.
-Paragraph 2: Why it fits what you can see in their photo. Reference their actual smile specifically.
-Paragraph 3: One specific real moment that changes for them after treatment. End with: Call (818) 706-6077 — your consultation is always free.
-
-Rules: Under 120 words total. No jargon. No hype. No markdown formatting of any kind.`;
-
-// ─────────────────────────────────────────────
-// EMERGENCY — urgent but calm
-// ─────────────────────────────────────────────
 const EMERGENCY_PROMPT = `You are a caring dentist. This photo shows something needing prompt attention.
 
 Write 3 short paragraphs. Plain text only — no asterisks, no bold, no markdown.
@@ -455,443 +201,452 @@ Paragraph 3: The good news — catching this early makes it simpler. End: Call (
 
 Under 100 words. Warm and human.`;
 
-// ─────────────────────────────────────────────
-// HANDLER
-// ─────────────────────────────────────────────
-export default async function handler(req) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+const SMILE_DEEPDIVE_PROMPT = `You are a caring dentist at Agoura Hills Dental Designs explaining a specific treatment option for a patient who just had their photo analyzed. Speak directly TO the patient — warm, conversational, never clinical.
+
+Plain text only — no markdown, no asterisks, no bullets. Two short paragraphs.
+Paragraph 1: What this treatment is and why it could be a good fit for them based on their photo.
+Paragraph 2: What the experience looks like — process, time, comfort, result. End with: Call (818) 706-6077 to book your free consultation.
+
+Under 130 words. Warm, real, never salesy.`;
+
+// ═══════════════════════════════════════════════════════════════
+// LAYER 2 — DETERMINISTIC TREATMENT ROUTER
+// Pure JS. No LLM. Maps findings -> scenario key.
+// ═══════════════════════════════════════════════════════════════
+
+const STRUCTURAL = new Set(['wear', 'chipping', 'irregular_shape', 'edge_irregularity', 'short_teeth']);
+const COLOR      = new Set(['yellowing', 'staining', 'darkness']);
+const ALIGNMENT  = new Set(['crowding', 'rotation', 'spacing']);
+
+/**
+ * Route findings to a treatment scenario key.
+ * Priority order is deliberate — earlier rules win.
+ *
+ * Returns one of:
+ *   missing_tooth         — implant + bridge
+ *   gum_excess            — gum contouring
+ *   structural_compound   — veneers + bonding (multiple structural findings)
+ *   color_alignment       — whitening + Invisalign
+ *   color_only            — whitening + take-home trays
+ *   alignment_only        — Invisalign + whitening
+ *   structural_minor      — bonding + whitening
+ *   inconclusive          — free consultation (no clear findings)
+ */
+function routeScenario(findings) {
+  const codes = (findings.visible_findings || []).map(f => f.code);
+  const codeSet = new Set(codes);
+  const has = (c) => codeSet.has(c);
+  const countIn = (set) => codes.filter(c => set.has(c)).length;
+
+  // P1: Missing tooth — highest-value, deterministic. Patient cannot
+  // smile without addressing it; no other scenario takes precedence.
+  if (has('missing_tooth')) return 'missing_tooth';
+
+  // P2: True gummy smile (only fires when AI flagged DRAMATIC gum excess
+  // per the strict prompt definition; mild/solo cases are filtered earlier)
+  if (has('gum_excess')) return 'gum_excess';
+
+  // P3: Multiple structural findings -> veneers territory.
+  // Veneers require structural justification (not just color/alignment).
+  const structuralCount = countIn(STRUCTURAL);
+  if (structuralCount >= 2) return 'structural_compound';
+
+  const hasColor     = countIn(COLOR) >= 1;
+  const hasAlignment = countIn(ALIGNMENT) >= 1;
+
+  // P4: Color + alignment -> whitening (best) + Invisalign (alt)
+  if (hasColor && hasAlignment) return 'color_alignment';
+
+  // P5: Color only
+  if (hasColor) return 'color_only';
+
+  // P6: Alignment only
+  if (hasAlignment) return 'alignment_only';
+
+  // P7: Single structural finding -> bonding territory
+  if (structuralCount === 1) return 'structural_minor';
+
+  // Fallback: nothing visible warranted treatment
+  return 'inconclusive';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LAYER 3 — RESPONSE TEMPLATES
+// Fixed patient-facing copy per scenario. No AI prose generation.
+// ═══════════════════════════════════════════════════════════════
+
+function buildResponse(scenario, findings, healthFlag) {
+  const visible = findings.visible_findings || [];
+  const evidenceFor = (code) => {
+    const f = visible.find(x => x.code === code);
+    return (f && f.evidence) || '';
   };
 
-  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers });
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
-  }
+  const baseSignals = {
+    emergency: false,
+    _findings: findings,
+    _pathology_flag: healthFlag,
+    _scenario: scenario,
+  };
 
-  try {
-    const { imageBase64, mediaType, mode, treatmentLabel, pagePath } = await req.json();
+  switch (scenario) {
 
-    if (!imageBase64 || !mediaType) {
-      return new Response(JSON.stringify({ error: 'Missing image data. Please try again.' }), { status: 400, headers });
-    }
-
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'Service unavailable. Call (818) 706-6077.' }), { status: 500, headers });
-    }
-
-    const imageContent = {
-      type: 'image',
-      source: { type: 'base64', media_type: mediaType, data: imageBase64 },
-    };
-
-    // ── DEEP DIVE ──────────────────────────
-    if (mode === 'deep_dive' && treatmentLabel) {
-      const res = await callClaude(apiKey, SMILE_DEEPDIVE_PROMPT, [
-        imageContent,
-        { type: 'text', text: `Explain this treatment for this patient: ${treatmentLabel}` },
-      ], 500);
-      const data = await res.json();
-      const text = (data?.content?.[0]?.text || '').trim() || 'Call (818) 706-6077 for details.';
-      return new Response(JSON.stringify({ analysis: text }), { status: 200, headers });
-    }
-
-    // ── TRIAGE ─────────────────────────────
-    let isSafe = true;
-    try {
-      const triageRes = await callClaude(apiKey, TRIAGE_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Assess this image.' },
-      ], 30);
-      const triageData = await triageRes.json();
-      const raw = (triageData?.content?.[0]?.text || '').trim().replace(/```(?:json)?/g, '').trim();
-      isSafe = JSON.parse(raw).safe === true;
-    } catch {
-      isSafe = true;
-    }
-
-    // ── EMERGENCY ──────────────────────────
-    if (!isSafe) {
-      const res = await callClaude(apiKey, EMERGENCY_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Write the urgent message.' },
-      ], 400);
-      const data = await res.json();
-      const text = (data?.content?.[0]?.text || '').trim();
-      return new Response(JSON.stringify({
-        emergency: true,
-        urgency: 'priority',
-        analysis: text,
-        treatments: [],
-      }), { status: 200, headers });
-    }
-
-    // ── QUALITY GATE [v13.2] ───────────────────────
-    // Only honor AI rejections that match the hard-reject categories.
-    // The AI vision model has a strong bias toward rejecting casual
-    // selfies that ARE usable; we filter those false positives here.
-    try {
-      const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Assess photo quality for smile analysis.' },
-      ], 150);
-      const qData = await qRes.json();
-      const qRaw = (qData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-      const qParsed = JSON.parse(qRaw);
-      if (qParsed && qParsed.usable === false) {
-        // Hard-reject whitelist: only honor rejections for these reasons.
-        // Patterns that trigger legitimate rejections — anything else
-        // (e.g. "only lower teeth visible", "side angle", "lips covering")
-        // is a false positive and we let the analysis continue.
-        const reason = (qParsed.reason || '').toLowerCase();
-        const hint = (qParsed.hint || '').toLowerCase();
-        const combined = reason + ' ' + hint;
-        const HARD_REJECT_KEYWORDS = [
-          'not a mouth', 'not a smile', 'no teeth visible', 'mouth is closed',
-          'completely closed', 'no mouth', 'wall', 'ceiling', 'food', 'pet',
-          'too dark', 'pure black', 'silhouette', 'pitch black',
-          'unrecognizable', 'extremely blurry', 'completely out of focus',
-          'motion blur',
-        ];
-        const isHardReject = HARD_REJECT_KEYWORDS.some(kw => combined.includes(kw));
-
-        if (isHardReject) {
-          console.log('[smileAnalysis v13.2] quality gate rejected (hard):', reason);
-          return new Response(JSON.stringify({
-            retake_required: true,
-            reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
-            hint: qParsed.hint || 'Please retake your photo showing your smile clearly.',
-          }), { status: 200, headers });
-        } else {
-          console.log('[smileAnalysis v13.2] quality gate rejection IGNORED (false positive):', reason);
-          // Fall through to analysis
-        }
-      }
-    } catch (e) {
-      // If quality gate fails, continue — don't block analysis
-      console.warn('[smileAnalysis v13.2] quality gate skipped:', e.message);
-    }
-
-    // ── PASS 1: OBSERVE (no treatment vocabulary, no page context) ──
-    let findings = { visible_findings: [], photo_adequacy: {} };
-    try {
-      const obsRes = await callClaude(apiKey, OBSERVE_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Describe what you can literally see in this smile photo.' },
-      ], 700);
-      const obsData = await obsRes.json();
-      const obsRaw = (obsData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-      findings = JSON.parse(obsRaw);
-      console.log('[smileAnalysis v13] findings:', JSON.stringify(findings).substring(0, 400));
-    } catch (e) {
-      console.error('[smileAnalysis v13] observe pass error:', e.message);
-      // If observation fails, return graceful fallback
-      return new Response(JSON.stringify({
-        emergency: false,
-        headline: "Your smile looks healthy on camera — an in-person consultation will show you what's possible.",
-        bullets: ['A proper in-office evaluation gives the most accurate picture.'],
-        plan: [{ label: 'BEST OPTION — Free In-Office Consultation', treatment: 'Free In-Office Consultation', detail: 'We\'ll take proper clinical photos and walk through any enhancement you\'re considering.', id: 'consultation' }],
-        ideal_result: 'You\'ll leave with a clear picture of what would actually enhance your smile.',
-        cta: 'Book your free consultation — we\'ll show you exactly what\'s possible.',
-        treatments: [],
-        urgency: 'standard',
-      }), { status: 200, headers });
-    }
-
-    // ── DEDICATED MISSING-TOOTH DETECTION [v13.6] ─────────
-    // OBSERVE keeps misclassifying obvious missing teeth (as spacing
-    // or by returning empty findings entirely). v13.6 strategy:
-    // - Run dedicated detector
-    // - If it confirms missing tooth (high or medium confidence),
-    //   SHORT-CIRCUIT to a hard-coded implant/bridge response.
-    //   Don't trust OBSERVE → RECOMMEND for missing tooth cases at all.
-    // - OBSERVE/RECOMMEND only run for non-missing-tooth cases.
-    let missingToothResult = null;
-    try {
-      const mtRes = await callClaude(apiKey, MISSING_TOOTH_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Is there a missing tooth in this photo?' },
-      ], 250);
-      const mtData = await mtRes.json();
-      const mtRaw = (mtData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-      missingToothResult = JSON.parse(mtRaw);
-      console.log('[smileAnalysis v13.6.1] missing-tooth detector:', JSON.stringify(missingToothResult));
-    } catch (e) {
-      console.warn('[smileAnalysis v13.6.1] missing-tooth detector skipped:', e.message);
-      missingToothResult = null;
-    }
-
-    // SHORT-CIRCUIT: detector confirmed missing tooth → return implant/bridge
-    // recommendation directly. This bypasses OBSERVE/RECOMMEND entirely
-    // because those passes have proven unreliable on missing-tooth cases.
-    if (missingToothResult?.missing_tooth_present === true) {
-      console.log('[smileAnalysis v13.6.1] SHORT-CIRCUIT: missing tooth detected, returning implant/bridge response');
-
-      const evidence = missingToothResult.evidence
-        || 'A visible gap in the dental arch where a tooth is absent.';
-      const count = missingToothResult.count || 1;
-      const isMultiple = count > 1;
-
-      // Inject missing_tooth into findings so GHL signals capture it
-      const findingsWithMissing = {
-        visible_findings: [{
-          code: 'missing_tooth',
-          location: missingToothResult.location || 'upper_anterior',
-          severity: 'moderate',
-          evidence: evidence,
-        }],
-        photo_adequacy: findings?.photo_adequacy || {},
-      };
-
-      return new Response(JSON.stringify({
-        emergency: false,
-        headline: isMultiple
-          ? "There appear to be visible gaps where teeth are missing — replacing them can transform your smile."
-          : "There appears to be a visible gap where a tooth is missing — replacing it can make a major difference in your smile.",
+    case 'missing_tooth': {
+      const ev = evidenceFor('missing_tooth')
+        || 'A visible gap is present in the dental arch where a tooth is absent.';
+      return {
+        ...baseSignals,
+        headline: "There's a visible gap in your smile that can be fully restored.",
         bullets: [
-          evidence,
-          'Replacing a missing tooth restores function as well as appearance — chewing, speaking, and smile balance.',
-          'An in-person exam will determine the best path forward and confirm everything visible in this photo.',
+          ev,
+          'Replacing a missing tooth restores function as well as appearance.',
+          'An in-person exam will determine whether an implant or bridge is the better fit.',
         ],
         plan: [
           {
             label: 'BEST OPTION — Dental Implant',
             treatment: 'Dental Implant',
             id: 'implant_single',
-            detail: 'A dental implant replaces the missing tooth with a natural-looking, fully functional result that does not rely on neighboring teeth.',
+            detail: 'A dental implant replaces the missing tooth with a permanent, natural-looking solution that does not rely on the neighboring teeth.',
           },
           {
             label: 'ALTERNATIVE — Dental Bridge',
             treatment: 'Dental Bridge',
             id: 'implant_bridge',
-            detail: 'A bridge can also close the space by anchoring a replacement tooth to the neighboring teeth.',
+            detail: 'A bridge fills the gap by anchoring a replacement tooth to the neighboring teeth — a faster and more affordable path.',
           },
         ],
-        ideal_result: 'Restore the missing tooth so the smile looks complete, balanced, and confident again.',
+        ideal_result: 'Your smile looks complete again — no visible gap, restored chewing function, and renewed confidence.',
         cta: "Book your free consultation and we'll walk you through implant and bridge options.",
         treatments: [
           { id: 'implant_single', label: 'Dental Implant' },
           { id: 'implant_bridge', label: 'Dental Bridge' },
         ],
         urgency: 'priority',
-        // Backend signals
-        _findings: findingsWithMissing,
-        _pathology_flag: null,
-        _missing_tooth_detector: missingToothResult,
-      }), { status: 200, headers });
+      };
     }
 
-    // ── FINDINGS GUARDRAILS [v13.4] ─────────────────────────
-    // The OBSERVE pass has high false-positive rates on certain
-    // findings when the photo doesn't clearly show them. We filter
-    // those out here at the code level rather than trying to fight
-    // the AI through prompts alone.
-    if (findings && Array.isArray(findings.visible_findings)) {
-      const before = findings.visible_findings.length;
-
-      // Drop mild gum_excess findings — these are almost always
-      // false positives. Real gum_excess (gummy smile) is dramatic
-      // and the AI will mark it as moderate or severe.
-      findings.visible_findings = findings.visible_findings.filter(f => {
-        if (f.code === 'gum_excess' && f.severity === 'mild') {
-          console.log('[smileAnalysis v13.4] dropped mild gum_excess (false-positive filter)');
-          return false;
-        }
-        return true;
-      });
-
-      // If gum_excess is the ONLY finding, drop it. Real gummy
-      // smiles co-occur with at least one other finding (short_teeth,
-      // edge_irregularity, etc.) and a smile with literally nothing
-      // else wrong wouldn't trigger a cosmetic consultation anyway.
-      const gumExcessOnly = findings.visible_findings.length === 1
-        && findings.visible_findings[0].code === 'gum_excess';
-      if (gumExcessOnly) {
-        console.log('[smileAnalysis v13.4] dropped solo gum_excess (likely false positive)');
-        findings.visible_findings = [];
-      }
-
-      const after = findings.visible_findings.length;
-      if (after !== before) {
-        console.log('[smileAnalysis v13.4] findings filtered: ' + before + ' -> ' + after);
-      }
+    case 'gum_excess': {
+      const ev = evidenceFor('gum_excess')
+        || 'Excess gum tissue is visible above your upper teeth when smiling.';
+      return {
+        ...baseSignals,
+        headline: 'Your beautiful teeth are partially hidden by excess gum tissue — gum contouring can reveal more of your natural smile.',
+        bullets: [
+          ev,
+          'Your teeth look healthy underneath — the cosmetic concern is the gum-to-tooth ratio.',
+          'Gum contouring is a quick procedure that reshapes the gum line for a more balanced smile.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Gum Contouring',
+            treatment: 'Gum Contouring',
+            id: 'gum_contouring',
+            detail: 'Precisely reshapes your gum line to reveal more of your natural teeth and create a more balanced, proportioned smile.',
+          },
+          {
+            label: 'COMPLEMENTARY — Professional Whitening',
+            treatment: 'Professional Whitening',
+            id: 'whitening',
+            detail: 'Brightens your teeth so they shine after the gum contouring reveals their full shape.',
+          },
+        ],
+        ideal_result: 'Your smile shows the right balance of teeth and gum — your natural beauty fully revealed.',
+        cta: "Book your free consultation to see exactly how much your smile can change.",
+        treatments: [
+          { id: 'gum_contouring', label: 'Gum Contouring' },
+          { id: 'whitening',      label: 'Professional Whitening' },
+        ],
+        urgency: 'standard',
+      };
     }
 
-    // ── HEALTH TRIAGE — silent backend signal only [v13] ─────────
-    // Runs after OBSERVE. Result is NEVER shown to the patient —
-    // it's attached to the response as a private `_pathology_flag`
-    // that the widget forwards to GHL via webhook customField.
-    // The practice can use this during chart prep to flag a lead
-    // for clinical review. Patient experience stays cosmetic.
-    let healthFlag = null;
-    try {
-      const hRes = await callClaude(apiKey, HEALTH_TRIAGE_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Screen for visible dental pathology.' },
-      ], 200);
-      const hData = await hRes.json();
-      const hRaw = (hData?.content?.[0]?.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-      healthFlag = JSON.parse(hRaw);
-      console.log('[smileAnalysis v13] health triage (backend-only):', JSON.stringify(healthFlag));
-    } catch (e) {
-      console.warn('[smileAnalysis v13] health triage skipped:', e.message);
-      healthFlag = null;
+    case 'structural_compound': {
+      const structuralEvidence = visible
+        .filter(f => STRUCTURAL.has(f.code))
+        .slice(0, 2)
+        .map(f => f.evidence)
+        .filter(Boolean);
+      return {
+        ...baseSignals,
+        headline: 'Several visible details in your smile can be refined into a beautifully cohesive look with porcelain veneers.',
+        bullets: [
+          structuralEvidence[0] || 'Visible variation in tooth shape, length, or edge appearance.',
+          structuralEvidence[1] || 'Cosmetic refinements would create a more harmonious smile line.',
+          'A consultation will confirm whether veneers, bonding, or a combination is the right fit.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Porcelain Veneers',
+            treatment: 'Porcelain Veneers',
+            id: 'veneers',
+            detail: 'Custom-crafted porcelain shells that reshape, lengthen, and brighten multiple teeth for a complete smile transformation.',
+          },
+          {
+            label: 'ALTERNATIVE — Cosmetic Bonding',
+            treatment: 'Cosmetic Bonding',
+            id: 'bonding',
+            detail: 'A more conservative approach using tooth-colored composite to refine specific areas without removing tooth structure.',
+          },
+        ],
+        ideal_result: 'A balanced, harmonious smile with even shapes, smooth edges, and beautiful proportions.',
+        cta: "Book your free consultation to see what your refined smile could look like.",
+        treatments: [
+          { id: 'veneers', label: 'Porcelain Veneers' },
+          { id: 'bonding', label: 'Cosmetic Bonding' },
+        ],
+        urgency: 'standard',
+      };
     }
 
-    // NOTE: missing_tooth is handled by the RECOMMEND_PROMPT itself
-    // (see treatment matching table). No special bypass needed at
-    // the handler level since pathology no longer blocks UX.
+    case 'color_alignment': {
+      const alignmentEvidence = visible.find(f => ALIGNMENT.has(f.code));
+      return {
+        ...baseSignals,
+        headline: 'Your smile shows both color and alignment opportunities — addressing them together can create a striking transformation.',
+        bullets: [
+          evidenceFor('yellowing') || evidenceFor('staining') || 'Visible discoloration that whitening can directly address.',
+          (alignmentEvidence && alignmentEvidence.evidence) || 'Visible alignment that aligners can correct.',
+          'Many patients combine the two for a complete refresh — your in-office consultation confirms the right path.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Professional Whitening',
+            treatment: 'Professional Whitening',
+            id: 'whitening',
+            detail: 'In-office whitening delivers dramatic results in a single visit, addressing visible discoloration directly.',
+          },
+          {
+            label: 'ALTERNATIVE — Invisalign',
+            treatment: 'Invisalign',
+            id: 'invisalign',
+            detail: 'Clear aligners gently and discreetly correct alignment over time — works beautifully alongside whitening.',
+          },
+        ],
+        ideal_result: 'A brighter, more even smile that catches the light and looks fresh from every angle.',
+        cta: "Book your free consultation and we'll map out the best sequence for your smile.",
+        treatments: [
+          { id: 'whitening',  label: 'Professional Whitening' },
+          { id: 'invisalign', label: 'Invisalign' },
+        ],
+        urgency: 'standard',
+      };
+    }
 
-    // ── PASS 2: RECOMMEND (evidence-locked, pagePath for ordering only) ──
-    const recommendInput = JSON.stringify({
-      findings: findings,
-      pagePath: pagePath || null,
-    });
-
-    const recRes = await callClaude(apiKey, RECOMMEND_PROMPT, [
-      { type: 'text', text: `Verified observer findings and patient context:\n\n${recommendInput}\n\nProduce the recommendation JSON.` },
-    ], 1000);
-
-    const recData = await recRes.json();
-    const recRaw = (recData?.content?.[0]?.text || '').trim();
-
-    console.log('[smileAnalysis v13] pagePath:', pagePath, 'rec raw:', recRaw.substring(0, 200));
-
-    if (!recRaw) throw new Error('Empty recommendation response');
-
-    let parsed;
-    try {
-      const cleaned = recRaw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-      parsed = JSON.parse(cleaned);
-    } catch(e) {
-      console.error('[smileAnalysis v13] parse error:', e.message);
-      return new Response(JSON.stringify({
-        emergency: false,
-        headline: "Your smile has real potential.",
-        bullets: ["An in-office consultation will give you the clearest picture."],
-        plan: [],
-        ideal_result: "Come in for a free consultation — we'll walk you through everything in person.",
+    case 'color_only': {
+      const ev = evidenceFor('yellowing') || evidenceFor('staining') || evidenceFor('darkness')
+        || 'Visible discoloration across multiple teeth.';
+      return {
+        ...baseSignals,
+        headline: 'Your smile shows visible discoloration that professional whitening can beautifully reverse.',
+        bullets: [
+          ev,
+          'Tooth structure and alignment look healthy — the opportunity is purely cosmetic color.',
+          'Professional whitening typically delivers dramatic results in a single visit.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Professional Whitening',
+            treatment: 'Professional Whitening',
+            id: 'whitening',
+            detail: 'In-office whitening delivers the most dramatic results in a single visit and is supervised by your dentist.',
+          },
+          {
+            label: 'ALTERNATIVE — Take-Home Whitening Trays',
+            treatment: 'Take-Home Whitening Trays',
+            id: 'whitening_takehome',
+            detail: 'Custom-fitted trays let you whiten gradually at home over a few weeks — same end result with more flexibility.',
+          },
+        ],
+        ideal_result: 'A noticeably brighter, more confident smile — usually within 1-2 weeks.',
         cta: "Book your free consultation and we'll show you exactly what's possible.",
+        treatments: [
+          { id: 'whitening',          label: 'Professional Whitening' },
+          { id: 'whitening_takehome', label: 'Take-Home Whitening Trays' },
+        ],
+        urgency: 'standard',
+      };
+    }
+
+    case 'alignment_only': {
+      const alignmentEvidence = visible.find(f => ALIGNMENT.has(f.code));
+      const ev = (alignmentEvidence && alignmentEvidence.evidence)
+        || 'Visible alignment that clear aligners can correct.';
+      return {
+        ...baseSignals,
+        headline: 'Your smile has alignment opportunities that Invisalign can discreetly correct.',
+        bullets: [
+          ev,
+          'Color and tooth structure look healthy — the focus is alignment.',
+          'Clear aligners are virtually invisible and removable, fitting easily into adult life.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Invisalign',
+            treatment: 'Invisalign',
+            id: 'invisalign',
+            detail: 'Clear aligners gradually move teeth into ideal position without metal brackets — most adult cases finish in 6-18 months.',
+          },
+          {
+            label: 'COMPLEMENTARY — Professional Whitening',
+            treatment: 'Professional Whitening',
+            id: 'whitening',
+            detail: 'A whitening treatment is a quick cosmetic boost during or after orthodontic treatment.',
+          },
+        ],
+        ideal_result: 'A straighter, more even smile that you achieved discreetly — most people will not even know you wore aligners.',
+        cta: "Book your free consultation to see your projected results.",
+        treatments: [
+          { id: 'invisalign', label: 'Invisalign' },
+          { id: 'whitening',  label: 'Professional Whitening' },
+        ],
+        urgency: 'standard',
+      };
+    }
+
+    case 'structural_minor': {
+      const structural = visible.find(f => STRUCTURAL.has(f.code));
+      const ev = (structural && structural.evidence)
+        || 'A small visible variation in tooth shape or edge.';
+      return {
+        ...baseSignals,
+        headline: 'A small refinement could make a meaningful difference in your smile.',
+        bullets: [
+          ev,
+          'Cosmetic bonding can address localized concerns without affecting the rest of your teeth.',
+          'A whitening treatment beforehand ensures the bonded area blends perfectly.',
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Cosmetic Bonding',
+            treatment: 'Cosmetic Bonding',
+            id: 'bonding',
+            detail: 'A precise application of tooth-colored composite to reshape, lengthen, or smooth specific areas. Same-day result.',
+          },
+          {
+            label: 'COMPLEMENTARY — Professional Whitening',
+            treatment: 'Professional Whitening',
+            id: 'whitening',
+            detail: 'Brightens the surrounding teeth so the bonded area blends seamlessly.',
+          },
+        ],
+        ideal_result: 'A subtle but noticeable refinement that completes your smile without major intervention.',
+        cta: "Book your free consultation to see what bonding could do.",
+        treatments: [
+          { id: 'bonding',   label: 'Cosmetic Bonding' },
+          { id: 'whitening', label: 'Professional Whitening' },
+        ],
+        urgency: 'standard',
+      };
+    }
+
+    case 'inconclusive':
+    default: {
+      return {
+        ...baseSignals,
+        headline: "Your smile looks healthy on camera — an in-person consultation can show you what's possible.",
+        bullets: [
+          'Nothing specific jumped out from this photo that requires cosmetic treatment.',
+          'A full evaluation in our office gives the most accurate picture.',
+          "We'll take proper clinical photos and walk through any enhancement you're considering.",
+        ],
+        plan: [
+          {
+            label: 'BEST OPTION — Free In-Office Consultation',
+            treatment: 'Consultation',
+            id: 'consultation',
+            detail: "We'll take proper clinical photos and walk through any enhancement you're considering — no pressure, no guesswork.",
+          },
+        ],
+        ideal_result: "You'll leave with a clear, personalized picture of what would actually enhance your smile.",
+        cta: "Book your free consultation — we'll show you exactly what's possible.",
         treatments: [],
         urgency: 'standard',
-      }), { status: 200, headers });
+      };
     }
-
-    // ── VENEERS GUARDRAIL [v13.1] ──────────────────────────
-    // Even with the prompt update, the AI sometimes still picks
-    // veneers as BEST when the only findings are color + alignment.
-    // Veneers are permanent and expensive — only the in-person exam
-    // should commit a patient to that path. If we detect the AI
-    // recommended veneers without supporting STRUCTURAL findings,
-    // we silently swap to Whitening (BEST) + Invisalign (ALT).
-    try {
-      const findingCodes = (findings?.visible_findings || []).map(f => f.code || '');
-      const STRUCTURAL = ['wear', 'chipping', 'irregular_shape', 'edge_irregularity', 'short_teeth'];
-      const structuralCount = findingCodes.filter(c => STRUCTURAL.includes(c)).length;
-
-      const hasColor = findingCodes.includes('yellowing') || findingCodes.includes('staining');
-      const hasAlignment = findingCodes.includes('crowding') || findingCodes.includes('rotation') || findingCodes.includes('spacing');
-
-      const bestRaw = ((parsed.plan && parsed.plan.best_option) || '').toLowerCase();
-      const bestIsVeneers = bestRaw.includes('veneer');
-
-      // Trigger swap: AI picked veneers but findings don't support it
-      if (bestIsVeneers && structuralCount < 2) {
-        console.log('[smileAnalysis v13.1] veneers guardrail tripped — swapping to whitening/invisalign');
-
-        if (hasColor && hasAlignment) {
-          // Color + alignment → whitening best, invisalign alt
-          parsed.plan = {
-            best_option: 'BEST OPTION — Professional Whitening',
-            best_detail: 'A professional whitening treatment can dramatically brighten the visible discoloration in just one or two visits, addressing the color concern as the first step.',
-            alternative: 'ALTERNATIVE — Invisalign',
-            alt_detail: 'Clear aligners gently and discreetly correct alignment over time. Many patients combine the two for a complete refresh — your in-office consultation will confirm the right path for you.',
-          };
-          parsed.treatments = [
-            { id: 'whitening', label: 'Professional Whitening' },
-            { id: 'invisalign', label: 'Invisalign' },
-          ];
-        } else if (hasColor) {
-          // Color only → whitening best, take-home alt
-          parsed.plan = {
-            best_option: 'BEST OPTION — Professional Whitening',
-            best_detail: 'In-office whitening delivers the most dramatic results in a single visit, addressing the visible discoloration directly.',
-            alternative: 'ALTERNATIVE — Take-Home Whitening Trays',
-            alt_detail: 'Custom trays let you whiten gradually at home over a few weeks for the same end result with more flexibility.',
-          };
-          parsed.treatments = [
-            { id: 'whitening', label: 'Professional Whitening' },
-            { id: 'whitening_takehome', label: 'Take-Home Whitening Trays' },
-          ];
-        } else if (hasAlignment) {
-          // Alignment only → invisalign best
-          parsed.plan = {
-            best_option: 'BEST OPTION — Invisalign',
-            best_detail: 'Clear aligners discreetly correct the alignment over time without metal brackets, producing a straighter, more even smile.',
-            alternative: 'ALTERNATIVE — Professional Whitening',
-            alt_detail: 'A whitening treatment can be a complementary cosmetic boost during or after orthodontic treatment.',
-          };
-          parsed.treatments = [
-            { id: 'invisalign', label: 'Invisalign' },
-            { id: 'whitening', label: 'Professional Whitening' },
-          ];
-        }
-        // If no clear findings at all, leave parsed as-is (rare edge case)
-      }
-    } catch (e) {
-      console.warn('[smileAnalysis v13.1] guardrail error:', e.message);
-    }
-
-    // Normalise plan field — handle nested format from RECOMMEND pass
-    const plan = parsed.plan || {};
-    const planArray = [];
-    if (plan.best_option) {
-      planArray.push({
-        label: plan.best_option,
-        treatment: plan.best_option.replace(/^BEST OPTION\s*[—-]\s*/i, ''),
-        id: (parsed.treatments && parsed.treatments[0]) ? parsed.treatments[0].id : 'consultation',
-        detail: plan.best_detail || '',
-      });
-    }
-    if (plan.alternative) {
-      planArray.push({
-        label: plan.alternative,
-        treatment: plan.alternative.replace(/^ALTERNATIVE\s*[—-]\s*/i, ''),
-        id: (parsed.treatments && parsed.treatments[1]) ? parsed.treatments[1].id : '',
-        detail: plan.alt_detail || '',
-      });
-    }
-
-    return new Response(JSON.stringify({
-      emergency: false,
-      headline: parsed.headline || '',
-      bullets: parsed.bullets || [],
-      plan: planArray,
-      ideal_result: parsed.ideal_result || '',
-      cta: parsed.cta || 'Book your free consultation and we\'ll show you exactly what\'s possible.',
-      treatments: parsed.treatments || [],
-      urgency: parsed.urgency || 'standard',
-      // ─── BACKEND SIGNALS (not rendered to patient) ───
-      // Widget forwards these to GHL via webhook customField
-      // so the practice can flag leads for clinical review.
-      _findings: findings,
-      _pathology_flag: healthFlag,
-    }), { status: 200, headers });
-
-  } catch (err) {
-    console.error('[smileAnalysis v13] error:', err.message);
-    return new Response(JSON.stringify({
-      error: 'Something went wrong. Call (818) 706-6077.',
-    }), { status: 500, headers });
   }
 }
 
-// ─────────────────────────────────────────────
-// CLAUDE HELPER
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// FINDING POST-PROCESSORS — clean up known AI biases before routing
+// ═══════════════════════════════════════════════════════════════
+
+function postProcessFindings(findings) {
+  if (!findings || !Array.isArray(findings.visible_findings)) {
+    return { visible_findings: [], photo_adequacy: {} };
+  }
+
+  // Filter 1: drop low-confidence findings entirely. Exception:
+  // missing_tooth keeps low-confidence findings because false negatives
+  // are far costlier than false positives ($3-5K implant case lost).
+  let cleaned = findings.visible_findings.filter(f => {
+    const conf = (f.confidence || '').toLowerCase();
+    if (conf === 'low' && f.code !== 'missing_tooth') return false;
+    return true;
+  });
+
+  // Filter 2: drop mild gum_excess (false-positive pattern in v13.x logs)
+  cleaned = cleaned.filter(f => !(f.code === 'gum_excess' && f.severity === 'mild'));
+
+  // Filter 3: drop solo gum_excess (real gummy smiles co-occur with short_teeth)
+  if (cleaned.length === 1 && cleaned[0].code === 'gum_excess') {
+    cleaned = [];
+  }
+
+  // Filter 4: AI sometimes returns severe spacing that is actually a missing
+  // tooth it failed to recognize. Promote severe upper-anterior spacing to
+  // missing_tooth — false positives acceptable per business rules.
+  cleaned = cleaned.map(f => {
+    if (f.code === 'spacing'
+        && f.severity === 'severe'
+        && (f.location === 'upper_anterior' || f.location === 'generalized')) {
+      console.log('[v14] promoting severe anterior spacing to missing_tooth');
+      return {
+        ...f,
+        code: 'missing_tooth',
+        evidence: f.evidence || 'A wide gap is visible in the upper front arch.',
+      };
+    }
+    return f;
+  });
+
+  return {
+    visible_findings: cleaned,
+    photo_adequacy: findings.photo_adequacy || {},
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+
+function parseJsonSafe(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  try {
+    const cleaned = raw.trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+    return JSON.parse(cleaned);
+  } catch {
+    return null;
+  }
+}
+
+function isHardReject(qParsed) {
+  // Whitelist of hard-reject reasons. Anything else is a false positive
+  // that we ignore (the AI quality reviewer is too aggressive).
+  const text = ((qParsed.reason || '') + ' ' + (qParsed.hint || '')).toLowerCase();
+  const KEYWORDS = [
+    'not a mouth', 'not a smile', 'no teeth visible', 'mouth is closed',
+    'completely closed', 'no mouth', 'wall', 'ceiling', 'food', 'pet',
+    'too dark', 'pure black', 'silhouette', 'pitch black',
+    'unrecognizable', 'extremely blurry', 'completely out of focus',
+    'motion blur',
+  ];
+  return KEYWORDS.some(k => text.includes(k));
+}
+
 async function callClaude(apiKey, systemPrompt, contentArray, maxTokens = 800) {
   return fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -907,4 +662,143 @@ async function callClaude(apiKey, systemPrompt, contentArray, maxTokens = 800) {
       messages: [{ role: 'user', content: contentArray }],
     }),
   });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLER
+// ═══════════════════════════════════════════════════════════════
+
+export default async function handler(req) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers });
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
+  }
+
+  try {
+    const { imageBase64, mediaType, mode, treatmentLabel } = await req.json();
+
+    if (!imageBase64 || !mediaType) {
+      return new Response(JSON.stringify({ error: 'Missing image data. Please try again.' }), { status: 400, headers });
+    }
+
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: 'Service unavailable. Call (818) 706-6077.' }), { status: 500, headers });
+    }
+
+    const imageContent = {
+      type: 'image',
+      source: { type: 'base64', media_type: mediaType, data: imageBase64 },
+    };
+
+    // ── DEEP DIVE — explain a specific treatment to a patient ──
+    if (mode === 'deep_dive' && treatmentLabel) {
+      const res = await callClaude(apiKey, SMILE_DEEPDIVE_PROMPT, [
+        imageContent,
+        { type: 'text', text: `Explain this treatment for this patient: ${treatmentLabel}` },
+      ], 500);
+      const data = await res.json();
+      const text = (data?.content?.[0]?.text || '').trim() || 'Call (818) 706-6077 for details.';
+      return new Response(JSON.stringify({ analysis: text }), { status: 200, headers });
+    }
+
+    // ── QUALITY GATE ──
+    try {
+      const qRes = await callClaude(apiKey, QUALITY_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Assess photo quality.' },
+      ], 150);
+      const qParsed = parseJsonSafe((await qRes.json())?.content?.[0]?.text);
+      if (qParsed && qParsed.usable === false && isHardReject(qParsed)) {
+        console.log('[v14] quality gate hard-rejected:', qParsed.reason);
+        return new Response(JSON.stringify({
+          retake_required: true,
+          reason: qParsed.reason || 'We need a clearer photo to give you an accurate result.',
+          hint: qParsed.hint || 'Please retake your photo showing your smile clearly.',
+        }), { status: 200, headers });
+      }
+    } catch (e) {
+      console.warn('[v14] quality gate skipped:', e.message);
+    }
+
+    // ── EMERGENCY TRIAGE ──
+    let triage = { safe: true };
+    try {
+      const tRes = await callClaude(apiKey, TRIAGE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Assess this image.' },
+      ], 50);
+      triage = parseJsonSafe((await tRes.json())?.content?.[0]?.text) || { safe: true };
+    } catch (e) {
+      console.warn('[v14] triage skipped:', e.message);
+    }
+
+    if (triage.safe === false) {
+      const eRes = await callClaude(apiKey, EMERGENCY_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Write the urgent message.' },
+      ], 400);
+      const text = ((await eRes.json())?.content?.[0]?.text || '').trim()
+        || 'Your photo shows something that should be checked promptly. Call (818) 706-6077 — same-day appointments available, consultation is free.';
+      return new Response(JSON.stringify({
+        emergency: true,
+        urgency: 'priority',
+        analysis: text,
+        treatments: [],
+      }), { status: 200, headers });
+    }
+
+    // ── OBSERVE — AI classifies findings (no treatments) ──
+    let findings = { visible_findings: [], photo_adequacy: {} };
+    try {
+      const oRes = await callClaude(apiKey, OBSERVE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Classify the visible findings.' },
+      ], 800);
+      const parsed = parseJsonSafe((await oRes.json())?.content?.[0]?.text);
+      if (parsed) findings = parsed;
+      console.log('[v14] raw findings:', JSON.stringify(findings).substring(0, 600));
+    } catch (e) {
+      console.error('[v14] observe error:', e.message);
+    }
+
+    // Apply known-bias filters
+    findings = postProcessFindings(findings);
+    console.log('[v14] cleaned findings:', JSON.stringify(findings).substring(0, 600));
+
+    // ── HEALTH TRIAGE — silent backend signal only ──
+    let healthFlag = null;
+    try {
+      const hRes = await callClaude(apiKey, HEALTH_TRIAGE_PROMPT, [
+        imageContent,
+        { type: 'text', text: 'Screen for visible dental pathology.' },
+      ], 200);
+      healthFlag = parseJsonSafe((await hRes.json())?.content?.[0]?.text);
+      console.log('[v14] pathology flag (backend-only):', JSON.stringify(healthFlag));
+    } catch (e) {
+      console.warn('[v14] pathology screen skipped:', e.message);
+    }
+
+    // ── ROUTE ── deterministic, no LLM
+    const scenario = routeScenario(findings);
+    console.log('[v14] routed to scenario:', scenario);
+
+    // ── BUILD RESPONSE ── from template
+    const response = buildResponse(scenario, findings, healthFlag);
+
+    return new Response(JSON.stringify(response), { status: 200, headers });
+
+  } catch (err) {
+    console.error('[v14] handler error:', err.message);
+    return new Response(JSON.stringify({
+      error: 'Something went wrong. Call (818) 706-6077.',
+    }), { status: 500, headers });
+  }
 }
