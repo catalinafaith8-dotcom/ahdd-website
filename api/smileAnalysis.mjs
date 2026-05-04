@@ -1,38 +1,33 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v15.2 — TRIAGE hallucination fix + restoration detector
+// v15.3 — STRUCTURE BEATS COSMETIC priority fix
 //
-//   v15.1 added the dedicated restoration detector (decay-under-crowns).
-//   v15.2 fixes a critical regression: TRIAGE was flagging normal pink
-//   gums as emergencies, triggering a red "needs attention soon" banner
-//   on healthy smile photos. Same architectural failure mode as v13:
-//   AI vision interpreting normal anatomy as pathology.
+//   v15.2 had a routing bug: photos with ONE structural finding (chipping,
+//   wear, edge irregularity) PLUS color/alignment findings were routing
+//   to whitening or Invisalign — leaving the chip/break unaddressed.
+//   Whitening agents do not work on bonding or crown materials, and
+//   aligners cannot rebuild broken tooth structure. The clinical truth:
+//   restorative work comes first, cosmetic refinement after.
 //
-//   Three-layer defense against false-positive emergencies:
+//   Router change: structural_minor (single chip/wear) promoted above
+//   color_alignment, color_only, and alignment_only. Now any visible
+//   structural finding routes to bonding/crown BEFORE whitening or
+//   alignment. structural_compound (2+ structural findings) was already
+//   above color/alignment — unchanged.
 //
-//   1. TRIAGE_PROMPT rewritten — explicit list of 5 categories that
-//      qualify (visible_blood, broken_tooth, trauma, abscess, deep_cavity).
-//      Explicit list of things that do NOT qualify (pink gums, slight
-//      swelling, "inflamed-looking", yellowing, plaque, etc).
+//   Template improvements:
+//   - structural_compound now BRANCHES based on finding type:
+//     * Multiple chips/wear/breakage -> CROWNS as BEST OPTION
+//       (not veneers — patient needs structure rebuilt first)
+//     * Multiple cosmetic shape issues only -> Veneers as BEST
+//   - structural_minor copy fixed: clinical sequence now correct
+//     (whitening BEFORE bonding so material can be matched to
+//     the brighter shade — was previously suggesting whitening AFTER)
 //
-//   2. Code-level concern whitelist — even if TRIAGE returns safe:false,
-//      the handler only routes to emergency UI when concern matches
-//      HARD_EMERGENCY_KEYWORDS. Any other concern (e.g., "gingivitis")
-//      is logged and ignored, falling through to normal pipeline.
+//   Preserved from v15.2: all detector logic (missing-tooth,
+//   restoration), TRIAGE hallucination guards, page-aware fallback.
 //
-//   3. EMERGENCY_PROMPT constrained — must address the specific concern
-//      passed in (visible_blood, broken_tooth, etc). Explicit prohibition
-//      on freelancing about gum disease, gingivitis, or cosmetic findings.
-//      If cannot clearly see the concern, generic message — no invention.
-//
-//   Preserved from v15.1:
-//   - Dedicated restoration detector (decay under crowns)
-//   - Drop color findings on intact restorations (whitening doesn't
-//     work on porcelain)
-//   - All 17 routing scenarios from v15
-//
-//   Architecture preserved: AI never sees treatment names. Detectors
-//   return observation flags only. Code routes; templates speak.
+//   Architecture preserved: AI never sees treatment names.
 //
 //   Builds on v14 architecture (AI observes, code routes, templates speak).
 //   v14.1 added failing_restoration + decay. v15 expands to the full
@@ -507,19 +502,26 @@ function routeScenario(findings) {
   // ─── PRIORITY 9: Mismatched old dentistry -> smile makeover ───
   if (has('mismatched_dentistry')) return 'smile_makeover';
 
-  // ─── PRIORITY 10: Multiple structural minor findings -> veneers ───
+  // ─── PRIORITY 10: Multiple structural minor findings -> veneers/crowns ───
+  // Multiple chips, wear, or edge irregularities = restorative work needed.
+  // Whitening or aligners cannot restore broken tooth structure.
   const structuralCount = countIn(STRUCTURAL);
   if (structuralCount >= 2) return 'structural_compound';
 
-  // ─── PRIORITY 11-13: Color + Alignment combinations ───
+  // ─── PRIORITY 11: Single structural finding -> bonding ───
+  // STRUCTURE BEATS COSMETIC. A single chip needs bonding before whitening
+  // or alignment work — bonding material does not respond to whitening,
+  // and aligners cannot rebuild broken tooth structure. Patients want
+  // their teeth restored before being told to whiten or straighten.
+  if (structuralCount === 1) return 'structural_minor';
+
+  // ─── PRIORITY 12-14: Color + Alignment combinations ───
+  // Only fire when no structural findings exist.
   const hasColor     = countIn(COLOR) >= 1;
   const hasAlignment = countIn(ALIGNMENT) >= 1;
   if (hasColor && hasAlignment) return 'color_alignment';
   if (hasColor) return 'color_only';
   if (hasAlignment) return 'alignment_only';
-
-  // ─── PRIORITY 14: Single structural finding -> bonding ───
-  if (structuralCount === 1) return 'structural_minor';
 
   // ─── FALLBACK: nothing visible -> page-specific consultation ───
   return 'inconclusive';
@@ -948,11 +950,58 @@ function buildResponse(scenario, findings, healthFlag, pagePath) {
     }
 
     case 'structural_compound': {
-      const structuralEvidence = visible
-        .filter(f => STRUCTURAL.has(f.code))
+      const structuralFindings = visible.filter(f => STRUCTURAL.has(f.code));
+      const structuralEvidence = structuralFindings
         .slice(0, 2)
         .map(f => f.evidence)
         .filter(Boolean);
+
+      // Differentiate: if findings are chips/wear/breakage, recommend crowns
+      // (restorative). If findings are shape/symmetry only, recommend veneers
+      // (cosmetic). Whitening is NEVER best option here — bonding/crown
+      // material does not respond to whitening agents.
+      const hasBreakage = structuralFindings.some(f =>
+        f.code === 'chipping' || f.code === 'wear' || f.code === 'edge_irregularity'
+      );
+      const hasShapeOnly = structuralFindings.every(f =>
+        f.code === 'irregular_shape' || f.code === 'short_teeth'
+      );
+
+      if (hasBreakage) {
+        return {
+          ...baseSignals,
+          headline: "Multiple visible chips and worn edges can be fully restored — bonded composite or porcelain crowns rebuild the broken tooth structure.",
+          bullets: [
+            structuralEvidence[0] || 'Visible chipping, wear, or broken edges across multiple front teeth.',
+            structuralEvidence[1] || 'Restoring the tooth structure first ensures the rest of your smile works as one.',
+            'Whitening or aligners alone cannot rebuild broken tooth structure — restorative work comes first, with cosmetic refinement after.',
+          ],
+          plan: [
+            {
+              label: 'BEST OPTION — Porcelain Crowns',
+              treatment: 'Porcelain Crowns',
+              id: 'crowns',
+              detail: 'Custom porcelain crowns rebuild multiple broken or worn teeth at once, restoring both strength and appearance with a permanent, natural-looking result.',
+            },
+            {
+              label: 'ALTERNATIVE — Cosmetic Bonding',
+              treatment: 'Cosmetic Bonding',
+              id: 'bonding',
+              detail: 'For minor or moderate chips, bonded composite is a more conservative same-day option. Your dentist will confirm whether bonding is sufficient or whether crowns are the better path.',
+            },
+          ],
+          ideal_result: 'A complete, restored smile with even, natural-looking teeth — chips and worn edges fully repaired.',
+          cta: "Book your free consultation — we'll examine each affected tooth and recommend the right restoration.",
+          treatments: [
+            { id: 'crowns',  label: 'Porcelain Crowns' },
+            { id: 'bonding', label: 'Cosmetic Bonding' },
+            { id: 'veneers', label: 'Porcelain Veneers' },
+          ],
+          urgency: 'priority',
+        };
+      }
+
+      // Cosmetic shape/symmetry path (irregular_shape, short_teeth)
       return {
         ...baseSignals,
         headline: 'Several visible details in your smile can be refined into a beautifully cohesive look with porcelain veneers.',
@@ -1093,34 +1142,37 @@ function buildResponse(scenario, findings, healthFlag, pagePath) {
     case 'structural_minor': {
       const structural = visible.find(f => STRUCTURAL.has(f.code));
       const ev = (structural && structural.evidence)
-        || 'A small visible variation in tooth shape or edge.';
+        || 'A small visible chip or worn edge on a single tooth.';
+      const isChip = structural && structural.code === 'chipping';
       return {
         ...baseSignals,
-        headline: 'A small refinement could make a meaningful difference in your smile.',
+        headline: isChip
+          ? 'A small chip can be beautifully restored with cosmetic bonding — typically a same-day procedure.'
+          : 'A small refinement could make a meaningful difference in your smile.',
         bullets: [
           ev,
-          'Cosmetic bonding can address localized concerns without affecting the rest of your teeth.',
-          'A whitening treatment beforehand ensures the bonded area blends perfectly.',
+          'Cosmetic bonding restores the affected area with tooth-colored composite that matches your existing teeth.',
+          'If you also want to whiten your smile, whitening is done FIRST so the bonded area can be matched to your brighter shade.',
         ],
         plan: [
           {
             label: 'BEST OPTION — Cosmetic Bonding',
             treatment: 'Cosmetic Bonding',
             id: 'bonding',
-            detail: 'A precise application of tooth-colored composite to reshape, lengthen, or smooth specific areas. Same-day result.',
+            detail: 'A precise application of tooth-colored composite to restore the chipped or worn area. Same-day result, no anesthesia in most cases.',
           },
           {
-            label: 'COMPLEMENTARY — Professional Whitening',
-            treatment: 'Professional Whitening',
-            id: 'whitening',
-            detail: 'Brightens the surrounding teeth so the bonded area blends seamlessly.',
+            label: 'ALTERNATIVE — Porcelain Veneer or Crown',
+            treatment: 'Porcelain Veneer or Crown',
+            id: 'veneer_or_crown',
+            detail: 'For a longer-lasting and more durable result on a front tooth, a porcelain veneer or crown may be preferred. Your dentist will confirm which is best.',
           },
         ],
-        ideal_result: 'A subtle but noticeable refinement that completes your smile without major intervention.',
-        cta: "Book your free consultation to see what bonding could do.",
+        ideal_result: 'Your tooth looks complete and natural again — the chip or worn edge fully restored.',
+        cta: "Book your free consultation and we'll show you exactly how the restoration will look.",
         treatments: [
-          { id: 'bonding',   label: 'Cosmetic Bonding' },
-          { id: 'whitening', label: 'Professional Whitening' },
+          { id: 'bonding',          label: 'Cosmetic Bonding' },
+          { id: 'veneer_or_crown',  label: 'Veneer or Crown' },
         ],
         urgency: 'standard',
       };
