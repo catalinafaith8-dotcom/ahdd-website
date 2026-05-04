@@ -1,30 +1,38 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v15.1 — Dedicated restoration detector (decay-under-crowns case)
+// v15.2 — TRIAGE hallucination fix + restoration detector
 //
-//   v15 added failing_restoration as a finding code, but OBSERVE
-//   alone failed to flag it on the decay-under-crowns photo —
-//   AI saw "yellow lower teeth," called it yellowing, and routed
-//   to whitening. Same architectural issue as missing-tooth in v13:
-//   a multi-finding prompt is too diffuse for a specific clinical
-//   signal.
+//   v15.1 added the dedicated restoration detector (decay-under-crowns).
+//   v15.2 fixes a critical regression: TRIAGE was flagging normal pink
+//   gums as emergencies, triggering a red "needs attention soon" banner
+//   on healthy smile photos. Same architectural failure mode as v13:
+//   AI vision interpreting normal anatomy as pathology.
 //
-//   v15.1 adds a dedicated detector following the v13.6 pattern:
-//   - RESTORATION_DETECTOR_PROMPT runs in parallel after OBSERVE
-//   - Single-purpose: "does patient have existing crowns/veneers,
-//     and are any of them compromised?"
-//   - Aggressive: "false positives are far less costly than false
-//     negatives" (lost crown-replacement lead = $1500-3000)
-//   - Result merged into findings:
-//     * Compromised restoration → inject failing_restoration finding
-//     * Sound restorations → drop color findings (whitening doesn't
-//       work on porcelain), inject mismatched_dentistry as fallback
+//   Three-layer defense against false-positive emergencies:
 //
-//   Also fixes log labels: all console messages now correctly say
-//   [v15] instead of stale [v14] from the v14→v15 rewrite.
+//   1. TRIAGE_PROMPT rewritten — explicit list of 5 categories that
+//      qualify (visible_blood, broken_tooth, trauma, abscess, deep_cavity).
+//      Explicit list of things that do NOT qualify (pink gums, slight
+//      swelling, "inflamed-looking", yellowing, plaque, etc).
 //
-//   Architecture preserved: AI never sees treatment names. Detector
-//   returns observation flags only. Code routes; templates speak.
+//   2. Code-level concern whitelist — even if TRIAGE returns safe:false,
+//      the handler only routes to emergency UI when concern matches
+//      HARD_EMERGENCY_KEYWORDS. Any other concern (e.g., "gingivitis")
+//      is logged and ignored, falling through to normal pipeline.
+//
+//   3. EMERGENCY_PROMPT constrained — must address the specific concern
+//      passed in (visible_blood, broken_tooth, etc). Explicit prohibition
+//      on freelancing about gum disease, gingivitis, or cosmetic findings.
+//      If cannot clearly see the concern, generic message — no invention.
+//
+//   Preserved from v15.1:
+//   - Dedicated restoration detector (decay under crowns)
+//   - Drop color findings on intact restorations (whitening doesn't
+//     work on porcelain)
+//   - All 17 routing scenarios from v15
+//
+//   Architecture preserved: AI never sees treatment names. Detectors
+//   return observation flags only. Code routes; templates speak.
 //
 //   Builds on v14 architecture (AI observes, code routes, templates speak).
 //   v14.1 added failing_restoration + decay. v15 expands to the full
@@ -106,17 +114,46 @@ export const config = { runtime: 'edge' };
 // LAYER 1 — AI VISION PROMPTS (classify only, no treatment talk)
 // ═══════════════════════════════════════════════════════════════
 
-const TRIAGE_PROMPT = `You are a dental image safety screener.
+const TRIAGE_PROMPT = `You are a dental EMERGENCY screener for casual smartphone smile photos. You only flag photos that show a TRUE EMERGENCY requiring same-day dental attention.
 
-Respond ONLY with JSON. Mark unsafe ONLY if clearly visible:
-- Broken/fractured tooth showing dentin or pulp
-- Visible bleeding or active swelling
-- Trauma (split lip with tooth damage, displaced tooth)
-- Deep cavity with visible decay structure
+This is NOT a clinical photo. Pink gum color, slight swelling appearance, yellowing teeth, mild plaque film, slightly red gum margins are all NORMAL phone-photo artifacts. DO NOT flag them.
 
-If unsafe: { "safe": false, "concern": "<short clinical phrase>" }
-If smile photo with no urgent issue: { "safe": true }
-If not a mouth photo: { "safe": true }
+═══ ONLY FLAG safe=false IF YOU SEE ONE OF THESE ═══
+
+1. VISIBLE BLOOD — actively bleeding gums, blood pooling in mouth, blood on lips/teeth from injury
+2. BROKEN/FRACTURED TOOTH — a tooth is visibly broken, with chunks missing, dentin or pulp exposed (yellow inner tooth or pink/red pulp visible)
+3. TRAUMA — split lip with tooth damage, tooth visibly displaced from socket, knocked-loose tooth
+4. VISIBLE ABSCESS — clear pus-filled bump on the gum, fistula, or visible swelling that distorts the lip
+5. DEEP CAVITY — large dark hole/cavitation that has eaten through visible tooth structure (NOT just a stain or shadow)
+
+═══ THINGS THAT ARE NOT EMERGENCIES ═══
+
+DO NOT flag any of these:
+- Pink or red gums (normal vascularity, lighting reflection, lip-margin coloration)
+- Slight gum swelling appearance (normal anatomy or photo angle)
+- "Inflamed-looking" gums (this is a clinical interpretation, not a visual emergency)
+- Yellowing or staining on teeth
+- Plaque film or tartar at the gumline
+- Crooked, crowded, or chipped teeth (cosmetic only)
+- A small chip or worn edge
+- Recession that's not severe
+- Existing crowns or fillings
+- Color mismatch between teeth
+- Generally "unhealthy looking" gums (subjective)
+
+═══ DECISIVE INSTRUCTION ═══
+
+False positives here are catastrophic — they trigger a red "needs attention soon" banner that destroys patient trust on every cosmetic case.
+
+When in doubt, return safe:true. The downstream pipeline (OBSERVE + dedicated detectors + cosmetic templates) handles non-emergency findings appropriately. Your job is ONLY to catch true visual emergencies, not to assess overall dental health.
+
+═══ OUTPUT (RETURN ONLY JSON) ═══
+
+If TRUE visual emergency per categories 1-5 above:
+{ "safe": false, "concern": "<one of: visible_blood | broken_tooth | trauma | abscess | deep_cavity>" }
+
+Otherwise (which will be the vast majority of photos):
+{ "safe": true }
 
 Default: { "safe": true }`;
 
@@ -351,15 +388,29 @@ Empty visible_findings array is valid. Be precise. If you cannot write
 a specific evidence sentence pointing to actual pixels, do NOT include
 the finding.`;
 
-const EMERGENCY_PROMPT = `You are a caring dentist. This photo shows something needing prompt attention.
+const EMERGENCY_PROMPT = `You are a caring dentist. The patient's photo has been flagged for ONE of these specific visual emergencies: visible_blood, broken_tooth, trauma, abscess, or deep_cavity. The specific concern will be in the user message.
 
-Write 3 short paragraphs. Plain text only — no asterisks, no bold, no markdown.
+═══ STRICT CONSTRAINTS ═══
 
-Paragraph 1: What you see, in plain everyday language.
-Paragraph 2: Why it is worth getting checked soon. Calm, not alarming.
-Paragraph 3: The good news — catching this early makes it simpler. End: Call (818) 706-6077 — same-day appointments available, consultation is free.
+You MUST address the specific concern provided. You must NOT mention any of these (they are NOT what was detected):
+- Gingivitis or gum inflammation
+- Gum disease, periodontitis, or "bacterial buildup"
+- Yellowing, staining, or whitening
+- Crowding, alignment, or cosmetic concerns
+- Plaque or tartar
+- General "unhealthy gums"
 
-Under 100 words. Warm and human.`;
+If you cannot clearly see the specific concern in the image, write a short generic message about needing an exam — do NOT invent a different finding.
+
+═══ FORMAT ═══
+
+Three short paragraphs. Plain text only — no asterisks, no bold, no markdown.
+
+Paragraph 1: What you see related to THE SPECIFIC CONCERN PROVIDED, in plain everyday language.
+Paragraph 2: Why this specific issue is worth getting checked soon. Calm, factual.
+Paragraph 3: Reassurance that early care makes treatment simpler. End: Call (818) 706-6077 — same-day appointments available, consultation is free.
+
+Under 100 words. Warm and human. Stay on topic — only address the concern provided.`;
 
 const SMILE_DEEPDIVE_PROMPT = `You are a caring dentist at Agoura Hills Dental Designs explaining a specific treatment option for a patient who just had their photo analyzed. Speak directly TO the patient — warm, conversational, never clinical.
 
@@ -1317,18 +1368,35 @@ export default async function handler(req) {
     }
 
     if (triage.safe === false) {
-      const eRes = await callClaude(apiKey, EMERGENCY_PROMPT, [
-        imageContent,
-        { type: 'text', text: 'Write the urgent message.' },
-      ], 400);
-      const text = ((await eRes.json())?.content?.[0]?.text || '').trim()
-        || 'Your photo shows something that should be checked promptly. Call (818) 706-6077 — same-day appointments available, consultation is free.';
-      return new Response(JSON.stringify({
-        emergency: true,
-        urgency: 'priority',
-        analysis: text,
-        treatments: [],
-      }), { status: 200, headers });
+      // Whitelist of legitimate emergency concerns. AI sometimes returns
+      // safe:false for non-emergencies (gingivitis, "inflammation",
+      // pink gums) — code-level guard catches those false positives.
+      const concernRaw = (triage.concern || '').toLowerCase();
+      const HARD_EMERGENCY_KEYWORDS = [
+        'visible_blood', 'broken_tooth', 'trauma', 'abscess', 'deep_cavity',
+        'fractured', 'displaced', 'pus', 'fistula', 'bleeding',
+        'broken', 'split lip',
+      ];
+      const isLegitimateEmergency = HARD_EMERGENCY_KEYWORDS.some(k => concernRaw.includes(k));
+
+      if (!isLegitimateEmergency) {
+        console.log('[v15] triage flagged unsafe but concern not in whitelist — IGNORING:', triage.concern);
+        // Fall through to normal pipeline
+      } else {
+        console.log('[v15] true emergency detected:', triage.concern);
+        const eRes = await callClaude(apiKey, EMERGENCY_PROMPT, [
+          imageContent,
+          { type: 'text', text: `The specific concern detected in this photo is: ${triage.concern}. Write the message addressing only that concern.` },
+        ], 400);
+        const text = ((await eRes.json())?.content?.[0]?.text || '').trim()
+          || 'Your photo shows something that should be checked promptly. Call (818) 706-6077 — same-day appointments available, consultation is free.';
+        return new Response(JSON.stringify({
+          emergency: true,
+          urgency: 'priority',
+          analysis: text,
+          treatments: [],
+        }), { status: 200, headers });
+      }
     }
 
     // ── OBSERVE — AI classifies findings (no treatments) ──
