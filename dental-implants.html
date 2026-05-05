@@ -596,6 +596,99 @@ button { font-family: var(--sans); }
 .svc-hero-badge-num { font-family: var(--display); font-weight: 700; letter-spacing: -.02em; }
 .svc-hero-img { background: linear-gradient(160deg, #EEF4FB 0%, #C8DCF0 60%, #0F2D4A 100%); }
 
+/* ─── HERO BEFORE/AFTER SLIDER ─────────────────────────── */
+.svc-hero-img { padding: 0; background: #0F2D4A; }
+.ba-slider {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  user-select: none; -webkit-user-select: none;
+  cursor: ew-resize;
+  background: #0F2D4A;
+  touch-action: none;
+}
+.ba-img {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.ba-before-wrap {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 50%; height: 100%;
+  overflow: hidden;
+  will-change: width;
+  z-index: 2;
+}
+/* Keep before image at full slider width even though wrap is clipped */
+.ba-before-wrap .ba-img {
+  width: var(--ba-slider-w, 100%);
+  max-width: none;
+}
+.ba-handle {
+  position: absolute; top: 0; bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(15,45,74,.18), 0 4px 14px rgba(15,45,74,.35);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 3;
+  will-change: left;
+}
+.ba-handle-knob {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15,45,74,.32), 0 0 0 1px rgba(15,45,74,.08);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--navy);
+}
+.ba-handle-knob svg { width: 22px; height: 22px; }
+.ba-label {
+  position: absolute;
+  top: 18px;
+  z-index: 4;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(15,45,74,.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(15,45,74,.18);
+}
+.ba-label-before { left: 18px; }
+.ba-label-after { right: 18px; background: rgba(201,106,46,.92); }
+.ba-range {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  margin: 0; padding: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  z-index: 5;
+  -webkit-appearance: none; appearance: none;
+  background: transparent;
+}
+.ba-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 60px; height: 100%; cursor: ew-resize; }
+.ba-range::-moz-range-thumb { width: 60px; height: 100%; border: 0; background: transparent; cursor: ew-resize; }
+@media (max-width: 768px) {
+  .ba-handle-knob { width: 38px; height: 38px; }
+  .ba-handle-knob svg { width: 18px; height: 18px; }
+  .ba-label { font-size: 10px; padding: 5px 11px; top: 14px; }
+  .ba-label-before { left: 14px; }
+  .ba-label-after { right: 14px; }
+}
+
 /* ─── SECTION HEADERS ──────────────────────────────────── */
 .sec-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; }
 .sec-title { font-family: var(--display); font-size: clamp(24px, 2.8vw, 36px); font-weight: 700; letter-spacing: -.03em; line-height: 1.08; }
@@ -827,12 +920,23 @@ button { font-family: var(--sans); }
     </div>
   </div>
   <div class="svc-hero-img">
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#ddf0fb 0%,#88c2e8 50%,#2A5A82 100%);display:flex;align-items:center;justify-content:center;">
-      <div style="text-align:center;color:#fff;padding:32px">
-        <div style="font-size:72px;margin-bottom:16px">🦷</div>
-        <div style="font-family:var(--serif);font-size:22px;opacity:.9">Dental Implants</div>
-        <div style="font-size:13px;opacity:.65;margin-top:6px">Service Photo Coming Soon</div>
+    <!-- Before/After Slider — implant case -->
+    <div class="ba-slider" id="baSlider" role="region" aria-label="Before and after dental implant treatment">
+      <img class="ba-img ba-after" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/after_edited.jpg" alt="After dental implant treatment" draggable="false"/>
+      <div class="ba-before-wrap" id="baBeforeWrap">
+        <img class="ba-img ba-before" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/before_edited.jpg" alt="Before dental implant treatment" draggable="false"/>
       </div>
+      <div class="ba-handle" id="baHandle" aria-hidden="true">
+        <div class="ba-handle-knob">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+            <polyline points="9 6 15 12 9 18"/>
+          </svg>
+        </div>
+      </div>
+      <div class="ba-label ba-label-before">Before</div>
+      <div class="ba-label ba-label-after">After</div>
+      <input type="range" min="0" max="100" value="50" class="ba-range" id="baRange" aria-label="Drag to compare before and after"/>
     </div>
   </div>
 </section>
@@ -1108,6 +1212,43 @@ var BOOK_URL='https://schedule.jarvisanalytics.com/frame?eoid=64471&elid=6400000
 function doBook(e){if(e){e.preventDefault();e.stopPropagation();}var modal=document.getElementById('bk-modal'),cont=document.getElementById('bk-container');cont.innerHTML='';var fr=document.createElement('iframe');fr.src=BOOK_URL;fr.title='Book Appointment Online';fr.allow='payment';fr.style.cssText='width:100%;height:100%;min-height:580px;border:none;display:block;';cont.appendChild(fr);modal.classList.add('open');document.body.style.overflow='hidden';document.addEventListener('keydown',escBook);}
 function closeBook(){document.getElementById('bk-modal').classList.remove('open');document.body.style.overflow='';document.removeEventListener('keydown',escBook);setTimeout(function(){document.getElementById('bk-container').innerHTML='';},300);}
 function escBook(e){if(e.key==='Escape')closeBook();}
+
+// HERO BEFORE/AFTER SLIDER
+(function(){
+  var slider=document.getElementById('baSlider');
+  if(!slider)return;
+  var beforeWrap=document.getElementById('baBeforeWrap');
+  var handle=document.getElementById('baHandle');
+  var range=document.getElementById('baRange');
+  var dragging=false;
+  function syncWidth(){slider.style.setProperty('--ba-slider-w',slider.clientWidth+'px');}
+  function setPosition(pct){
+    pct=Math.max(0,Math.min(100,pct));
+    beforeWrap.style.width=pct+'%';
+    handle.style.left=pct+'%';
+    range.value=pct;
+  }
+  function pctFromEvent(clientX){
+    var rect=slider.getBoundingClientRect();
+    return ((clientX-rect.left)/rect.width)*100;
+  }
+  slider.addEventListener('pointerdown',function(e){
+    dragging=true;
+    try{slider.setPointerCapture(e.pointerId);}catch(_){}
+    setPosition(pctFromEvent(e.clientX));
+  });
+  slider.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    setPosition(pctFromEvent(e.clientX));
+  });
+  function endDrag(){dragging=false;}
+  slider.addEventListener('pointerup',endDrag);
+  slider.addEventListener('pointercancel',endDrag);
+  slider.addEventListener('pointerleave',endDrag);
+  range.addEventListener('input',function(){setPosition(parseFloat(range.value));});
+  syncWidth();setPosition(50);
+  window.addEventListener('resize',function(){syncWidth();setPosition(parseFloat(range.value));});
+})();
 
 // AI SMILE ANALYSIS v3 — email gate + GHL + emotional copy
 (function(){
