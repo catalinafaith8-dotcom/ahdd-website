@@ -292,13 +292,18 @@ body .team-staff .team-photo img{
    Dr. Shawn's, so `object-fit:cover` scales him up more and he
    visually "fills" the frame while Shawn has headroom. Targets
    ONLY the small circular frames (home team-docs + about team-grid-docs).
-   The large bio photo on /about uses the original cover rule. */
+   The large bio photo on /about uses the original cover rule.
+   ─── DISABLED 2026-05-04 — superseded by Section 24 below which uses
+       per-image object-position to match face placement instead of
+       contain (which made David smaller than Shawn). ─── */
+/*
 body .team-docs .team-photo img[src*="David"],
 body .team-grid-docs .team-photo-wrap img[src*="David"]{
   object-fit:contain !important;
   object-position:center center !important;
   background:#eef1f5 !important;
 }
+*/
 
 /* 4 — TECHNOLOGY ────────────────────────────────────────── */
 
@@ -1319,7 +1324,10 @@ body .city-hero h1{
   text-shadow:none !important;
 }
 
-/* — 2. Dr David photo: zoom in to match Dr Shawn's framing — */
+/* — 2. Dr David photo: zoom in to match Dr Shawn's framing —
+   ─── DISABLED 2026-05-04 — superseded by Section 24 below
+       which uses object-position only to align both bio photos. ─── */
+/*
 .doc-photo-david img{
   transform:scale(1.18) !important;
   transform-origin:center 28% !important;
@@ -1331,6 +1339,7 @@ body .city-hero h1{
     transform-origin:center 30% !important;
   }
 }
+*/
 
 /* — 3. Connect With Us section styling — */
 .connect-section{
@@ -1446,3 +1455,102 @@ body .city-hero h1{
   .connect-section .connect-handle{ font-size:10.5px; }
   .connect-section .connect-sub{ margin-bottom:28px; padding:0 16px; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   24 ─ TEAM PHOTO UNIFICATION + LOGO SIZE (2026-05-04)
+   ──────────────────────────────────────────────────────────
+   Problems addressed:
+     1. Dr. David's source photo is shot wider/further-back than
+        Dr. Shawn's. Previous fix used `object-fit:contain` on David
+        in small frames, which made him look SMALLER (letterboxed)
+        next to Shawn. The big bio photo also had a `transform:scale`
+        which produced a different mismatch.
+     2. Staff photos have varied source crops too (head sizes
+        different at the same `object-fit:cover`).
+     3. Logo was set to 100px, but renders too small visually.
+
+   Approach:
+     - Use `object-fit:cover` for ALL team/doctor photos.
+     - Set `object-position` percentages per face so every subject's
+       eyes/forehead land at the same vertical zone in the frame.
+     - Use `transform:scale` only when source framing genuinely
+       requires it to match the visual head size (David specifically).
+     - Bump logo to 130px desktop / 150px on wide screens.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 24a. UNIFIED OBJECT-FIT FOR ALL TEAM/DOCTOR PHOTOS ── */
+body .team-photo img,
+body .team-photo-wrap img,
+body .doc-photo-wrap img{
+  object-fit:cover !important;
+  background:transparent !important;
+}
+
+/* ── 24b. ABOUT PAGE BIG BIO PHOTOS ──────────────────────
+   Both doctors get same height container + face anchored top.
+   Dr. David's source image is wider so we scale + shift up. */
+body .doc-photo-wrap img{
+  object-position:center 18% !important;
+}
+body .doc-photo-david img{
+  /* David is shot further from camera; scale up so his head size
+     visually matches Shawn's next to him. */
+  transform:scale(1.22) !important;
+  transform-origin:center 26% !important;
+  object-position:center 22% !important;
+}
+@media (max-width:768px){
+  body .doc-photo-david img{
+    transform:scale(1.18) !important;
+    transform-origin:center 28% !important;
+  }
+}
+
+/* ── 24c. ABOUT PAGE TEAM GRID (small portraits) ────────
+   .team-grid-docs (190x240) and .team-grid-staff (3/4 ratio).
+   All photos cover, face-anchored top, with per-photo
+   tweaks where source crop demands it. */
+body .team-grid-docs .team-photo-wrap img,
+body .team-grid-staff .team-photo-wrap img{
+  object-fit:cover !important;
+  object-position:center 12% !important;
+  background:transparent !important;
+}
+
+/* David is wider-framed: scale up + shift focus higher to match Shawn */
+body .team-grid-docs .team-photo-wrap img[src*="David"]{
+  transform:scale(1.32) !important;
+  transform-origin:center 22% !important;
+  object-position:center 18% !important;
+}
+
+/* Heidi's source has a wider aspect — shift focus up so she's not chin-cropped */
+body .team-grid-staff .team-photo-wrap img[src*="Heidi"]{
+  object-position:center 8% !important;
+}
+
+/* ── 24d. HOMEPAGE TEAM SECTION ──────────────────────────
+   .team-docs .team-photo (200x260) for doctors,
+   .team-staff .team-photo (3/4 grid) for staff. */
+body .team-docs .team-photo img,
+body .team-staff .team-photo img{
+  object-fit:cover !important;
+  object-position:center 12% !important;
+  background:transparent !important;
+}
+body .team-docs .team-photo img[src*="David"]{
+  transform:scale(1.32) !important;
+  transform-origin:center 22% !important;
+  object-position:center 18% !important;
+}
+body .team-staff .team-photo img[src*="Heidi"]{
+  object-position:center 8% !important;
+}
+
+/* ── 24e. LOGO SIZE BUMP ─────────────────────────────────
+   Was 100px desktop / 120px wide. Bump to 130px / 150px. */
+#nav .nav-logo img{ height:130px !important; }
+@media (min-width:1200px){ #nav .nav-logo img{ height:150px !important; } }
+@media (max-width:1024px){ #nav .nav-logo img{ height:110px !important; } }
+@media (max-width:768px){  #nav .nav-logo img{ height:90px !important; } }
+@media (max-width:480px){  #nav .nav-logo img{ height:74px !important; } }
