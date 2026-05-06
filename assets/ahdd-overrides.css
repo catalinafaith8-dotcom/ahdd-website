@@ -1547,10 +1547,21 @@ body .team-staff .team-photo img[src*="Heidi"]{
   object-position:center 8% !important;
 }
 
-/* ── 24e. LOGO SIZE BUMP ─────────────────────────────────
-   Was 100px desktop / 120px wide. Bump to 130px / 150px. */
-#nav .nav-logo img{ height:130px !important; }
-@media (min-width:1200px){ #nav .nav-logo img{ height:150px !important; } }
-@media (max-width:1024px){ #nav .nav-logo img{ height:110px !important; } }
-@media (max-width:768px){  #nav .nav-logo img{ height:90px !important; } }
-@media (max-width:480px){  #nav .nav-logo img{ height:74px !important; } }
+/* ── 24e. LOGO SIZE + VERTICAL POSITION ──────────────────
+   Sizes set at every breakpoint with the SAME visual ratio
+   relative to the 64px nav bar — logo ALWAYS overflows the nav
+   to feel substantial:
+     desktop+:   logo height ≈ 2.0× nav-height
+     tablet:     logo height ≈ 1.7× nav-height
+     mobile:     logo height ≈ 1.6× nav-height
+   2026-05-04: also nudge 1px down at every breakpoint —
+   top of logo was clipping against nav bar's top edge. */
+#nav .nav-logo img{
+  height:130px !important;          /* base desktop ≈ 2.03× 64px nav */
+  position:relative !important;
+  top:1px !important;
+}
+@media (min-width:1200px){ #nav .nav-logo img{ height:150px !important; top:1px !important; } }
+@media (max-width:1024px){ #nav .nav-logo img{ height:115px !important; top:1px !important; } }
+@media (max-width:768px){  #nav .nav-logo img{ height:105px !important; top:1px !important; } }
+@media (max-width:480px){  #nav .nav-logo img{ height:90px !important;  top:1px !important; } }
