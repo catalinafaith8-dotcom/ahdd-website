@@ -12,12 +12,35 @@
    ────────────────────────────────────────────────────────── */
 
 /* 1 — NAV: logo enlarged, Services dropdown ─────────────── */
-#nav .nav-logo img{height:50px !important;width:auto}
-@media(min-width:1200px){ #nav .nav-logo img{height:56px !important} }
-#nav{height:72px !important}
-#nav.scrolled{height:72px !important}
-#nav .nav-wrap{height:72px !important}
-.hero-inner{padding-top:72px !important}
+#nav .nav-logo{display:flex;align-items:center;flex-shrink:0;max-width:62%}
+#nav .nav-logo img{height:60px !important;width:auto;max-width:100%;object-fit:contain;object-position:left center}
+@media(min-width:1200px){ #nav .nav-logo img{height:64px !important} }
+
+/* Mobile: brand-prominent size, capped width so hamburger has room */
+@media (max-width:768px){
+  #nav .nav-logo{max-width:66%}
+  #nav .nav-logo img{height:72px !important}
+  #nav{height:92px !important}
+  #nav.scrolled{height:92px !important}
+  #nav .nav-wrap{height:92px !important}
+  .hero-inner{padding-top:92px !important}
+  #mobile-nav{top:92px !important}
+}
+@media (max-width:480px){
+  #nav .nav-logo{max-width:62%}
+  #nav .nav-logo img{height:68px !important}
+  #nav{height:88px !important}
+  #nav.scrolled{height:88px !important}
+  #nav .nav-wrap{height:88px !important}
+  .hero-inner{padding-top:88px !important}
+  #mobile-nav{top:88px !important}
+}
+
+/* Desktop nav baseline */
+#nav{height:80px !important}
+#nav.scrolled{height:80px !important}
+#nav .nav-wrap{height:80px !important}
+.hero-inner{padding-top:80px !important}
 
 /* Services dropdown (desktop) — injected via JS */
 .nav-links li.has-dropdown{position:relative}
@@ -172,27 +195,86 @@ body .hero-pills{display:none !important}
   .about-hero img{max-height:320px}
 }
 
-/* Team photos: circle frames */
+/* Team photos: every member rendered in an IDENTICAL circle, regardless of
+   whether the markup wraps them in `.team-docs / .team-staff` (home) or
+   `.team-grid-docs / .team-grid-staff` (about). Single rule, no exceptions. */
 body .team-photo,
 body .team-photo-wrap{
-  border-radius:50% !important;aspect-ratio:1/1 !important;
-  width:190px !important;height:190px !important;
-}
-body .team-staff .team-photo,
-body .team-grid-staff .team-photo-wrap{
-  width:100% !important;max-width:180px;height:auto !important;
-  aspect-ratio:1/1 !important;margin-left:auto;margin-right:auto;
+  display:block !important;
+  width:100% !important;
+  max-width:170px !important;
+  height:auto !important;
+  aspect-ratio:1 / 1 !important;
+  border-radius:50% !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  overflow:hidden !important;
+  background:#e8ecf2 !important;
 }
 body .team-photo img,
 body .team-photo-wrap img{
-  border-radius:50% !important;object-position:center 20% !important;
+  width:100% !important;height:100% !important;
+  object-fit:cover !important;object-position:center 20% !important;
+  border-radius:50% !important;display:block !important;
+  aspect-ratio:1 / 1 !important;
 }
-@media(max-width:768px){
-  body .team-photo,body .team-photo-wrap{width:150px !important;height:150px !important}
-  body .team-staff .team-photo,body .team-grid-staff .team-photo-wrap{max-width:140px}
+/* Force the staff row to a fixed 3/2-col grid; force the doctor row to a
+   centered flex of identical-width cells so each card has the same column
+   width as a staff card on the same breakpoint. */
+body .team-staff,body .team-grid-staff{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:24px !important;
+  justify-items:center !important;
+  width:100%;
 }
-@media(max-width:480px){
-  body .team-photo,body .team-photo-wrap{width:130px !important;height:130px !important}
+body .team-docs,body .team-grid-docs{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  flex-wrap:wrap !important;
+  gap:24px !important;
+  width:100%;
+  margin-bottom:36px !important;
+}
+body .team-docs > .team-card,
+body .team-grid-docs > .team-card{
+  /* Same column width as staff: (container - 2*gap) / 3 */
+  flex:0 0 calc((100% - 48px) / 3) !important;
+  max-width:240px !important;
+}
+body .team-card{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  text-align:center !important;
+  width:100% !important;
+}
+@media (max-width:768px){
+  body .team-photo,body .team-photo-wrap{max-width:150px !important}
+  body .team-staff,body .team-grid-staff{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:16px !important;
+  }
+  body .team-docs,body .team-grid-docs{ gap:16px !important }
+  body .team-docs > .team-card,
+  body .team-grid-docs > .team-card{
+    flex:0 0 calc((100% - 32px) / 3) !important;
+    max-width:200px !important;
+  }
+}
+@media (max-width:480px){
+  body .team-photo,body .team-photo-wrap{max-width:130px !important}
+  body .team-staff,body .team-grid-staff{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:14px !important;
+  }
+  body .team-docs,body .team-grid-docs{ gap:14px !important }
+  body .team-docs > .team-card,
+  body .team-grid-docs > .team-card{
+    flex:0 0 calc((100% - 14px) / 2) !important;
+    max-width:170px !important;
+  }
 }
 
 /* 4 — TECHNOLOGY ────────────────────────────────────────── */
@@ -208,17 +290,37 @@ body .svc-hero-badge{display:none !important}
    reversed — so swap the images via CSS-level rename is not clean; instead
    we swap via a small data attribute hook (applied by ahdd-enhance.js).  */
 
-/* Paperless-forms video sizing fix — the .tr-media expects consistent aspect
-   and the inline video has no sizing rules. Force cover fit. */
-.tech-row .tr-media video,
+/* Paperless-forms + all tech-row media fix —
+   The inline .tr-media has min-height:440px which crops videos to an
+   arbitrary container size. We lock a natural 16:9 aspect and use
+   object-fit:contain for videos (so full content is visible, letterboxed
+   cleanly) and object-fit:cover for photos (which look best filled). */
+.tech-row .tr-media{
+  position:relative !important;
+  overflow:hidden !important;
+  aspect-ratio:16/9 !important;
+  min-height:0 !important;
+  height:auto !important;
+  background:#f0f3f7 !important;
+}
+.tech-row .tr-media video{
+  position:absolute !important;inset:0 !important;
+  width:100% !important;height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  background:#0f1e33;
+  display:block;
+}
 .tech-row .tr-media img{
   position:absolute !important;inset:0 !important;
   width:100% !important;height:100% !important;
-  object-fit:cover !important;object-position:center center !important;
+  object-fit:cover !important;
+  object-position:center center !important;
   display:block;
 }
-.tech-row .tr-media{position:relative;overflow:hidden;aspect-ratio:4/3;background:#f0f3f7}
-@media (max-width:768px){ .tech-row .tr-media{aspect-ratio:16/10} }
+@media (max-width:768px){
+  .tech-row .tr-media{aspect-ratio:16/10 !important}
+}
 
 /* Hide redundant doctor + stat footer on Technology page */
 body .wt-footer{display:none !important}
