@@ -1487,29 +1487,21 @@ body .doc-photo-wrap img{
 }
 
 /* ── 24b. ABOUT PAGE BIG BIO PHOTOS ──────────────────────
-   Both doctors get same height container + face anchored top.
-   Dr. David's source image is wider so we scale + shift up. */
+   Both doctors anchored to same vertical position. The source bio
+   photos are different crops (Shawn shows more torso, David shows
+   more head) so each gets its own object-position that lands their
+   eyes at the same visual height. NO transform/scale — that creates
+   visual size mismatches. */
 body .doc-photo-wrap img{
   object-position:center 18% !important;
 }
 body .doc-photo-david img{
-  /* David is shot further from camera; scale up so his head size
-     visually matches Shawn's next to him. */
-  transform:scale(1.22) !important;
-  transform-origin:center 26% !important;
-  object-position:center 22% !important;
+  object-position:center 30% !important;
 }
-@media (max-width:768px){
-  body .doc-photo-david img{
-    transform:scale(1.18) !important;
-    transform-origin:center 28% !important;
-  }
-}
+/* (no scale — keeps both doctors at the same visual size) */
 
 /* ── 24c. ABOUT PAGE TEAM GRID (small portraits) ────────
-   .team-grid-docs (190x240) and .team-grid-staff (3/4 ratio).
-   All photos cover, face-anchored top, with per-photo
-   tweaks where source crop demands it. */
+   .team-grid-docs (190x240) and .team-grid-staff (3/4 ratio). */
 body .team-grid-docs .team-photo-wrap img,
 body .team-grid-staff .team-photo-wrap img{
   object-fit:cover !important;
@@ -1517,11 +1509,11 @@ body .team-grid-staff .team-photo-wrap img{
   background:transparent !important;
 }
 
-/* David is wider-framed: scale up + shift focus higher to match Shawn */
+/* David's source headshot has him standing further from camera with
+   slightly more headroom. Shift his anchor DOWN (higher %) so face
+   sits at same visual height as Shawn's, no scale needed. */
 body .team-grid-docs .team-photo-wrap img[src*="David"]{
-  transform:scale(1.32) !important;
-  transform-origin:center 22% !important;
-  object-position:center 18% !important;
+  object-position:center 25% !important;
 }
 
 /* Heidi's source has a wider aspect — shift focus up so she's not chin-cropped */
@@ -1539,9 +1531,7 @@ body .team-staff .team-photo img{
   background:transparent !important;
 }
 body .team-docs .team-photo img[src*="David"]{
-  transform:scale(1.32) !important;
-  transform-origin:center 22% !important;
-  object-position:center 18% !important;
+  object-position:center 25% !important;
 }
 body .team-staff .team-photo img[src*="Heidi"]{
   object-position:center 8% !important;
