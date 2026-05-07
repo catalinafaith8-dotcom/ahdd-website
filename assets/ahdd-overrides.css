@@ -12,35 +12,56 @@
    ────────────────────────────────────────────────────────── */
 
 /* 1 — NAV: logo enlarged, Services dropdown ─────────────── */
-#nav .nav-logo{display:flex;align-items:center;flex-shrink:0;max-width:62%}
-#nav .nav-logo img{height:60px !important;width:auto;max-width:100%;object-fit:contain;object-position:left center}
-@media(min-width:1200px){ #nav .nav-logo img{height:64px !important} }
+/* Height-driven sizing. Img can extend the natural aspect width; we only
+   cap absolute width to keep clear of the hamburger / desktop nav links. */
+#nav .nav-logo{display:flex;align-items:center;flex-shrink:0;min-width:0}
+#nav .nav-logo img{height:104px !important;width:auto !important;max-width:none !important;max-height:104px !important;object-fit:contain;object-position:left center;display:block}
+@media(min-width:1200px){
+  #nav .nav-logo img{height:116px !important;max-height:116px !important}
+}
+@media(min-width:1600px){
+  #nav .nav-logo img{height:128px !important;max-height:128px !important}
+}
 
-/* Mobile: brand-prominent size, capped width so hamburger has room */
+/* Tablet (≤768) */
 @media (max-width:768px){
-  #nav .nav-logo{max-width:66%}
-  #nav .nav-logo img{height:72px !important}
-  #nav{height:92px !important}
-  #nav.scrolled{height:92px !important}
-  #nav .nav-wrap{height:92px !important}
-  .hero-inner{padding-top:92px !important}
-  #mobile-nav{top:92px !important}
+  #nav .nav-logo img{
+    height:96px !important;max-height:96px !important;
+    /* room for the hamburger button on the right */
+    max-width:calc(100vw - 92px) !important;
+  }
+  #nav{height:120px !important}
+  #nav.scrolled{height:120px !important}
+  #nav .nav-wrap{height:120px !important}
+  .hero-inner{padding-top:120px !important}
+  #mobile-nav{top:120px !important}
 }
+/* Small mobile (≤480) */
 @media (max-width:480px){
-  #nav .nav-logo{max-width:62%}
-  #nav .nav-logo img{height:68px !important}
-  #nav{height:88px !important}
-  #nav.scrolled{height:88px !important}
-  #nav .nav-wrap{height:88px !important}
-  .hero-inner{padding-top:88px !important}
-  #mobile-nav{top:88px !important}
+  #nav .nav-logo img{
+    height:84px !important;max-height:84px !important;
+    max-width:calc(100vw - 84px) !important;
+  }
+  #nav{height:108px !important}
+  #nav.scrolled{height:108px !important}
+  #nav .nav-wrap{height:108px !important}
+  .hero-inner{padding-top:108px !important}
+  #mobile-nav{top:108px !important}
 }
 
-/* Desktop nav baseline */
-#nav{height:80px !important}
-#nav.scrolled{height:80px !important}
-#nav .nav-wrap{height:80px !important}
-.hero-inner{padding-top:80px !important}
+/* Desktop nav baseline — taller bar to seat the larger logo cleanly */
+#nav{height:128px !important}
+#nav.scrolled{height:128px !important}
+#nav .nav-wrap{height:128px !important}
+.hero-inner{padding-top:128px !important}
+@media(min-width:1200px){
+  #nav,#nav.scrolled,#nav .nav-wrap{height:140px !important}
+  .hero-inner{padding-top:140px !important}
+}
+@media(min-width:1600px){
+  #nav,#nav.scrolled,#nav .nav-wrap{height:152px !important}
+  .hero-inner{padding-top:152px !important}
+}
 
 /* Services dropdown (desktop) — injected via JS */
 .nav-links li.has-dropdown{position:relative}
