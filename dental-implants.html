@@ -606,6 +606,78 @@ button { font-family: var(--sans); }
   min-height: 520px;
 }
 .svc-hero-img { padding: 0; background: #0F2D4A; }
+
+/* ─── SINGLE-COLUMN HERO (implants page) ───────────────── */
+/* Override the default 2-column grid for this layout: stacked,
+   centered text + CTAs, then the quiz prompt + before/after card */
+.svc-hero.implant-hero-single {
+  display: block !important;
+  grid-template-columns: none !important;
+  padding: 96px 40px 72px !important;
+  min-height: 0 !important;
+  background: linear-gradient(180deg, #FAFCFF 0%, #FFFFFF 60%);
+  border-bottom: 1px solid rgba(15,45,74,.07);
+}
+.svc-hero.implant-hero-single .svc-hero-text {
+  background: transparent;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  display: block;
+}
+.svc-hero.implant-hero-single .svc-breadcrumb {
+  justify-content: center;
+}
+.svc-hero.implant-hero-single .svc-hero-p {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.svc-hero.implant-hero-single .svc-hero-btns {
+  justify-content: center;
+}
+.implant-quiz-q {
+  font-family: var(--display);
+  font-size: clamp(20px, 2.6vw, 32px);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.2;
+  color: var(--graphite);
+  margin: 64px auto 24px;
+  text-align: center;
+  max-width: 780px;
+}
+.implant-quiz-q::before {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 2px;
+  background: var(--copper);
+  margin: 0 auto 18px;
+  border-radius: 2px;
+}
+.implant-ba-card {
+  position: relative;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(15,45,74,.18), 0 2px 6px rgba(15,45,74,.08);
+  background: #0F2D4A;
+}
+.implant-ba-card .ba-slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+@media (max-width: 768px) {
+  .svc-hero.implant-hero-single { padding: 80px 20px 56px !important; }
+  .implant-quiz-q { margin: 44px auto 18px; font-size: clamp(18px, 5.2vw, 24px); }
+  .implant-ba-card { aspect-ratio: 4 / 3; border-radius: 14px; }
+}
 .ba-slider {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -917,7 +989,7 @@ button { font-family: var(--sans); }
 </nav>
 
 <!-- HERO -->
-<section class="svc-hero">
+<section class="svc-hero implant-hero-single">
   <div class="svc-hero-text">
     <div class="svc-breadcrumb">
       <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>Dental Implants</span>
@@ -930,25 +1002,29 @@ button { font-family: var(--sans); }
       <button class="btn-primary" onclick="doBook(event)">Book Free Consultation</button>
       <a href="tel:+18187066077" class="btn-secondary">Call (818) 706-6077</a>
     </div>
-  </div>
-  <div class="svc-hero-img">
-    <!-- Before/After Slider — implant case -->
-    <div class="ba-slider" id="baSlider" role="region" aria-label="Before and after dental implant treatment">
-      <img class="ba-img ba-after" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/after_edited.jpg" alt="After dental implant treatment" draggable="false"/>
-      <div class="ba-before-wrap" id="baBeforeWrap">
-        <img class="ba-img ba-before" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/before_edited.jpg" alt="Before dental implant treatment" draggable="false"/>
-      </div>
-      <div class="ba-handle" id="baHandle" aria-hidden="true">
-        <div class="ba-handle-knob">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"/>
-            <polyline points="9 6 15 12 9 18"/>
-          </svg>
+
+    <!-- Quiz subtitle -->
+    <p class="implant-quiz-q">Can you tell which tooth is an implant?</p>
+
+    <!-- Before/After slider card — After photo is the default visible state; drag to reveal Before -->
+    <div class="implant-ba-card">
+      <div class="ba-slider" id="baSlider" role="region" aria-label="Before and after dental implant treatment">
+        <img class="ba-img ba-after" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/implant-after%20(2).jpg" alt="After dental implant — restored natural-looking smile" draggable="false"/>
+        <div class="ba-before-wrap" id="baBeforeWrap">
+          <img class="ba-img ba-before" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/implant-before.jpg" alt="Before dental implant — missing tooth" draggable="false"/>
         </div>
+        <div class="ba-handle" id="baHandle" aria-hidden="true">
+          <div class="ba-handle-knob">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+              <polyline points="9 6 15 12 9 18"/>
+            </svg>
+          </div>
+        </div>
+        <div class="ba-label ba-label-before">Before</div>
+        <div class="ba-label ba-label-after">After</div>
+        <input type="range" min="0" max="100" value="12" class="ba-range" id="baRange" aria-label="Drag to compare before and after"/>
       </div>
-      <div class="ba-label ba-label-before">Before</div>
-      <div class="ba-label ba-label-after">After</div>
-      <input type="range" min="0" max="100" value="50" class="ba-range" id="baRange" aria-label="Drag to compare before and after"/>
     </div>
   </div>
 </section>
@@ -1258,7 +1334,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
   slider.addEventListener('pointercancel',endDrag);
   slider.addEventListener('pointerleave',endDrag);
   range.addEventListener('input',function(){setPosition(parseFloat(range.value));});
-  syncWidth();setPosition(50);
+  syncWidth();setPosition(12);
   window.addEventListener('resize',function(){syncWidth();setPosition(parseFloat(range.value));});
 })();
 
