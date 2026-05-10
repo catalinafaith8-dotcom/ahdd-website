@@ -607,170 +607,201 @@ button { font-family: var(--sans); }
 }
 .svc-hero-img { padding: 0; background: #0F2D4A; }
 
-/* ─── SINGLE-COLUMN HERO (implants page) ───────────────── */
-/* Override the default 2-column grid for this layout: stacked,
-   centered text + CTAs, then the quiz prompt + before/after card */
+/* ─── EDITORIAL SPLIT HERO (implants page) ─────────────── */
+/* 2026-05-10: replaced single-column centered layout + drag slider with
+   a 2-column editorial split — text panel left, side-by-side BEFORE/AFTER
+   photos right. Stacks vertically on mobile. */
 .svc-hero.implant-hero-single {
-  display: block !important;
-  grid-template-columns: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) !important;
+  gap: 56px !important;
   padding: 96px 40px 72px !important;
   min-height: 0 !important;
   background: linear-gradient(180deg, #FAFCFF 0%, #FFFFFF 60%);
   border-bottom: 1px solid rgba(15,45,74,.07);
+  align-items: center !important;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .svc-hero.implant-hero-single .svc-hero-text {
   background: transparent;
-  max-width: 880px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   padding: 0;
-  text-align: center;
-  display: block;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 .svc-hero.implant-hero-single .svc-breadcrumb {
-  justify-content: center;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+.svc-hero.implant-hero-single .svc-eyebrow {
+  align-self: flex-start;
+  margin-bottom: 14px;
+}
+.svc-hero.implant-hero-single .svc-hero-h1 {
+  margin-bottom: 18px;
 }
 .svc-hero.implant-hero-single .svc-hero-p {
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 540px;
+  margin: 0 0 12px 0;
 }
 .svc-hero.implant-hero-single .svc-hero-btns {
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 18px;
 }
-.implant-quiz-q {
+
+/* Stat row beneath CTAs */
+.implant-stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(15,45,74,.10);
+  flex-wrap: wrap;
+}
+.implant-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.implant-stat-num {
   font-family: var(--display);
-  font-size: clamp(20px, 2.6vw, 32px);
+  font-size: 30px;
   font-weight: 700;
-  letter-spacing: -.025em;
-  line-height: 1.2;
   color: var(--graphite);
-  margin: 64px auto 24px;
-  text-align: center;
-  max-width: 780px;
+  letter-spacing: -.03em;
+  line-height: 1;
 }
-.implant-quiz-q::before {
-  content: "";
-  display: block;
-  width: 44px;
-  height: 2px;
-  background: var(--copper);
-  margin: 0 auto 18px;
-  border-radius: 2px;
+.implant-stat-num em {
+  font-style: normal;
+  color: var(--copper);
+}
+.implant-stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* Right column: side-by-side BEFORE / AFTER photos */
+.implant-ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
 }
 .implant-ba-card {
   position: relative;
-  width: 100%;
-  max-width: 980px;
-  margin: 0 auto;
-  aspect-ratio: 16 / 10;
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 16px 48px rgba(15,45,74,.18), 0 2px 6px rgba(15,45,74,.08);
   background: #0F2D4A;
+  aspect-ratio: 4 / 5;
+  box-shadow: 0 12px 40px rgba(15,45,74,.16), 0 2px 6px rgba(15,45,74,.08);
 }
-.implant-ba-card .ba-slider {
+.implant-ba-card img {
   position: absolute;
   inset: 0;
-  border-radius: 0;
-}
-@media (max-width: 768px) {
-  .svc-hero.implant-hero-single { padding: 80px 20px 56px !important; }
-  .implant-quiz-q { margin: 44px auto 18px; font-size: clamp(18px, 5.2vw, 24px); }
-  .implant-ba-card { aspect-ratio: 4 / 3; border-radius: 14px; }
-}
-.ba-slider {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  user-select: none; -webkit-user-select: none;
-  cursor: ew-resize;
-  background: #0F2D4A;
-  touch-action: none;
-}
-.ba-img {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center 60%;
-  pointer-events: none;
-  -webkit-user-drag: none;
-  user-select: none;
+  object-position: center 55%;
+  display: block;
 }
-.ba-before-wrap {
-  position: absolute; top: 0; left: 0; bottom: 0;
-  width: 50%; height: 100%;
-  overflow: hidden;
-  will-change: width;
-  z-index: 2;
-}
-.ba-before-wrap .ba-img {
-  width: var(--ba-slider-w, 100%);
-  max-width: none;
-}
-.ba-handle {
-  position: absolute; top: 0; bottom: 0;
-  left: 50%;
-  width: 2px;
-  background: #fff;
-  box-shadow: 0 0 0 1px rgba(15,45,74,.12), 0 2px 10px rgba(0,0,0,.25);
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 3;
-  will-change: left;
-}
-.ba-handle-knob {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 10px rgba(0,0,0,.25), 0 0 0 1px rgba(15,45,74,.06);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--navy);
-}
-.ba-handle-knob svg { width: 16px; height: 16px; }
-.ba-label {
+.implant-ba-card .ba-label {
   position: absolute;
-  top: 16px;
-  z-index: 4;
-  padding: 5px 12px;
+  top: 14px;
+  left: 14px;
+  padding: 6px 12px;
   border-radius: 100px;
   font-family: var(--display);
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: #fff;
-  background: rgba(15,45,74,.78);
+  background: rgba(15,45,74,.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 }
-.ba-label-before { left: 16px; }
-.ba-label-after { right: 16px; background: rgba(201,106,46,.92); }
-.ba-range {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  margin: 0; padding: 0;
-  opacity: 0;
-  cursor: ew-resize;
-  z-index: 5;
-  -webkit-appearance: none; appearance: none;
-  background: transparent;
+.implant-ba-card.is-after .ba-label {
+  background: rgba(201,106,46,.94);
 }
-.ba-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 60px; height: 100%; cursor: ew-resize; }
-.ba-range::-moz-range-thumb { width: 60px; height: 100%; border: 0; background: transparent; cursor: ew-resize; }
-@media (max-width: 1280px) {
-  .svc-hero { border-radius: 0; }
+.implant-ba-card.is-after .ba-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34c759;
+  display: inline-block;
 }
+
+/* Quiz prompt sits under the photos */
+.implant-quiz-q {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate);
+  margin: 18px 0 0;
+  text-align: center;
+  font-style: italic;
+}
+.implant-quiz-q::before {
+  display: none;
+}
+
+/* Tablet: keep side-by-side photos but tighten everything */
+@media (max-width: 1024px) {
+  .svc-hero.implant-hero-single {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 36px !important;
+    padding: 80px 32px 56px !important;
+  }
+  .implant-stat-num { font-size: 26px; }
+}
+
+/* Mobile: stack — text first, then photos */
 @media (max-width: 768px) {
-  .svc-hero { min-height: auto; }
-  .ba-handle-knob { width: 32px; height: 32px; }
-  .ba-handle-knob svg { width: 14px; height: 14px; }
-  .ba-label { font-size: 9.5px; padding: 4px 10px; top: 14px; letter-spacing: .12em; }
-  .ba-label-before { left: 14px; }
-  .ba-label-after { right: 14px; }
+  .svc-hero.implant-hero-single {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+    padding: 80px 20px 56px !important;
+  }
+  .svc-hero.implant-hero-single .svc-hero-btns {
+    flex-wrap: wrap;
+  }
+  .implant-stats {
+    margin-top: 28px;
+    padding-top: 22px;
+    gap: 20px;
+  }
+  .implant-stat-num { font-size: 24px; }
+  .implant-stat-label { font-size: 11px; }
+  .implant-ba-grid { gap: 10px; }
+  .implant-ba-card {
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+  }
+  .implant-ba-card .ba-label {
+    font-size: 9.5px;
+    padding: 5px 10px;
+    top: 10px;
+    left: 10px;
+    letter-spacing: .12em;
+  }
+  .implant-quiz-q { font-size: 13px; margin-top: 14px; }
+}
+@media (max-width: 480px) {
+  .implant-stats { gap: 14px 24px; }
+  .implant-stat { flex: 1 1 calc(50% - 12px); }
 }
 
 /* ─── SECTION HEADERS ──────────────────────────────────── */
@@ -988,7 +1019,7 @@ button { font-family: var(--sans); }
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO — editorial split: text panel left, before/after photos right -->
 <section class="svc-hero implant-hero-single">
   <div class="svc-hero-text">
     <div class="svc-breadcrumb">
@@ -996,36 +1027,47 @@ button { font-family: var(--sans); }
     </div>
     <span class="svc-eyebrow">Permanent Tooth Replacement</span>
     <h1 class="svc-hero-h1">Replace Missing Teeth That Look, Feel, and Function Like Your Own</h1>
-    <p class="svc-hero-p">Dental implants are the gold standard for tooth replacement — a titanium post that fuses to your jawbone, topped with a custom crown that's completely indistinguishable from a natural tooth.</p>
+    <p class="svc-hero-p">Dental implants are the gold standard for tooth replacement &mdash; a titanium post that fuses to your jawbone, topped with a custom crown that&rsquo;s completely indistinguishable from a natural tooth.</p>
     <p class="svc-hero-p" style="margin-top:10px;font-size:14.5px;opacity:.82">For patients replacing multiple teeth or rebuilding after wear, see <a href="/services/restorative-dentistry">full-mouth restorative care</a>. Anxious patients may want to explore <a href="/services/sedation-dentistry">sedation options</a> for longer implant appointments.</p>
     <div class="svc-hero-btns">
       <button class="btn-primary" onclick="doBook(event)">Book Free Consultation</button>
       <a href="tel:+18187066077" class="btn-secondary">Call (818) 706-6077</a>
     </div>
-
-    <!-- Quiz subtitle -->
-    <p class="implant-quiz-q">Can you tell which tooth is an implant?</p>
-
-    <!-- Before/After slider card — After photo is the default visible state; drag to reveal Before -->
-    <div class="implant-ba-card">
-      <div class="ba-slider" id="baSlider" role="region" aria-label="Before and after dental implant treatment">
-        <img class="ba-img ba-after" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/implant-after%20(2).jpg" alt="After dental implant — restored natural-looking smile" draggable="false"/>
-        <div class="ba-before-wrap" id="baBeforeWrap">
-          <img class="ba-img ba-before" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/implant-before.jpg" alt="Before dental implant — missing tooth" draggable="false"/>
-        </div>
-        <div class="ba-handle" id="baHandle" aria-hidden="true">
-          <div class="ba-handle-knob">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"/>
-              <polyline points="9 6 15 12 9 18"/>
-            </svg>
-          </div>
-        </div>
-        <div class="ba-label ba-label-before">Before</div>
-        <div class="ba-label ba-label-after">After</div>
-        <input type="range" min="0" max="100" value="12" class="ba-range" id="baRange" aria-label="Drag to compare before and after"/>
+    <div class="implant-stats">
+      <div class="implant-stat">
+        <div class="implant-stat-num">98<em>%</em></div>
+        <div class="implant-stat-label">Long-term success rate</div>
+      </div>
+      <div class="implant-stat">
+        <div class="implant-stat-num">25<em>+</em></div>
+        <div class="implant-stat-label">Years of typical lifespan</div>
+      </div>
+      <div class="implant-stat">
+        <div class="implant-stat-num">1</div>
+        <div class="implant-stat-label">Visit for many cases</div>
       </div>
     </div>
+  </div>
+
+  <!-- Right column: side-by-side BEFORE / AFTER -->
+  <div class="implant-ba-col">
+    <div class="implant-ba-grid">
+      <figure class="implant-ba-card is-before">
+        <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/implant-before.jpg"
+             alt="Before dental implant &mdash; missing tooth"
+             loading="eager"
+             onerror="this.parentElement.style.background='#dde3ea';this.style.display='none'"/>
+        <div class="ba-label">Before</div>
+      </figure>
+      <figure class="implant-ba-card is-after">
+        <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/After%20Implant.jpg"
+             alt="After dental implant &mdash; restored natural-looking smile"
+             loading="eager"
+             onerror="this.parentElement.style.background='#dde3ea';this.style.display='none'"/>
+        <div class="ba-label">After</div>
+      </figure>
+    </div>
+    <p class="implant-quiz-q">Can you tell which tooth is an implant? &mdash; actual patient of Drs. Shawn &amp; David Matian.</p>
   </div>
 </section>
 
@@ -1302,41 +1344,8 @@ function closeBook(){document.getElementById('bk-modal').classList.remove('open'
 function escBook(e){if(e.key==='Escape')closeBook();}
 
 // HERO BEFORE/AFTER SLIDER
-(function(){
-  var slider=document.getElementById('baSlider');
-  if(!slider)return;
-  var beforeWrap=document.getElementById('baBeforeWrap');
-  var handle=document.getElementById('baHandle');
-  var range=document.getElementById('baRange');
-  var dragging=false;
-  function syncWidth(){slider.style.setProperty('--ba-slider-w',slider.clientWidth+'px');}
-  function setPosition(pct){
-    pct=Math.max(0,Math.min(100,pct));
-    beforeWrap.style.width=pct+'%';
-    handle.style.left=pct+'%';
-    range.value=pct;
-  }
-  function pctFromEvent(clientX){
-    var rect=slider.getBoundingClientRect();
-    return ((clientX-rect.left)/rect.width)*100;
-  }
-  slider.addEventListener('pointerdown',function(e){
-    dragging=true;
-    try{slider.setPointerCapture(e.pointerId);}catch(_){}
-    setPosition(pctFromEvent(e.clientX));
-  });
-  slider.addEventListener('pointermove',function(e){
-    if(!dragging)return;
-    setPosition(pctFromEvent(e.clientX));
-  });
-  function endDrag(){dragging=false;}
-  slider.addEventListener('pointerup',endDrag);
-  slider.addEventListener('pointercancel',endDrag);
-  slider.addEventListener('pointerleave',endDrag);
-  range.addEventListener('input',function(){setPosition(parseFloat(range.value));});
-  syncWidth();setPosition(12);
-  window.addEventListener('resize',function(){syncWidth();setPosition(parseFloat(range.value));});
-})();
+// Before/After slider was replaced by side-by-side photos on 2026-05-10.
+// JS removed; if `#baSlider` is ever reintroduced, restore from git history.
 
 // AI SMILE ANALYSIS v3 — email gate + GHL + emotional copy
 (function(){
