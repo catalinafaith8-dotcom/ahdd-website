@@ -256,8 +256,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
    LENDERS — unified resource framing
 ══════════════════════════════════════════════ */
 #lenders{background:var(--white);padding:104px 0;border-top:1px solid var(--hairline-soft)}
-.lenders-intro{max-width:720px;margin:0 auto 48px;text-align:center}
-.lenders-intro .eyebrow{margin-bottom:18px}
+.lenders-intro{max-width:780px;margin:0 auto 56px;text-align:center}
+.lenders-intro .eyebrow{margin-bottom:18px;font-size:12px;letter-spacing:.22em}
+.lenders-intro--lg .section-h2{font-size:clamp(36px,5vw,60px);margin-bottom:20px}
+.lenders-intro--lg .section-sub{font-size:17px;line-height:1.7;max-width:680px;margin:0 auto;color:var(--ink-soft)}
 
 /* Guidance callout — frames the lenders as tools, not competitors */
 .lenders-guidance{background:var(--paper);border:1px solid var(--hairline-soft);border-radius:20px;padding:32px 40px;margin-bottom:56px;display:flex;align-items:flex-start;gap:24px;max-width:920px;margin-left:auto;margin-right:auto}
@@ -299,49 +301,82 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
    MEMBERSHIP
 ══════════════════════════════════════════════ */
 #membership{background:var(--paper);padding:104px 0}
-.plan-compare-wrap{max-width:920px;margin:0 auto 64px;background:var(--white);border:1px solid var(--hairline-soft);border-radius:20px;padding:36px;overflow:hidden}
-.plan-compare{width:100%;border-collapse:collapse;font-family:var(--sans-sf)}
-.plan-compare th{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);padding:12px 16px;text-align:center;border-bottom:1px solid var(--hairline);font-family:var(--sans-sf)}
-.plan-compare th:first-child{text-align:left;color:var(--ink);font-weight:500}
-.plan-compare th.th-us{color:var(--ink)}
-.plan-compare td{padding:14px 16px;font-size:13.5px;font-weight:300;border-bottom:1px solid var(--hairline-soft);text-align:center;font-family:var(--sans-sf)}
-.plan-compare td:first-child{text-align:left;color:var(--ink);font-weight:400}
-.plan-compare tr:last-child td{border-bottom:none}
-.td-bad{color:var(--ink-mute)}
-.td-good{color:var(--ink);font-weight:500}
-.plan-compare-note{font-size:12px;color:var(--ink-mute);text-align:center;margin-top:20px;font-weight:300;font-family:var(--sans-sf)}
+/* ── PLAN COMPARE TABLE — 2026-05-12 redesign ─────────
+   Old table was so subtle it read as empty space. New design:
+   - Bold gray header bar above the data
+   - Striped rows for legibility
+   - "Our Plan" column with navy background + white text, copper accent
+   - "Bad" cells with strikethrough + muted gray, "good" cells bold navy
+*/
+.plan-compare-wrap{max-width:960px;margin:0 auto 64px;background:var(--white);border:1px solid var(--hairline);border-radius:20px;padding:0;overflow:hidden;box-shadow:0 4px 24px rgba(29,62,92,.06)}
+.plan-compare{width:100%;border-collapse:separate;border-spacing:0;font-family:var(--sans-sf)}
+.plan-compare thead th{
+  font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-mute);padding:18px 18px;text-align:center;
+  background:var(--cloud);border-bottom:2px solid var(--hairline);
+  font-family:var(--sans-sf);
+}
+.plan-compare thead th:first-child{text-align:left;color:var(--ink);padding-left:28px}
+.plan-compare thead th.th-us{
+  color:#fff;background:var(--navy);
+  position:relative;
+}
+.plan-compare thead th.th-us::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--copper);
+}
+.plan-compare tbody td{
+  padding:18px 18px;font-size:14.5px;font-weight:400;color:var(--ink-soft);
+  text-align:center;font-family:var(--sans-sf);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.plan-compare tbody td:first-child{
+  text-align:left;color:var(--ink);font-weight:600;padding-left:28px;
+  border-right:1px solid var(--hairline-soft);
+}
+.plan-compare tbody tr:last-child td{border-bottom:none}
+.plan-compare tbody tr:nth-child(even) td:not(.td-good){background:rgba(29,62,92,.025)}
+.td-bad{color:var(--ink-mute) !important;text-decoration:line-through;text-decoration-color:rgba(15,30,51,.25);text-decoration-thickness:1px}
+.td-good{
+  color:#fff !important;font-weight:600 !important;
+  background:rgba(29,62,92,.96) !important;
+  position:relative;
+}
+.td-good::before{
+  content:"✓";display:inline-block;margin-right:8px;color:var(--copper);font-weight:700;
+}
+.plan-compare-note{font-size:12.5px;color:var(--ink-mute);text-align:center;margin:0;padding:18px 24px 22px;font-weight:400;font-family:var(--sans-sf);background:var(--cloud);border-top:1px solid var(--hairline-soft)}
 
 .smile-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto 56px}
-.smile-card{background:var(--white);border:1px solid var(--hairline-soft);border-radius:20px;padding:36px 30px;display:flex;flex-direction:column;position:relative;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .4s}
+.smile-card{background:var(--white);border:1px solid var(--hairline-soft);border-radius:18px;padding:24px 22px 22px;display:flex;flex-direction:column;position:relative;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .4s}
 .smile-card:hover{transform:translateY(-3px);border-color:var(--hairline);box-shadow:0 12px 40px rgba(15,30,51,0.06)}
 .smile-card--featured{background:var(--ink);border-color:var(--ink);color:var(--white)}
 .smile-card--featured:hover{box-shadow:0 16px 48px rgba(15,30,51,0.18)}
-.smile-popular-badge,.smile-bestval-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:100px;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:var(--sans-sf)}
+.smile-popular-badge,.smile-bestval-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);padding:4px 12px;border-radius:100px;font-size:9.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;font-family:var(--sans-sf)}
 .smile-popular-badge{background:var(--white);color:var(--ink);border:1px solid var(--hairline)}
 .smile-bestval-badge{background:var(--paper-warm);color:var(--ink);border:1px solid var(--hairline-soft)}
-.smile-card-top{text-align:center;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--hairline-soft)}
+.smile-card-top{text-align:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--hairline-soft)}
 .smile-card--featured .smile-card-top{border-bottom-color:rgba(255,255,255,0.12)}
-.smile-plan-name{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);letter-spacing:-0.02em;margin-bottom:6px}
+.smile-plan-name{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink);letter-spacing:-0.02em;margin-bottom:4px}
 .smile-card--featured .smile-plan-name{color:var(--white)}
-.smile-plan-for{font-size:12px;color:var(--ink-mute);font-weight:400;margin-bottom:20px;font-family:var(--sans-sf)}
+.smile-plan-for{font-size:11.5px;color:var(--ink-mute);font-weight:400;margin-bottom:12px;font-family:var(--sans-sf)}
 .smile-card--featured .smile-plan-for{color:rgba(255,255,255,0.6)}
 .smile-price-row{display:flex;align-items:baseline;justify-content:center;gap:2px}
-.smile-price{font-family:var(--serif);font-size:56px;font-weight:400;color:var(--ink);line-height:1;letter-spacing:-0.03em}
+.smile-price{font-family:var(--serif);font-size:42px;font-weight:500;color:var(--ink);line-height:1;letter-spacing:-0.03em}
 .smile-card--featured .smile-price{color:var(--white)}
-.smile-price sup{font-size:24px;font-weight:400;vertical-align:super;margin-right:1px}
-.smile-price-per{font-size:14px;color:var(--ink-mute);font-weight:400;font-family:var(--sans-sf);margin-left:4px}
+.smile-price sup{font-size:20px;font-weight:400;vertical-align:super;margin-right:1px}
+.smile-price-per{font-size:13px;color:var(--ink-mute);font-weight:400;font-family:var(--sans-sf);margin-left:4px}
 .smile-card--featured .smile-price-per{color:rgba(255,255,255,0.55)}
 .smile-includes{list-style:none;padding:0;margin:0;flex:1}
-.smile-includes li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:13.5px;font-weight:300;color:var(--ink-soft);line-height:1.55;font-family:var(--sans-sf)}
+.smile-includes li{display:flex;align-items:flex-start;gap:9px;padding:5px 0;font-size:13px;font-weight:400;color:var(--ink-soft);line-height:1.45;font-family:var(--sans-sf)}
 .smile-card--featured .smile-includes li{color:rgba(255,255,255,0.75)}
 .smile-includes li svg{width:14px;height:14px;flex-shrink:0;margin-top:3px}
 .smile-card--featured .smile-includes li svg circle{stroke:rgba(255,255,255,0.4)}
 .smile-card--featured .smile-includes li svg path{stroke:var(--white)}
-.smile-includes li.smile-discount{margin-top:10px;padding-top:14px;border-top:1px solid var(--hairline-soft)}
+.smile-includes li.smile-discount{margin-top:8px;padding-top:10px;border-top:1px solid var(--hairline-soft)}
 .smile-card--featured .smile-includes li.smile-discount{border-top-color:rgba(255,255,255,0.12)}
 .smile-includes li.smile-discount strong{color:var(--ink);font-weight:500}
 .smile-card--featured .smile-includes li.smile-discount strong{color:var(--white)}
-.smile-savings-note{margin-top:16px;padding:12px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:12px;color:rgba(255,255,255,0.85);text-align:center;font-weight:400;font-family:var(--sans-sf);line-height:1.5}
+.smile-savings-note{margin-top:12px;padding:10px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:11.5px;color:rgba(255,255,255,0.85);text-align:center;font-weight:400;font-family:var(--sans-sf);line-height:1.45}
 .smile-savings-note strong{color:var(--white);font-weight:500}
 
 /* Join steps */
@@ -587,19 +622,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <!-- ═══════════════ LENDERS — unified resource framing ═══════════════ -->
 <section id="lenders">
   <div class="wrap">
-    <div class="lenders-intro reveal">
+    <div class="lenders-intro reveal lenders-intro--lg">
       <span class="eyebrow">Our Financing Partners</span>
-      <p class="section-sub">We've vetted three of the most trusted names in healthcare financing so every patient, from a single crown to a full smile reconstruction, has a pathway that fits.</p>
-    </div>
-
-    <div class="lenders-guidance reveal d1">
-      <div class="lenders-guidance-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
-      <div class="lenders-guidance-body">
-        <div class="lenders-guidance-title">How we match you to a lender</div>
-        <div class="lenders-guidance-text">When you come in for your consultation, we'll review your treatment plan together and walk through which of these partners best fits your situation — whether that's a 0% promotional period, a fixed monthly loan, or an extended plan built for larger cases, we'll find the option that makes the most sense for you.</div>
-      </div>
+      <h2 class="section-h2">Three lenders.<br/><em>One goal &mdash; yes.</em></h2>
+      <p class="section-sub">We've vetted three of the most trusted names in healthcare financing so every patient &mdash; from a single crown to a full smile reconstruction &mdash; has a pathway that fits.</p>
     </div>
 
     <div class="lenders-grid">
