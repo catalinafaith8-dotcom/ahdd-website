@@ -1555,3 +1555,33 @@ body .team-staff .team-photo img[src*="Heidi"]{
 @media (max-width:1024px){ #nav .nav-logo img{ height:115px !important; top:1px !important; } }
 @media (max-width:768px){  #nav .nav-logo img{ height:105px !important; top:1px !important; } }
 @media (max-width:480px){  #nav .nav-logo img{ height:90px !important;  top:1px !important; } }
+
+/* ──────────────────────────────────────────────────────────
+   NAV FONT UNIFICATION — 2026-05-13
+   Across the 20-page site the nav rules disagreed on font
+   family (--sans vs --sans-sf), size (13 vs 14), and weight
+   (400 vs 500). Locking every nav element to one canonical
+   look so the bar reads identically on every page.
+   ────────────────────────────────────────────────────────── */
+#nav .nav-links a,
+#nav .nav-phone,
+#nav .nav-book,
+#mobile-nav a,
+#mobile-nav .mob-phone,
+#mobile-nav .mob-book,
+#mobile-nav .mob-sub-toggle,
+#mobile-nav .mob-sub a,
+.nav-dropdown a{
+  font-family:'Plus Jakarta Sans',sans-serif !important;
+  letter-spacing:-0.005em !important;
+}
+#nav .nav-links a{font-size:14px !important;font-weight:500 !important;color:#3B4A5C !important}
+#nav .nav-links a.active,
+#nav .nav-links a:hover{color:#0F1E33 !important}
+#nav .nav-phone{font-size:14px !important;font-weight:500 !important;color:#3B4A5C !important}
+#nav .nav-phone:hover{color:#0F1E33 !important}
+#nav .nav-book{font-size:14px !important;font-weight:600 !important}
+#mobile-nav a,
+#mobile-nav .mob-sub-toggle{font-size:15px !important;font-weight:500 !important}
+#mobile-nav .mob-sub a{font-size:14px !important;font-weight:500 !important}
+.nav-dropdown a{font-size:13.5px !important;font-weight:500 !important}
