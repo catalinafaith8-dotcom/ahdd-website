@@ -1687,3 +1687,30 @@ sup,.sub-note,.fine-print{ font-size:11px !important }
 /* Specific small offenders we hit during audit */
 .implant-quiz-q,.impba-caption{ font-size:13.5px !important }
 .foot-bot{ gap:14px !important }
+
+/* ──────────────────────────────────────────────────────────
+   HOME TEAM DOCTORS — equalize Dr. David vs Dr. Shawn
+   2026-05-19
+   Catalina: "Dr David's photo on the home page still looks bigger
+   than the rest." Source photo of David is framed closer to camera
+   than Shawn's, so object-fit:cover scales him up more inside the
+   same 200x260 box. Apply a per-image scale to David that brings
+   his head/torso proportions in line with Shawn's. Wrapper bg set
+   to black to match the dark studio background of every team photo,
+   so the slight inset created by the scale reads as an intentional
+   frame rather than a gray seam.
+   ────────────────────────────────────────────────────────── */
+body #team .team-photo,
+body .team-docs .team-photo,
+body .team-staff .team-photo{
+  background:#0a0a0a !important;
+}
+body .team-docs .team-photo img[alt*="David"],
+body #team .team-staff .team-photo img[alt*="David"]{
+  transform:scale(.88) !important;
+  transform-origin:center 18% !important;
+}
+body .team-docs .team-card:hover .team-photo img[alt*="David"],
+body #team .team-staff .team-card:hover .team-photo img[alt*="David"]{
+  transform:scale(.93) !important;
+}
