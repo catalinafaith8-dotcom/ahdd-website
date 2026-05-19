@@ -1441,6 +1441,8 @@ body .city-hero h1{
   height:32px;
   color:#0F1E33;
   margin-bottom:4px;
+  object-fit:contain;
+  display:block;
 }
 .connect-section .connect-label{
   font-size:14px;
