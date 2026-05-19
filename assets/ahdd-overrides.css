@@ -238,6 +238,33 @@ body .team-photo img,
 body .team-photo-wrap img{
   border-radius:50% !important;object-position:center 20% !important;
 }
+/* 2026-05-19 — Dr. David's head was being clipped by center 20% crop
+   (his original photo has less headroom above the head). Pull the
+   crop to the top edge on the About-page doctor row only and lock
+   the containers to identical dimensions so the two circles match
+   the staff row visually. */
+body .team-grid-docs .team-photo-wrap{
+  width:190px !important;
+  height:190px !important;
+  max-width:190px !important;
+  flex:0 0 190px !important;
+  aspect-ratio:1 / 1 !important;
+}
+body .team-grid-docs .team-photo-wrap img{
+  object-position:center top !important;
+}
+@media(max-width:768px){
+  body .team-grid-docs .team-photo-wrap{
+    width:150px !important;height:150px !important;
+    max-width:150px !important;flex:0 0 150px !important;
+  }
+}
+@media(max-width:480px){
+  body .team-grid-docs .team-photo-wrap{
+    width:130px !important;height:130px !important;
+    max-width:130px !important;flex:0 0 130px !important;
+  }
+}
 @media(max-width:768px){
   body .team-photo,body .team-photo-wrap{width:150px !important;height:150px !important}
   body .team-staff .team-photo,body .team-grid-staff .team-photo-wrap{max-width:140px}
