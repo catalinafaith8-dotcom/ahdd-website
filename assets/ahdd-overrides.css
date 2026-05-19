@@ -1451,13 +1451,17 @@ body .city-hero h1{
   color:#0F1E33;
 }
 .connect-section .connect-handle{
-  font-size:11.5px;
-  font-weight:400;
+  font-size:11px;
+  font-weight:500;
   color:#6B7989;
-  letter-spacing:0;
-  word-break:break-word;
+  letter-spacing:-0.01em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
   text-align:center;
   line-height:1.35;
+  max-width:100%;
+  padding:0 2px;
 }
 
 /* Tablet: 5 → 3 columns (Yelp + Google wrap to row 2) */
@@ -1614,3 +1618,72 @@ body .team-staff .team-photo img[src*="Heidi"]{
 #mobile-nav .mob-sub-toggle{font-size:15px !important;font-weight:500 !important}
 #mobile-nav .mob-sub a{font-size:14px !important;font-weight:500 !important}
 .nav-dropdown a{font-size:13.5px !important;font-weight:500 !important}
+
+/* ──────────────────────────────────────────────────────────
+   LEGIBILITY FLOOR — 2026-05-19
+   Catalina flagged tiny text across the site. Establish a
+   minimum readable type size so nothing requires zooming.
+   Floor: 12px for body micro-copy, 11px for ALL-CAPS labels
+   (caps read smaller than lowercase at the same size).
+   ────────────────────────────────────────────────────────── */
+
+/* Footer micro-copy */
+#footer .foot-links a,
+#footer .foot-desc,
+#footer .foot-bot a,
+#footer .foot-copy,
+#footer .foot-legal a{ font-size:13px !important; line-height:1.6 !important }
+#footer .foot-head{ font-size:11.5px !important; letter-spacing:.12em !important }
+#footer .foot-ph{ font-size:14.5px !important }
+
+/* Eyebrows + small caps labels */
+.eyebrow,
+.svc-eyebrow,
+.section-label,
+.sec-label,
+.svc-kicker-text,
+.team-label,
+.connect-eyebrow,
+.cta-ey,
+.tech-ey,
+.vt-eyebrow,
+.rev-ey,
+.loc-ey,
+.doc-eyebrow{ font-size:12px !important; letter-spacing:.16em !important }
+
+/* Service tags inside cards */
+.svc-num,.svc-tag,.tech-tag,.tr-tag,.fin-card-desc,
+.svc-consult-eyebrow,.svc-norefs,.svc-tag{ font-size:12px !important }
+
+/* Plan card supporting copy */
+.smile-plan-for{ font-size:12px !important }
+.smile-includes li{ font-size:13.5px !important }
+.smile-savings-note{ font-size:12.5px !important }
+
+/* Insurance widget micro-copy */
+.ins-disclaimer,.ins-not-listed,.ins-plan-desc,.ins-trust,
+.ins-step-label,.ins-result-msg,.ins-result-badge{
+  font-size:12px !important; line-height:1.55 !important;
+}
+
+/* Disclaimer text on financing + service pages */
+.plan-compare-note,
+.join-note,
+.financing-disclaimer{
+  font-size:12.5px !important; line-height:1.6 !important;
+}
+
+/* Mobile booking modal subhead and booking-page subs */
+.bk-sub,.svc-cta-info,.cta-info{ font-size:13px !important }
+
+/* Chatbot status/title */
+#chat-status{ font-size:12px !important }
+#chat-hd-title{ font-size:13.5px !important }
+.c-msg{ font-size:13.5px !important; line-height:1.55 !important }
+
+/* Tiny ARIA / sup elements should never be sub-11 */
+sup,.sub-note,.fine-print{ font-size:11px !important }
+
+/* Specific small offenders we hit during audit */
+.implant-quiz-q,.impba-caption{ font-size:13.5px !important }
+.foot-bot{ gap:14px !important }
