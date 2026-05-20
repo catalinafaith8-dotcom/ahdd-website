@@ -1714,3 +1714,70 @@ body .team-docs .team-card:hover .team-photo img[alt*="David"],
 body #team .team-staff .team-card:hover .team-photo img[alt*="David"]{
   transform:scale(.93) !important;
 }
+
+/* ──────────────────────────────────────────────────────────
+   TITLE SIZE TRIM — 2026-05-19
+   Catalina: "the title fonts need to be 2pts smaller."
+   Reduce major H1/H2 sizes by 2px across the site so headlines
+   read with more refinement (Apple-meets-dentist aesthetic).
+   ────────────────────────────────────────────────────────── */
+.section-h2,
+.page-hero h1,
+.about-hero-h1,
+.svc-h2,
+.svc-hero-h1,
+.tech-title,
+.team-title,
+.rev-h2,
+.cta-h2,
+.doc-h2,
+.vt-h2,
+.sec-title,
+.fin-h2,
+.connect-h2,
+.sim-h2,
+.videa-h2,
+.section-h{
+  font-size:clamp(26px, 3.4vw, 42px) !important;
+  letter-spacing:-0.025em !important;
+}
+/* Smaller sub-headings (tech-row, etc.) get a gentler trim */
+.tr-h3{ font-size:clamp(20px, 2.2vw, 28px) !important; letter-spacing:-0.02em !important }
+/* Plan-card name stays compact — not a section heading */
+.smile-plan-name{ font-size:20px !important; font-weight:500 !important }
+@media (min-width: 1280px){
+  .section-h2,.page-hero h1,.about-hero-h1,.svc-hero-h1,
+  .tech-title,.team-title,.rev-h2,.cta-h2,.doc-h2,
+  .vt-h2,.sec-title,.fin-h2,.connect-h2,.videa-h2{
+    font-size:42px !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   FINANCING SECTION HEADERS — Apple-style refinement 2026-05-19
+   Single-line headlines underneath the eyebrow. Tighter rhythm.
+   ────────────────────────────────────────────────────────── */
+#lenders .lenders-intro--lg .section-h2,
+#membership .lenders-intro .section-h2{
+  font-size:clamp(28px, 3.6vw, 42px) !important;
+  font-weight:500 !important;
+  letter-spacing:-0.03em !important;
+  line-height:1.08 !important;
+  margin-bottom:12px !important;
+  color:var(--ink) !important;
+}
+/* No italic em treatment on these (single statement) */
+#lenders .lenders-intro--lg .section-h2 em,
+#membership .lenders-intro .section-h2 em{
+  font-style:normal !important;color:inherit !important;font-weight:500 !important;
+}
+/* Tighten intros */
+#lenders .lenders-intro,
+#membership .lenders-intro{ margin-bottom:28px !important }
+#lenders .lenders-intro .eyebrow,
+#membership .lenders-intro .eyebrow{ margin-bottom:14px !important }
+#lenders .lenders-intro .section-sub,
+#membership .lenders-intro .section-sub{
+  font-size:15.5px !important;line-height:1.6 !important;
+  max-width:560px !important;margin:0 auto !important;
+}
