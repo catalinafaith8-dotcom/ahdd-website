@@ -1,0 +1,32 @@
+# ════════════════════════════════════════════════════════════════════
+# Cloudflare Pages — redirects + rewrites
+# Agoura Hills Dental Designs · 2026-05-21
+#
+# Format: SOURCE  DESTINATION  STATUS
+#   200 = rewrite (URL stays, content from destination)
+#   301 = permanent redirect (URL changes, search engines update)
+#   302 = temporary redirect
+# ════════════════════════════════════════════════════════════════════
+
+# ───────── Service path rewrites (mirror vercel.json) ─────────
+/services/dental-implants        /dental-implants        200
+/services/emergency-dentistry    /emergency-dentistry    200
+/services/invisalign             /invisalign             200
+/services/restorative-dentistry  /restorative-dentistry  200
+/services/sedation-dentistry     /sedation-dentistry     200
+/services/teeth-whitening        /teeth-whitening        200
+/services/veneers                /veneers                200
+
+# ───────── Widget rewrites (mirror vercel.json) ─────────
+/insurance-checker  /insurance-checker-ahdd__4_  200
+/chatbot            /chatbot-widget-updated      200
+
+# ───────── /services anchors home ─────────
+/services           /#services                   301
+
+# ───────── Wix legacy URL safety net (uncomment after auditing Wix) ─────────
+# If your old Wix site had URLs like /book-online or /our-team, list them
+# here and they'll redirect to the new equivalents instead of 404ing.
+# /book-online   /contact   301
+# /our-team      /about     301
+# /smile-design  /veneers   301

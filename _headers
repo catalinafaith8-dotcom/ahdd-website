@@ -1,0 +1,61 @@
+# ════════════════════════════════════════════════════════════════════
+# Cloudflare Pages — security + caching headers
+# Agoura Hills Dental Designs · 2026-05-21
+# ════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────
+# Sitewide security headers (apply to every response)
+# ─────────────────────────────────────────────────────
+/*
+  # Force HTTPS for 2 years, include subdomains, allow HSTS preload
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  # Stop clickjacking — no one can iframe this site
+  X-Frame-Options: DENY
+  # Stop MIME-sniffing attacks
+  X-Content-Type-Options: nosniff
+  # Don't leak full URLs in referrer to other origins
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Disable powerful browser APIs we don't use
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
+  # Open the door for cross-origin isolation but don't enforce yet
+  Cross-Origin-Opener-Policy: same-origin
+  # Conservative CSP — allows our R2 images, Google Fonts, inline styles (site uses them), and self-hosted JS.
+  # If you add a new external script/host later, add it here too.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev https://*.r2.dev; media-src 'self' https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev https://*.r2.dev; connect-src 'self' https://*.r2.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
+
+# ─────────────────────────────────────────────────────
+# Long-cache static assets (1 year, immutable)
+# ─────────────────────────────────────────────────────
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+# ─────────────────────────────────────────────────────
+# Short-cache HTML so we can ship content updates fast
+# (Cloudflare still serves stale-while-revalidate)
+# ─────────────────────────────────────────────────────
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate
+
+/
+  Cache-Control: public, max-age=300, must-revalidate
