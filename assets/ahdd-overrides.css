@@ -1781,3 +1781,67 @@ body #team .team-staff .team-card:hover .team-photo img[alt*="David"]{
   font-size:15.5px !important;line-height:1.6 !important;
   max-width:560px !important;margin:0 auto !important;
 }
+
+/* ──────────────────────────────────────────────────────────
+   TECHNOLOGY — Soft Tissue Laser solo card (no image)  2026-05-21
+   Single-column info card, full width, centered content.
+   ────────────────────────────────────────────────────────── */
+.tech-row.tech-row--solo{
+  grid-template-columns:1fr !important;
+  background:#fff !important;
+  border:1px solid rgba(29,62,92,.08) !important;
+  box-shadow:0 4px 32px rgba(29,62,92,.08) !important;
+}
+.tech-row.tech-row--solo .tr-body--solo{
+  padding:clamp(40px, 5vw, 72px) clamp(28px, 5vw, 80px) !important;
+  max-width:780px !important;
+  margin:0 auto !important;
+  text-align:left !important;
+}
+.tr-solo-head{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:16px !important;
+  margin-bottom:28px !important;
+  flex-wrap:wrap !important;
+}
+.tr-solo-icon{
+  width:56px;height:56px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#0f3020 0%,#1f5a3a 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  box-shadow:0 4px 14px rgba(15,48,32,.22);
+  flex-shrink:0;
+}
+.tr-solo-icon svg{ width:28px;height:28px }
+.tr-solo-badge{
+  display:inline-block;
+  background:rgba(29,62,92,.06);
+  color:var(--navy,#1D3E5C);
+  border-radius:100px;
+  padding:6px 14px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  font-family:var(--sans);
+}
+@media (max-width:768px){
+  .tech-row.tech-row--solo .tr-body--solo{
+    padding:36px 24px !important;
+  }
+  .tr-solo-icon{ width:48px;height:48px;border-radius:14px }
+  .tr-solo-icon svg{ width:24px;height:24px }
+}
+
+/* ──────────────────────────────────────────────────────────
+   TECHNOLOGY — "Why It Matters" numbers legibility fix 2026-05-21
+   Was rgba(29,62,92,.08) — invisible. Bump to a readable
+   tint so 01 / 02 / 03 actually read, still secondary to copy.
+   ────────────────────────────────────────────────────────── */
+.wt-num{
+  color:rgba(29,62,92,.32) !important;
+  font-weight:500 !important;
+  font-size:clamp(40px, 4.6vw, 56px) !important;
+  letter-spacing:-0.02em !important;
+}
