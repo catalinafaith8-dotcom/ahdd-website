@@ -1870,3 +1870,32 @@ body #team .team-staff .team-card:hover .team-photo img[alt*="David"]{
   70%{ box-shadow:0 0 0 6px rgba(34,197,94,0) }
   100%{ box-shadow:0 0 0 0 rgba(34,197,94,0) }
 }
+
+/* ── 2026-05-22 — DEFINITIVE Dr David crop override ──
+   Higher specificity (html body) + appended last in source order,
+   so this wins regardless of earlier rules. */
+html body .team-grid-docs .team-photo-wrap img[src*="David"],
+html body .team-docs .team-photo img[src*="David"]{
+  object-position:center 45% !important;
+}
+
+/* ── 2026-05-22 — DEFINITIVE Dr David crop override ──
+   Higher specificity (html body) + appended last in source order,
+   so this wins regardless of earlier rules. */
+html body .team-grid-docs .team-photo-wrap img[src*="David"],
+html body .team-docs .team-photo img[src*="David"]{
+  object-position:center 45% !important;
+}
+
+/* ── 2026-05-22 — DEFINITIVE Dr David crop override ──
+   Higher specificity (html body) + appended last in source order,
+   so this wins regardless of earlier rules. */
+html body .team-grid-docs .team-photo-wrap img[src*="David"],
+html body .team-docs .team-photo img[src*="David"]{
+  object-position:center 45% !important;
+}
+
+
+/* 2026-05-22 — DEFINITIVE Dr David crop override */
+html body .team-grid-docs .team-photo-wrap img[src*="David"],
+html body .team-docs .team-photo img[src*="David"]{object-position:center 45%!important;}
