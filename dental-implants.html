@@ -1187,6 +1187,11 @@ button { font-family: var(--sans); }
             <div class="sai-plan-eyebrow">Recommended Plan</div>
             <div class="sai-plan-items" id="saiPlanItems"></div>
           </div>
+          <!-- 3b. Consequences if not treated -->
+          <div class="sai-plan sai-risks" id="saiRisks" style="display:none">
+            <div class="sai-plan-eyebrow" style="color:#92400E">If Left Untreated</div>
+            <ul class="sai-bullets" id="saiRisksItems" style="margin-top:8px"></ul>
+          </div>
           <!-- 4. Ideal Result -->
           <div class="sai-ideal" id="saiIdeal" style="display:none">
             <div class="sai-ideal-label">Your Ideal Result</div>
@@ -1429,6 +1434,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     resultWrap.classList.remove('show');deepdive.style.display='none';
     txWrap.style.display='none';txChips.innerHTML='';
     if($$('saiPlan'))$$('saiPlan').style.display='none';
+    if($$('saiRisks'))$$('saiRisks').style.display='none';
     if($$('saiIdeal'))$$('saiIdeal').style.display='none';
     if(urgencyEl)urgencyEl.innerHTML='';
     resetBtn.classList.remove('visible');pendingData=null;activeChip=null;

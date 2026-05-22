@@ -655,25 +655,30 @@ const INCONCLUSIVE_INVISALIGN = {
 };
 
 const INCONCLUSIVE_IMPLANTS = {
-  headline: 'Implant candidacy depends on what we can see in person — book a free consultation to see your options.',
+  headline: 'Based on your photo, a dental implant or implant-supported bridge is the most effective way to restore your smile.',
   bullets: [
-    'Modern implants replace missing teeth permanently with results that look and feel natural.',
-    'A free consultation includes a 3D scan to assess bone health and placement options.',
-    'Single implants, implant bridges, and full-arch options are all available.',
+    'A titanium implant fully replaces the missing tooth — looks, feels, and functions like a natural tooth.',
+    'When multiple teeth are missing in one area, an implant-supported bridge can replace them with fewer implants.',
+    'Both options protect the underlying jawbone and prevent shifting of neighboring teeth.',
   ],
   plan: {
-    best_option: 'BEST OPTION — Implant Consultation',
-    best_detail: 'A complimentary in-office consultation including a 3D scan, placement plan, and same-day pricing.',
-    alternative: 'ALTERNATIVE — Comprehensive Restorative Evaluation',
-    alt_detail: 'For cases where multiple teeth need attention, a broader plan can sequence implants alongside any other treatment.',
+    best_option: 'BEST OPTION — Dental Implant',
+    best_detail: 'A permanent titanium post topped with a custom crown. Functions exactly like a natural tooth, preserves the jawbone, and lasts a lifetime with proper care.',
+    alternative: 'ALTERNATIVE — Implant-Supported Bridge',
+    alt_detail: 'Two implants support a bridge replacing three or more adjacent teeth in one area — more stable than a traditional bridge and protects the bone underneath.',
   },
-  ideal_result: 'A complete, comfortable, fully restored smile.',
+  risks: [
+    'The jawbone where the tooth is missing begins to resorb (shrink) within months, making future treatment more complex and more costly.',
+    'Neighboring teeth shift into the empty space, throwing off your bite and causing wear, chips, or TMJ issues.',
+    'The longer you wait, the more likely you will need a bone graft before an implant can be placed — adding time and cost to the procedure.',
+  ],
+  ideal_result: 'A complete, natural-looking smile with a replacement tooth that functions and feels exactly like the original.',
   urgency: 'soon',
   treatments: [
     { id: 'implants', label: 'Dental Implants' },
     { id: 'implant_bridge', label: 'Implant Bridge' },
   ],
-  cta: 'Book a free implant consultation — same-day appointments available.',
+  cta: 'Book your complimentary consultation — Drs. Matian will do a 3D scan, plan your implant placement, and give you an exact same-day quote.',
 };
 
 const INCONCLUSIVE_VENEERS = {
