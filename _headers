@@ -21,7 +21,8 @@
   Cross-Origin-Opener-Policy: same-origin
   # Conservative CSP — allows our R2 images, Google Fonts, inline styles (site uses them), and self-hosted JS.
   # If you add a new external script/host later, add it here too.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev https://*.r2.dev; media-src 'self' https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev https://*.r2.dev; connect-src 'self' https://*.r2.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
+  # DISABLED 2026-05-22 - was blocking chatbot, booking iframe, smile analysis, office tour
+  # Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev https://*.r2.dev; media-src 'self' https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev https://*.r2.dev; connect-src 'self' https://*.r2.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
 
 # ─────────────────────────────────────────────────────
 # Long-cache static assets (1 year, immutable)
