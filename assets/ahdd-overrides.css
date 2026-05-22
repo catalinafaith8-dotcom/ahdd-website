@@ -1546,7 +1546,7 @@ body .team-grid-staff .team-photo-wrap img{
    slightly more headroom. Shift his anchor DOWN (higher %) so face
    sits at same visual height as Shawn's, no scale needed. */
 body .team-grid-docs .team-photo-wrap img[src*="David"]{
-  object-position:center 25% !important;
+  object-position:center 40% !important;
 }
 
 /* Heidi's source has a wider aspect — shift focus up so she's not chin-cropped */
@@ -1564,7 +1564,7 @@ body .team-staff .team-photo img{
   background:transparent !important;
 }
 body .team-docs .team-photo img[src*="David"]{
-  object-position:center 25% !important;
+  object-position:center 40% !important;
 }
 body .team-staff .team-photo img[src*="Heidi"]{
   object-position:center 8% !important;
