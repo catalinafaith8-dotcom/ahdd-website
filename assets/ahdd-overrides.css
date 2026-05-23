@@ -1904,3 +1904,90 @@ html body .team-docs .team-photo img[src*="David"]{object-position:center 45%!im
 /* 2026-05-22b — Dr David: zoom out via contain + black bg to blend with his photo backdrop */
 html body .team-grid-docs .team-card:nth-child(2) .team-photo-wrap{background:#000 !important;}
 html body .team-grid-docs .team-photo-wrap img[src*="David"]{object-fit:contain !important;object-position:center center !important;}
+
+/* AHDD-MOBILE-FIXES-2026-05-22 */
+/* ════════════════════════════════════════════════════════
+   2026-05-22 — Mobile UX fixes (PDF punch list)
+   ════════════════════════════════════════════════════════ */
+
+/* a) Bigger mobile header logo */
+@media(max-width:768px){ html body #nav .nav-logo img{height:88px !important} }
+@media(max-width:480px){ html body #nav .nav-logo img{height:80px !important} }
+
+/* b) Smile Care Plan compare table — legible on mobile */
+@media(max-width:768px){
+  body .plan-compare th,
+  body .plan-compare td{font-size:13px !important;padding:12px 10px !important;line-height:1.35 !important}
+  body .plan-compare-wrap{padding:14px 10px !important}
+}
+
+/* c) Plan tier cards — visible dividers/spacing on mobile */
+@media(max-width:768px){
+  body .smile-card,
+  body .plan-tier,
+  body .scp-tier,
+  body .pricing-card{
+    border:1px solid rgba(29,62,92,0.14) !important;
+    box-shadow:0 4px 18px rgba(29,62,92,0.08) !important;
+    margin-bottom:24px !important;
+  }
+}
+
+/* d) Bottom CTA buttons — consistent shape + width on mobile */
+@media(max-width:600px){
+  body .cta-btns,
+  body .cta-row,
+  body .cta-actions{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    max-width:300px !important;
+    margin:0 auto !important;
+    gap:12px !important;
+  }
+  body .cta-book,
+  body .cta-call,
+  body .btn-dark,
+  body .btn-ghost{
+    width:100% !important;
+    justify-content:center !important;
+    padding:16px 24px !important;
+    border-radius:100px !important;
+    box-sizing:border-box !important;
+  }
+}
+
+/* e) About: Dr pill background consistency (both doctors = sky blue) */
+body .doctor-section .highlight,
+body .doctor-section:nth-child(odd) .highlight,
+body .doctor-section:nth-child(even) .highlight{
+  background:var(--sky) !important;
+}
+
+/* f) "The People Behind Your Experience" title — proper mobile size, no awkward wrap */
+@media(max-width:768px){
+  body #team .section-h{
+    font-size:26px !important;
+    line-height:1.2 !important;
+    text-align:center !important;
+    max-width:none !important;
+  }
+  body #team .team-hdr-left{max-width:100% !important;padding:0 16px !important}
+}
+
+/* g) Team grid: uniform photo sizes on mobile (doctors and staff) */
+@media(max-width:768px){
+  body .team-grid-docs{justify-content:center !important;gap:20px !important;flex-wrap:wrap !important}
+  body .team-grid-docs .team-photo-wrap{width:140px !important;height:140px !important;flex:0 0 140px !important}
+  body .team-grid-staff{grid-template-columns:repeat(3,1fr) !important;gap:16px !important}
+  body .team-grid-staff .team-photo-wrap{aspect-ratio:1/1 !important;height:auto !important}
+}
+@media(max-width:480px){
+  body .team-grid-docs .team-photo-wrap{width:120px !important;height:120px !important;flex:0 0 120px !important}
+  body .team-grid-staff{grid-template-columns:repeat(2,1fr) !important}
+}
+
+/* h) Dr David photo — shift further down (user said 45% wasn't enough) */
+html body .team-grid-docs .team-photo-wrap img[src*="David"],
+html body .team-docs .team-photo img[src*="David"]{
+  object-position:center 55% !important;
+}
