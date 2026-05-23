@@ -3,6 +3,22 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/services/wisdom-teeth",
+      "destination": "/wisdom-teeth"
+    },
+    {
+      "source": "/services/teeth-bonding",
+      "destination": "/teeth-bonding"
+    },
+    {
+      "source": "/services/all-on-four",
+      "destination": "/all-on-four"
+    },
+    {
+      "source": "/services/root-canals",
+      "destination": "/root-canals"
+    },
+    {
       "source": "/agoura-hills/sedation-dentistry",
       "destination": "/sedation-dentistry"
     },

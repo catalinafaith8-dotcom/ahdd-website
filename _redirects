@@ -9,6 +9,11 @@
 # ════════════════════════════════════════════════════════════════════
 
 # ───────── Service path rewrites (mirror vercel.json) ─────────
+# New service pages (2026-05-23) — clean /services/* canonical
+/services/wisdom-teeth       /wisdom-teeth       200
+/services/teeth-bonding      /teeth-bonding      200
+/services/all-on-four        /all-on-four        200
+/services/root-canals        /root-canals        200
 
 # ───────── Widget rewrites (mirror vercel.json) ─────────
 /insurance-checker  /insurance-checker-ahdd__4_  200
