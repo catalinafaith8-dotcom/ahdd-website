@@ -2,17 +2,118 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/services/dental-implants",       "destination": "/dental-implants" },
-    { "source": "/services/emergency-dentistry",   "destination": "/emergency-dentistry" },
-    { "source": "/services/invisalign",            "destination": "/invisalign" },
-    { "source": "/services/restorative-dentistry", "destination": "/restorative-dentistry" },
-    { "source": "/services/sedation-dentistry",    "destination": "/sedation-dentistry" },
-    { "source": "/services/teeth-whitening",       "destination": "/teeth-whitening" },
-    { "source": "/services/veneers",               "destination": "/veneers" },
-    { "source": "/insurance-checker",              "destination": "/insurance-checker-ahdd__4_" },
-    { "source": "/chatbot",                        "destination": "/chatbot-widget-updated" }
+    {
+      "source": "/agoura-hills/sedation-dentistry",
+      "destination": "/sedation-dentistry"
+    },
+    {
+      "source": "/agoura-hills/emergency-dentistry",
+      "destination": "/emergency-dentistry"
+    },
+    {
+      "source": "/agoura-hills/restorative-dentistry",
+      "destination": "/restorative-dentistry"
+    },
+    {
+      "source": "/agoura-hills/teeth-whitening",
+      "destination": "/teeth-whitening"
+    },
+    {
+      "source": "/agoura-hills/veneers",
+      "destination": "/veneers"
+    },
+    {
+      "source": "/agoura-hills/invisalign",
+      "destination": "/invisalign"
+    },
+    {
+      "source": "/agoura-hills/dental-implants",
+      "destination": "/dental-implants"
+    },
+    {
+      "source": "/insurance-checker",
+      "destination": "/insurance-checker-ahdd__4_"
+    },
+    {
+      "source": "/chatbot",
+      "destination": "/chatbot-widget-updated"
+    }
   ],
   "redirects": [
-    { "source": "/services",                       "destination": "/#services",           "permanent": true }
+    {
+      "source": "/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/services/dental-implants",
+      "destination": "/agoura-hills/dental-implants",
+      "permanent": true
+    },
+    {
+      "source": "/dental-implants",
+      "destination": "/agoura-hills/dental-implants",
+      "permanent": true
+    },
+    {
+      "source": "/services/invisalign",
+      "destination": "/agoura-hills/invisalign",
+      "permanent": true
+    },
+    {
+      "source": "/invisalign",
+      "destination": "/agoura-hills/invisalign",
+      "permanent": true
+    },
+    {
+      "source": "/services/veneers",
+      "destination": "/agoura-hills/veneers",
+      "permanent": true
+    },
+    {
+      "source": "/veneers",
+      "destination": "/agoura-hills/veneers",
+      "permanent": true
+    },
+    {
+      "source": "/services/teeth-whitening",
+      "destination": "/agoura-hills/teeth-whitening",
+      "permanent": true
+    },
+    {
+      "source": "/teeth-whitening",
+      "destination": "/agoura-hills/teeth-whitening",
+      "permanent": true
+    },
+    {
+      "source": "/services/restorative-dentistry",
+      "destination": "/agoura-hills/restorative-dentistry",
+      "permanent": true
+    },
+    {
+      "source": "/restorative-dentistry",
+      "destination": "/agoura-hills/restorative-dentistry",
+      "permanent": true
+    },
+    {
+      "source": "/services/emergency-dentistry",
+      "destination": "/agoura-hills/emergency-dentistry",
+      "permanent": true
+    },
+    {
+      "source": "/emergency-dentistry",
+      "destination": "/agoura-hills/emergency-dentistry",
+      "permanent": true
+    },
+    {
+      "source": "/services/sedation-dentistry",
+      "destination": "/agoura-hills/sedation-dentistry",
+      "permanent": true
+    },
+    {
+      "source": "/sedation-dentistry",
+      "destination": "/agoura-hills/sedation-dentistry",
+      "permanent": true
+    }
   ]
 }

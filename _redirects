@@ -9,13 +9,6 @@
 # ════════════════════════════════════════════════════════════════════
 
 # ───────── Service path rewrites (mirror vercel.json) ─────────
-/services/dental-implants        /dental-implants        200
-/services/emergency-dentistry    /emergency-dentistry    200
-/services/invisalign             /invisalign             200
-/services/restorative-dentistry  /restorative-dentistry  200
-/services/sedation-dentistry     /sedation-dentistry     200
-/services/teeth-whitening        /teeth-whitening        200
-/services/veneers                /veneers                200
 
 # ───────── Widget rewrites (mirror vercel.json) ─────────
 /insurance-checker  /insurance-checker-ahdd__4_  200
@@ -30,3 +23,27 @@
 # /book-online   /contact   301
 # /our-team      /about     301
 # /smile-design  /veneers   301
+# ─── 2026-05-23 location-first URLs ───
+/services/dental-implants         /agoura-hills/dental-implants         301!
+/services/invisalign              /agoura-hills/invisalign              301!
+/services/veneers                 /agoura-hills/veneers                 301!
+/services/teeth-whitening         /agoura-hills/teeth-whitening         301!
+/services/restorative-dentistry   /agoura-hills/restorative-dentistry   301!
+/services/emergency-dentistry     /agoura-hills/emergency-dentistry     301!
+/services/sedation-dentistry      /agoura-hills/sedation-dentistry      301!
+/dental-implants                  /agoura-hills/dental-implants         301!
+/invisalign                       /agoura-hills/invisalign              301!
+/veneers                          /agoura-hills/veneers                 301!
+/teeth-whitening                  /agoura-hills/teeth-whitening         301!
+/restorative-dentistry            /agoura-hills/restorative-dentistry   301!
+/emergency-dentistry              /agoura-hills/emergency-dentistry     301!
+/sedation-dentistry               /agoura-hills/sedation-dentistry      301!
+
+# New canonical paths serve the html files
+/agoura-hills/dental-implants         /dental-implants.html              200
+/agoura-hills/invisalign              /invisalign.html              200
+/agoura-hills/veneers                 /veneers.html              200
+/agoura-hills/teeth-whitening         /teeth-whitening.html              200
+/agoura-hills/restorative-dentistry   /restorative-dentistry.html              200
+/agoura-hills/emergency-dentistry     /emergency-dentistry.html              200
+/agoura-hills/sedation-dentistry      /sedation-dentistry.html              200

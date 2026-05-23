@@ -11,13 +11,13 @@
   'use strict';
 
   var SERVICES = [
-    { label:'Dental Implants',        href:'/services/dental-implants' },
-    { label:'Porcelain Veneers',      href:'/services/veneers' },
-    { label:'Teeth Whitening',        href:'/services/teeth-whitening' },
-    { label:'Invisalign',             href:'/services/invisalign' },
-    { label:'Restorative Dentistry',  href:'/services/restorative-dentistry' },
-    { label:'Sedation Dentistry',     href:'/services/sedation-dentistry' },
-    { label:'Emergency Dentistry',    href:'/services/emergency-dentistry' }
+    { label:'Dental Implants',        href:'/agoura-hills/dental-implants' },
+    { label:'Porcelain Veneers',      href:'/agoura-hills/veneers' },
+    { label:'Teeth Whitening',        href:'/agoura-hills/teeth-whitening' },
+    { label:'Invisalign',             href:'/agoura-hills/invisalign' },
+    { label:'Restorative Dentistry',  href:'/agoura-hills/restorative-dentistry' },
+    { label:'Sedation Dentistry',     href:'/agoura-hills/sedation-dentistry' },
+    { label:'Emergency Dentistry',    href:'/agoura-hills/emergency-dentistry' }
   ];
 
   /* ── 1. NAV: inject Services dropdown + mobile submenu ─── */
