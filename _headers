@@ -60,3 +60,16 @@
 
 /
   Cache-Control: public, max-age=300, must-revalidate
+
+# ─────────────────────────────────────────────────────
+# SEO files — explicit MIME types so Google never confuses
+# sitemap.xml with HTML (which was a real GSC complaint)
+# Also short cache so we can ship sitemap updates fast
+# ─────────────────────────────────────────────────────
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
