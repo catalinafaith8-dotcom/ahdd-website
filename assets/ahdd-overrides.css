@@ -2022,3 +2022,32 @@ html body .team-docs .team-photo img[src*="David"]{
 @media(max-width:480px){
   html body .team-grid-docs .team-photo-wrap{width:100% !important;height:auto !important;aspect-ratio:3/4 !important;flex:initial !important}
 }
+
+
+/* 2026-05-22e — FORCE doctor + staff cards to identical mobile size */
+@media(max-width:768px){
+  html body .team-grid-docs{
+    display:grid !important;
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:16px !important;
+    justify-content:stretch !important;
+  }
+  html body .team-grid-docs .team-card,
+  html body .team-grid-staff .team-card{
+    width:100% !important;
+    max-width:100% !important;
+    flex:initial !important;
+  }
+  html body .team-grid-docs .team-photo-wrap,
+  html body .team-grid-staff .team-photo-wrap{
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio:3/4 !important;
+    max-width:none !important;
+    flex:initial !important;
+  }
+  html body .team-grid-staff{
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:16px !important;
+  }
+}
