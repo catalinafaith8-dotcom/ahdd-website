@@ -1991,3 +1991,17 @@ html body .team-grid-docs .team-photo-wrap img[src*="David"],
 html body .team-docs .team-photo img[src*="David"]{
   object-position:center 55% !important;
 }
+
+
+/* 2026-05-22c — Dr David photo: zoom in (cover) + shift down further */
+html body .team-grid-docs .team-card:nth-child(2) .team-photo-wrap,
+html body .team-grid-docs .team-photo-wrap:has(img[src*="David"]),
+html body .team-docs .team-card:nth-child(2) .team-photo,
+html body .team-docs .team-photo:has(img[src*="David"]){
+  background:transparent !important;
+}
+html body .team-grid-docs .team-photo-wrap img[src*="David"],
+html body .team-docs .team-photo img[src*="David"]{
+  object-fit:cover !important;
+  object-position:center 62% !important;
+}
