@@ -603,7 +603,9 @@ button { font-family: var(--sans); }
 /* ─── BEFORE/AFTER cards (inline so they load regardless of CSS cache) ── */
 .implant-ba-col{display:flex !important;align-items:center !important;justify-content:center !important;width:100% !important;height:100% !important;padding:0 !important}
 .implant-ba-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:14px !important;width:100% !important;padding:24px !important;box-sizing:border-box !important}
-.implant-ba-card{position:relative !important;border-radius:18px !important;overflow:hidden !important;background:#0F2D4A !important;aspect-ratio:1/1 !important;box-shadow:0 12px 40px rgba(15,45,74,.16),0 2px 6px rgba(15,45,74,.08) !important}
+.implant-ba-card{position:relative !important;border-radius:18px !important;overflow:hidden !important;background-color:#0F2D4A !important;aspect-ratio:1/1 !important;box-shadow:0 12px 40px rgba(15,45,74,.16),0 2px 6px rgba(15,45,74,.08) !important;background-size:100% 200% !important;background-repeat:no-repeat !important}
+.implant-ba-card.is-before{background-position:top center !important}
+.implant-ba-card.is-after{background-position:bottom center !important}
 .implant-ba-card .ba-label{position:absolute !important;top:14px !important;left:14px !important;padding:6px 12px !important;border-radius:100px !important;font-family:var(--sans) !important;font-size:10.5px !important;font-weight:700 !important;letter-spacing:.14em !important;text-transform:uppercase !important;color:#fff !important;background:rgba(15,45,74,.85) !important;-webkit-backdrop-filter:blur(8px) !important;backdrop-filter:blur(8px) !important;display:inline-flex !important;align-items:center !important;gap:7px !important;z-index:2 !important}
 .implant-ba-card.is-after .ba-label{background:rgba(201,106,46,.94) !important}
 .implant-ba-card.is-after .ba-label::before{content:"" !important;width:6px !important;height:6px !important;border-radius:50% !important;background:#34c759 !important;display:inline-block !important}
