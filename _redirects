@@ -9,11 +9,21 @@
 # ════════════════════════════════════════════════════════════════════
 
 # ───────── Service path rewrites (mirror vercel.json) ─────────
-# New service pages (2026-05-23) — clean /services/* canonical
-/services/wisdom-teeth       /wisdom-teeth       200
-/services/teeth-bonding      /teeth-bonding      200
-/services/all-on-four        /all-on-four        200
-/services/root-canals        /root-canals        200
+# New SEO-optimized service pages (2026-05-23) — keyword+location canonical URLs
+/services/wisdom-teeth-removal-agoura-hills       /wisdom-teeth-removal-agoura-hills        200
+/services/dental-bonding-agoura-hills             /dental-bonding-agoura-hills              200
+/services/all-on-4-dental-implants-agoura-hills   /all-on-4-dental-implants-agoura-hills    200
+/services/root-canal-treatment-agoura-hills       /root-canal-treatment-agoura-hills        200
+
+# ───────── Legacy short slug 301s → new canonical SEO URLs ─────────
+/wisdom-teeth                          /wisdom-teeth-removal-agoura-hills        301
+/services/wisdom-teeth                 /wisdom-teeth-removal-agoura-hills        301
+/teeth-bonding                         /dental-bonding-agoura-hills              301
+/services/teeth-bonding                /dental-bonding-agoura-hills              301
+/all-on-four                           /all-on-4-dental-implants-agoura-hills    301
+/services/all-on-four                  /all-on-4-dental-implants-agoura-hills    301
+/root-canals                           /root-canal-treatment-agoura-hills        301
+/services/root-canals                  /root-canal-treatment-agoura-hills        301
 
 # ───────── Widget rewrites (mirror vercel.json) ─────────
 /insurance-checker  /insurance-checker-ahdd__4_  200

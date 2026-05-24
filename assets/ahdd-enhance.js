@@ -12,14 +12,14 @@
 
   var SERVICES = [
     { label:'Dental Implants',        href:'/agoura-hills/dental-implants' },
-    { label:'All-on-Four Implants',   href:'/services/all-on-four' },
+    { label:'All-on-4 Implants',      href:'/services/all-on-4-dental-implants-agoura-hills' },
     { label:'Porcelain Veneers',      href:'/agoura-hills/veneers' },
     { label:'Teeth Whitening',        href:'/agoura-hills/teeth-whitening' },
-    { label:'Teeth Bonding',          href:'/services/teeth-bonding' },
+    { label:'Dental Bonding',         href:'/services/dental-bonding-agoura-hills' },
     { label:'Invisalign',             href:'/agoura-hills/invisalign' },
     { label:'Restorative Dentistry',  href:'/agoura-hills/restorative-dentistry' },
-    { label:'Root Canals',            href:'/services/root-canals' },
-    { label:'Wisdom Teeth',           href:'/services/wisdom-teeth' },
+    { label:'Root Canals',            href:'/services/root-canal-treatment-agoura-hills' },
+    { label:'Wisdom Teeth Removal',   href:'/services/wisdom-teeth-removal-agoura-hills' },
     { label:'Sedation Dentistry',     href:'/agoura-hills/sedation-dentistry' },
     { label:'Emergency Dentistry',    href:'/agoura-hills/emergency-dentistry' }
   ];

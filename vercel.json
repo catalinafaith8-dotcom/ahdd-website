@@ -3,20 +3,20 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/services/wisdom-teeth",
-      "destination": "/wisdom-teeth"
+      "source": "/services/wisdom-teeth-removal-agoura-hills",
+      "destination": "/wisdom-teeth-removal-agoura-hills"
     },
     {
-      "source": "/services/teeth-bonding",
-      "destination": "/teeth-bonding"
+      "source": "/services/dental-bonding-agoura-hills",
+      "destination": "/dental-bonding-agoura-hills"
     },
     {
-      "source": "/services/all-on-four",
-      "destination": "/all-on-four"
+      "source": "/services/all-on-4-dental-implants-agoura-hills",
+      "destination": "/all-on-4-dental-implants-agoura-hills"
     },
     {
-      "source": "/services/root-canals",
-      "destination": "/root-canals"
+      "source": "/services/root-canal-treatment-agoura-hills",
+      "destination": "/root-canal-treatment-agoura-hills"
     },
     {
       "source": "/agoura-hills/sedation-dentistry",
@@ -129,6 +129,46 @@
     {
       "source": "/sedation-dentistry",
       "destination": "/agoura-hills/sedation-dentistry",
+      "permanent": true
+    },
+    {
+      "source": "/wisdom-teeth",
+      "destination": "/services/wisdom-teeth-removal-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/services/wisdom-teeth",
+      "destination": "/services/wisdom-teeth-removal-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/teeth-bonding",
+      "destination": "/services/dental-bonding-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/services/teeth-bonding",
+      "destination": "/services/dental-bonding-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/all-on-four",
+      "destination": "/services/all-on-4-dental-implants-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/services/all-on-four",
+      "destination": "/services/all-on-4-dental-implants-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/root-canals",
+      "destination": "/services/root-canal-treatment-agoura-hills",
+      "permanent": true
+    },
+    {
+      "source": "/services/root-canals",
+      "destination": "/services/root-canal-treatment-agoura-hills",
       "permanent": true
     }
   ]
