@@ -14,7 +14,7 @@
     { label:'Dental Implants',        href:'/agoura-hills/dental-implants' },
     { label:'All-on-4 Implants',      href:'/services/all-on-4-dental-implants-agoura-hills' },
     { label:'Porcelain Veneers',      href:'/agoura-hills/veneers' },
-    { label:'Teeth Whitening',        href:'/agoura-hills/teeth-whitening' },
+    { label:'Teeth Whitening',        href:'/teeth-whitening' },
     { label:'Dental Bonding',         href:'/services/dental-bonding-agoura-hills' },
     { label:'Invisalign',             href:'/agoura-hills/invisalign' },
     { label:'Restorative Dentistry',  href:'/agoura-hills/restorative-dentistry' },
