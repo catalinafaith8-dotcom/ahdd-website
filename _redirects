@@ -1,64 +1,54 @@
 # ════════════════════════════════════════════════════════════════════
 # Cloudflare Pages — redirects + rewrites
-# Agoura Hills Dental Designs · 2026-05-21
+# Agoura Hills Dental Designs · 2026-05-24
 #
 # Format: SOURCE  DESTINATION  STATUS
 #   200 = rewrite (URL stays, content from destination)
 #   301 = permanent redirect (URL changes, search engines update)
-#   302 = temporary redirect
+#
+# CANONICAL URLS: bare /service-name (auto-served from /service-name.html
+# by Cloudflare Pages auto-extension — no explicit rule needed).
+# All other variants 301 to the bare canonical.
 # ════════════════════════════════════════════════════════════════════
 
-# ───────── Service path rewrites (mirror vercel.json) ─────────
-# New SEO-optimized service pages (2026-05-23) — keyword+location canonical URLs
-/services/wisdom-teeth-removal-agoura-hills       /wisdom-teeth-removal-agoura-hills        200
-/services/dental-bonding-agoura-hills             /dental-bonding-agoura-hills              200
-/services/all-on-4-dental-implants-agoura-hills   /all-on-4-dental-implants-agoura-hills    200
-/services/root-canal-treatment-agoura-hills       /root-canal-treatment-agoura-hills        200
-
-# ───────── Legacy short slug 301s → new canonical SEO URLs ─────────
-/wisdom-teeth                          /wisdom-teeth-removal-agoura-hills        301
-/services/wisdom-teeth                 /wisdom-teeth-removal-agoura-hills        301
-/teeth-bonding                         /dental-bonding-agoura-hills              301
-/services/teeth-bonding                /dental-bonding-agoura-hills              301
-/all-on-four                           /all-on-4-dental-implants-agoura-hills    301
-/services/all-on-four                  /all-on-4-dental-implants-agoura-hills    301
-/root-canals                           /root-canal-treatment-agoura-hills        301
-/services/root-canals                  /root-canal-treatment-agoura-hills        301
-
-# ───────── Widget rewrites (mirror vercel.json) ─────────
+# ───────── Widget rewrites ─────────
 /insurance-checker  /insurance-checker-ahdd__4_  200
-/chatbot            /chatbot-widget-updated      200
 
 # ───────── /services anchors home ─────────
 /services           /#services                   301
 
-# ───────── Wix legacy URL safety net (uncomment after auditing Wix) ─────────
-# If your old Wix site had URLs like /book-online or /our-team, list them
-# here and they'll redirect to the new equivalents instead of 404ing.
-# /book-online   /contact   301
-# /our-team      /about     301
-# /smile-design  /veneers   301
-# ─── 2026-05-23 location-first URLs ───
-/services/dental-implants         /agoura-hills/dental-implants         301!
-/services/invisalign              /agoura-hills/invisalign              301!
-/services/veneers                 /agoura-hills/veneers                 301!
-/services/teeth-whitening         /agoura-hills/teeth-whitening         301!
-/services/restorative-dentistry   /agoura-hills/restorative-dentistry   301!
-/services/emergency-dentistry     /agoura-hills/emergency-dentistry     301!
-/services/sedation-dentistry      /agoura-hills/sedation-dentistry      301!
-/dental-implants                  /agoura-hills/dental-implants         301!
-/invisalign                       /agoura-hills/invisalign              301!
-/veneers                          /agoura-hills/veneers                 301!
-/teeth-whitening                  /teeth-whitening.html                 200
-/restorative-dentistry            /agoura-hills/restorative-dentistry   301!
-/emergency-dentistry              /agoura-hills/emergency-dentistry     301!
-/sedation-dentistry               /agoura-hills/sedation-dentistry      301!
+# ───────── New SEO service pages (long keyword+location URLs) ─────────
+# Bare URLs are auto-served from same-named .html files.
+# Variant URLs 301 to the bare canonical.
+/services/wisdom-teeth-removal-agoura-hills      /wisdom-teeth-removal-agoura-hills        301
+/services/dental-bonding-agoura-hills            /dental-bonding-agoura-hills              301
+/services/all-on-4-dental-implants-agoura-hills  /all-on-4-dental-implants-agoura-hills    301
+/services/root-canal-treatment-agoura-hills      /root-canal-treatment-agoura-hills        301
 
-# New canonical paths serve the html files
-/agoura-hills/dental-implants         /dental-implants.html              200
-/agoura-hills/invisalign              /invisalign.html              200
-/agoura-hills/veneers                 /veneers.html              200
-/agoura-hills/teeth-whitening         /teeth-whitening.html              200
-/agoura-hills/restorative-dentistry   /restorative-dentistry.html              200
-/agoura-hills/emergency-dentistry     /emergency-dentistry.html              200
-/agoura-hills/sedation-dentistry      /sedation-dentistry.html              200
+# ───────── Legacy short slugs → new SEO canonical URLs ─────────
+/wisdom-teeth            /wisdom-teeth-removal-agoura-hills          301
+/services/wisdom-teeth   /wisdom-teeth-removal-agoura-hills          301
+/teeth-bonding           /dental-bonding-agoura-hills                301
+/services/teeth-bonding  /dental-bonding-agoura-hills                301
+/all-on-four             /all-on-4-dental-implants-agoura-hills      301
+/services/all-on-four    /all-on-4-dental-implants-agoura-hills      301
+/root-canals             /root-canal-treatment-agoura-hills          301
+/services/root-canals    /root-canal-treatment-agoura-hills          301
+
+# ───────── Legacy /agoura-hills/* → bare canonical (preserves SEO) ─────────
+/agoura-hills/dental-implants         /dental-implants         301
+/agoura-hills/invisalign              /invisalign              301
+/agoura-hills/veneers                 /veneers                 301
+/agoura-hills/teeth-whitening         /teeth-whitening         301
+/agoura-hills/restorative-dentistry   /restorative-dentistry   301
+/agoura-hills/emergency-dentistry     /emergency-dentistry     301
+/agoura-hills/sedation-dentistry      /sedation-dentistry      301
+
+# ───────── Legacy /services/{service} → bare canonical ─────────
+/services/dental-implants         /dental-implants         301
+/services/invisalign              /invisalign              301
+/services/veneers                 /veneers                 301
+/services/teeth-whitening         /teeth-whitening         301
+/services/restorative-dentistry   /restorative-dentistry   301
+/services/emergency-dentistry     /emergency-dentistry     301
+/services/sedation-dentistry      /sedation-dentistry      301
