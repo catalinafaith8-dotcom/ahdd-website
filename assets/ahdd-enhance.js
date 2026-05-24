@@ -36,11 +36,17 @@
         : null;
       if (svcLink) {
         var svcLi = svcLink.parentElement;
-        if (svcLi && svcLi.tagName === 'LI' && !svcLi.classList.contains('has-dropdown')) {
+        if (svcLi && svcLi.tagName === 'LI') {
+          // Remove ANY existing dropdown (inline markup OR previously injected)
+          // so we never end up with duplicates. This makes JS the single source of truth.
+          var existingDropdowns = svcLi.querySelectorAll('.nav-dropdown');
+          existingDropdowns.forEach(function(el){ el.remove(); });
           svcLi.classList.add('has-dropdown');
           svcLink.setAttribute('href','/#services');
           svcLink.setAttribute('aria-haspopup','true');
           svcLink.setAttribute('aria-expanded','false');
+          // Detect current page once so we can mark the matching item active
+          var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
           var ul = document.createElement('ul');
           ul.className = 'nav-dropdown';
           ul.setAttribute('role','menu');
@@ -51,6 +57,11 @@
             a.setAttribute('role','menuitem');
             a.href = s.href;
             a.textContent = s.label;
+            // Mark active if current page matches this service URL (bare or .html variant)
+            var hrefPath = s.href.replace(/\/$/, '');
+            if (currentPath === hrefPath || currentPath === hrefPath + '.html') {
+              a.classList.add('dd-active');
+            }
             li.appendChild(a);
             ul.appendChild(li);
           });
