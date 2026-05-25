@@ -256,6 +256,20 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:100px;background:var(--white);border:1px solid var(--hairline-soft);font-size:12px;font-weight:500;color:var(--ink-soft);font-family:var(--sans-sf)}
 .chip svg{width:12px;height:12px;stroke:var(--ink);flex-shrink:0;stroke-width:2}
 
+/* 2-column hero layout — text + pills on left, Cherry payment calculator on right */
+.page-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+.page-hero-left{min-width:0}
+.page-hero-right{min-width:0;width:100%;align-self:center}
+.page-hero-right #calculator{width:100%;min-height:480px}
+.page-hero--has-cherry .hero-chips{max-width:560px}
+@media (max-width:968px){
+  .page-hero-grid{grid-template-columns:1fr;gap:32px}
+  .page-hero-right{order:2}
+  .page-hero-left{order:1}
+  .page-hero-right #calculator{min-height:420px}
+  .page-hero--has-cherry .hero-chips{max-width:none}
+}
+
 /* ══════════════════════════════════════════════
    LENDERS — unified resource framing
 ══════════════════════════════════════════════ */
@@ -561,6 +575,40 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 </style>
   <link rel="stylesheet" href="/assets/ahdd-overrides.css?v=20260524k"/>
   <script src="/assets/ahdd-enhance.js?v=20260524k" defer></script>
+
+  <!-- ═══ CHERRY PAYMENT ESTIMATOR — renders into #calculator in the hero ═══ -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@200..900&display=swap" rel="stylesheet"/>
+  <script>
+    (function (w, d, s, o, f, js, fjs) {
+      w[o] = w[o] || function () {
+        (w[o].q = w[o].q || []).push(arguments);
+      };
+      (js = d.createElement(s)), (fjs = d.getElementsByTagName(s)[0]);
+      js.id = o;
+      js.src = f;
+      js.async = 1;
+      fjs.parentNode.insertBefore(js, fjs);
+    })(window, document, "script", "_hw", "https://files.withcherry.com/widgets/widget.js");
+    _hw("init", {
+      debug: false,
+      variables: {
+        slug: 'agoura-hills-dental-designs',
+        name: 'Agoura Hills Dental Designs',
+        images: 'none',
+        customLogo: '',
+        defaultPurchaseAmount: 3500,
+        customImage: '',
+        imageCategory: 'dental',
+        language: 'en',
+      },
+      styles: {
+        primaryColor: '#1f3c4e',
+        secondaryColor: '#1f3c4e10',
+        fontFamily: 'Open Sans',
+        headerFontFamily: 'Open Sans',
+      }
+    }, ['calculator']);
+  </script>
 </head>
 <body>
 
@@ -601,27 +649,35 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 </nav>
 
 <!-- ═══════════════ PAGE HERO ═══════════════ -->
-<section class="page-hero">
+<section class="page-hero page-hero--has-cherry">
   <div class="wrap">
-    <div class="breadcrumb">
-      <a href="/">Home</a><span>›</span><span>Financing</span>
-    </div>
-    <span class="eyebrow">Flexible Payment Options</span>
-    <h1>Your dream smile shouldn't<br/>wait on <em>your budget.</em></h1>
-    <p class="page-hero-sub">We've partnered with three leading healthcare lenders and built our own in-house membership plan — so every patient leaves with a clear, affordable path forward, regardless of insurance.</p>
-    <div class="hero-btn-row">
-      <a href="tel:+18187066077" class="btn-dark">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-        Talk to our team
-      </a>
-      <a href="#membership" class="btn-outline">View membership plans →</a>
-    </div>
-    <div class="hero-chips">
-      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>0% APR on approved credit</div>
-      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No hard inquiries</div>
-      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Prequalification tools</div>
-      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>HSA &amp; FSA accepted</div>
-      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Smile Care Plan from $35/mo</div>
+    <div class="page-hero-grid">
+      <div class="page-hero-left">
+        <div class="breadcrumb">
+          <a href="/">Home</a><span>›</span><span>Financing</span>
+        </div>
+        <span class="eyebrow">Flexible Payment Options</span>
+        <h1>Your dream smile shouldn't<br/>wait on <em>your budget.</em></h1>
+        <p class="page-hero-sub">We've partnered with three leading healthcare lenders and built our own in-house membership plan — so every patient leaves with a clear, affordable path forward, regardless of insurance.</p>
+        <div class="hero-btn-row">
+          <a href="tel:+18187066077" class="btn-dark">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            Talk to our team
+          </a>
+          <a href="#membership" class="btn-outline">View membership plans →</a>
+        </div>
+        <div class="hero-chips">
+          <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>0% APR on approved credit</div>
+          <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No hard inquiries</div>
+          <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Prequalification tools</div>
+          <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>HSA &amp; FSA accepted</div>
+          <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Smile Care Plan from $35/mo</div>
+        </div>
+      </div>
+      <div class="page-hero-right">
+        <!-- Cherry payment estimator widget renders into this div -->
+        <div id="calculator"></div>
+      </div>
     </div>
   </div>
 </section>
