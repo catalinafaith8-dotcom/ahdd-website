@@ -2176,27 +2176,30 @@ html body .team-docs .team-photo img[src*="David"]{
   /* AFTER card aligns with BEFORE — no offset */
 }
 
-/* ── Mobile (≤768): PHOTOS FIRST, then text ── */
+/* ── Mobile (≤768): TEXT FIRST, then photos (per user request) ── */
 @media (max-width: 768px){
   .svc-hero.svc-hero-v2.implant-hero-single{
     grid-template-columns: 1fr !important;
-    gap: 32px !important;
-    padding: 88px 0 56px !important;     /* 0 horizontal so photos go edge-to-edge */
+    gap: 24px !important;
+    padding: 56px 0 48px !important;     /* tighter top padding on mobile */
     background: linear-gradient(180deg, #FBF8F3 0%, #FFFFFF 88%) !important;
   }
-  /* SWAP order — photos above text */
+  /* Text first, photos second (natural document order = no order override needed) */
   .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-text{
-    order: 2;
+    order: 1;
     padding: 0 24px !important;
     max-width: none !important;
   }
   .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-col{
-    order: 1;
-    padding: 0 20px !important;
+    order: 2;
+    padding: 0 24px !important;
   }
+  /* Mobile photos are smaller — max-width 320px so they don't take the whole screen */
   .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-grid{
-    gap: 12px !important;
+    gap: 10px !important;
     padding: 0 !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
   }
   .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card{
     border-radius: 18px !important;
