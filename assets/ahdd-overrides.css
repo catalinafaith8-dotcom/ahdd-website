@@ -2424,3 +2424,14 @@ html body .team-docs .team-photo img[src*="David"]{
     padding: 64px 24px 48px !important;
   }
 }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   2026-05-25 — Hide the full footer on mobile (per user request:
+   "footer only show on desktop because on mobile it's way too long")
+   Keeps the chatbot button + book modal accessible — they live
+   outside <footer>. Phone CTA is still in the mobile nav header.
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  footer { display: none !important; }
+}
