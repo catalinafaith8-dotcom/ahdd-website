@@ -611,8 +611,10 @@ button { font-family: var(--sans); }
 .implant-ba-card.wht-ba img{object-fit:cover;object-position:center center}
 /* Landscape photos look much bigger when stacked vertically (one above the other)
    rather than squeezed side-by-side. Each card gets the FULL column width.
-   Higher-specificity selector overrides the shared .implant-ba-grid 2-column rule. */
-.svc-hero .implant-ba-grid{grid-template-columns:1fr !important;gap:18px !important}
+   Higher-specificity selector overrides the shared .implant-ba-grid 2-column rule.
+   max-width:85% pulls cards in 15% (centered) so they're not edge-to-edge on desktop. */
+.svc-hero .implant-ba-grid{grid-template-columns:1fr !important;gap:18px !important;max-width:85% !important;margin:0 auto !important}
+@media(max-width:768px){.svc-hero .implant-ba-grid{max-width:100% !important}}
 .implant-ba-card .ba-label{position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:100px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(15,45,74,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:inline-flex;align-items:center;gap:7px;z-index:2}
 .implant-ba-card.is-after .ba-label{background:rgba(201,106,46,.94)}
 .implant-ba-card.is-after .ba-label::before{content:"";width:6px;height:6px;border-radius:50%;background:#34c759;display:inline-block}
@@ -774,8 +776,8 @@ button { font-family: var(--sans); }
   .fin-h2 { font-size: clamp(20px, 5.5vw, 28px); }
 }
 </style>
-  <link rel="stylesheet" href="/assets/ahdd-overrides.css?v=20260524g"/>
-  <script src="/assets/ahdd-enhance.js?v=20260524g" defer></script>
+  <link rel="stylesheet" href="/assets/ahdd-overrides.css?v=20260524h"/>
+  <script src="/assets/ahdd-enhance.js?v=20260524h" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"How white can my teeth actually get?","acceptedAnswer":{"@type":"Answer","text":"Most patients see 4–8 shades of improvement with professional in-office whitening. Results depend on the cause of staining — surface stains respond best."}},
