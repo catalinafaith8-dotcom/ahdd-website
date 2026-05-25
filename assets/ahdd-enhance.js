@@ -12,7 +12,6 @@
 
   var SERVICES = [
     { label:'Dental Implants',        href:'/dental-implants' },
-    { label:'All-on-4 Implants',      href:'/all-on-4-dental-implants-agoura-hills' },
     { label:'Porcelain Veneers',      href:'/veneers' },
     { label:'Teeth Whitening',        href:'/teeth-whitening' },
     { label:'Dental Bonding',         href:'/dental-bonding-agoura-hills' },
@@ -21,7 +20,8 @@
     { label:'Root Canals',            href:'/root-canal-treatment-agoura-hills' },
     { label:'Wisdom Teeth Removal',   href:'/wisdom-teeth-removal-agoura-hills' },
     { label:'Sedation Dentistry',     href:'/sedation-dentistry' },
-    { label:'Emergency Dentistry',    href:'/emergency-dentistry' }
+    { label:'Emergency Dentistry',    href:'/emergency-dentistry' },
+    { label:'All-on-4 Dental Implants', href:'/all-on-4-dental-implants-agoura-hills' }
   ];
 
   /* ── 1. NAV: inject Services dropdown + mobile submenu ─── */
