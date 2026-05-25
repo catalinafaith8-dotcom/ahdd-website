@@ -604,11 +604,11 @@ button { font-family: var(--sans); }
 .svc-hero.implant-hero-single .svc-hero-img{padding:0;background:#0F2D4A}
 .implant-ba-col{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:0}
 .implant-ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;padding:24px;box-sizing:border-box}
-/* IMPORTANT: shared ahdd-overrides.css ALSO declares .implant-ba-card with aspect-ratio:4/5
-   (for implants page). It loads AFTER this inline style, so we need !important on the
-   whitening-specific aspect-ratio override to win the cascade. */
-.implant-ba-card{position:relative;border-radius:18px;overflow:hidden;background:#0F2D4A;aspect-ratio:3/2 !important;box-shadow:0 12px 40px rgba(15,45,74,.16),0 2px 6px rgba(15,45,74,.08)}
-.implant-ba-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover !important;object-position:center center !important;display:block}
+/* Whitening cards use a unique .wht-ba class to get higher specificity than the
+   shared .implant-ba-card rules in ahdd-overrides.css (which keep 4/5 for implants).
+   Specificity 0,0,2,0 beats 0,0,1,0 regardless of cascade order — no !important needed. */
+.implant-ba-card.wht-ba{aspect-ratio:3/2}
+.implant-ba-card.wht-ba img{object-fit:cover;object-position:center center}
 .implant-ba-card .ba-label{position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:100px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(15,45,74,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:inline-flex;align-items:center;gap:7px;z-index:2}
 .implant-ba-card.is-after .ba-label{background:rgba(201,106,46,.94)}
 .implant-ba-card.is-after .ba-label::before{content:"";width:6px;height:6px;border-radius:50%;background:#34c759;display:inline-block}
@@ -855,14 +855,14 @@ button { font-family: var(--sans); }
   <!-- Right column: side-by-side BEFORE / AFTER (mirrors dental-implants.html) -->
   <div class="implant-ba-col">
     <div class="implant-ba-grid">
-      <figure class="implant-ba-card is-before">
+      <figure class="implant-ba-card wht-ba is-before">
         <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/before%20whitening.jpg"
              alt="Teeth whitening before &mdash; Agoura Hills Dental Designs patient"
              loading="eager"
              onerror="this.parentElement.style.background='#dde3ea';this.style.display='none'"/>
         <div class="ba-label">Before</div>
       </figure>
-      <figure class="implant-ba-card is-after">
+      <figure class="implant-ba-card wht-ba is-after">
         <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/after%20whitening.jpg"
              alt="Teeth whitening after &mdash; dramatically brighter smile"
              loading="eager"
