@@ -2074,3 +2074,316 @@ html body .team-docs .team-photo img[src*="David"]{
 /* Whitening BA cards use 1:1 aspect (matches the source image's per-half ratio so the 200% bg-height split shows clean halves without stretching) */
 .implant-ba-card.whitening-ba{aspect-ratio:1/1}
 
+
+/* ════════════════════════════════════════════════════════════════════
+   2026-05-24 v5 — APPLE-MEETS-DENTIST SERVICE HERO REDESIGN
+   ───────────────────────────────────────────────────────────────────
+   GOAL: Hero feels premium and breathable. Photos = emotional hook.
+   ───────────────────────────────────────────────────────────────────
+   Scope: opt-in via `.svc-hero-v2` marker class on the <section>.
+     Avoids hitting technology.html (also uses .svc-hero) or any
+     future non-service page that adopts .svc-hero.
+   DESKTOP: Right column gets ~1.15fr vs 1fr left. Warm cream bg
+     replaces cold gradient. AFTER card lifts +6px with deeper shadow
+     for a curated, editorial feel.
+   MOBILE: Photos appear ABOVE the headline (CSS order swap on the
+     grid children) so the user sees the result before reading copy.
+     Photos go full-bleed edge-to-edge for max emotional impact.
+     CTA buttons stack full-width, Apple buy-page style.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── BA pages (implants / whitening / invisalign): refined split ── */
+.svc-hero.svc-hero-v2.implant-hero-single{
+  background: linear-gradient(180deg, #FBF8F3 0%, #FFFFFF 100%) !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) !important;
+  gap: 64px !important;
+  padding: 120px 56px 88px !important;
+  max-width: 1320px !important;
+  border-bottom: 1px solid rgba(15,45,74,.06) !important;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .svc-hero-text{
+  max-width: 540px;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .svc-eyebrow{
+  margin-bottom: 18px !important;
+  font-size: 11px;
+  letter-spacing: .18em;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .svc-hero-h1{
+  font-size: clamp(30px, 3.4vw, 46px) !important;
+  letter-spacing: -.025em !important;
+  line-height: 1.06 !important;
+  margin-bottom: 22px !important;
+  font-weight: 600 !important;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .svc-hero-p{
+  font-size: 16.5px !important;
+  line-height: 1.7 !important;
+  max-width: 480px !important;
+  color: var(--slate);
+}
+.svc-hero.svc-hero-v2.implant-hero-single .svc-hero-btns{
+  margin-top: 28px !important;
+  gap: 12px !important;
+}
+
+/* ── BA cards: bigger, richer shadow, cream surround ── */
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-col{
+  background: transparent !important;
+  padding: 0 !important;
+  align-items: stretch;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-grid{
+  padding: 0 !important;
+  gap: 18px !important;
+  align-items: center;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card{
+  background: #F1EBE3 !important;
+  border-radius: 22px !important;
+  box-shadow:
+    0 24px 60px -12px rgba(15,45,74,.22),
+    0 8px 20px -6px rgba(15,45,74,.10),
+    0 1px 0 rgba(255,255,255,.6) inset !important;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease;
+}
+/* "Editorial offset" — AFTER card lifts subtly to read as the resolution */
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{
+  transform: translateY(-14px);
+  box-shadow:
+    0 32px 70px -14px rgba(15,45,74,.28),
+    0 10px 24px -6px rgba(201,106,46,.14),
+    0 1px 0 rgba(255,255,255,.6) inset !important;
+}
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card:hover{
+  transform: translateY(-4px);
+}
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after:hover{
+  transform: translateY(-18px);
+}
+.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card .ba-label{
+  font-size: 10px !important;
+  padding: 7px 13px !important;
+  letter-spacing: .16em !important;
+  top: 16px !important;
+  left: 16px !important;
+}
+
+/* ── Tablet (≤1024) ── */
+@media (max-width: 1024px){
+  .svc-hero.svc-hero-v2.implant-hero-single{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) !important;
+    gap: 44px !important;
+    padding: 96px 36px 72px !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{ transform: translateY(-10px); }
+}
+
+/* ── Mobile (≤768): PHOTOS FIRST, then text ── */
+@media (max-width: 768px){
+  .svc-hero.svc-hero-v2.implant-hero-single{
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    padding: 88px 0 56px !important;     /* 0 horizontal so photos go edge-to-edge */
+    background: linear-gradient(180deg, #FBF8F3 0%, #FFFFFF 88%) !important;
+  }
+  /* SWAP order — photos above text */
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-text{
+    order: 2;
+    padding: 0 24px !important;
+    max-width: none !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-col{
+    order: 1;
+    padding: 0 20px !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-grid{
+    gap: 12px !important;
+    padding: 0 !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card{
+    border-radius: 18px !important;
+    box-shadow:
+      0 14px 36px -8px rgba(15,45,74,.20),
+      0 4px 12px -4px rgba(15,45,74,.08) !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{
+    transform: translateY(-8px);
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card .ba-label{
+    font-size: 9px !important;
+    padding: 5px 10px !important;
+    top: 11px !important;
+    left: 11px !important;
+  }
+  /* Tighter mobile typography */
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-breadcrumb{ margin-bottom: 14px !important; }
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-eyebrow{
+    font-size: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-h1{
+    font-size: clamp(26px, 7vw, 32px) !important;
+    margin-bottom: 16px !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-p{
+    font-size: 15.5px !important;
+    line-height: 1.65 !important;
+  }
+  /* Stack CTAs full-width — Apple buy-button pattern */
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-btns{
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-top: 24px !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-btns .btn-primary,
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-btns .btn-secondary{
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 15px 24px !important;
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 480px){
+  .svc-hero.svc-hero-v2.implant-hero-single{
+    padding: 80px 0 48px !important;
+    gap: 26px !important;
+  }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-col{ padding: 0 16px !important; }
+  .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-text{ padding: 0 20px !important; }
+  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{ transform: translateY(-6px); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   NON-BA SERVICE PAGES — refined hero (warm cream + bigger right photo)
+   Applies to: veneers, sedation-dentistry, emergency-dentistry,
+   restorative-dentistry, dental-bonding, root-canal, wisdom-teeth, all-on-4.
+   We scope by :not(.implant-hero-single) so BA pages keep their treatment.
+   ════════════════════════════════════════════════════════════════════ */
+.svc-hero.svc-hero-v2:not(.implant-hero-single){
+  background: linear-gradient(180deg, #FBF8F3 0%, #FFFFFF 100%) !important;
+  min-height: 600px !important;
+  align-items: center !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) !important;
+}
+.svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-text{
+  background: transparent !important;
+  padding: 96px 56px 80px 80px !important;
+  max-width: 620px;
+  justify-self: end;
+}
+.svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-h1{
+  font-size: clamp(30px, 3.4vw, 46px) !important;
+  font-weight: 600 !important;
+  letter-spacing: -.025em !important;
+  line-height: 1.06 !important;
+  margin-bottom: 22px !important;
+}
+.svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-p{
+  font-size: 16.5px !important;
+  line-height: 1.7 !important;
+  max-width: 480px !important;
+}
+.svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-btns{
+  margin-top: 28px !important;
+  gap: 12px !important;
+}
+.svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-eyebrow{
+  font-size: 11px !important;
+  letter-spacing: .18em !important;
+  margin-bottom: 14px !important;
+}
+/* Right photo column: the .svc-hero-img IS the framed photo card.
+   We round + shadow the container itself so it works whether the inside
+   is an absolute-positioned wrapper (placeholder pages) or a bare <img>
+   (restorative-dentistry). */
+.svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-img{
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 32px 56px 32px 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 28px 64px -16px rgba(15,45,74,.24),
+    0 8px 20px -6px rgba(15,45,74,.10) !important;
+  min-height: 480px;
+}
+
+@media (max-width: 1024px){
+  .svc-hero.svc-hero-v2:not(.implant-hero-single){
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    min-height: 520px !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-text{
+    padding: 80px 32px 64px 48px !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-img{
+    margin: 24px 32px 24px 0 !important;
+    min-height: 420px !important;
+  }
+}
+
+/* Mobile: PHOTO FIRST for non-BA pages too */
+@media (max-width: 768px){
+  .svc-hero.svc-hero-v2:not(.implant-hero-single){
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    padding: 88px 0 0 !important;
+    background: linear-gradient(180deg, #FBF8F3 0%, #FFFFFF 88%) !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-img{
+    order: 1 !important;
+    margin: 0 20px !important;
+    padding: 0 !important;
+    align-self: stretch !important;
+    box-sizing: border-box;
+    aspect-ratio: 4 / 3 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    border-radius: 18px !important;
+    box-shadow:
+      0 14px 36px -8px rgba(15,45,74,.20),
+      0 4px 12px -4px rgba(15,45,74,.08) !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-text{
+    order: 2 !important;
+    background: transparent !important;
+    padding: 28px 24px 48px !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-h1{
+    font-size: clamp(26px, 7vw, 32px) !important;
+    margin-bottom: 16px !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-p{
+    font-size: 15.5px !important;
+    line-height: 1.65 !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-btns{
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-top: 24px !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-btns .btn-primary,
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-btns .btn-secondary{
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 15px 24px !important;
+    font-size: 15px !important;
+  }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-eyebrow{
+    font-size: 10px !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+@media (max-width: 480px){
+  .svc-hero.svc-hero-v2:not(.implant-hero-single){ padding-top: 80px !important; }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-img{ margin: 0 16px !important; }
+  .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-text{ padding: 24px 20px 44px !important; }
+}
+
