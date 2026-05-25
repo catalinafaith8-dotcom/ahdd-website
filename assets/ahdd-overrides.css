@@ -2147,19 +2147,16 @@ html body .team-docs .team-photo img[src*="David"]{
     0 1px 0 rgba(255,255,255,.6) inset !important;
   transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease;
 }
-/* "Editorial offset" — AFTER card lifts subtly to read as the resolution */
+/* AFTER card uses the same shadow + alignment as BEFORE — both cards line up
+   at the top edge (the lifted "editorial offset" looked misaligned in practice) */
 .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{
-  transform: translateY(-14px);
   box-shadow:
-    0 32px 70px -14px rgba(15,45,74,.28),
-    0 10px 24px -6px rgba(201,106,46,.14),
+    0 24px 60px -12px rgba(15,45,74,.22),
+    0 8px 20px -6px rgba(15,45,74,.10),
     0 1px 0 rgba(255,255,255,.6) inset !important;
 }
 .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card:hover{
   transform: translateY(-4px);
-}
-.svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after:hover{
-  transform: translateY(-18px);
 }
 .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card .ba-label{
   font-size: 10px !important;
@@ -2176,7 +2173,7 @@ html body .team-docs .team-photo img[src*="David"]{
     gap: 44px !important;
     padding: 96px 36px 72px !important;
   }
-  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{ transform: translateY(-10px); }
+  /* AFTER card aligns with BEFORE — no offset */
 }
 
 /* ── Mobile (≤768): PHOTOS FIRST, then text ── */
@@ -2207,9 +2204,7 @@ html body .team-docs .team-photo img[src*="David"]{
       0 14px 36px -8px rgba(15,45,74,.20),
       0 4px 12px -4px rgba(15,45,74,.08) !important;
   }
-  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{
-    transform: translateY(-8px);
-  }
+  /* AFTER card no longer offset — aligns with BEFORE for clean side-by-side */
   .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card .ba-label{
     font-size: 9px !important;
     padding: 5px 10px !important;
@@ -2252,7 +2247,6 @@ html body .team-docs .team-photo img[src*="David"]{
   }
   .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-col{ padding: 0 16px !important; }
   .svc-hero.svc-hero-v2.implant-hero-single .svc-hero-text{ padding: 0 20px !important; }
-  .svc-hero.svc-hero-v2.implant-hero-single .implant-ba-card.is-after{ transform: translateY(-6px); }
 }
 
 /* ════════════════════════════════════════════════════════════════════
