@@ -2384,3 +2384,43 @@ html body .team-docs .team-photo img[src*="David"]{
   .svc-hero.svc-hero-v2:not(.implant-hero-single) .svc-hero-text{ padding: 24px 20px 44px !important; }
 }
 
+
+
+/* ════════════════════════════════════════════════════════════════════
+   2026-05-24 — Image-less hero (no right-column photo)
+   For service pages that don't have a relevant photo: sedation,
+   emergency, all-on-4, root-canal. Text centers in a max-width
+   column so the hero feels intentional, not awkwardly half-empty.
+   ════════════════════════════════════════════════════════════════════ */
+.svc-hero.svc-hero-v2.svc-hero-no-image{
+  grid-template-columns: 1fr !important;
+  text-align: center;
+  padding: 120px 24px 88px !important;
+  min-height: auto !important;
+}
+.svc-hero.svc-hero-v2.svc-hero-no-image .svc-hero-text{
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  justify-self: center !important;
+}
+.svc-hero.svc-hero-v2.svc-hero-no-image .svc-breadcrumb,
+.svc-hero.svc-hero-v2.svc-hero-no-image .svc-eyebrow{
+  justify-content: center !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+.svc-hero.svc-hero-v2.svc-hero-no-image .svc-hero-p{
+  max-width: 580px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.svc-hero.svc-hero-v2.svc-hero-no-image .svc-hero-btns{
+  justify-content: center !important;
+}
+@media (max-width: 768px){
+  .svc-hero.svc-hero-v2.svc-hero-no-image{
+    padding: 64px 24px 48px !important;
+  }
+}
