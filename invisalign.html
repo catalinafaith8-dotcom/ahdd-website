@@ -600,6 +600,18 @@ button { font-family: var(--sans); }
 .svc-hero-badge-num { font-family: var(--display); font-weight: 700; letter-spacing: -.02em; }
 .svc-hero-img { background: linear-gradient(160deg, #EEF4FB 0%, #C8DCF0 60%, #0F2D4A 100%); }
 
+/* ═══ BEFORE/AFTER cards — Invisalign (same pattern as whitening) ═══ */
+.svc-hero.implant-hero-single .svc-hero-img{padding:0;background:#0F2D4A}
+.implant-ba-col{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:0}
+.implant-ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;padding:24px;box-sizing:border-box}
+/* .inv-ba modifier wins via specificity (0,0,2,0) over shared 4/5 rule (0,0,1,0) */
+.implant-ba-card.inv-ba{aspect-ratio:3/2}
+.implant-ba-card.inv-ba img{object-fit:cover;object-position:center center}
+.implant-ba-card .ba-label{position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:100px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(15,45,74,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:inline-flex;align-items:center;gap:7px;z-index:2}
+.implant-ba-card.is-after .ba-label{background:rgba(201,106,46,.94)}
+.implant-ba-card.is-after .ba-label::before{content:"";width:6px;height:6px;border-radius:50%;background:#34c759;display:inline-block}
+@media(max-width:768px){.implant-ba-grid{gap:10px;padding:16px}.implant-ba-card .ba-label{font-size:9.5px;padding:5px 10px}}
+
 /* ─── SECTION HEADERS ──────────────────────────────────── */
 .sec-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; }
 .sec-title { font-family: var(--display); font-size: clamp(24px, 2.8vw, 36px); font-weight: 700; letter-spacing: -.03em; line-height: 1.08; }
@@ -823,7 +835,7 @@ button { font-family: var(--sans); }
 </nav>
 
 <!-- HERO -->
-<section class="svc-hero">
+<section class="svc-hero implant-hero-single">
   <div class="svc-hero-text">
     <div class="svc-breadcrumb">
       <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>Invisalign</span>
@@ -837,14 +849,24 @@ button { font-family: var(--sans); }
       <a href="tel:+18187066077" class="btn-secondary">Call (818) 706-6077</a>
     </div>
   </div>
-  <div class="svc-hero-img">
-    <!-- Placeholder: swap src when photo is uploaded to R2 -->
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#ddf0fb 0%,#88c2e8 50%,#2A5A82 100%);display:flex;align-items:center;justify-content:center;">
-      <div style="text-align:center;color:#fff;padding:32px">
-        <div style="font-size:72px;margin-bottom:16px">😁</div>
-        <div style="font-family:var(--serif);font-size:22px;opacity:.9">Invisalign</div>
-        <div style="font-size:13px;opacity:.65;margin-top:6px">Service Photo Coming Soon</div>
-      </div>
+
+  <!-- Right column: side-by-side BEFORE / AFTER (mirrors dental-implants.html) -->
+  <div class="implant-ba-col">
+    <div class="implant-ba-grid">
+      <figure class="implant-ba-card inv-ba is-before">
+        <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/CLEAR%20ALIGNERS%20BEFORE.png"
+             alt="Invisalign before &mdash; crowded teeth at Agoura Hills Dental Designs"
+             loading="eager"
+             onerror="this.parentElement.style.background='#dde3ea';this.style.display='none'"/>
+        <div class="ba-label">Before</div>
+      </figure>
+      <figure class="implant-ba-card inv-ba is-after">
+        <img src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/CLEAR%20ALIGNERS%20AFTER.png"
+             alt="Invisalign after &mdash; aligned smile after clear aligner treatment"
+             loading="eager"
+             onerror="this.parentElement.style.background='#dde3ea';this.style.display='none'"/>
+        <div class="ba-label">After</div>
+      </figure>
     </div>
   </div>
 </section>
