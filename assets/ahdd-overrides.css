@@ -2427,11 +2427,24 @@ html body .team-docs .team-photo img[src*="David"]{
 
 
 /* ════════════════════════════════════════════════════════════════════
-   2026-05-25 — Hide the full footer on mobile (per user request:
-   "footer only show on desktop because on mobile it's way too long")
-   Keeps the chatbot button + book modal accessible — they live
-   outside <footer>. Phone CTA is still in the mobile nav header.
+   2026-05-25 — Slim footer on mobile
+   Keeps the brand col (address + phone) and the copyright bar.
+   Hides the 3 long link columns (Services, Practice, Serving).
    ════════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  footer { display: none !important; }
+  /* Hide every direct child of .footer-grid except the brand column */
+  footer .footer-grid > div:not(.footer-brand-col) {
+    display: none !important;
+  }
+  /* Stack the brand col cleanly — no need for grid behavior with 1 child */
+  footer .footer-grid {
+    display: block !important;
+  }
+  /* Tighten copyright bar layout on mobile */
+  footer .foot-bot {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    text-align: left !important;
+  }
 }
