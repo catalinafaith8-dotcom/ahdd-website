@@ -24,8 +24,8 @@
 @media(min-width:1200px){ #nav .nav-logo img{height:120px !important} }
 @media(max-width:1024px){ #nav .nav-logo img{height:88px !important} }
 /* DISABLED 2026-04-26 — superseded by section 22 width-based sizing
-@media(max-width:768px){  #nav .nav-logo img{height:72px !important} }
-@media(max-width:480px){  #nav .nav-logo img{height:60px !important} }
+@media(max-width:768px){  #nav .nav-logo img{height:92px !important} }
+@media(max-width:480px){  #nav .nav-logo img{height:80px !important} }
 */
 .hero-inner{padding-top:64px !important}
 
