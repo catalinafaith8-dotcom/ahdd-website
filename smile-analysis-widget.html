@@ -1047,6 +1047,22 @@
     var findingsCodes=((data._findings&&data._findings.visible_findings)||[])
       .map(function(f){return f.code}).join(',');
 
+    // ── Pre-format analysis fields for downstream email rendering ──
+    // GHL custom fields are stored as strings; emails can only print strings.
+    // So we flatten the structured analysis result into ready-to-merge
+    // string fields here instead of trying to parse JSON inside GHL.
+    var _headline = (data.headline) || (data.analysis) || '';
+    var _bullets  = Array.isArray(data.bullets) ? data.bullets : [];
+    var _plan     = (data.plan) || {};
+    var _bestOpt  = (_plan.best_option) || '';
+    var _bestDet  = (_plan.best_detail) || '';
+    var _altOpt   = (_plan.alternative) || '';
+    var _altDet   = (_plan.alt_detail) || '';
+    var _bulletsPlain = _bullets.join('\n');
+    var _bulletsHtml  = _bullets.map(function(b){
+      return '<li>' + String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</li>';
+    }).join('');
+
     var payload={
       firstName:name.split(' ')[0],
       lastName:name.split(' ').slice(1).join(' ')||'',
@@ -1060,7 +1076,18 @@
         .concat(hasPathology&&pathFlag.category?['pathology-'+pathFlag.category]:[]),
       source:'Smile Analysis Widget',
       customField:{
-        smile_analysis_result:(data.analysis)||'',
+        // Raw JSON kept for debugging / future use — DO NOT render in emails
+        smile_analysis_result:(data.analysis)||JSON.stringify(data)||'',
+
+        // ── NEW: pre-formatted string fields for email rendering ──
+        smile_analysis_headline:_headline,
+        smile_analysis_bullets:_bulletsPlain,        // newline-joined for plain text
+        smile_analysis_bullets_html:_bulletsHtml,    // <li>…</li> for HTML emails
+        smile_analysis_best_option:_bestOpt,
+        smile_analysis_best_detail:_bestDet,
+        smile_analysis_alternative:_altOpt,
+        smile_analysis_alt_detail:_altDet,
+
         treatments_flagged:txLabels,
         urgency:(data.urgency)||'elective',
         emergency:(data.emergency||false).toString(),
