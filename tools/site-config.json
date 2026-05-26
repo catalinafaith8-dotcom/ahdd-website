@@ -1,0 +1,54 @@
+{
+  "_doc": "Single source of truth for SEO + booking. Edit ONLY this file when the booking URL, base URL, NAP, or page→slug map changes. Then run: npm run seo:apply",
+  "baseUrl": "https://agourahillsdentaldesigns.com",
+  "bookingUrl": "https://schedule.jarvisanalytics.com/frame?eoid=64471&elid=64000000019461",
+  "nap": {
+    "street": "28632 Roadside Drive, Suite 270",
+    "locality": "Agoura Hills",
+    "region": "CA",
+    "postalCode": "91301",
+    "country": "US",
+    "full": "28632 Roadside Drive, Suite 270, Agoura Hills, CA 91301",
+    "mapQuery": "28632+Roadside+Drive+Suite+270+Agoura+Hills+CA+91301"
+  },
+  "phoneE164": "+1-818-706-6077",
+  "phoneDisplay": "(818) 706-6077",
+  "openingHours": {
+    "monThu": "8am-5pm",
+    "fri": "8am-3pm"
+  },
+  "aggregateRating": {
+    "ratingValue": "4.9",
+    "reviewCount": "343"
+  },
+  "pages": {
+    "index.html":                                   "/",
+    "about.html":                                   "/about",
+    "technology.html":                              "/technology",
+    "financing.html":                               "/financing",
+    "contact.html":                                 "/contact",
+    "faq.html":                                     "/faq",
+    "privacy.html":                                 "/privacy",
+    "dental-implants.html":                         "/dental-implants",
+    "invisalign.html":                              "/invisalign",
+    "veneers.html":                                 "/veneers",
+    "teeth-whitening.html":                         "/teeth-whitening",
+    "restorative-dentistry.html":                   "/restorative-dentistry",
+    "emergency-dentistry.html":                     "/emergency-dentistry",
+    "sedation-dentistry.html":                      "/sedation-dentistry",
+    "wisdom-teeth-removal-agoura-hills.html":       "/wisdom-teeth-removal-agoura-hills",
+    "dental-bonding-agoura-hills.html":             "/dental-bonding-agoura-hills",
+    "all-on-4-dental-implants-agoura-hills.html":   "/all-on-4-dental-implants-agoura-hills",
+    "root-canal-treatment-agoura-hills.html":       "/root-canal-treatment-agoura-hills",
+    "agoura-hills-dentist.html":                    "/agoura-hills-dentist",
+    "calabasas-dentist.html":                       "/calabasas-dentist",
+    "westlake-village-dentist.html":                "/westlake-village-dentist",
+    "malibu-dentist.html":                          "/malibu-dentist",
+    "thousand-oaks-dentist.html":                   "/thousand-oaks-dentist",
+    "oak-park-dentist.html":                        "/oak-park-dentist"
+  },
+  "ignoredPages": [
+    "insurance-checker-ahdd__4_.html",
+    "smile-analysis-widget.html"
+  ]
+}
