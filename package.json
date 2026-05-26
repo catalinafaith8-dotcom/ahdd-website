@@ -2,6 +2,9 @@
   "name": "ahdd-website",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "vercel dev",
+    "seo:check": "python3 tools/seo-check.py",
+    "seo:apply": "python3 tools/seo-apply.py",
+    "prepush": "npm run seo:check"
   }
 }
