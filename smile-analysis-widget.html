@@ -1059,8 +1059,13 @@
     var _altOpt   = (_plan.alternative) || '';
     var _altDet   = (_plan.alt_detail) || '';
     var _bulletsPlain = _bullets.join('\n');
-    var _bulletsHtml  = _bullets.map(function(b){
-      return '<li>' + String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</li>';
+    // Inline-styled <li>s — Gmail/Outlook strip <style>, so each item
+    // carries its own inline CSS for the gold-check bullet style.
+    var _liStyle  = "margin:0 0 10px 0;padding-left:26px;position:relative;color:#1d1d1f;font-size:16px;line-height:1.6;list-style:none;";
+    var _checkStyle = "position:absolute;left:0;top:0;color:#c9a48a;font-weight:700;";
+    var _bulletsHtml = _bullets.map(function(b){
+      var safe = String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<li style="' + _liStyle + '"><span style="' + _checkStyle + '">&#10003;</span>' + safe + '</li>';
     }).join('');
 
     var payload={
