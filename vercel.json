@@ -1,5 +1,4 @@
 {
-  "$comment": "AHDD SEO Technical Week 1 — canonical strategy: non-www apex + flat slugs. www→apex enforced at Vercel project Domains UI (set apex as primary). Trailing slashes off.",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
