@@ -3,50 +3,6 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/services/wisdom-teeth-removal-agoura-hills",
-      "destination": "/wisdom-teeth-removal-agoura-hills"
-    },
-    {
-      "source": "/services/dental-bonding-agoura-hills",
-      "destination": "/dental-bonding-agoura-hills"
-    },
-    {
-      "source": "/services/all-on-4-dental-implants-agoura-hills",
-      "destination": "/all-on-4-dental-implants-agoura-hills"
-    },
-    {
-      "source": "/services/root-canal-treatment-agoura-hills",
-      "destination": "/root-canal-treatment-agoura-hills"
-    },
-    {
-      "source": "/agoura-hills/sedation-dentistry",
-      "destination": "/sedation-dentistry"
-    },
-    {
-      "source": "/agoura-hills/emergency-dentistry",
-      "destination": "/emergency-dentistry"
-    },
-    {
-      "source": "/agoura-hills/restorative-dentistry",
-      "destination": "/restorative-dentistry"
-    },
-    {
-      "source": "/agoura-hills/teeth-whitening",
-      "destination": "/teeth-whitening"
-    },
-    {
-      "source": "/agoura-hills/veneers",
-      "destination": "/veneers"
-    },
-    {
-      "source": "/agoura-hills/invisalign",
-      "destination": "/invisalign"
-    },
-    {
-      "source": "/agoura-hills/dental-implants",
-      "destination": "/dental-implants"
-    },
-    {
       "source": "/insurance-checker",
       "destination": "/insurance-checker-ahdd__4_"
     },
@@ -61,115 +17,35 @@
       "destination": "/#services",
       "permanent": true
     },
-    {
-      "source": "/services/dental-implants",
-      "destination": "/agoura-hills/dental-implants",
-      "permanent": true
-    },
-    {
-      "source": "/dental-implants",
-      "destination": "/agoura-hills/dental-implants",
-      "permanent": true
-    },
-    {
-      "source": "/services/invisalign",
-      "destination": "/agoura-hills/invisalign",
-      "permanent": true
-    },
-    {
-      "source": "/invisalign",
-      "destination": "/agoura-hills/invisalign",
-      "permanent": true
-    },
-    {
-      "source": "/services/veneers",
-      "destination": "/agoura-hills/veneers",
-      "permanent": true
-    },
-    {
-      "source": "/veneers",
-      "destination": "/agoura-hills/veneers",
-      "permanent": true
-    },
-    {
-      "source": "/services/teeth-whitening",
-      "destination": "/agoura-hills/teeth-whitening",
-      "permanent": true
-    },
-    {
-      "source": "/teeth-whitening",
-      "destination": "/agoura-hills/teeth-whitening",
-      "permanent": true
-    },
-    {
-      "source": "/services/restorative-dentistry",
-      "destination": "/agoura-hills/restorative-dentistry",
-      "permanent": true
-    },
-    {
-      "source": "/restorative-dentistry",
-      "destination": "/agoura-hills/restorative-dentistry",
-      "permanent": true
-    },
-    {
-      "source": "/services/emergency-dentistry",
-      "destination": "/agoura-hills/emergency-dentistry",
-      "permanent": true
-    },
-    {
-      "source": "/emergency-dentistry",
-      "destination": "/agoura-hills/emergency-dentistry",
-      "permanent": true
-    },
-    {
-      "source": "/services/sedation-dentistry",
-      "destination": "/agoura-hills/sedation-dentistry",
-      "permanent": true
-    },
-    {
-      "source": "/sedation-dentistry",
-      "destination": "/agoura-hills/sedation-dentistry",
-      "permanent": true
-    },
-    {
-      "source": "/wisdom-teeth",
-      "destination": "/services/wisdom-teeth-removal-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/services/wisdom-teeth",
-      "destination": "/services/wisdom-teeth-removal-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/teeth-bonding",
-      "destination": "/services/dental-bonding-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/services/teeth-bonding",
-      "destination": "/services/dental-bonding-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/all-on-four",
-      "destination": "/services/all-on-4-dental-implants-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/services/all-on-four",
-      "destination": "/services/all-on-4-dental-implants-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/root-canals",
-      "destination": "/services/root-canal-treatment-agoura-hills",
-      "permanent": true
-    },
-    {
-      "source": "/services/root-canals",
-      "destination": "/services/root-canal-treatment-agoura-hills",
-      "permanent": true
-    }
+
+    { "source": "/agoura-hills/dental-implants",       "destination": "/dental-implants",       "permanent": true },
+    { "source": "/agoura-hills/invisalign",            "destination": "/invisalign",            "permanent": true },
+    { "source": "/agoura-hills/veneers",               "destination": "/veneers",               "permanent": true },
+    { "source": "/agoura-hills/teeth-whitening",       "destination": "/teeth-whitening",       "permanent": true },
+    { "source": "/agoura-hills/restorative-dentistry", "destination": "/restorative-dentistry", "permanent": true },
+    { "source": "/agoura-hills/emergency-dentistry",   "destination": "/emergency-dentistry",   "permanent": true },
+    { "source": "/agoura-hills/sedation-dentistry",    "destination": "/sedation-dentistry",    "permanent": true },
+
+    { "source": "/services/dental-implants",       "destination": "/dental-implants",       "permanent": true },
+    { "source": "/services/invisalign",            "destination": "/invisalign",            "permanent": true },
+    { "source": "/services/veneers",               "destination": "/veneers",               "permanent": true },
+    { "source": "/services/teeth-whitening",       "destination": "/teeth-whitening",       "permanent": true },
+    { "source": "/services/restorative-dentistry", "destination": "/restorative-dentistry", "permanent": true },
+    { "source": "/services/emergency-dentistry",   "destination": "/emergency-dentistry",   "permanent": true },
+    { "source": "/services/sedation-dentistry",    "destination": "/sedation-dentistry",    "permanent": true },
+
+    { "source": "/services/wisdom-teeth-removal-agoura-hills",     "destination": "/wisdom-teeth-removal-agoura-hills",     "permanent": true },
+    { "source": "/services/dental-bonding-agoura-hills",           "destination": "/dental-bonding-agoura-hills",           "permanent": true },
+    { "source": "/services/all-on-4-dental-implants-agoura-hills", "destination": "/all-on-4-dental-implants-agoura-hills", "permanent": true },
+    { "source": "/services/root-canal-treatment-agoura-hills",     "destination": "/root-canal-treatment-agoura-hills",     "permanent": true },
+
+    { "source": "/wisdom-teeth",            "destination": "/wisdom-teeth-removal-agoura-hills",     "permanent": true },
+    { "source": "/services/wisdom-teeth",   "destination": "/wisdom-teeth-removal-agoura-hills",     "permanent": true },
+    { "source": "/teeth-bonding",           "destination": "/dental-bonding-agoura-hills",           "permanent": true },
+    { "source": "/services/teeth-bonding",  "destination": "/dental-bonding-agoura-hills",           "permanent": true },
+    { "source": "/all-on-four",             "destination": "/all-on-4-dental-implants-agoura-hills", "permanent": true },
+    { "source": "/services/all-on-four",    "destination": "/all-on-4-dental-implants-agoura-hills", "permanent": true },
+    { "source": "/root-canals",             "destination": "/root-canal-treatment-agoura-hills",     "permanent": true },
+    { "source": "/services/root-canals",    "destination": "/root-canal-treatment-agoura-hills",     "permanent": true }
   ]
 }

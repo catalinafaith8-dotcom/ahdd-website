@@ -1,15 +1,20 @@
 # ════════════════════════════════════════════════════════════════════
 # Cloudflare Pages — redirects + rewrites
-# Agoura Hills Dental Designs · 2026-05-24
+# Agoura Hills Dental Designs · SEO Technical Week 1
 #
 # Format: SOURCE  DESTINATION  STATUS
 #   200 = rewrite (URL stays, content from destination)
 #   301 = permanent redirect (URL changes, search engines update)
 #
-# CANONICAL URLS: bare /service-name (auto-served from /service-name.html
-# by Cloudflare Pages auto-extension — no explicit rule needed).
-# All other variants 301 to the bare canonical.
+# CANONICAL: https://agourahillsdentaldesigns.com/<slug>  (non-www, flat)
+#
+# www → apex is enforced at the Cloudflare DNS / Pages "Custom Domains" UI
+# (set apex as primary). The rule below is a defence-in-depth fallback that
+# only runs if the platform layer ever misroutes.
 # ════════════════════════════════════════════════════════════════════
+
+# ───────── www → apex fallback (defence-in-depth) ─────────
+https://www.agourahillsdentaldesigns.com/*  https://agourahillsdentaldesigns.com/:splat  301!
 
 # ───────── Widget rewrites ─────────
 /insurance-checker  /insurance-checker-ahdd__4_  200
@@ -19,7 +24,7 @@
 
 # ───────── New SEO service pages (long keyword+location URLs) ─────────
 # Bare URLs are auto-served from same-named .html files.
-# Variant URLs 301 to the bare canonical.
+# Legacy /services/* variants 301 to the bare canonical.
 /services/wisdom-teeth-removal-agoura-hills      /wisdom-teeth-removal-agoura-hills        301
 /services/dental-bonding-agoura-hills            /dental-bonding-agoura-hills              301
 /services/all-on-4-dental-implants-agoura-hills  /all-on-4-dental-implants-agoura-hills    301
@@ -35,7 +40,7 @@
 /root-canals             /root-canal-treatment-agoura-hills          301
 /services/root-canals    /root-canal-treatment-agoura-hills          301
 
-# ───────── Legacy /agoura-hills/* → bare canonical (preserves SEO) ─────────
+# ───────── Legacy /agoura-hills/* → bare canonical (kills the canonical conflict) ─────────
 /agoura-hills/dental-implants         /dental-implants         301
 /agoura-hills/invisalign              /invisalign              301
 /agoura-hills/veneers                 /veneers                 301
