@@ -6,11 +6,42 @@ Run before every push (or wire into a pre-deploy hook):
   npm run seo:check
 """
 from __future__ import annotations
+import json
+import re
 import sys
 from seo_lib import (
     ROOT, load_config, canonical_url, og_url,
     extract_canonical, extract_og_url, count_dead_book_hrefs,
 )
+
+# JSON-LD scan: catches schema patterns that fail Google Rich Results.
+_JSONLD_RE = re.compile(
+    r'<script\s+type=["\']application/ld\+json["\']\s*>(.*?)</script>',
+    re.DOTALL | re.IGNORECASE,
+)
+
+def _is_service_like(t) -> bool:
+    if t in ("Service", "MedicalProcedure"):
+        return True
+    if isinstance(t, list):
+        return any(x in ("Service", "MedicalProcedure") for x in t)
+    return False
+
+def jsonld_violations(text: str) -> list[str]:
+    """Return human-readable violations for one HTML page."""
+    out: list[str] = []
+    for blob in _JSONLD_RE.findall(text):
+        try:
+            d = json.loads(blob)
+        except json.JSONDecodeError as e:
+            out.append(f"invalid JSON-LD: {e}")
+            continue
+        # Rule: aggregateRating is NOT permitted on Service / MedicalProcedure.
+        # Google Rich Results rejects this with "Invalid object type for field 'parent_node'".
+        # Ratings belong on the business (Dentist/LocalBusiness) — never duplicated onto procedures.
+        if _is_service_like(d.get("@type")) and "aggregateRating" in d:
+            out.append("aggregateRating on Service/MedicalProcedure block (Google Rich Results rejects this)")
+    return out
 
 
 def main() -> int:
@@ -50,6 +81,8 @@ def main() -> int:
             drifts.append((fname, f"og:url: expected {expected_og}, found {actual_og}"))
         if book_dead > 0:
             drifts.append((fname, f"{book_dead} dead Book CTA href=# anchors"))
+        for v in jsonld_violations(text):
+            drifts.append((fname, f"JSON-LD: {v}"))
 
     # Sanity scan for accidental www. or /agoura-hills/ in any tracked file
     for fname in pages:
