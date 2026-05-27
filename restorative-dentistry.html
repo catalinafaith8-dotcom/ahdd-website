@@ -32,34 +32,72 @@
   "name": "Restorative Dentistry in Agoura Hills, CA",
   "description": "Comprehensive restorative dental treatments including crowns, fillings, bridges, and full-mouth reconstruction",
   "url": "https://agourahillsdentaldesigns.com/restorative-dentistry",
-  "provider": {"@id": "https://agourahillsdentaldesigns.com#dentist"},
+  "provider": {
+    "@id": "https://agourahillsdentaldesigns.com#dentist"
+  },
   "areaServed": [
-    {"@type": "City", "name": "Agoura Hills"},
-    {"@type": "City", "name": "Calabasas"},
-    {"@type": "City", "name": "Westlake Village"},
-    {"@type": "City", "name": "Malibu"},
-    {"@type": "City", "name": "Thousand Oaks"},
-    {"@type": "City", "name": "Oak Park"},
-    {"@type": "City", "name": "Woodland Hills"},
-    {"@type": "City", "name": "Tarzana"},
-    {"@type": "City", "name": "Encino"},
-    {"@type": "City", "name": "Newbury Park"},
-    {"@type": "City", "name": "Simi Valley"},
-    {"@type": "City", "name": "Hidden Hills"}
+    {
+      "@type": "City",
+      "name": "Agoura Hills"
+    },
+    {
+      "@type": "City",
+      "name": "Calabasas"
+    },
+    {
+      "@type": "City",
+      "name": "Westlake Village"
+    },
+    {
+      "@type": "City",
+      "name": "Malibu"
+    },
+    {
+      "@type": "City",
+      "name": "Thousand Oaks"
+    },
+    {
+      "@type": "City",
+      "name": "Oak Park"
+    },
+    {
+      "@type": "City",
+      "name": "Woodland Hills"
+    },
+    {
+      "@type": "City",
+      "name": "Tarzana"
+    },
+    {
+      "@type": "City",
+      "name": "Encino"
+    },
+    {
+      "@type": "City",
+      "name": "Newbury Park"
+    },
+    {
+      "@type": "City",
+      "name": "Simi Valley"
+    },
+    {
+      "@type": "City",
+      "name": "Hidden Hills"
+    }
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Restorative Dentistry Options",
     "itemListElement": [
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Restorative Dentistry"}, "availability": "https://schema.org/InStock"}
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Restorative Dentistry"
+        },
+        "availability": "https://schema.org/InStock"
+      }
     ]
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "343",
-    "bestRating": "5",
-    "worstRating": "1"
   }
 }
 </script>
@@ -1256,7 +1294,7 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     gateSubmit.querySelector('span').textContent='Sending...';
     var data=pendingData||{},isFull=hasFullMouth(data);
     var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
-    var pathFlag=(data._pathology_flag||{});var hasPathology=pathFlag.pathology===true;var findingsCodes=((data._findings&&data._findings.visible_findings)||[]).map(function(f){return f.code}).join(',');var payload={firstName:name.split(' ')[0],lastName:name.split(' ').slice(1).join(' ')||'',email:email,phone:phone,tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]).concat(hasPathology?['pathology-review-needed']:[]).concat(hasPathology&&pathFlag.category?['pathology-'+pathFlag.category]:[]),source:'Smile Analysis Widget',customField:{smile_analysis_result:JSON.stringify(data).substring(0,500),treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString(),pathology_flag:hasPathology.toString(),pathology_category:(pathFlag.category||''),pathology_severity:(pathFlag.severity||''),pathology_concern:(pathFlag.primary_concern||''),findings_codes:findingsCodes}};
+    var pathFlag=(data._pathology_flag||{});var hasPathology=pathFlag.pathology===true;var findingsCodes=((data._findings&&data._findings.visible_findings)||[]).map(function(f){return f.code}).join(',');var _h=(data.headline)||(data.analysis)||'';var _b=Array.isArray(data.bullets)?data.bullets:[];var _p=(data.plan)||{};var _bo=(_p.best_option)||'';var _bd=(_p.best_detail)||'';var _ao=(_p.alternative)||'';var _ad=(_p.alt_detail)||'';var _bp=_b.join('\n');var _bh=_b.map(function(b){return'<li style="margin:0 0 10px 0;padding-left:26px;position:relative;color:#1d1d1f;font-size:16px;line-height:1.6;list-style:none;"><span style="position:absolute;left:0;top:0;color:#c9a48a;font-weight:700;">&#10003;</span>'+String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</li>'}).join('');var payload={firstName:name.split(' ')[0],lastName:name.split(' ').slice(1).join(' ')||'',email:email,phone:phone,tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]).concat(hasPathology?['pathology-review-needed']:[]).concat(hasPathology&&pathFlag.category?['pathology-'+pathFlag.category]:[]),source:'Smile Analysis Widget',customField:{smile_analysis_result:JSON.stringify(data).substring(0,500),smile_analysis_headline:_h,smile_analysis_bullets:_bp,smile_analysis_bullets_html:_bh,smile_analysis_best_option:_bo,smile_analysis_best_detail:_bd,smile_analysis_alternative:_ao,smile_analysis_alt_detail:_ad,treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString(),pathology_flag:hasPathology.toString(),pathology_category:(pathFlag.category||''),pathology_severity:(pathFlag.severity||''),pathology_concern:(pathFlag.primary_concern||''),findings_codes:findingsCodes}};
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){
       gate.style.transition='opacity .3s';gate.style.opacity='0';
       setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},300);
