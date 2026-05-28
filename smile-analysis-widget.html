@@ -1119,15 +1119,25 @@
     } catch (_e) {}
 
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-    .catch(function(e){console.warn('GHL webhook:',e)})
-    .finally(function(){
-      // Fire lead_form_submit (this is the actual lead-capture step — the
-      // image upload above is anonymous; this is when the user gives their name+email+phone)
+    .then(function(){
+      // SUCCESS ONLY — the lead reached GHL. Fire the conversion signals.
+      // 1) generic lead event (kept for the form-submit conversion family)
       try {
         if (window.AHDD_TRACK && typeof window.AHDD_TRACK.submit === 'function') {
           window.AHDD_TRACK.submit({ form_id: 'smile_analysis_gate', form_source: 'smile-analysis' });
         }
       } catch (_e) {}
+      // 2) dedicated Smile Analysis conversion event — GTM fires the Google Ads
+      //    conversion tag (AW-11217610443/-bBoCOndg7UcEMvN_OQp) on this event.
+      //    ID + label live in GTM, NOT here, so they survive future changes.
+      try {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'smile_analysis_submit', form_id: 'smile_analysis_gate' });
+      } catch (_e) {}
+    })
+    .catch(function(e){ console.warn('GHL webhook:', e); })
+    .finally(function(){
+      // UI always runs — the visitor sees their result whether or not the webhook POST succeeded.
       gate.classList.remove('show');
       renderResult(pendingData);
     });
