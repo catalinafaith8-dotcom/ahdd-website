@@ -572,6 +572,16 @@
       tags: ['callback_requested']
     };
 
+    // Attribution: merge gclid + utm_* captured by /assets/attribution.js so
+    // GHL can write them into the contact's custom fields and Google Ads can
+    // tie the eventual booked appointment back to the click.
+    try {
+      if (window.AHDD_TRACK && typeof window.AHDD_TRACK.payload === 'function') {
+        var attr = window.AHDD_TRACK.payload();
+        Object.keys(attr).forEach(function (k) { payload[k] = attr[k]; });
+      }
+    } catch (_e) {}
+
     // Static site is on Cloudflare Pages; the /api/* endpoints live on a
     // separate Vercel deployment (same project that hosts api/chatbot.js).
     // Hit the absolute Vercel origin so the call doesn't 404 against Cloudflare.
@@ -585,6 +595,12 @@
     }).then(function(){
       hideTyping();
       ESC.step = 'done';
+      // Fire lead_form_submit so GTM can route to Google Ads conversion tag.
+      try {
+        if (window.AHDD_TRACK && typeof window.AHDD_TRACK.submit === 'function') {
+          window.AHDD_TRACK.submit({ form_id: 'chatbot_callback', form_source: 'callback' });
+        }
+      } catch (_e) {}
       var pretty = prettyPhone(ESC.phone);
       var when = ESC.bestTimeToCall ? (' during ' + ESC.bestTimeToCall.toLowerCase()) : '';
       // Slight pause so the message lands warmly

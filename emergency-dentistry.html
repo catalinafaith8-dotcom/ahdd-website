@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- AHDD:TRACK:GTM-HEAD -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NMR3KCSB');</script>
+<!-- End Google Tag Manager -->
+<!-- /AHDD:TRACK:GTM-HEAD -->
+<!-- AHDD:TRACK:ATTR-CFG -->
+<script>
+window.AHDD_TRACKING_COOKIE_NAME="ahdd_attribution";
+window.AHDD_TRACKING_COOKIE_DAYS=90;
+window.AHDD_TRACKING_LEAD_VALUE=50.0;
+window.AHDD_TRACKING_CURRENCY="USD";
+window.AHDD_GADS_CONVERSION_ID="AW-11217610443";
+window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
+</script>
+<!-- /AHDD:TRACK:ATTR-CFG -->
+<!-- AHDD:TRACK:ATTR-SCRIPT -->
+<script src="/assets/attribution.js?v=20260527a" defer></script>
+<!-- /AHDD:TRACK:ATTR-SCRIPT -->
 <link rel="preconnect" href="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev" crossorigin id="ahdd-r2-preconnect"/>
 <link rel="dns-prefetch" href="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev"/>
 
@@ -1074,6 +1096,12 @@ button { font-family: var(--sans); }
 </script>
 </head>
 <body>
+<!-- AHDD:TRACK:GTM-BODY -->
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NMR3KCSB"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- /AHDD:TRACK:GTM-BODY -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1496,7 +1524,10 @@ function escBook(e){if(e.key==='Escape')closeBook();}
     var data=pendingData||{},isFull=hasFullMouth(data);
     var txLabels=(data.treatments||[]).map(function(t){return t.label||t.id}).join(', ');
     var pathFlag=(data._pathology_flag||{});var hasPathology=pathFlag.pathology===true;var findingsCodes=((data._findings&&data._findings.visible_findings)||[]).map(function(f){return f.code}).join(',');var _h=(data.headline)||(data.analysis)||'';var _b=Array.isArray(data.bullets)?data.bullets:[];var _p=(data.plan)||{};var _bo=(_p.best_option)||'';var _bd=(_p.best_detail)||'';var _ao=(_p.alternative)||'';var _ad=(_p.alt_detail)||'';var _bp=_b.join('\n');var _bh=_b.map(function(b){return'<li style="margin:0 0 10px 0;padding-left:26px;position:relative;color:#1d1d1f;font-size:16px;line-height:1.6;list-style:none;"><span style="position:absolute;left:0;top:0;color:#c9a48a;font-weight:700;">&#10003;</span>'+String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</li>'}).join('');var payload={firstName:name.split(' ')[0],lastName:name.split(' ').slice(1).join(' ')||'',email:email,phone:phone,tags:['smile-analysis','web-lead'].concat((data.treatments||[]).map(function(t){return'treatment-'+t.id})).concat(data.emergency?['emergency-flag']:[]).concat(isFull?['full-mouth-candidate']:[]).concat(hasPathology?['pathology-review-needed']:[]).concat(hasPathology&&pathFlag.category?['pathology-'+pathFlag.category]:[]),source:'Smile Analysis Widget',customField:{smile_analysis_result:JSON.stringify(data).substring(0,500),smile_analysis_headline:_h,smile_analysis_bullets:_bp,smile_analysis_bullets_html:_bh,smile_analysis_best_option:_bo,smile_analysis_best_detail:_bd,smile_analysis_alternative:_ao,smile_analysis_alt_detail:_ad,treatments_flagged:txLabels,urgency:(data.urgency)||'standard',emergency:(data.emergency||false).toString(),full_mouth_candidate:isFull.toString(),source_page:window.location.pathname,analysis_date:new Date().toISOString(),pathology_flag:hasPathology.toString(),pathology_category:(pathFlag.category||''),pathology_severity:(pathFlag.severity||''),pathology_concern:(pathFlag.primary_concern||''),findings_codes:findingsCodes}};
+    /* AHDD:TRACK: merge Google Ads attribution into both top-level + customField */
+    try{if(window.AHDD_TRACK&&typeof window.AHDD_TRACK.payload==='function'){var _attr=window.AHDD_TRACK.payload();Object.keys(_attr).forEach(function(k){payload[k]=_attr[k];payload.customField[k]=_attr[k];});}}catch(_e){}
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(e){console.warn('GHL:',e)}).finally(function(){
+      try{if(window.AHDD_TRACK&&typeof window.AHDD_TRACK.submit==='function'){window.AHDD_TRACK.submit({form_id:'smile_analysis_gate',form_source:'smile-analysis'});}}catch(_e){}
       gate.style.transition='opacity .3s';gate.style.opacity='0';
       setTimeout(function(){gate.classList.remove('show');gate.style.opacity='';gate.style.transition='';renderResult(pendingData);},300);
     });

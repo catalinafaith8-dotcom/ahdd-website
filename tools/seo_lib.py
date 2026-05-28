@@ -52,6 +52,175 @@ OG_URL_RE = re.compile(r'<meta\s+property=["\']og:url["\']\s+content=["\'][^"\']
 CANONICAL_INSERT_ANCHOR = re.compile(r'(<meta\s+name=["\']description["\'][^>]*?>)', re.IGNORECASE)
 OG_TITLE_RE = re.compile(r'<meta\s+property=["\']og:title["\'][^>]*?>')
 
+# ── Tracking blocks (idempotently injected by seo-apply) ─────────────────
+# Marker comments let us locate and replace blocks safely without regex
+# acrobatics on the GTM IIFE. Pattern:
+#   <!-- AHDD:TRACK:GTM-HEAD --> ... <!-- /AHDD:TRACK:GTM-HEAD -->
+GTM_HEAD_OPEN = "<!-- AHDD:TRACK:GTM-HEAD -->"
+GTM_HEAD_CLOSE = "<!-- /AHDD:TRACK:GTM-HEAD -->"
+GTM_BODY_OPEN = "<!-- AHDD:TRACK:GTM-BODY -->"
+GTM_BODY_CLOSE = "<!-- /AHDD:TRACK:GTM-BODY -->"
+ATTR_CFG_OPEN = "<!-- AHDD:TRACK:ATTR-CFG -->"
+ATTR_CFG_CLOSE = "<!-- /AHDD:TRACK:ATTR-CFG -->"
+ATTR_SCRIPT_OPEN = "<!-- AHDD:TRACK:ATTR-SCRIPT -->"
+ATTR_SCRIPT_CLOSE = "<!-- /AHDD:TRACK:ATTR-SCRIPT -->"
+
+_GTM_HEAD_BLOCK_RE = re.compile(
+    re.escape(GTM_HEAD_OPEN) + r".*?" + re.escape(GTM_HEAD_CLOSE),
+    re.DOTALL,
+)
+_GTM_BODY_BLOCK_RE = re.compile(
+    re.escape(GTM_BODY_OPEN) + r".*?" + re.escape(GTM_BODY_CLOSE),
+    re.DOTALL,
+)
+_ATTR_CFG_BLOCK_RE = re.compile(
+    re.escape(ATTR_CFG_OPEN) + r".*?" + re.escape(ATTR_CFG_CLOSE),
+    re.DOTALL,
+)
+_ATTR_SCRIPT_BLOCK_RE = re.compile(
+    re.escape(ATTR_SCRIPT_OPEN) + r".*?" + re.escape(ATTR_SCRIPT_CLOSE),
+    re.DOTALL,
+)
+_HEAD_OPEN_RE = re.compile(r"<head([^>]*)>", re.IGNORECASE)
+_BODY_OPEN_RE = re.compile(r"<body([^>]*)>", re.IGNORECASE)
+
+# A free-standing GTM snippet already in the file (without our markers) —
+# strip it so we own the only copy. The IIFE signature is distinctive.
+_STRAY_GTM_HEAD_RE = re.compile(
+    r"<!--\s*Google Tag Manager\s*-->\s*<script>\(function\(w,d,s,l,i\).*?End Google Tag Manager\s*-->",
+    re.DOTALL | re.IGNORECASE,
+)
+_STRAY_GTM_BODY_RE = re.compile(
+    r"<!--\s*Google Tag Manager \(noscript\)\s*-->\s*<noscript><iframe src=\"https://www\.googletagmanager\.com/ns\.html\?id=[^\"]+\".*?End Google Tag Manager \(noscript\)\s*-->",
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def _gtm_head_block(gtm_id: str) -> str:
+    return (
+        f'{GTM_HEAD_OPEN}\n'
+        '<!-- Google Tag Manager -->\n'
+        "<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\n"
+        "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\n"
+        "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n"
+        "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n"
+        f"}})(window,document,'script','dataLayer','{gtm_id}');</script>\n"
+        '<!-- End Google Tag Manager -->\n'
+        f'{GTM_HEAD_CLOSE}'
+    )
+
+
+def _gtm_body_block(gtm_id: str) -> str:
+    return (
+        f'{GTM_BODY_OPEN}\n'
+        '<!-- Google Tag Manager (noscript) -->\n'
+        f'<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={gtm_id}"\n'
+        'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n'
+        '<!-- End Google Tag Manager (noscript) -->\n'
+        f'{GTM_BODY_CLOSE}'
+    )
+
+
+def _attr_cfg_block(track: dict) -> str:
+    """Window globals consumed by /assets/attribution.js."""
+    return (
+        f'{ATTR_CFG_OPEN}\n'
+        '<script>\n'
+        f'window.AHDD_TRACKING_COOKIE_NAME={json.dumps(track.get("attributionCookieName","ahdd_attribution"))};\n'
+        f'window.AHDD_TRACKING_COOKIE_DAYS={int(track.get("attributionCookieDays",90))};\n'
+        f'window.AHDD_TRACKING_LEAD_VALUE={float(track.get("leadValueUSD",50))};\n'
+        f'window.AHDD_TRACKING_CURRENCY={json.dumps(track.get("currency","USD"))};\n'
+        f'window.AHDD_GADS_CONVERSION_ID={json.dumps(track.get("googleAdsConversionId",""))};\n'
+        f'window.AHDD_GADS_CONVERSION_LABEL={json.dumps(track.get("googleAdsConversionLabel",""))};\n'
+        '</script>\n'
+        f'{ATTR_CFG_CLOSE}'
+    )
+
+
+def _attr_script_block(track: dict) -> str:
+    href = track.get("attributionScriptHref", "/assets/attribution.js")
+    v = track.get("attributionScriptVersion", "1")
+    return (
+        f'{ATTR_SCRIPT_OPEN}\n'
+        f'<script src="{href}?v={v}" defer></script>\n'
+        f'{ATTR_SCRIPT_CLOSE}'
+    )
+
+
+def enforce_gtm_head(text: str, gtm_id: str) -> tuple[str, bool]:
+    new_block = _gtm_head_block(gtm_id)
+    changed = False
+    if _GTM_HEAD_BLOCK_RE.search(text):
+        new_text = _GTM_HEAD_BLOCK_RE.sub(new_block, text, count=1)
+        return new_text, new_text != text
+    # Strip any pre-existing unmanaged GTM snippet so we don't duplicate
+    text2 = _STRAY_GTM_HEAD_RE.sub("", text)
+    if text2 != text:
+        changed = True
+    m = _HEAD_OPEN_RE.search(text2)
+    if m:
+        new_text = text2[: m.end()] + "\n" + new_block + text2[m.end():]
+        return new_text, True
+    return text2, changed
+
+
+def enforce_gtm_body(text: str, gtm_id: str) -> tuple[str, bool]:
+    new_block = _gtm_body_block(gtm_id)
+    changed = False
+    if _GTM_BODY_BLOCK_RE.search(text):
+        new_text = _GTM_BODY_BLOCK_RE.sub(new_block, text, count=1)
+        return new_text, new_text != text
+    text2 = _STRAY_GTM_BODY_RE.sub("", text)
+    if text2 != text:
+        changed = True
+    m = _BODY_OPEN_RE.search(text2)
+    if m:
+        new_text = text2[: m.end()] + "\n" + new_block + text2[m.end():]
+        return new_text, True
+    return text2, changed
+
+
+def enforce_attribution(text: str, track: dict) -> tuple[str, bool]:
+    cfg_block = _attr_cfg_block(track)
+    script_block = _attr_script_block(track)
+    changed = False
+
+    if _ATTR_CFG_BLOCK_RE.search(text):
+        new_text = _ATTR_CFG_BLOCK_RE.sub(cfg_block, text, count=1)
+        if new_text != text:
+            changed = True
+        text = new_text
+    else:
+        anchor = text.find(GTM_HEAD_CLOSE)
+        if anchor != -1:
+            insert_at = anchor + len(GTM_HEAD_CLOSE)
+            text = text[:insert_at] + "\n" + cfg_block + text[insert_at:]
+            changed = True
+        else:
+            m = _HEAD_OPEN_RE.search(text)
+            if m:
+                text = text[: m.end()] + "\n" + cfg_block + text[m.end():]
+                changed = True
+
+    if _ATTR_SCRIPT_BLOCK_RE.search(text):
+        new_text = _ATTR_SCRIPT_BLOCK_RE.sub(script_block, text, count=1)
+        if new_text != text:
+            changed = True
+        text = new_text
+    else:
+        anchor = text.find(ATTR_CFG_CLOSE)
+        if anchor != -1:
+            insert_at = anchor + len(ATTR_CFG_CLOSE)
+            text = text[:insert_at] + "\n" + script_block + text[insert_at:]
+            changed = True
+        else:
+            m = _HEAD_OPEN_RE.search(text)
+            if m:
+                text = text[: m.end()] + "\n" + script_block + text[m.end():]
+                changed = True
+
+    return text, changed
+
 BOOK_DEAD_HREF_FORWARD_RE = re.compile(
     r'href=(["\'])#\1(\s+[^>]*?onclick=(["\'])doBook\(event\)\3)'
 )

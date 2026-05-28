@@ -9,6 +9,14 @@
     {
       "source": "/chatbot",
       "destination": "/chatbot-widget-updated"
+    },
+    {
+      "source": "/implants",
+      "destination": "/dental-implants-promo"
+    },
+    {
+      "source": "/implants-offer",
+      "destination": "/dental-implants-promo"
     }
   ],
   "redirects": [
