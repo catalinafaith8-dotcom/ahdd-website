@@ -1107,9 +1107,27 @@
       }
     };
 
+    // ── Google Ads attribution: merge gclid + utm_* into top-level payload
+    //    so GHL workflow can map them onto the contact's custom fields.
+    try {
+      if (window.AHDD_TRACK && typeof window.AHDD_TRACK.payload === 'function') {
+        var attr = window.AHDD_TRACK.payload();
+        Object.keys(attr).forEach(function (k) { payload[k] = attr[k]; });
+        // Also surface into customField so old workflows that only map customField map them too
+        Object.keys(attr).forEach(function (k) { payload.customField[k] = attr[k]; });
+      }
+    } catch (_e) {}
+
     fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .catch(function(e){console.warn('GHL webhook:',e)})
     .finally(function(){
+      // Fire lead_form_submit (this is the actual lead-capture step — the
+      // image upload above is anonymous; this is when the user gives their name+email+phone)
+      try {
+        if (window.AHDD_TRACK && typeof window.AHDD_TRACK.submit === 'function') {
+          window.AHDD_TRACK.submit({ form_id: 'smile_analysis_gate', form_source: 'smile-analysis' });
+        }
+      } catch (_e) {}
       gate.classList.remove('show');
       renderResult(pendingData);
     });

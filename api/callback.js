@@ -8,7 +8,11 @@
 
    Contract — request body:
      { firstName, phone, bestTimeToCall, reasonForCall,
-       sourcePage, requestedAt, tags: [string] }
+       sourcePage, requestedAt, tags: [string],
+       // ── Google Ads attribution (optional but expected on paid traffic) ──
+       gclid, gbraid, wbraid,
+       utm_source, utm_medium, utm_campaign, utm_term, utm_content,
+       first_touch_at, landing_page }
 
    Response:
      200 { ok: true }                 — accepted + forwarded
@@ -18,6 +22,12 @@
 
    Note: per security rules we do NOT echo back any GHL response body or
    the webhook URL — only success/failure. */
+
+var ATTRIBUTION_KEYS = [
+  'gclid', 'gbraid', 'wbraid',
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+  'first_touch_at', 'landing_page'
+];
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -61,6 +71,16 @@ module.exports = async function handler(req, res) {
     }
     if (tags.indexOf('callback_requested') === -1) tags.push('callback_requested');
 
+    // Extract Google Ads / UTM attribution. Sanitized but never required.
+    var attribution = {};
+    ATTRIBUTION_KEYS.forEach(function (k) {
+      var v = sanitize(body[k], 240);
+      if (v) attribution[k] = v;
+    });
+    if (attribution.gclid) {
+      if (tags.indexOf('paid_traffic') === -1) tags.push('paid_traffic');
+    }
+
     var webhookUrl = process.env.GHL_CALLBACK_WEBHOOK_URL;
     if (!webhookUrl) {
       console.error('[callback] GHL_CALLBACK_WEBHOOK_URL not set');
@@ -74,7 +94,20 @@ module.exports = async function handler(req, res) {
       reasonForCall: reasonForCall || '',
       sourcePage: sourcePage || '',
       requestedAt: requestedAt || new Date().toISOString(),
-      tags: tags
+      tags: tags,
+      // Attribution fields — map these to GHL contact custom fields with the
+      // same keys (gclid, utm_source, etc.) in the workflow's Create Contact
+      // action. See docs/tracking.md.
+      gclid: attribution.gclid || '',
+      gbraid: attribution.gbraid || '',
+      wbraid: attribution.wbraid || '',
+      utm_source: attribution.utm_source || '',
+      utm_medium: attribution.utm_medium || '',
+      utm_campaign: attribution.utm_campaign || '',
+      utm_term: attribution.utm_term || '',
+      utm_content: attribution.utm_content || '',
+      first_touch_at: attribution.first_touch_at || '',
+      landing_page: attribution.landing_page || ''
     };
 
     var fwd = await fetch(webhookUrl, {

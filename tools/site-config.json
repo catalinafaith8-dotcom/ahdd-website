@@ -1,7 +1,19 @@
 {
-  "_doc": "Single source of truth for SEO + booking. Edit ONLY this file when the booking URL, base URL, NAP, or page→slug map changes. Then run: npm run seo:apply",
+  "_doc": "Single source of truth for SEO + booking + tracking. Edit ONLY this file when the booking URL, base URL, NAP, GTM ID, or page→slug map changes. Then run: npm run seo:apply",
   "baseUrl": "https://agourahillsdentaldesigns.com",
   "bookingUrl": "https://schedule.jarvisanalytics.com/frame?eoid=64471&elid=64000000019461",
+  "tracking": {
+    "_doc": "Drift-proof Google Ads + GTM tracking. Same enforcement pattern as canonical/og:url. See docs/tracking.md.",
+    "gtmContainerId": "GTM-NMR3KCSB",
+    "googleAdsConversionId": "AW-11217610443",
+    "googleAdsConversionLabel": "REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI",
+    "attributionCookieName": "ahdd_attribution",
+    "attributionCookieDays": 90,
+    "attributionScriptHref": "/assets/attribution.js",
+    "attributionScriptVersion": "20260527a",
+    "leadValueUSD": 50,
+    "currency": "USD"
+  },
   "nap": {
     "street": "28632 Roadside Drive, Suite 270",
     "locality": "Agoura Hills",
@@ -45,7 +57,8 @@
     "westlake-village-dentist.html":                "/westlake-village-dentist",
     "malibu-dentist.html":                          "/malibu-dentist",
     "thousand-oaks-dentist.html":                   "/thousand-oaks-dentist",
-    "oak-park-dentist.html":                        "/oak-park-dentist"
+    "oak-park-dentist.html":                        "/oak-park-dentist",
+    "dental-implants-promo.html":                   "/dental-implants-promo"
   },
   "ignoredPages": [
     "insurance-checker-ahdd__4_.html",
