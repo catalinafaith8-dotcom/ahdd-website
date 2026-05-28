@@ -6,6 +6,14 @@
     "_doc": "Drift-proof Google Ads + GTM tracking. Same enforcement pattern as canonical/og:url. See docs/tracking.md.",
     "gtmContainerId": "GTM-NMR3KCSB",
     "googleAdsConversionId": "AW-11217610443",
+    "_conversionLabels_doc": "Reference only — actual conversion tags are managed in GTM, NOT hardcoded in HTML. Each label fires from exactly ONE place to avoid double-counting.",
+    "conversionLabels": {
+      "smileAnalysisSubmit": "-bBoCOndg7UcEMvN_OQp",
+      "bookAppointment_inline_doBook": "kZZHCO2O15QcEMvN_OQp",
+      "formSubmit_implantsPromo": "REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI",
+      "phoneCall_forwardingNumber": "REPLACE_WITH_CALL_LABEL_FROM_GADS_UI",
+      "bookedAppointment_offlineImport": "REPLACE_WITH_OFFLINE_LABEL_FROM_GADS_UI"
+    },
     "googleAdsConversionLabel": "REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI",
     "attributionCookieName": "ahdd_attribution",
     "attributionCookieDays": 90,

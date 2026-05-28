@@ -188,3 +188,32 @@ Before the ad campaign launches:
 | 5+15 conv. | Switch bid strategy to Maximize Conversions, then Target CPA when you have a baseline | Catalina |
 
 **Total: 5–7 business days from PR merge to ad launch.** Per the audit.
+
+---
+
+## Smile Analysis conversion — GTM wiring (added 2026-05-28)
+
+**Real Google Ads values (from agourahillsdental@gmail.com):**
+- Conversion ID: `AW-11217610443`
+- Smile Analysis label: `-bBoCOndg7UcEMvN_OQp`
+- Existing inline "Book Appointment" label (fired in `doBook()` on geo/contact pages): `kZZHCO2O15QcEMvN_OQp`
+
+**Code side (done, repo):** the smile-analysis widget + 6 service pages push
+`dataLayer.push({event:'smile_analysis_submit', form_id:'smile_analysis_gate'})`
+**only on a successful webhook POST** (in `.then()`, never `.finally()` — no firing on failure).
+The conversion ID/label are NOT hardcoded in HTML — GTM owns them.
+
+**GTM side (do in the agourahillsdental@gmail.com account, container GTM-NMR3KCSB):**
+1. Tags → New → **Conversion Linker** → trigger **All Pages** → name "Google Ads - Conversion Linker" → Save.
+2. Tags → New → **Google Ads Conversion Tracking** → Conversion ID `AW-11217610443`, Conversion Label `-bBoCOndg7UcEMvN_OQp`.
+3. Trigger → New → **Custom Event** → Event name `smile_analysis_submit` → "This trigger fires on: All Custom Events" → name "CE - smile_analysis_submit" → attach to the tag → Save.
+4. **Submit → Publish** the container.
+
+**Double-counting rule (critical):** each conversion label fires from exactly ONE place.
+- `smile_analysis_submit` (`-bBoC…`) → GTM only. ✓
+- Booking (`kZZH…`) → fires inline in `doBook()` only. Do NOT also build a GTM tag for it.
+- Page-level gtag.js config is currently inline on all pages; GTM also loads Google Ads via the Conversion Linker. This double-loads the page/remarketing hit (harmless for conversions, minor for audiences). Full GTM-only cleanup (move the inline gtag config + the doBook booking conversion into GTM, then strip inline gtag from the 25 HTML files) is a recommended follow-up — left out here to avoid breaking the working booking conversion.
+
+**Test (after publish):** open any service page with `?gclid=TEST_2026` → submit the smile-analysis widget → in GTM Preview confirm the `smile_analysis_submit` event fires and the Google Ads Conversion tag fires on it.
+
+**Future conversions (same pattern):** form-submit (Implants Promo), phone call (forwarding number), booked-appointment (offline import) each get their own dataLayer event + GTM Google Ads tag, label stored in `site-config.json` `conversionLabels`.
