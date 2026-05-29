@@ -472,18 +472,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .sai-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
+/* ── TOP TRUST BAR (above card) ──────────────────────── */
+.sa-trustbar{
+  display:flex;justify-content:center;align-items:center;
+  flex-wrap:wrap;gap:10px;
+  margin:0 0 22px;
+}
+.sa-trustpill{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 13px;border-radius:100px;
+  background:rgba(255,255,255,.55);
+  backdrop-filter:saturate(1.8) blur(20px);
+  -webkit-backdrop-filter:saturate(1.8) blur(20px);
+  border:1px solid rgba(255,255,255,.65);
+  box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 4px 14px rgba(0,0,0,.05);
+  font-family:var(--body);font-size:12.5px;font-weight:550;
+  letter-spacing:-.01em;color:var(--ink2);
+}
+.sa-trustdot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 3px rgba(52,199,89,.16)}
+@media(max-width:560px){
+  .sa-trustbar{gap:8px;margin-bottom:18px}
+  .sa-trustpill{font-size:11.5px;padding:7px 13px 7px 11px}
+}
+
 /* ── CARD SHELL ──────────────────────────────────────── */
 .sai-card{
-  background:var(--glass);
-  backdrop-filter:var(--blur);
-  -webkit-backdrop-filter:var(--blur);
-  border:1px solid var(--glass-border);
+  background:rgba(255,255,255,.55);
+  backdrop-filter:saturate(1.9) blur(30px);
+  -webkit-backdrop-filter:saturate(1.9) blur(30px);
+  border:1px solid rgba(255,255,255,.7);
   border-radius:28px;
   box-shadow:
-    0 1px 0 rgba(255,255,255,.9) inset,
-    0 2px 4px rgba(0,0,0,.04),
-    0 16px 48px rgba(0,0,0,.08),
-    0 48px 96px rgba(0,0,0,.06);
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 2px 4px rgba(0,0,0,.03),
+    0 16px 48px rgba(0,0,0,.09),
+    0 48px 110px rgba(0,0,0,.07);
   overflow:hidden;
 }
 .sai-grid{display:grid;grid-template-columns:1fr 400px;min-height:620px}
@@ -1012,6 +1035,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="sai-section" id="smileAnalysis">
   <div class="sai-wrap">
+
+    <div class="sa-trustbar">
+      <span class="sa-trustpill"><span class="sa-trustdot"></span>Results in 30 seconds</span>
+      <span class="sa-trustpill"><span class="sa-trustdot"></span>Photo never stored</span>
+      <span class="sa-trustpill"><span class="sa-trustdot"></span>Doctor-reviewed AI</span>
+    </div>
+
     <div class="sai-card reveal">
       <div class="sai-grid">
 
@@ -1026,12 +1056,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <h2 class="sai-h2">Your Smile Deserves<br/>an <em>Honest</em> Answer</h2>
 
           <p class="sai-subhead">Upload a smile photo and our AI delivers the same personalized assessment Drs. Matian would give in person — evaluating shade, alignment, structure, and restoration needs in under 30 seconds.</p>
-
-          <div class="sai-trust">
-            <span class="sai-chip"><span class="sai-chip-dot"></span>Results in 30 seconds</span>
-            <span class="sai-chip"><span class="sai-chip-dot"></span>Photo never stored</span>
-            <span class="sai-chip"><span class="sai-chip-dot"></span>Doctor-reviewed AI</span>
-          </div>
 
           <!-- Upload -->
           <div class="sai-drop" id="saiDrop">
