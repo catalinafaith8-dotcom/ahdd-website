@@ -356,14 +356,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </nav>
 
-<!-- PAGE HERO -->
-<header class="page-hero">
-  <div class="wrap">
-    <span class="eyebrow">Free AI Tool</span>
-    <h1>See Your Best Smile<br/>in 60 Seconds</h1>
-    <p class="sub">Upload one photo and our AI shows you which treatments could transform your smile — free, no obligation, from third-generation Agoura Hills dentists.</p>
-  </div>
-</header>
+<!-- PAGE HERO — glass UI · Apple meets the dentist · SF Pro Display -->
+<style>
+  .sa-hero{
+    font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+    background:linear-gradient(180deg,#eaf0f7 0%,#f0f4f9 100%);
+    border-bottom:1px solid rgba(255,255,255,.6);
+  }
+  .sa-hero .in{max-width:780px;margin:0 auto;text-align:center;padding:72px 24px 30px;}
+  .sa-hero .eb{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:#c96a2e;
+    background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 8px rgba(0,0,0,.05);
+    padding:6px 14px;border-radius:100px;
+    backdrop-filter:saturate(1.8) blur(20px);-webkit-backdrop-filter:saturate(1.8) blur(20px);
+    margin-bottom:18px;
+  }
+  .sa-hero .eb .dot{width:6px;height:6px;border-radius:50%;background:#34c759;flex-shrink:0;}
+  .sa-hero h1{
+    font-size:clamp(30px,3.8vw,46px);font-weight:700;line-height:1.06;
+    letter-spacing:-.025em;color:#0a0e14;margin:0 0 14px;
+  }
+  .sa-hero h1 em{font-style:normal;color:#0071e3;}
+  .sa-hero p{
+    font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;line-height:1.65;
+    color:#3a3f4a;max-width:560px;margin:0 auto;font-weight:400;
+  }
+  @media(max-width:560px){.sa-hero h1{font-size:1.95rem;} .sa-hero .in{padding:48px 20px 20px;}}
+</style>
+<header class="sa-hero"><div class="in">
+  <span class="eb"><span class="dot"></span>Free AI Tool · 60 seconds</span>
+  <h1>See your best smile, <em>before</em> you decide.</h1>
+  <p>Upload one photo and our AI shows which treatments could transform your smile — free, no obligation, from third-generation Agoura Hills dentists.</p>
+</div></header>
 <main>
 <!--
   smile-analysis-widget.html — ROOT level fragment
