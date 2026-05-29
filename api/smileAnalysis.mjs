@@ -166,7 +166,7 @@ Look CAREFULLY at the EDGES of every visible tooth, especially front incisors. F
 - chip_count: Approximate count of teeth with visible chips, wear, or broken edges. 0 if none visible. Look at lower teeth too — wear is extremely common there.
 
 ═══ MISSING TEETH ═══
-- missing_count: Approximate count of clearly missing teeth (a visible gap where a tooth should be). 0 if none.
+- missing_count: Count teeth that are clearly ABSENT — a visible gap in the tooth row where a tooth should be, with neighboring teeth bordering an empty space (often a darker gap that breaks the otherwise continuous line of teeth). This is one of the most consequential findings, so look carefully along BOTH the upper and lower arches and at the edges of the smile. Count a clearly absent tooth even if you are not 100% certain it is gone. Do NOT count normal even spacing between otherwise-complete teeth (a small diastema/gap), and do NOT count the dark space of the open mouth behind the teeth. Return 0 only if no tooth is clearly absent.
 - missing_in_same_area: If 2+ missing, are they clustered in the same arch/region? (true/false)
 - damaged_remaining_teeth: If multiple missing, do the REMAINING visible teeth ALSO look damaged, broken down, or severely decayed? (true/false — only relevant when missing_count >= 3)
 
