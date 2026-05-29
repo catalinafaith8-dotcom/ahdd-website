@@ -65,7 +65,8 @@
     "westlake-village-dentist.html":                "/westlake-village-dentist",
     "malibu-dentist.html":                          "/malibu-dentist",
     "thousand-oaks-dentist.html":                   "/thousand-oaks-dentist",
-    "oak-park-dentist.html":                        "/oak-park-dentist"
+    "oak-park-dentist.html":                        "/oak-park-dentist",
+    "smile-analysis.html":                          "/smile-analysis"
   },
   "ignoredPages": [
     "insurance-checker-ahdd__4_.html",
