@@ -1428,7 +1428,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return fetch(ENDPOINT,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({imageBase64:b64,mediaType:mime})
+        body:JSON.stringify({imageBase64:b64,mediaType:mime,pagePath:window.location.pathname})
       });
     })
     .then(function(r){
