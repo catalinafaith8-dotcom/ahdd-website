@@ -384,7 +384,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;line-height:1.65;
     color:#3a3f4a;max-width:560px;margin:0 auto;font-weight:400;
   }
-  @media(max-width:560px){.sa-hero h1{font-size:1.95rem;} .sa-hero .in{padding:48px 20px 20px;}}
+  @media(max-width:560px){.sa-hero h1{font-size:1.85rem;} .sa-hero .in{padding:48px 18px 20px;} .sa-hero p{font-size:15px;}}
+  @media(max-width:380px){.sa-hero h1{font-size:1.55rem;} .sa-hero .in{padding:40px 16px 18px;}}
+
+  /* Dedupe: the page hero is the header, so hide the widget's own intro headline on THIS page */
+  .sai-left > .sai-eyebrow,
+  .sai-left > .sai-h2,
+  .sai-left > .sai-subhead{display:none !important;}
+  .sai-left{padding-top:38px !important;}
+
+  /* Personalized treatment-plan results — bulleted findings + plan cards */
+  .sai-findings{margin-top:18px;}
+  .sai-findings-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .sai-findings-list li{position:relative;padding-left:30px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;line-height:1.6;color:#2d3340;}
+  .sai-findings-list li::before{content:'';position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,113,227,.10);}
+  .sai-findings-list li::after{content:'';position:absolute;left:7px;top:9px;width:6px;height:6px;border-radius:50%;background:#0071e3;}
+  .sai-plan{margin-top:22px;}
+  .sai-plan-card{background:rgba(255,255,255,.72);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:16px 18px;margin-top:10px;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 10px rgba(0,0,0,.05);}
+  .sai-plan-card.alt{background:rgba(255,255,255,.5);}
+  .sai-plan-tag{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0071e3;background:rgba(0,113,227,.09);padding:3px 10px;border-radius:100px;margin-bottom:8px;}
+  .sai-plan-tag.alt{color:#6b7585;background:rgba(0,0,0,.05);}
+  .sai-plan-opt{font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;font-weight:600;color:#0a0e14;margin-bottom:4px;letter-spacing:-.01em;}
+  .sai-plan-detail{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;line-height:1.6;color:#2d3340;}
 </style>
 <header class="sa-hero"><div class="in">
   <span class="eb"><span class="dot"></span>Free AI Tool · 60 seconds</span>
@@ -1111,7 +1132,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div class="sai-result-text" id="saiResultText"></div>
             </div>
 
-            <!-- Emotional impact panel -->
+            <!-- What we noticed — bulleted findings -->
+            <div class="sai-findings" id="saiFindings" style="display:none">
+              <div class="sai-result-label">What we noticed</div>
+              <ul class="sai-findings-list" id="saiFindingsList"></ul>
+            </div>
+
+            <!-- Your recommended plan -->
+            <div class="sai-plan" id="saiPlan" style="display:none">
+              <div class="sai-result-label">Your recommended plan</div>
+              <div class="sai-plan-card">
+                <span class="sai-plan-tag">Recommended</span>
+                <div class="sai-plan-opt" id="saiPlanBest"></div>
+                <div class="sai-plan-detail" id="saiPlanBestDetail"></div>
+              </div>
+              <div class="sai-plan-card alt" id="saiPlanAltCard" style="display:none">
+                <span class="sai-plan-tag alt">Also an option</span>
+                <div class="sai-plan-opt" id="saiPlanAlt"></div>
+                <div class="sai-plan-detail" id="saiPlanAltDetail"></div>
+              </div>
+            </div>
+
+            <!-- Emotional impact panel (kept in DOM, hidden — treatment-plan view) -->
             <div class="sai-impact" id="saiImpact" style="display:none">
               <div class="sai-impact-label">What This Means For You</div>
               <div class="sai-impact-text" id="saiImpactText"></div>
@@ -1242,7 +1284,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   /* ── URGENCY CONFIG ─────────────────────────────────── */
   var UC = {
-    elective:    {label:'Cosmetic Opportunity',         cls:'elective'},
+    elective:    {label:'Smile Enhancement',         cls:'elective'},
     recommended: {label:'Clinically Recommended',       cls:'recommended'},
     priority:    {label:'Priority Evaluation Advised',  cls:'priority'},
     emergency:   {label:'Urgent — Needs Attention',     cls:'emergency'}
@@ -1555,12 +1597,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // Result text
     resultText.textContent=data.analysis||'';
 
-    // Emotional impact
-    var isFull=hasFullMouth(data);
-    var impactKey=isFull?'full_mouth':(data.urgency||'elective');
-    var impactCopy=IMPACT[impactKey]||IMPACT.elective;
-    impactText.textContent=impactCopy;
-    impactEl.style.display='block';
+    // What we noticed — bulleted findings (patient-friendly treatment-plan view)
+    var _fl = document.getElementById('saiFindingsList');
+    var _fwrap = document.getElementById('saiFindings');
+    _fl.innerHTML='';
+    var _bl = Array.isArray(data.bullets) ? data.bullets : [];
+    if(_bl.length){
+      _bl.forEach(function(b){ var li=document.createElement('li'); li.textContent=String(b); _fl.appendChild(li); });
+      _fwrap.style.display='block';
+    } else { _fwrap.style.display='none'; }
+
+    // Your recommended plan (best option + alternative)
+    var _plan = data.plan || {};
+    var _pw = document.getElementById('saiPlan');
+    if(_plan.best_option){
+      document.getElementById('saiPlanBest').textContent=_plan.best_option;
+      document.getElementById('saiPlanBestDetail').textContent=_plan.best_detail||'';
+      var _alt = document.getElementById('saiPlanAltCard');
+      if(_plan.alternative){
+        document.getElementById('saiPlanAlt').textContent=_plan.alternative;
+        document.getElementById('saiPlanAltDetail').textContent=_plan.alt_detail||'';
+        _alt.style.display='block';
+      } else { _alt.style.display='none'; }
+      _pw.style.display='block';
+    } else { _pw.style.display='none'; }
+
+    // Treatment-plan view: suppress the funnel-style emotional panel
+    impactEl.style.display='none';
 
     // Treatment chips
     txChips.innerHTML='';
