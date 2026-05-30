@@ -716,16 +716,26 @@ button{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;cursor
 .sai-body{padding:28px 32px}
 
 /* Drop zone */
+/* sai-drop blue glass v2 */
+/* ORIGINAL preserved:
 .sai-drop{position:relative;border:2px dashed rgba(0,0,0,.11);border-radius:14px;padding:24px 20px;text-align:center;cursor:pointer;background:#f9fafb;transition:all .2s;margin-bottom:12px}
 .sai-drop:hover{border-color:#0071e3;background:rgba(0,113,227,.03);transform:translateY(-1px)}
 .sai-drop.drag{border-color:#0071e3;border-style:solid}
 .sai-drop.has-file{border-color:#22c55e;border-style:solid;background:rgba(34,197,94,.03)}
-.sai-drop-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.sai-drop-icon{width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 1px 6px rgba(0,0,0,.06);transition:transform .2s}
+*/
+.sai-drop{position:relative;border:1px solid rgba(255,255,255,.45);border-radius:20px;padding:28px 20px;text-align:center;cursor:pointer;background:linear-gradient(135deg,rgba(59,130,246,.10) 0%,rgba(0,113,227,.06) 50%,rgba(255,255,255,.18) 100%);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 0 0 1px rgba(0,113,227,.04),0 8px 28px rgba(31,38,135,.13),0 2px 6px rgba(0,113,227,.06);transition:all .28s cubic-bezier(.25,.46,.45,.94);margin-bottom:12px;overflow:hidden}
+.sai-drop::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.55) 0%,transparent 60%);opacity:.55}
+.sai-drop:hover{border-color:rgba(0,113,227,.45);background:linear-gradient(135deg,rgba(59,130,246,.16) 0%,rgba(0,113,227,.09) 50%,rgba(255,255,255,.22) 100%);transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 0 0 1px rgba(0,113,227,.10),0 12px 34px rgba(31,38,135,.18),0 4px 12px rgba(0,113,227,.12)}
+.sai-drop.drag{border-color:rgba(0,113,227,.65);border-style:solid;background:linear-gradient(135deg,rgba(59,130,246,.22) 0%,rgba(0,113,227,.14) 50%,rgba(255,255,255,.25) 100%);box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 0 0 2px rgba(0,113,227,.18),0 16px 42px rgba(31,38,135,.22)}
+.sai-drop.has-file{border-color:rgba(52,199,89,.55);border-style:solid;background:linear-gradient(135deg,rgba(52,199,89,.14) 0%,rgba(52,199,89,.07) 50%,rgba(255,255,255,.20) 100%);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 0 0 1px rgba(52,199,89,.10),0 10px 28px rgba(34,140,60,.14)}
+@supports not ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){.sai-drop{background:rgba(240,247,255,1)}.sai-drop:hover{background:rgba(230,243,255,1)}}
+@media(max-width:560px){.sai-drop{backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);padding:24px 16px;border-radius:18px}}
+.sai-drop-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2}
+.sai-drop-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.7));border:1px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;position:relative;z-index:1;box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 3px 12px rgba(0,113,227,.16),0 1px 3px rgba(0,0,0,.05);transition:transform .22s cubic-bezier(.25,.46,.45,.94)}
 .sai-drop:hover .sai-drop-icon{transform:translateY(-2px)}
 .sai-drop.has-file .sai-drop-icon{background:#dcfce7;border-color:transparent}
-.sai-drop-title{font-size:13.5px;font-weight:600;color:#111827;margin-bottom:2px}
-.sai-drop-sub{font-size:11.5px;color:#9ca3af}
+.sai-drop-title{font-size:13.5px;font-weight:600;color:#1d1d1f;margin-bottom:3px;position:relative;z-index:1}
+.sai-drop-sub{font-size:11.5px;color:#3a3f4a;opacity:.78;position:relative;z-index:1}
 .sai-preview{display:none;position:relative;margin-bottom:12px;border-radius:12px;overflow:hidden;max-height:200px;border:1px solid rgba(0,0,0,.06)}
 .sai-preview.show{display:block;animation:saiFade .3s ease}
 .sai-preview img{width:100%;display:block;object-fit:cover;max-height:200px}
