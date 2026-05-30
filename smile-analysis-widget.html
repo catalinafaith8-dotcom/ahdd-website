@@ -44,31 +44,35 @@
 /* ── SECTION ─────────────────────────────────────────── */
 .sai-section{
   padding:100px 0;
-  background:linear-gradient(160deg,#f0f4f9 0%,#ffffff 40%,#f6f0eb 100%);
+  background:#ffffff;            /* background stays white */
   position:relative;overflow:hidden;
   font-family:var(--body);
 }
 .sai-section::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 80% 20%,rgba(0,113,227,.04) 0%,transparent 70%),
-    radial-gradient(ellipse 50% 60% at 10% 80%,rgba(201,106,46,.04) 0%,transparent 70%);
+  background:radial-gradient(ellipse 60% 45% at 50% 30%,rgba(10,132,255,.05) 0%,transparent 70%);
 }
 .sai-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
-/* ── CARD SHELL ──────────────────────────────────────── */
+/* ── CARD SHELL — HEALTHCARE-BLUE GLASS (entire widget) ─── */
+/* ORIGINAL preserved:
+.sai-card{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:28px;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 4px rgba(0,0,0,.04),0 16px 48px rgba(0,0,0,.08),0 48px 96px rgba(0,0,0,.06);overflow:hidden}
+*/
 .sai-card{
-  background:var(--glass);
-  backdrop-filter:var(--blur);
-  -webkit-backdrop-filter:var(--blur);
-  border:1px solid var(--glass-border);
-  border-radius:28px;
+  background:rgba(10,132,255,.10);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:26px;
   box-shadow:
-    0 1px 0 rgba(255,255,255,.9) inset,
-    0 2px 4px rgba(0,0,0,.04),
-    0 16px 48px rgba(0,0,0,.08),
-    0 48px 96px rgba(0,0,0,.06);
+    inset 0 1px 0 rgba(255,255,255,.45),
+    0 0 0 1px rgba(10,132,255,.08),
+    0 12px 48px rgba(10,132,255,.18),
+    0 32px 80px rgba(10,132,255,.10);
   overflow:hidden;
+}
+@supports not ((backdrop-filter:blur(24px)) or (-webkit-backdrop-filter:blur(24px))){
+  .sai-card{background:rgba(234,242,255,1)}
 }
 .sai-grid{display:grid;grid-template-columns:1fr 400px;min-height:620px}
 
@@ -123,47 +127,43 @@
 .sai-drop.has-file{border-color:var(--green);border-style:solid;background:rgba(52,199,89,.04)}
 .sai-drop-icon{width:48px;height:48px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .2s}
 */
+/* Upload sub-zone: quiet inset so it doesn't fight the blue parent card */
 .sai-drop{
   position:relative;
-  border:1px solid rgba(255,255,255,.45);
-  border-radius:22px;
-  padding:34px 22px;
+  border:1.5px dashed rgba(10,132,255,.35);
+  border-radius:18px;
+  padding:32px 22px;
   text-align:center;
   cursor:pointer;
-  background:linear-gradient(135deg,rgba(59,130,246,.10) 0%,rgba(0,113,227,.06) 50%,rgba(255,255,255,.18) 100%);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
-  box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 0 0 1px rgba(0,113,227,.04),0 8px 32px rgba(31,38,135,.15),0 2px 8px rgba(0,113,227,.06);
-  transition:all .28s cubic-bezier(.25,.46,.45,.94);
+  background:rgba(255,255,255,.34);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
+  transition:all .26s cubic-bezier(.25,.46,.45,.94);
   margin-bottom:14px;overflow:hidden;
 }
-.sai-drop::before{
-  content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
-  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.55) 0%,transparent 60%);
-  opacity:.55;
-}
 .sai-drop:hover{
-  border-color:rgba(0,113,227,.45);
-  background:linear-gradient(135deg,rgba(59,130,246,.16) 0%,rgba(0,113,227,.09) 50%,rgba(255,255,255,.22) 100%);
-  transform:translateY(-2px);
-  box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 0 0 1px rgba(0,113,227,.10),0 14px 40px rgba(31,38,135,.20),0 4px 14px rgba(0,113,227,.14);
+  border-color:rgba(10,132,255,.6);
+  background:rgba(255,255,255,.5);
+  transform:translateY(-1px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 6px 20px rgba(10,132,255,.12);
 }
 .sai-drop.drag{
-  border-color:rgba(0,113,227,.65);border-style:solid;
-  background:linear-gradient(135deg,rgba(59,130,246,.22) 0%,rgba(0,113,227,.14) 50%,rgba(255,255,255,.25) 100%);
-  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 0 0 2px rgba(0,113,227,.18),0 18px 48px rgba(31,38,135,.24);
+  border-color:rgba(10,132,255,.85);border-style:solid;
+  background:rgba(255,255,255,.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 0 0 2px rgba(10,132,255,.18),0 10px 28px rgba(10,132,255,.16);
 }
 .sai-drop.has-file{
-  border-color:rgba(52,199,89,.55);border-style:solid;
-  background:linear-gradient(135deg,rgba(52,199,89,.14) 0%,rgba(52,199,89,.07) 50%,rgba(255,255,255,.20) 100%);
-  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 0 0 1px rgba(52,199,89,.10),0 10px 32px rgba(34,140,60,.15);
+  border-color:rgba(52,199,89,.6);border-style:solid;
+  background:rgba(52,199,89,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 8px 22px rgba(34,140,60,.12);
 }
-@supports not ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){
-  .sai-drop{background:rgba(240,247,255,1)}
-  .sai-drop:hover{background:rgba(230,243,255,1)}
+@supports not ((backdrop-filter:blur(8px)) or (-webkit-backdrop-filter:blur(8px))){
+  .sai-drop{background:rgba(255,255,255,.6)}
+  .sai-drop:hover{background:rgba(255,255,255,.8)}
 }
 @media(max-width:560px){
-  .sai-drop{backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);padding:28px 18px;border-radius:20px}
+  .sai-drop{padding:28px 18px;border-radius:16px}
 }
 .sai-drop-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2}
 
