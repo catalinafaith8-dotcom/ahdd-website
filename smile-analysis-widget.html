@@ -655,7 +655,7 @@
 
           <!-- Upload -->
           <div class="sai-drop" id="saiDrop">
-            <input type="file" class="sai-drop-input" id="saiFile" accept="image/jpeg,image/png,image/webp"/>
+            <input type="file" class="sai-drop-input" id="saiFile" accept="image/jpeg,image/png,image/webp" capture="user"/>
             <div class="sai-drop-icon">
               <svg id="saiIconUp" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.75" width="22" height="22">
                 <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
@@ -984,7 +984,11 @@
             var canvas = document.createElement('canvas');
             canvas.width = dw; canvas.height = dh;
             var ctx = canvas.getContext('2d');
+            // v14.1: un-mirror selfies (see primary path comment).
+            ctx.translate(dw, 0);
+            ctx.scale(-1, 1);
             ctx.drawImage(img, 0, 0, dw, dh);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             URL.revokeObjectURL(url);
             var dataUrl = canvas.toDataURL('image/jpeg', quality);
             var b64 = dataUrl.split(',')[1];
@@ -1012,7 +1016,15 @@
             var canvas = document.createElement('canvas');
             canvas.width = dw; canvas.height = dh;
             var ctx = canvas.getContext('2d');
+            // v14.1: un-mirror selfies. iOS "Mirror Front Camera"
+            // (default ON since iOS 14) saves front-camera photos
+            // horizontally flipped. Reverse it so the AI sees the
+            // patient as a third party would — text on clothing
+            // reads correctly, asymmetries are preserved.
+            ctx.translate(dw, 0);
+            ctx.scale(-1, 1);
             ctx.drawImage(bitmap, 0, 0, dw, dh);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             if (bitmap.close) { try { bitmap.close(); } catch(_) {} }
             var dataUrl = canvas.toDataURL('image/jpeg', quality);
             var b64 = dataUrl.split(',')[1];
