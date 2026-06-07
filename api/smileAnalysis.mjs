@@ -1,7 +1,108 @@
 // api/smileAnalysis.mjs
 // Agoura Hills Dental Designs — Drs. David & Shawn Matian
-// v16 — CLEAN REWRITE: cosmetic-funnel decision tree
+// v17 — CLINICAL PRIORITY HARDENING (missing-tooth verifier + corroboration)
 //
+//   v16 had the right architecture: structured OBSERVE → decision tree →
+//   template. The decision tree correctly prioritizes missing teeth
+//   (rule #4: missing_count >= 1 → missing_tooth template, BEFORE any
+//   cosmetic route).
+//
+//   The failure mode discovered in production: a patient submitted a
+//   photo with an obviously visible missing front tooth, and OBSERVE
+//   returned missing_count: 0. The decision tree did exactly what it
+//   was told, routed to "yellowing + crowding" → Invisalign + Whitening.
+//   Result: a clinically wrong, trust-destroying, revenue-destroying
+//   recommendation for an implant case.
+//
+//   v17 fixes the upstream vision failure with three changes:
+//   1. OBSERVE's missing-tooth instructions get a dedicated, leading,
+//      visually-prescriptive block (look HERE, look for THIS pattern).
+//   2. A new MISSING_TOOTH_VERIFIER pass runs in parallel with OBSERVE
+//      and asks ONE question: is there a visible gap? Cheap, focused,
+//      hard to miss. Used to corroborate OBSERVE's missing_count.
+//   3. Post-OBSERVE corroboration: if verifier says yes and OBSERVE
+//      says zero, the verifier wins. We log the disagreement so we
+//      can monitor false positives.
+//
+//   PLUS: a post-route guardrail that catches the exact failure mode
+//   from the production photo. If the route lands on a cosmetic-only
+//   scenario (invisalign_*, whitening_only, bonding_whitening) but
+//   the verifier flagged a missing tooth, we override to missing_tooth.
+//
+//   PRESERVED FROM v16:
+//   - The 13-template library, the decision tree order, the GHL
+//     forwarding contract, quality gate, emergency triage, pathology
+//     screen, deep-dive mode, edge runtime, CORS — all unchanged.
+//
+//   ═══════════════════════════════════════════════════════════════
+//   REGRESSION TEST FIXTURES (manual)
+//   ═══════════════════════════════════════════════════════════════
+//   When this file changes, run each of these through the deployed
+//   endpoint and confirm the expected outcome. The first one is the
+//   exact production failure that motivated v17.
+//
+//   1. MISSING-TOOTH CASE (the v17 forcing function)
+//      Photo: clearly visible missing upper-front tooth (e.g. #8 or #9).
+//      Expected:
+//        - observed.missing_count >= 1
+//        - clinical_observations.maxillary_anterior.teeth_missing
+//          contains at least one of #7-#10
+//        - scenario = "missing_tooth"
+//        - response.headline references a tooth number (e.g. "#8")
+//        - plan.best_option mentions "Implant" or "Bridge"
+//        - treatments includes implants and/or bridge
+//        - urgency = "priority"
+//      Pre-v17 actual: returned invisalign_whitening. UNACCEPTABLE.
+//
+//   2. HEALTHY SMILE
+//      Photo: clean, aligned, no obvious gap or shade issue.
+//      Expected:
+//        - observed.missing_count = 0, chip_count = 0
+//        - clinical_observations.visualization_quality good
+//        - scenario likely "whitening_only" (gentle) or
+//          "inconclusive" page-aware fallback
+//        - urgency = "standard"
+//        - no implant/bridge recommendation
+//
+//   3. HEAVY DISCOLORATION ONLY
+//      Photo: visibly stained/yellow but no chips/gaps/crowding.
+//      Expected:
+//        - observed.yellowing = true, missing_count = 0
+//        - scenario = "whitening_only"
+//        - plan.best_option = "In-Office Whitening"
+//        - treatments includes whitening
+//        - response.bullets reference shade
+//
+//   4. CROWDING + WARM SHADE (the originally-mis-served case, done right)
+//      Photo: anterior crowding with warm shade, NO chips, NO missing.
+//      Expected:
+//        - observed.crowding = true, yellowing = true, missing_count = 0
+//        - clinical_observations.maxillary_anterior.alignment references
+//          specific teeth ("crowding at #9 #10")
+//        - scenario = "invisalign_whitening"
+//        - plan.best_option = "Invisalign", alternative = whitening
+//        - response references at least one tooth number
+//
+//   5. GINGIVAL RECESSION ON LOWER ANTERIORS
+//      Photo: visible gum recession on #24-#25 area.
+//      Expected:
+//        - clinical_observations.gingival_findings notes recession at
+//          specific lower-incisor positions
+//        - pathology screen may flag perio
+//        - response acknowledges gingival concern in bullets
+//        - if perio flag fires, scenario may route to inconclusive_general
+//          with periodontal language; if not, recession should still
+//          appear in clinical_observations for ops review
+//
+//   6. LIMITED VIEW / LIPS COVERING MOST TEETH
+//      Photo: partial smile, only #7-#10 partially visible.
+//      Expected:
+//        - clinical_observations.visualization_quality reads "limited..."
+//          and lists which teeth are partially visible
+//        - response language hedges ("based on what's visible...")
+//        - no over-confident structural claim
+//
+//   v16 ORIGINAL HEADER (preserved for context):
 //   v15.4 ended up at 1671 lines with three dedicated detectors layered
 //   on top of an OBSERVE prompt that kept missing findings. Each detector
 //   was a band-aid: AI vision biased toward the most obvious finding,
@@ -150,43 +251,240 @@ The "is_dark_margin_on_existing_crown" field is critical — it is true ONLY whe
 
 If the teeth are natural (no crowns visible), is_dark_margin_on_existing_crown MUST be false even if you see decay.`;
 
-const OBSERVE_PROMPT = `You are a dental smile classifier. You answer specific yes/no questions about a casual smartphone smile photo. The questions match a real cosmetic consultation triage tree, so accuracy matters.
+// DENTAL_ANATOMY_REFERENCE — injected into OBSERVE_PROMPT as the model's
+// clinical cheat sheet. The model uses this to reason about every photo
+// as a structured anatomical system instead of a vague visual region.
+// Keep this dense — it has to fit comfortably in the system prompt budget.
+const DENTAL_ANATOMY_REFERENCE = `═══════════════════════════════════════════════════════════════════
+DENTAL ANATOMY REFERENCE — use this for every photo
+═══════════════════════════════════════════════════════════════════
 
-Look at the photo and answer EVERY field below. Use your best judgment when something is borderline — but err toward NOTICING findings, not missing them. Patients deserve to know about visible chips, wear, missing teeth, and damage.
+UNIVERSAL NUMBERING SYSTEM (US standard, 1-32):
 
-═══ COLOR & SHADE ═══
-- yellowing: Are the teeth visibly yellow, warm, or stained? (Most adults have some yellowing — flag if teeth are clearly not white-bright.)
+MAXILLARY (upper arch) — left-to-right as viewed in photo (patient's right to patient's left):
+  #1  Upper right third molar (wisdom)
+  #2  Upper right second molar
+  #3  Upper right first molar
+  #4  Upper right second premolar (bicuspid)
+  #5  Upper right first premolar
+  #6  Upper right canine (cuspid)
+  #7  Upper right lateral incisor
+  #8  Upper right central incisor
+  #9  Upper left central incisor
+  #10 Upper left lateral incisor
+  #11 Upper left canine
+  #12 Upper left first premolar
+  #13 Upper left second premolar
+  #14 Upper left first molar
+  #15 Upper left second molar
+  #16 Upper left third molar
 
-═══ ALIGNMENT ═══
-- crowding: Are teeth visibly overlapping, rotated, or out of arch alignment?
-- misalignment_with_chips: Are teeth BOTH misaligned AND showing chips/wear/breakage?
+MANDIBULAR (lower arch) — left-to-right as viewed in photo (patient's left to patient's right):
+  #17 Lower left third molar
+  #18 Lower left second molar
+  #19 Lower left first molar
+  #20 Lower left second premolar
+  #21 Lower left first premolar
+  #22 Lower left canine
+  #23 Lower left lateral incisor
+  #24 Lower left central incisor
+  #25 Lower right central incisor
+  #26 Lower right lateral incisor
+  #27 Lower right canine
+  #28 Lower right first premolar
+  #29 Lower right second premolar
+  #30 Lower right first molar
+  #31 Lower right second molar
+  #32 Lower right third molar
 
-═══ STRUCTURAL DAMAGE ═══
-Look CAREFULLY at the EDGES of every visible tooth, especially front incisors. Flag chips, wear, jagged edges, broken pieces, or any irregularity in the bite-edge line.
-- chip_count: Approximate count of teeth with visible chips, wear, or broken edges. 0 if none visible. Look at lower teeth too — wear is extremely common there.
+CRITICAL ORIENTATION RULE: a selfie shows the patient facing the camera.
+The patient's RIGHT side appears on the LEFT of the photo, and vice versa.
+This is the #1 source of AI side-confusion errors. When you say
+"patient's right central incisor," you mean tooth #8, which appears on
+the LEFT side of the image. Double-check before committing to a side.
 
-═══ MISSING TEETH ═══
-- missing_count: Count teeth that are clearly ABSENT — a visible gap in the tooth row where a tooth should be, with neighboring teeth bordering an empty space (often a darker gap that breaks the otherwise continuous line of teeth). This is one of the most consequential findings, so look carefully along BOTH the upper and lower arches and at the edges of the smile. Count a clearly absent tooth even if you are not 100% certain it is gone. Do NOT count normal even spacing between otherwise-complete teeth (a small diastema/gap), and do NOT count the dark space of the open mouth behind the teeth. Return 0 only if no tooth is clearly absent.
+TOOTH GROUPS:
+  INCISORS    #7-#10 + #23-#26      front teeth, biting/cutting, most cosmetic
+  CANINES     #6, #11, #22, #27     pointed "corner" teeth, tear/grip
+  PREMOLARS   #4-#5, #12-#13, #20-#21, #28-#29   transition teeth
+  MOLARS      #2-#3, #14-#15, #18-#19, #30-#31   grinding/chewing
+  WISDOM      #1, #16, #17, #32     often impacted/extracted
+
+REGIONS:
+  ANTERIOR  #6-#11 (upper), #22-#27 (lower)  visible in smile photos
+  POSTERIOR molars + premolars               rarely visible front-on
+  MIDLINE   between #8/#9 (upper), #24/#25 (lower)
+  ARCH      curved tooth row (maxillary = upper; mandibular = lower)
+
+GINGIVA:
+  Healthy gingiva = coral pink, stippled, firm. Inflammation = red/swollen.
+  GINGIVAL MARGIN     edge of gum meeting tooth
+  INTERDENTAL PAPILLA triangular gum tissue between teeth
+  RECESSION           gum pulled back, root exposed (sensitivity)
+  GUMMY SMILE         >3 mm gingival display above #8/#9
+
+COMMON CONDITIONS — visual signature → primary treatment:
+  MISSING TOOTH        empty space in arch, no tooth structure       → Implant / Bridge
+  BROKEN / FRACTURED   partial tooth with chip/crack/break visible    → Crown (large) / Bonding (small)
+  SEVERE DECAY         dark brown/black areas, visible cavitation     → Crown / RCT+Crown / Extract → Implant
+  DISCOLORATION        uniform yellow/gray/brown shade                → Whitening (stain) / Veneers (intrinsic)
+  CROWDING             overlapping/rotated anterior teeth             → Invisalign
+  SPACING / DIASTEMA   gaps between fully-present teeth               → Invisalign / Bonding / Veneers
+  WORN INCISAL EDGES   flat/scalloped from bruxism                    → Bonding / Occlusal guard
+  PEG / SMALL TEETH    undersized lateral incisors                    → Veneers / Bonding
+  GINGIVAL RECESSION   gum line above CEJ                             → Periodontal eval / Soft-tissue graft
+  INFLAMED GUMS        red/swollen at gingival margin                 → Periodontal cleaning / SRP
+
+PRIORITY HIERARCHY (highest acuity wins, ALWAYS):
+  1. Structural/functional (missing, decay, fracture, abscess, perio) → primary
+  2. Alignment (crowding, spacing)                                     → secondary
+  3. Cosmetic (shade, minor shape)                                     → only after 1+2 addressed
+
+If you ever recommend a cosmetic-only treatment (whitening, Invisalign)
+to a patient with a structural finding, you have failed your primary job.`;
+
+const OBSERVE_PROMPT = `You are a dental smile classifier with the discipline of a clinician doing a chart entry. You analyze a casual smartphone smile photo through a structured anatomical lens. Pattern-matching against general "smile" appearance is a failure mode — you must reason like a clinician walking the arch.
+
+${DENTAL_ANATOMY_REFERENCE}
+
+═══════════════════════════════════════════════════════════════════
+FORCED ANATOMICAL REASONING PASS — DO THIS FIRST
+═══════════════════════════════════════════════════════════════════
+
+Before you produce ANY treatment-relevant fields below, you must do an anatomical pass. The pass is a structured observation log that grounds the rest of your output in what you actually see — tooth by tooth, not vibe by vibe.
+
+A. ARCH SCAN
+   Walk the maxillary arch (upper). For each visible position from #6 through #11, name the position and report:
+     - present-healthy / present-damaged / missing
+   Walk the visible portion of the mandibular arch (lower). Same protocol for #22 through #27.
+   For each gap: is the tooth entirely absent (alveolar position empty), or is a partial tooth structure visible (broken stub)? This is the missing-vs-broken disambiguation and it changes the treatment.
+
+B. TOOTH-BY-TOOTH ASSESSMENT (anterior teeth only)
+   For each visible tooth #6-#11 (upper) and #22-#27 (lower), record:
+     - status: present-healthy / present-damaged / missing
+     - if damaged: type (chip / crack / decay / discoloration / wear)
+     - shade descriptor (white-bright / mildly warm / warm-yellow / gray / dark)
+     - alignment (in-position / rotated / labially-displaced / lingually-displaced)
+
+C. ARCH ALIGNMENT
+   - crowding present? severity (mild / moderate / severe)
+   - spacing / diastema present? location
+   - midline alignment (centered / deviated)
+
+D. GINGIVAL ASSESSMENT
+   - gum color (healthy-pink / inflamed-red)
+   - recession visible? on which teeth
+   - gingival margin level (even / uneven)
+   - visible plaque or tartar?
+
+E. OCCLUSAL / WEAR ASSESSMENT
+   - visible wear on incisal edges? which teeth
+   - edges scalloped or flat (bruxism indicator)?
+
+F. SYNTHESIS
+   Rank the findings by severity using the priority hierarchy:
+     1. Structural/functional (missing, decay, fracture, perio) — ALWAYS PRIMARY
+     2. Alignment — secondary unless severe
+     3. Cosmetic shade — last
+   Identify the dominant finding. This will drive the treatment recommendation downstream.
+
+═══════════════════════════════════════════════════════════════════
+CLINICAL PRIORITY ORDER — REINFORCEMENT
+═══════════════════════════════════════════════════════════════════
+
+The most consequential finding in any dental photo is a MISSING TOOTH. You already checked for it in Pass A. Now you commit to it.
+
+Recommending a cosmetic treatment (Invisalign, whitening) to someone with a missing tooth is a clinical accuracy failure and a trust-destroying experience for the patient. Bias toward NOTICING a gap, not missing one. A false positive (you flag a gap that turns out to be a deep shadow) is recoverable in consultation — a false negative (you miss a visible gap and recommend whitening) is catastrophic.
+
+VISUALIZATION CAVEAT: if lips, angle, or focus obscure the view, do not guess. Use visualization_quality = "limited — only #X-#Y partially visible" and hedge accordingly. Saying "I can't fully see" is correct; making up findings is harmful.
+
+═══ STEP 1 — MISSING TEETH (CHECK FIRST, ALWAYS) ═══
+
+Walk the upper arch tooth-by-tooth from the patient's right canine to the left canine. Then walk the visible portion of the lower arch the same way. As you walk, ask at every position: "Is there a tooth here, or is there an empty space where a tooth should be?"
+
+A visible gap typically looks like ONE of these:
+  - A dark space between two teeth that is the WIDTH of a tooth (not a thin diastema gap — a full tooth-sized absence)
+  - A spot where the tooth-row line breaks — two teeth on either side, nothing in between
+  - A shorter, partial tooth stub adjacent to a normal-height neighbor
+  - The dark interior of the mouth showing through where a tooth should be the boundary
+  - An obvious asymmetry — the patient's left side has a tooth at position X, but the right side does not
+
+Front central incisors (positions #8 and #9) are the highest-priority check — they are the most visible teeth, the easiest to confirm a gap on, and the most clinically/cosmetically meaningful when absent.
+
+DO count:
+  - A full-tooth-width gap, even if you are only 70-80% certain
+  - A partially-broken-down stub that no longer functions as a tooth
+DO NOT count:
+  - Normal even spacing between otherwise-complete teeth (a thin diastema)
+  - The dark mouth space BEHIND the front teeth
+  - Teeth that look unusually shaped but are present
+
+- missing_count: Integer count of teeth clearly absent. If you see even ONE clearly absent tooth in the front (incisor or canine), return at least 1. Do not return 0 just because you are not 100% certain — a 70%+ certainty of a visible gap counts as 1.
 - missing_in_same_area: If 2+ missing, are they clustered in the same arch/region? (true/false)
 - damaged_remaining_teeth: If multiple missing, do the REMAINING visible teeth ALSO look damaged, broken down, or severely decayed? (true/false — only relevant when missing_count >= 3)
 
-═══ TOOTH SHAPE ═══
+═══ STEP 2 — COLOR & SHADE ═══
+- yellowing: Are the teeth visibly yellow, warm, or stained? (Most adults have some yellowing — flag if teeth are clearly not white-bright.)
+
+═══ STEP 3 — ALIGNMENT ═══
+- crowding: Are teeth visibly overlapping, rotated, or out of arch alignment?
+- misalignment_with_chips: Are teeth BOTH misaligned AND showing chips/wear/breakage?
+
+═══ STEP 4 — STRUCTURAL DAMAGE ═══
+Look CAREFULLY at the EDGES of every visible tooth, especially front incisors. Flag chips, wear, jagged edges, broken pieces, or any irregularity in the bite-edge line.
+- chip_count: Approximate count of teeth with visible chips, wear, or broken edges. 0 if none visible. Look at lower teeth too — wear is extremely common there.
+
+═══ STEP 5 — TOOTH SHAPE ═══
 - misshapen_teeth: Do any teeth appear unusually shaped (peg-shaped, narrow, malformed, much smaller than neighbors)? (true/false)
 - uneven_teeth: Do the front teeth show clearly different heights/sizes that aren't from chips? (true/false)
 
-═══ GUM & TEETH PROPORTION ═══
+═══ STEP 6 — GUM & TEETH PROPORTION ═══
 - gummy_smile: Does the smile show an unusual amount of gum tissue above the upper teeth? (true/false)
 - short_or_baby_teeth: Do the upper front teeth look very small, short, or "baby-tooth-like" relative to the gum/lip frame? (true/false)
 
-═══ EXISTING DENTAL WORK ═══
+═══ STEP 7 — EXISTING DENTAL WORK ═══
 - has_existing_crowns_or_veneers: Are there clearly existing porcelain restorations visible (uniform white teeth, distinct from natural teeth)? (true/false)
 
-═══ EVIDENCE ═══
-- summary: Two short sentences describing what you actually see in the photo, plain language, for use in patient-facing copy.
+═══ STEP 8 — SELF-CHECK ═══
+Before you write your final JSON output, re-read what you have. Ask yourself:
+  - If a layperson glanced at this photo, what is the FIRST thing they would notice?
+  - If a missing tooth is visible, does my missing_count reflect that?
+  - If I set missing_count > 0, am I about to also write a summary that mentions yellowing or crowding without mentioning the gap? If yes, fix the summary — the gap leads.
 
-Return ONLY this JSON, no preamble, no markdown:
+If your check reveals an inconsistency (e.g. you see a clearly visible gap in the photo but your missing_count is 0), correct your output BEFORE returning. The downstream code uses missing_count to drive treatment recommendations — getting this wrong steers patients into the wrong treatment.
+
+═══ EVIDENCE ═══
+- summary: Two short sentences describing what you actually see in the photo, plain language, for use in patient-facing copy. If missing_count > 0, the FIRST sentence MUST reference the visible gap (e.g. "a missing front tooth," "a gap in the upper smile line"). Do not lead with shade or alignment when a structural finding is present.
+
+Return ONLY this JSON, no preamble, no markdown.
+
+The top-level booleans/counts drive the downstream decision tree — keep them strictly accurate. The "clinical_observations" block is your structured anatomical pass — it grounds the recommendation in real findings and becomes auditable provenance. If something is not visible, use empty arrays / empty strings / "limited" — never guess.
 
 {
+  "clinical_observations": {
+    "maxillary_anterior": {
+      "teeth_visible":   ["<universal numbers like #7, #8, #9>"],
+      "teeth_missing":   ["<universal numbers of clearly absent teeth>"],
+      "teeth_broken":    ["<universal numbers of partially-present / fractured teeth>"],
+      "teeth_decayed":   ["<universal numbers showing decay / cavitation>"],
+      "alignment":       "<short note, e.g. 'mild crowding at #9 #10' or 'in-arch alignment'>",
+      "shade":           "<short shade descriptor, e.g. 'mildly warm', 'warm-yellow'>",
+      "notes":           "<one short clinical note if relevant, else empty>"
+    },
+    "mandibular_anterior": {
+      "teeth_visible":   [],
+      "teeth_missing":   [],
+      "teeth_broken":    [],
+      "teeth_decayed":   [],
+      "alignment":       "",
+      "shade":           "",
+      "notes":           ""
+    },
+    "gingival_findings":     "<one short sentence, e.g. 'mild marginal inflammation at #8 #9; no recession visible' or 'no visible gingival concerns'>",
+    "midline_alignment":     "centered" | "deviated" | "not assessable",
+    "visualization_quality": "<'good — full anterior visible', or 'limited — only #X-#Y partially visible', etc.>",
+    "dominant_finding":      "<one short phrase naming the single dominant finding, e.g. 'missing #8' or 'mild generalized yellowing'>"
+  },
   "yellowing": true | false,
   "crowding": true | false,
   "misalignment_with_chips": true | false,
@@ -199,7 +497,43 @@ Return ONLY this JSON, no preamble, no markdown:
   "gummy_smile": true | false,
   "short_or_baby_teeth": true | false,
   "has_existing_crowns_or_veneers": true | false,
-  "summary": "<two short sentences>"
+  "summary": "<two short sentences for patient-facing copy. If missing_count > 0, the first sentence MUST reference the visible gap by tooth number or position (e.g. 'A missing upper front tooth (#8)').>"
+}`;
+
+// MISSING_TOOTH_VERIFIER — runs in parallel with OBSERVE as a focused second
+// look. Asks ONE question — is there a visible gap where a tooth should be?
+// Used to corroborate OBSERVE's missing_count. If verifier disagrees with
+// OBSERVE (verifier sees a gap, OBSERVE returned 0), verifier wins and we
+// log the disagreement. This catches the production failure mode where the
+// vision pass biased toward cosmetic findings and missed the obvious gap.
+const MISSING_TOOTH_VERIFIER_PROMPT = `You are looking at a casual smartphone smile photo. You answer ONE question with extreme care: is there a visible MISSING TOOTH in this photo?
+
+A missing tooth means a tooth that should be present in the dental arch is ABSENT — there is a clear empty space where a tooth belongs. The classic presentations:
+  - A dark, tooth-sized gap between two otherwise-normal teeth
+  - A broken stub where a full tooth should be (a tooth so broken down it no longer functions)
+  - The mouth interior visible through the smile line because a front tooth is gone
+  - The patient's two sides of the smile are asymmetric — one side has a tooth at a position, the other side has empty space
+
+Walk the upper arch from one canine to the other, then walk the visible lower arch. At every position, ask: "Is there a tooth here, or is this an empty space?" Pay extra attention to the front central incisors (the two biggest front teeth) — gaps there are the most visible and the most clinically meaningful.
+
+DO NOT confuse a missing tooth with:
+  - The normal dark space INSIDE the mouth behind the front teeth
+  - A small thin space between two otherwise-complete teeth (diastema)
+  - A tooth that looks unusually shaped but is structurally present
+
+If you see a clear gap, answer true even if you are not 100% certain. A 70%+ certainty counts. If you are less than 70% certain, answer false but note your uncertainty in the location field.
+
+If a tooth is gone, identify its Universal Numbering position when possible (#1-#32). Anterior reference: maxillary anterior is #6-#11 (left of midline in photo = patient's right = #6,#7,#8; right of midline in photo = patient's left = #9,#10,#11). Mandibular anterior is #22-#27.
+
+ORIENTATION GUARD: a selfie shows the patient facing the camera, so the patient's right side appears on the LEFT half of the photo. Triple-check this before labeling a side.
+
+Return ONLY this JSON:
+{
+  "missing_tooth_visible": true | false,
+  "count": <integer — best estimate of how many teeth are absent, 0 if none>,
+  "tooth_numbers": ["<universal numbers of absent teeth, e.g. '#8', '#9'>"],
+  "location": "<short plain description with tooth #, e.g. 'upper front #8 (patient's right central incisor)' — or empty string>",
+  "confidence": "high" | "medium" | "low"
 }`;
 
 const EMERGENCY_PROMPT = `You are a caring dentist at Agoura Hills Dental Designs. The patient's photo has been flagged for ONE specific emergency: visible_blood, broken_tooth, trauma, abscess, or deep_cavity. The specific concern will be in the user message.
@@ -767,6 +1101,104 @@ function isHardReject(qParsed) {
 }
 
 // ════════════════════════════════════════════════════════════════════
+// ANATOMICAL ENRICHMENT & VALIDATION
+// ════════════════════════════════════════════════════════════════════
+
+// Pull a usable tooth-number reference out of clinical_observations.
+// Returns a string like "#8" or "#8 and #9" or null if nothing usable.
+function pickToothRef(co, scenario) {
+  if (!co) return null;
+  const max = co.maxillary_anterior || {};
+  const man = co.mandibular_anterior || {};
+  const pickList = (arr) => Array.isArray(arr) ? arr.filter(Boolean).slice(0, 2) : [];
+
+  // For missing-tooth scenarios, prefer missing teeth
+  if (scenario === 'missing_tooth' || scenario === 'implant_bridge' || scenario === 'all_on_4') {
+    const m = [...pickList(max.teeth_missing), ...pickList(man.teeth_missing)].slice(0, 2);
+    if (m.length) return m.join(' and ');
+  }
+  // For damage scenarios, prefer broken/decayed
+  if (scenario === 'crowns_or_veneers' || scenario === 'bonding_whitening') {
+    const d = [...pickList(max.teeth_broken), ...pickList(max.teeth_decayed),
+               ...pickList(man.teeth_broken), ...pickList(man.teeth_decayed)].slice(0, 2);
+    if (d.length) return d.join(' and ');
+  }
+  // For alignment / cosmetic scenarios, reference the visible anterior teeth
+  const v = [...pickList(max.teeth_visible)].slice(0, 2);
+  if (v.length) return v.join(' and ');
+  return null;
+}
+
+// Splice a tooth-number reference into the template's headline and first
+// bullet so patient-facing copy is anatomically specific to THIS photo.
+// Non-destructive: if no usable ref is found, leave the template alone.
+function enrichWithAnatomy(response, observed, scenario) {
+  const co = observed?.clinical_observations;
+  if (!co || !response) return response;
+
+  const ref = pickToothRef(co, scenario);
+  const dominant = (co.dominant_finding || '').trim();
+
+  // Headline: append a parenthetical with the specific finding when we have one.
+  if (ref && response.headline && !/#\d+/.test(response.headline)) {
+    if (scenario === 'missing_tooth' || scenario === 'implant_bridge' || scenario === 'all_on_4') {
+      response.headline = response.headline.replace(/\.?$/, ` — specifically ${ref}.`);
+    } else if (dominant) {
+      response.headline = response.headline.replace(/\.?$/, ` (${dominant}).`);
+    }
+  }
+
+  // First bullet: prepend a specific anatomical finding when available.
+  if (Array.isArray(response.bullets) && response.bullets.length > 0) {
+    const first = response.bullets[0];
+    if (ref && !/#\d+/.test(first)) {
+      if (scenario === 'missing_tooth' || scenario === 'implant_bridge' || scenario === 'all_on_4') {
+        response.bullets[0] = `Visible gap at ${ref}. ${first}`;
+      } else if (scenario === 'crowns_or_veneers' || scenario === 'bonding_whitening') {
+        response.bullets[0] = `Damage visible at ${ref}. ${first}`;
+      } else if (co?.dominant_finding) {
+        response.bullets[0] = `${co.dominant_finding}. ${first}`;
+      }
+    }
+  }
+
+  // Stash the dominant finding + clinical_observations on the response so GHL
+  // can surface them and ops can audit. Patient-facing widget already ignores
+  // underscore-prefixed fields it doesn't know about.
+  response._clinical_observations = co;
+  if (dominant) response._dominant_finding = dominant;
+  return response;
+}
+
+// Anatomical specificity check: headline or at least one bullet must reference
+// a specific tooth (#N) or an anatomical term. If not, the model defaulted to
+// generic boilerplate and the response is unfit to ship.
+const ANATOMICAL_TERMS_RE = /#\d+|incisor|canine|cuspid|molar|premolar|bicuspid|maxillary|mandibular|anterior|posterior|gingival|gum line|gum-line|midline|arch/i;
+function hasAnatomicalSpecificity(response) {
+  if (!response) return false;
+  const corpus = [response.headline, ...(Array.isArray(response.bullets) ? response.bullets : [])]
+    .filter(s => typeof s === 'string').join(' \n ');
+  return ANATOMICAL_TERMS_RE.test(corpus);
+}
+
+// Side-confusion heuristic: if a single finding sentence mentions BOTH
+// "right" and "left" with tooth context, flag it. The model is likely
+// confusing patient orientation. Returns true if a likely confusion exists.
+function hasSideConfusion(response) {
+  if (!response) return false;
+  const sentences = [response.headline, ...(Array.isArray(response.bullets) ? response.bullets : [])]
+    .filter(s => typeof s === 'string');
+  for (const s of sentences) {
+    const lower = s.toLowerCase();
+    const hasRight = /\bright\b/.test(lower);
+    const hasLeft = /\bleft\b/.test(lower);
+    const hasToothCtx = /tooth|incisor|canine|cuspid|molar|premolar|#\d+/.test(lower);
+    if (hasRight && hasLeft && hasToothCtx) return true;
+  }
+  return false;
+}
+
+// ════════════════════════════════════════════════════════════════════
 // HANDLER
 // ════════════════════════════════════════════════════════════════════
 
@@ -866,16 +1298,53 @@ export default async function handler(req) {
       }
     }
 
-    // ─── 3. OBSERVE ────────────────────────────────────────────────
+    // ─── 3. OBSERVE + MISSING-TOOTH VERIFIER (parallel) ────────────
+    // We run the structured OBSERVE pass and a dedicated missing-tooth
+    // verifier IN PARALLEL. Verifier is a focused second look that asks
+    // ONE question — is there a visible gap? If OBSERVE missed one,
+    // verifier catches it. Cost: one extra Claude call per analysis.
     let observed = null;
+    let missingVerifier = null;
     try {
-      const oRes = await callClaude(apiKey, OBSERVE_PROMPT, [
-        imageContent, { type: 'text', text: 'Answer all classification questions.' },
-      ], 600);
+      const [oRes, mRes] = await Promise.all([
+        callClaude(apiKey, OBSERVE_PROMPT, [
+          imageContent, { type: 'text', text: 'Answer all classification questions.' },
+        ], 700),
+        callClaude(apiKey, MISSING_TOOTH_VERIFIER_PROMPT, [
+          imageContent, { type: 'text', text: 'Is there a visible missing tooth?' },
+        ], 200),
+      ]);
       observed = parseJsonSafe((await oRes.json())?.content?.[0]?.text);
-      console.log('[v16] observed:', JSON.stringify(observed).substring(0, 600));
+      missingVerifier = parseJsonSafe((await mRes.json())?.content?.[0]?.text);
+      console.log('[v17] observed:', JSON.stringify(observed).substring(0, 600));
+      console.log('[v17] missing_verifier:', JSON.stringify(missingVerifier));
     } catch (e) {
-      console.error('[v16] observe error:', e.message);
+      console.error('[v17] observe/verifier error:', e.message);
+    }
+
+    // ─── 3b. CORROBORATE missing_count ─────────────────────────────
+    // If verifier sees a gap with medium/high confidence but OBSERVE
+    // returned 0 — verifier wins. This is the exact production bug:
+    // OBSERVE biased toward cosmetic findings, missed the obvious gap.
+    if (observed && missingVerifier?.missing_tooth_visible === true) {
+      const vCount = Math.max(1, Number(missingVerifier.count) || 1);
+      const vConfidence = (missingVerifier.confidence || 'low').toLowerCase();
+      const oCount = Number(observed.missing_count) || 0;
+      if (oCount === 0 && (vConfidence === 'high' || vConfidence === 'medium')) {
+        console.log('[v17] CORROBORATION OVERRIDE — verifier saw gap that OBSERVE missed.',
+          'observed.missing_count=0 →', vCount,
+          '| location:', missingVerifier.location,
+          '| confidence:', vConfidence);
+        observed.missing_count = vCount;
+        // Also bump summary so it leads with the gap.
+        if (missingVerifier.location) {
+          observed.summary = `A visible missing tooth at the ${missingVerifier.location}. ${observed.summary || ''}`.trim();
+        }
+      } else if (vCount > oCount && vConfidence === 'high') {
+        console.log('[v17] CORROBORATION BUMP — verifier counted more gaps than OBSERVE.',
+          'observed.missing_count=', oCount, '→', vCount);
+        observed.missing_count = vCount;
+      }
     }
 
     // ─── 4. PATHOLOGY (silent backend signal, EXCEPT dark margins) ──
@@ -885,17 +1354,106 @@ export default async function handler(req) {
         imageContent, { type: 'text', text: 'Screen for visible pathology.' },
       ], 250);
       pathologyFlag = parseJsonSafe((await hRes.json())?.content?.[0]?.text);
-      console.log('[v16] pathology:', JSON.stringify(pathologyFlag));
+      console.log('[v17] pathology:', JSON.stringify(pathologyFlag));
     } catch (e) {
-      console.warn('[v16] pathology skipped:', e.message);
+      console.warn('[v17] pathology skipped:', e.message);
     }
 
     // ─── 5. ROUTE ──────────────────────────────────────────────────
-    const scenario = routeDecision(observed, pathologyFlag);
-    console.log('[v16] routed to:', scenario);
+    let scenario = routeDecision(observed, pathologyFlag);
+    console.log('[v17] routed to:', scenario);
+
+    // ─── 5b. POST-ROUTE GUARDRAIL ──────────────────────────────────
+    // Final safety net for the production failure mode: if the route
+    // landed on a cosmetic-only scenario but the verifier flagged a
+    // missing tooth with any non-low confidence, override to
+    // missing_tooth. Catches the case where OBSERVE returned 0,
+    // corroboration didn't trigger (e.g. verifier confidence was
+    // medium but we still picked a cosmetic route for another reason),
+    // and routing missed the structural finding.
+    const COSMETIC_ONLY_SCENARIOS = new Set([
+      'invisalign_only',
+      'invisalign_whitening',
+      'whitening_only',
+      'bonding_whitening',
+    ]);
+    if (
+      COSMETIC_ONLY_SCENARIOS.has(scenario)
+      && missingVerifier?.missing_tooth_visible === true
+      && (missingVerifier.confidence || '').toLowerCase() !== 'low'
+    ) {
+      console.log('[v17] POST-ROUTE GUARDRAIL — overriding cosmetic route',
+        scenario, '→ missing_tooth (verifier flagged gap).');
+      scenario = 'missing_tooth';
+      // Force missing_count to at least 1 so downstream extractVisibleFindings
+      // emits the missing_tooth code for GHL.
+      if (observed) observed.missing_count = Math.max(1, Number(observed.missing_count) || 1);
+    }
 
     // ─── 6. BUILD RESPONSE ─────────────────────────────────────────
-    const response = buildResponse(scenario, observed, pathologyFlag, pagePath);
+    let response = buildResponse(scenario, observed, pathologyFlag, pagePath);
+
+    // ─── 6b. ANATOMICAL ENRICHMENT ─────────────────────────────────
+    // Splice tooth numbers from clinical_observations into headline/bullets
+    // so the patient-facing copy is specific to THIS photo, not generic.
+    response = enrichWithAnatomy(response, observed, scenario);
+
+    // ─── 6c. ANATOMICAL SPECIFICITY VALIDATION ─────────────────────
+    // Fail closed if the response doesn't reference any specific tooth or
+    // anatomical term — model defaulted to generic language. ONE retry
+    // with a stricter reminder to reference tooth numbers.
+    if (!hasAnatomicalSpecificity(response)) {
+      console.log('[v17] SPECIFICITY FAIL — retrying OBSERVE with anatomy reminder.');
+      try {
+        const strictMsg = 'Your previous classification produced generic language. Re-analyze and ensure your clinical_observations include specific Universal Numbering tooth numbers (#1-#32) for every visible anterior tooth, every missing tooth, and every damaged tooth. The downstream patient copy must reference at least one specific tooth by number.';
+        const oRetry = await callClaude(apiKey, OBSERVE_PROMPT, [
+          imageContent,
+          { type: 'text', text: strictMsg },
+        ], 1100);
+        const observedRetry = parseJsonSafe((await oRetry.json())?.content?.[0]?.text);
+        if (observedRetry) {
+          console.log('[v17] retry observed:', JSON.stringify(observedRetry).substring(0, 600));
+          // Re-corroborate with the still-valid verifier signal
+          if (missingVerifier?.missing_tooth_visible === true) {
+            const vCount = Math.max(1, Number(missingVerifier.count) || 1);
+            const vConfidence = (missingVerifier.confidence || 'low').toLowerCase();
+            if ((Number(observedRetry.missing_count) || 0) === 0
+                && (vConfidence === 'high' || vConfidence === 'medium')) {
+              observedRetry.missing_count = vCount;
+            }
+          }
+          const scenarioRetry = routeDecision(observedRetry, pathologyFlag);
+          let responseRetry = buildResponse(scenarioRetry, observedRetry, pathologyFlag, pagePath);
+          responseRetry = enrichWithAnatomy(responseRetry, observedRetry, scenarioRetry);
+          if (hasAnatomicalSpecificity(responseRetry)) {
+            response = responseRetry;
+            console.log('[v17] retry produced specific output, using it.');
+          } else {
+            console.log('[v17] retry still generic, keeping enriched original.');
+          }
+        }
+      } catch (e) {
+        console.warn('[v17] specificity retry failed:', e.message);
+      }
+    }
+
+    // ─── 6d. SIDE-CONFUSION HEURISTIC ──────────────────────────────
+    // If a single finding sentence references BOTH "right" and "left"
+    // with tooth context, the model likely confused orientation. Strip
+    // side language as a safety net so we don't ship a misleading sentence.
+    if (hasSideConfusion(response)) {
+      console.log('[v17] SIDE-CONFUSION detected — neutralizing right/left wording.');
+      const neutralize = (s) => typeof s === 'string'
+        ? s.replace(/\b(patient'?s?\s+)?(right|left)\s+(?=(central |lateral )?(incisor|canine|cuspid|molar|premolar|tooth))/gi, '')
+            .replace(/\s+/g, ' ').trim()
+        : s;
+      response.headline = neutralize(response.headline);
+      if (Array.isArray(response.bullets)) response.bullets = response.bullets.map(neutralize);
+    }
+
+    // Surface verifier signal in the GHL forwarding payload for ops
+    // visibility — does not change patient-facing copy.
+    if (missingVerifier) response._missing_verifier = missingVerifier;
     return new Response(JSON.stringify(response), { status: 200, headers });
 
   } catch (err) {
