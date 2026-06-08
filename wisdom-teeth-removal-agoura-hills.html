@@ -154,6 +154,28 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
   "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "343", "bestRating": "5", "worstRating": "1"}
 }
 </script>
+<!-- MedicalProcedure schema (2026-06-08): explicit medical-domain markup
+     for this dental procedure. Google uses MedicalProcedure to surface
+     richer treatment details in SERPs and to anchor the procedure to
+     the practice entity via the performer @id link. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SurgicalProcedure",
+  "name": "Wisdom Teeth Removal",
+  "description": "Surgical extraction of third molars (wisdom teeth) that are impacted, partially erupted, or causing crowding, pain, or infection risk. Sedation options available.",
+  "procedureType": "Oral Surgery",
+  "bodyLocation": "Third molars (teeth #1, #16, #17, #32)",
+  "preparation": "Panoramic X-ray or 3D CBCT scan, evaluation of root proximity to nerves and sinuses, sedation planning.",
+  "howPerformed": "Local anesthesia and/or IV sedation. Surgical access to the tooth, removal in sections if impacted, irrigation, suturing as needed.",
+  "followup": "Post-op instructions for soft diet and oral care; suture removal or healing check at 1-2 weeks.",
+  "url": "https://agourahillsdentaldesigns.com/wisdom-teeth-removal-agoura-hills",
+  "additionalType": "https://schema.org/MedicalProcedure",
+  "performer": {
+    "@id": "https://agourahillsdentaldesigns.com#dentist"
+  }
+}
+</script>
 <meta property="og:image" content="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Team%20Photo.png"/>
 <meta property="og:title" content="Wisdom Teeth Removal in Agoura Hills, CA | AHDD"/>
 <meta property="og:url" content="https://agourahillsdentaldesigns.com/wisdom-teeth-removal-agoura-hills"/>

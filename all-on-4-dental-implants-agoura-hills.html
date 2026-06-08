@@ -154,6 +154,28 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
   "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "343", "bestRating": "5", "worstRating": "1"}
 }
 </script>
+<!-- MedicalProcedure schema (2026-06-08): explicit medical-domain markup
+     for this dental procedure. Google uses MedicalProcedure to surface
+     richer treatment details in SERPs and to anchor the procedure to
+     the practice entity via the performer @id link. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SurgicalProcedure",
+  "name": "All-on-4 Dental Implants",
+  "description": "Full-arch fixed prosthesis supported by four strategically placed dental implants. Replaces an entire arch of missing teeth in a single coordinated treatment, often with same-day temporary teeth.",
+  "procedureType": "Implantation",
+  "bodyLocation": "Maxilla or mandible (full arch)",
+  "preparation": "3D CBCT imaging, full-mouth diagnostic workup, treatment planning, medical clearance if needed.",
+  "howPerformed": "IV sedation. Four implants placed at strategic angles in the jawbone in a single surgical session. Temporary fixed bridge attached the same day; final prosthesis placed after 3-6 months of healing.",
+  "followup": "Routine cleanings and exams every 6 months; prosthesis can be expected to last 15-20+ years with proper care.",
+  "url": "https://agourahillsdentaldesigns.com/all-on-4-dental-implants-agoura-hills",
+  "additionalType": "https://schema.org/MedicalProcedure",
+  "performer": {
+    "@id": "https://agourahillsdentaldesigns.com#dentist"
+  }
+}
+</script>
 <meta property="og:image" content="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Team%20Photo.png"/>
 <meta property="og:title" content="All-on-4 Dental Implants Agoura Hills, CA | AHDD"/>
 <meta property="og:url" content="https://agourahillsdentaldesigns.com/all-on-4-dental-implants-agoura-hills"/>
