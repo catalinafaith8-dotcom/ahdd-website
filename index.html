@@ -25,6 +25,17 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
 <!-- /AHDD:TRACK:ATTR-SCRIPT -->
 <link rel="preconnect" href="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev" crossorigin id="ahdd-r2-preconnect"/>
 <link rel="dns-prefetch" href="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev"/>
+<!-- LCP optimization (2026-06-08): preload the hero image so the browser
+     starts fetching it as soon as the head is parsed instead of waiting
+     for the body. fetchpriority=high signals critical resource. Before
+     this change, mobile Lighthouse measured LCP at 26.6s — the LCP
+     element was the hero photo and the browser was discovering it
+     dramatically too late in the load. -->
+<link rel="preload" as="image" href="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg" fetchpriority="high"/>
+<!-- Preconnect to Google Fonts so the async stylesheet swap below resolves
+     faster (CSS fetch + woff2 fetch can start in parallel). -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 
 <!-- Google Ads Global Site Tag -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11217610443"></script>
@@ -82,7 +93,14 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet"/>
+<!-- Async Google Fonts (2026-06-08): the previous synchronous <link rel="stylesheet">
+     was blocking render for ~1,560ms on mobile per Lighthouse. The media="print"
+     onload swap trick loads the CSS without blocking the critical render path, then
+     applies it once loaded. font-display:swap on the @font-face means text shows in
+     fallback immediately and swaps when Jakarta Sans arrives. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet"/></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -773,7 +791,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>
 
 <section id="hero">
-  <img id="hero-img" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg" alt="Drs. Shawn and David Matian at Agoura Hills Dental Designs" loading="eager"/>
+  <img id="hero-img" src="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg" alt="Drs. Shawn and David Matian at Agoura Hills Dental Designs" loading="eager" fetchpriority="high" decoding="async" width="1920" height="1280"/>
   <div id="hero-overlay"></div>
   <div class="hero-inner">
     <div class="hero-content">

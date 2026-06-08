@@ -31,10 +31,16 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /*.css
-  Cache-Control: public, max-age=300, must-revalidate
+  # 1 day fresh + 1 week stale-while-revalidate. Files aren't versioned in
+  # filename, so we can't max-age=31536000 — but 5 minutes (previous setting)
+  # forced unnecessary re-fetches and was flagged by Lighthouse as a cache
+  # lifetime issue. SWR keeps the cache hot for repeat visits without
+  # blocking content updates from shipping.
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 /*.js
-  Cache-Control: public, max-age=300, must-revalidate
+  # Same SWR rationale as CSS.
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 /*.woff2
   Cache-Control: public, max-age=31536000, immutable

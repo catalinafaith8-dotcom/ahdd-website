@@ -154,6 +154,28 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
   "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "343", "bestRating": "5", "worstRating": "1"}
 }
 </script>
+<!-- MedicalProcedure schema (2026-06-08): explicit medical-domain markup
+     for this dental procedure. Google uses MedicalProcedure to surface
+     richer treatment details in SERPs and to anchor the procedure to
+     the practice entity via the performer @id link. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TherapeuticProcedure",
+  "name": "Dental Bonding",
+  "description": "Tooth-colored composite resin applied and shaped to repair chips, close small gaps, reshape teeth, and improve cosmetic appearance. Single-visit treatment, no enamel removal.",
+  "procedureType": "Cosmetic Restorative",
+  "bodyLocation": "Anterior teeth (typically incisors and canines)",
+  "preparation": "Shade matching, light surface preparation.",
+  "howPerformed": "Resin applied to tooth, sculpted to desired shape, hardened with curing light, then polished. Typically 30-60 minutes per tooth.",
+  "followup": "Routine cleanings; bonding typically lasts 5-10 years with proper care.",
+  "url": "https://agourahillsdentaldesigns.com/dental-bonding-agoura-hills",
+  "additionalType": "https://schema.org/MedicalProcedure",
+  "performer": {
+    "@id": "https://agourahillsdentaldesigns.com#dentist"
+  }
+}
+</script>
 <meta property="og:image" content="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Team%20Photo.png"/>
 <meta property="og:title" content="Dental Bonding in Agoura Hills, CA | AHDD"/>
 <meta property="og:url" content="https://agourahillsdentaldesigns.com/dental-bonding-agoura-hills"/>

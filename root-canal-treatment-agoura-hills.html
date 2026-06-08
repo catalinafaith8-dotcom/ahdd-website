@@ -154,6 +154,28 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
   "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "343", "bestRating": "5", "worstRating": "1"}
 }
 </script>
+<!-- MedicalProcedure schema (2026-06-08): explicit medical-domain markup
+     for this dental procedure. Google uses MedicalProcedure to surface
+     richer treatment details in SERPs and to anchor the procedure to
+     the practice entity via the performer @id link. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TherapeuticProcedure",
+  "name": "Root Canal Treatment",
+  "description": "Endodontic procedure to treat infected or inflamed dental pulp. The pulp is removed, the canal disinfected and shaped, and the tooth sealed with a biocompatible filling material to prevent reinfection.",
+  "procedureType": "Endodontic",
+  "bodyLocation": "Tooth pulp chamber and root canals",
+  "preparation": "Diagnostic X-ray, pulp vitality testing, local anesthesia.",
+  "howPerformed": "Pulp accessed through the crown, infected tissue removed with rotary files, canals disinfected and shaped, filled with gutta-percha, opening sealed. Typically 1-2 visits.",
+  "followup": "Permanent crown placement within 2-4 weeks to protect the treated tooth from fracture.",
+  "url": "https://agourahillsdentaldesigns.com/root-canal-treatment-agoura-hills",
+  "additionalType": "https://schema.org/MedicalProcedure",
+  "performer": {
+    "@id": "https://agourahillsdentaldesigns.com#dentist"
+  }
+}
+</script>
 <meta property="og:image" content="https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Team%20Photo.png"/>
 <meta property="og:title" content="Root Canal Treatment in Agoura Hills, CA | AHDD"/>
 <meta property="og:url" content="https://agourahillsdentaldesigns.com/root-canal-treatment-agoura-hills"/>

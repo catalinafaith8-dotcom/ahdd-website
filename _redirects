@@ -57,3 +57,60 @@ https://www.agourahillsdentaldesigns.com/*  https://agourahillsdentaldesigns.com
 /services/restorative-dentistry   /restorative-dentistry   301
 /services/emergency-dentistry     /emergency-dentistry     301
 /services/sedation-dentistry      /sedation-dentistry      301
+
+# ════════════════════════════════════════════════════════════════════
+# SEO Technical Week 2 — canonical consolidation + legacy slug cleanup
+# Added 2026-06-08 in response to Google Search Console audit:
+#   - 8 "Crawled, currently not indexed" pages (trailing-slash duplicates
+#     + dead Wix legacy URLs were splitting ranking signal)
+#   - 4 "Not found (404)" pages from external backlinks pointing to old
+#     Wix slugs that were never redirected after migration
+# Fixing these consolidates link equity onto the apex non-trailing
+# canonical and eliminates the duplicate-content signal that was
+# dropping us to page 3-4 on competitive terms.
+# ════════════════════════════════════════════════════════════════════
+
+# ───────── Trailing-slash strip → canonical (non-trailing) ─────────
+# Google was treating /invisalign/ and /invisalign as two different
+# URLs, splitting authority. vercel.json declares "trailingSlash":false
+# but Cloudflare Pages doesn't read that file — these explicit rules
+# enforce the same behavior on the actual platform.
+/dental-implants/                              /dental-implants                              301!
+/invisalign/                                   /invisalign                                   301!
+/veneers/                                      /veneers                                      301!
+/teeth-whitening/                              /teeth-whitening                              301!
+/restorative-dentistry/                        /restorative-dentistry                        301!
+/emergency-dentistry/                          /emergency-dentistry                          301!
+/sedation-dentistry/                           /sedation-dentistry                           301!
+/wisdom-teeth-removal-agoura-hills/            /wisdom-teeth-removal-agoura-hills            301!
+/dental-bonding-agoura-hills/                  /dental-bonding-agoura-hills                  301!
+/all-on-4-dental-implants-agoura-hills/        /all-on-4-dental-implants-agoura-hills        301!
+/root-canal-treatment-agoura-hills/            /root-canal-treatment-agoura-hills            301!
+/agoura-hills-dentist/                         /agoura-hills-dentist                         301!
+/calabasas-dentist/                            /calabasas-dentist                            301!
+/westlake-village-dentist/                     /westlake-village-dentist                     301!
+/malibu-dentist/                               /malibu-dentist                               301!
+/thousand-oaks-dentist/                        /thousand-oaks-dentist                        301!
+/oak-park-dentist/                             /oak-park-dentist                             301!
+/smile-analysis/                               /smile-analysis                               301!
+/about/                                        /about                                        301!
+/contact/                                      /contact                                      301!
+/financing/                                    /financing                                    301!
+/technology/                                   /technology                                   301!
+/faq/                                          /faq                                          301!
+/privacy/                                      /privacy                                      301!
+
+# ───────── Legacy Wix slugs Google still has cached ─────────
+# Flagged by GSC as "Crawled, currently not indexed" or "Not found (404)"
+/whitening/                          /teeth-whitening    301!
+/whitening                           /teeth-whitening    301!
+/meet-the-doctors-2/                 /about              301!
+/meet-the-doctors-2                  /about              301!
+/laser-dentistry/                    /technology         301!
+/laser-dentistry                     /technology         301!
+/request-appointment/                /contact            301!
+/request-appointment                 /contact            301!
+/porcelain-veneers-agoura-hills      /veneers            301!
+/porcelain-veneers-agoura-hills/     /veneers            301!
+/teeth-whitening-agoura-hills        /teeth-whitening    301!
+/teeth-whitening-agoura-hills/       /teeth-whitening    301!
