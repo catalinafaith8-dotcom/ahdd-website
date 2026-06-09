@@ -32,10 +32,8 @@ window.AHDD_GADS_CONVERSION_LABEL="REPLACE_WITH_FORM_SUBMIT_LABEL_FROM_GADS_UI";
      element was the hero photo and the browser was discovering it
      dramatically too late in the load. -->
 <link rel="preload" as="image" href="https://agourahillsdentaldesigns.com/cdn-cgi/image/format=auto,quality=85,width=1920/https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg" fetchpriority="high" imagesrcset="https://agourahillsdentaldesigns.com/cdn-cgi/image/format=auto,quality=85,width=480/https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg 480w, https://agourahillsdentaldesigns.com/cdn-cgi/image/format=auto,quality=85,width=800/https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg 800w, https://agourahillsdentaldesigns.com/cdn-cgi/image/format=auto,quality=85,width=1280/https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg 1280w, https://agourahillsdentaldesigns.com/cdn-cgi/image/format=auto,quality=85,width=1920/https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/hero-photo.jpg 1920w" imagesizes="100vw"/>
-<!-- Preconnect to Google Fonts so the async stylesheet swap below resolves
-     faster (CSS fetch + woff2 fetch can start in parallel). -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<!-- Google Fonts preconnects live further down (near the actual <link rel="stylesheet">)
+     to keep their hint range tight and avoid PSI's "more than 4 preconnects" warning. -->
 
 <!-- Google Ads Global Site Tag -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11217610443"></script>
@@ -1122,7 +1120,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </section>
-<script async src="https://www.instagram.com/embed.js"></script>
+<!-- Lazy-load Instagram embed (2026-06-08).
+     The Instagram embed.js + the CSS/JS bundles it pulls from
+     static.cdninstagram.com were adding ~2,500 ms to the critical render
+     path and ~1.4 MB to page weight on mobile, blocking LCP. Since the
+     Instagram section is below-the-fold, we defer the embed entirely
+     until the user scrolls within 400px of it. The blockquote placeholder
+     above stays visible (Instagram's own fallback styling shows a profile
+     card preview) so the section never looks empty during the deferral. -->
+<script>
+(function(){
+  var igSection = document.getElementById('instagram');
+  if (!igSection) return;
+  var loaded = false;
+  function loadEmbed() {
+    if (loaded) return;
+    loaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.instagram.com/embed.js';
+    document.body.appendChild(s);
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          loadEmbed();
+          io.disconnect();
+        }
+      });
+    }, { rootMargin: '400px 0px' });
+    io.observe(igSection);
+  } else {
+    // Fallback for ancient browsers: load on first user interaction
+    var trigger = function(){ loadEmbed(); ['scroll','touchstart','click'].forEach(function(ev){
+      window.removeEventListener(ev, trigger);
+    });};
+    ['scroll','touchstart','click'].forEach(function(ev){
+      window.addEventListener(ev, trigger, { passive: true, once: true });
+    });
+  }
+})();
+</script>
 
 <section id="loc">
   <div class="loc-outer">
