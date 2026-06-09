@@ -114,3 +114,10 @@ https://www.agourahillsdentaldesigns.com/*  https://agourahillsdentaldesigns.com
 /porcelain-veneers-agoura-hills/     /veneers            301!
 /teeth-whitening-agoura-hills        /teeth-whitening    301!
 /teeth-whitening-agoura-hills/       /teeth-whitening    301!
+
+# ───────── Wix /home slug → apex root ─────────
+# Wix homepages were served at /home; this is showing up as pending in
+# GSC validation. Map it back to the apex root so Google catalogs it
+# as redirected rather than 404.
+/home                                /                   301!
+/home/                               /                   301!
