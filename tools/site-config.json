@@ -23,12 +23,12 @@
     "currency": "USD"
   },
   "nap": {
-    "street": "28632 Roadside Drive, Suite 270",
+    "street": "28632 Roadside Dr #270",
     "locality": "Agoura Hills",
     "region": "CA",
     "postalCode": "91301",
     "country": "US",
-    "full": "28632 Roadside Drive, Suite 270, Agoura Hills, CA 91301",
+    "full": "28632 Roadside Dr #270, Agoura Hills, CA 91301",
     "mapQuery": "28632+Roadside+Drive+Suite+270+Agoura+Hills+CA+91301"
   },
   "phoneE164": "+1-818-706-6077",
