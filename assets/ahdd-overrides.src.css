@@ -2466,9 +2466,9 @@ html body .team-docs .team-photo img[src*="David"]{
     top: auto !important;
     width: 100% !important;
     max-width: 100% !important;
-    height: 78vh !important;
-    max-height: 78vh !important;
-    min-height: 400px !important;
+    height: 55vh !important;
+    max-height: 55vh !important;
+    min-height: 340px !important;
     border-radius: 20px 20px 0 0 !important;
     box-shadow: 0 -8px 32px rgba(26,31,36,.22) !important;
     display: flex !important;
