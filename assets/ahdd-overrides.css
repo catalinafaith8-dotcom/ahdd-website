@@ -55,3 +55,6 @@
     gap: 8px !important;
   }
 }
+
+/* FIX: doc-photo contain to show both doctors */
+.doc-photo img{object-fit:contain !important;object-position:center !important;background:#f3ece0 !important;}
