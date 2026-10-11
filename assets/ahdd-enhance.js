@@ -758,7 +758,7 @@
           try { v.pause(); } catch(err){}
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0, rootMargin: "200px" });
     vids.forEach(function(v){ io.observe(v); });
   })();
 })();
