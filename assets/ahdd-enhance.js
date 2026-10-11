@@ -737,4 +737,28 @@
   } else {
     init();
   }
+
+
+  // FIX: lazy-play videos (PageSpeed scope 2026-10-11)
+  // Below-the-fold videos used to autoplay on page load, pulling ~3.5MB
+  // on first visit. Now they only start when scrolled into view, and
+  // pause when scrolled out — same visual effect, zero wasted bandwidth
+  // for visitors who don't reach the Technology section.
+  (function initLazyVideos(){
+    if (!('IntersectionObserver' in window)) return;
+    var vids = document.querySelectorAll('video[data-lazy-play]');
+    if (!vids.length) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var v = e.target;
+        if (e.isIntersecting) {
+          var p = v.play();
+          if (p && p.catch) p.catch(function(){});
+        } else {
+          try { v.pause(); } catch(err){}
+        }
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function(v){ io.observe(v); });
+  })();
 })();
