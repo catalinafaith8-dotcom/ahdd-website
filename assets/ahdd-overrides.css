@@ -58,3 +58,35 @@
 
 /* FIX: doc-photo contain to show both doctors */
 .doc-photo img{object-fit:contain !important;object-position:center !important;background:#f3ece0 !important;}
+
+
+/* ─── A11y pass 2026-10-10 (PageSpeed scope FIX 5) ───────────────────────
+   - Enlarge small tap targets to 48×48 on mobile per WCAG 2.5.5
+   - Lift footer link contrast against dark navy background (≥4.5:1)
+   - Ensure focus is visible on interactive elements
+   Conservative — only mobile breakpoint; no desktop layout change.           */
+@media (max-width:1024px){
+  html body #nav .nav-phone,
+  html body #nav .nav-book,
+  html body #mobile-nav a,
+  html body #mobile-nav .mob-phone,
+  html body #mobile-nav .mob-book,
+  html body #footer a,
+  html body .car-btn,
+  html body #chat-cls,
+  html body #chat-send,
+  html body #chat-tog {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+  html body #mobile-nav a { padding: 14px 16px !important; }
+  html body #footer li + li { margin-top: 6px !important; }
+}
+html body #footer a { color: #E7EEF6 !important; }
+html body #footer a:hover,
+html body #footer a:focus { color: #FFFFFF !important; text-decoration: underline; }
+html body a:focus-visible,
+html body button:focus-visible {
+  outline: 2px solid #C96A2E !important;
+  outline-offset: 2px !important;
+}
