@@ -752,8 +752,10 @@
       entries.forEach(function(e){
         var v = e.target;
         if (e.isIntersecting) {
+          v.muted = true;
+          v.playsInline = true;
           var p = v.play();
-          if (p && p.catch) p.catch(function(){});
+          if (p && p.catch) p.catch(function(err){ console.warn('[ahdd] video play rejected', err && err.name, err && err.message); });
         } else {
           try { v.pause(); } catch(err){}
         }
