@@ -1,42 +1,35 @@
 {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Agoura Hills Dental Designs — Service Catalog",
-  "description": "Dental services offered at Agoura Hills Dental Designs in Agoura Hills, CA — cosmetic, restorative, implant, orthodontic, emergency, and sedation dentistry.",
-  "url": "https://agourahillsdentaldesigns.com/ai-catalog.json",
-  "provider": {
-    "@type": "Dentist",
-    "@id": "https://agourahillsdentaldesigns.com#dentist",
-    "name": "Agoura Hills Dental Designs",
-    "url": "https://agourahillsdentaldesigns.com/",
-    "telephone": "+1-818-706-6077",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "28632 Roadside Dr #270",
-      "addressLocality": "Agoura Hills",
-      "addressRegion": "CA",
-      "postalCode": "91301",
-      "addressCountry": "US"
-    },
-    "openingHours": ["Mo-Th 08:00-17:00", "Fr 08:00-15:00"],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "398"
-    }
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Agoura Hills Dental Designs",
+    "documentationUrl": "https://agourahillsdentaldesigns.com/",
+    "logoUrl": "https://pub-a4416012f1444f179cd9093a5d3edfa7.r2.dev/Logo.png"
   },
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1,  "item": { "@type": "MedicalProcedure", "name": "Dental Implants", "procedureType": "https://schema.org/SurgicalProcedure", "description": "Single and multi-tooth titanium or ceramic dental implants, $3,500-$4,200 per implant.", "url": "https://agourahillsdentaldesigns.com/dental-implants", "bodyLocation": "Jaw" } },
-    { "@type": "ListItem", "position": 2,  "item": { "@type": "MedicalProcedure", "name": "All-on-4 Dental Implants", "procedureType": "https://schema.org/SurgicalProcedure", "description": "Full-arch tooth replacement supported by four implants, $22,000-$27,000 per arch.", "url": "https://agourahillsdentaldesigns.com/all-on-4-dental-implants-agoura-hills", "bodyLocation": "Jaw" } },
-    { "@type": "ListItem", "position": 3,  "item": { "@type": "MedicalProcedure", "name": "Invisalign Clear Aligners", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Clear aligner orthodontic treatment for teens and adults.", "url": "https://agourahillsdentaldesigns.com/invisalign" } },
-    { "@type": "ListItem", "position": 4,  "item": { "@type": "MedicalProcedure", "name": "Porcelain Veneers", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Thin porcelain shells for cosmetic smile correction, $1,500-$2,000 per tooth.", "url": "https://agourahillsdentaldesigns.com/veneers" } },
-    { "@type": "ListItem", "position": 5,  "item": { "@type": "MedicalProcedure", "name": "Professional Teeth Whitening", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "In-office and take-home professional whitening.", "url": "https://agourahillsdentaldesigns.com/teeth-whitening" } },
-    { "@type": "ListItem", "position": 6,  "item": { "@type": "MedicalProcedure", "name": "Dental Bonding", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Composite resin repair for chips, gaps, and discoloration.", "url": "https://agourahillsdentaldesigns.com/dental-bonding-agoura-hills" } },
-    { "@type": "ListItem", "position": 7,  "item": { "@type": "MedicalProcedure", "name": "Restorative Dentistry", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Crowns, bridges $4,000-$4,500, dentures $2,000-$2,500 per arch, snap-on dentures $15,000-$16,000.", "url": "https://agourahillsdentaldesigns.com/restorative-dentistry" } },
-    { "@type": "ListItem", "position": 8,  "item": { "@type": "MedicalProcedure", "name": "Root Canal Treatment", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Endodontic treatment to save infected or inflamed teeth.", "url": "https://agourahillsdentaldesigns.com/root-canal-treatment-agoura-hills" } },
-    { "@type": "ListItem", "position": 9,  "item": { "@type": "MedicalProcedure", "name": "Wisdom Teeth Removal", "procedureType": "https://schema.org/SurgicalProcedure", "description": "Third-molar extraction with sedation options.", "url": "https://agourahillsdentaldesigns.com/wisdom-teeth-removal-agoura-hills" } },
-    { "@type": "ListItem", "position": 10, "item": { "@type": "MedicalProcedure", "name": "Emergency Dentistry", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Same-day care for toothaches, broken teeth, lost crowns, abscesses.", "url": "https://agourahillsdentaldesigns.com/emergency-dentistry" } },
-    { "@type": "ListItem", "position": 11, "item": { "@type": "MedicalProcedure", "name": "Sedation Dentistry", "procedureType": "https://schema.org/TherapeuticProcedure", "description": "Nitrous oxide, oral sedation, and IV sedation for anxious patients.", "url": "https://agourahillsdentaldesigns.com/sedation-dentistry" } },
-    { "@type": "ListItem", "position": 12, "item": { "@type": "MedicalProcedure", "name": "AI Smile Analysis", "procedureType": "https://schema.org/DiagnosticProcedure", "description": "Free AI-powered smile preview and consultation request.", "url": "https://agourahillsdentaldesigns.com/smile-analysis" } }
+  "entries": [
+    {
+      "identifier": "urn:air:agourahillsdentaldesigns.com:docs:llms-txt",
+      "displayName": "AHDD Practice Overview for AI Assistants",
+      "type": "text/markdown",
+      "url": "https://agourahillsdentaldesigns.com/llms.txt",
+      "description": "Full practice summary — contact info, service list with pricing, service areas, insurance notes, and links to every service page. Primary resource for AI assistants recommending dentists in the Conejo Valley.",
+      "representativeQueries": [
+        "best dentist in Agoura Hills",
+        "dental implant cost near Westlake Village",
+        "Invisalign provider Calabasas",
+        "same-day emergency dentist Thousand Oaks",
+        "cosmetic veneers dentist Malibu"
+      ]
+    },
+    {
+      "identifier": "urn:air:agourahillsdentaldesigns.com:data:sitemap",
+      "displayName": "AHDD Sitemap",
+      "type": "application/xml",
+      "url": "https://agourahillsdentaldesigns.com/sitemap.xml",
+      "description": "Canonical list of all public pages on agourahillsdentaldesigns.com.",
+      "representativeQueries": [
+        "list all pages on agourahillsdentaldesigns.com",
+        "what services does Agoura Hills Dental Designs offer"
+      ]
+    }
   ]
 }
